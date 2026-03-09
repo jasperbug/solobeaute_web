@@ -4,6 +4,7 @@ import { initReactI18next } from 'react-i18next';
 const resources = {
   zh: {
     translation: {
+      langLabel: '繁體中文',
       nav: {
         features: '功能特色',
         howItWorks: '如何運作',
@@ -62,36 +63,10 @@ const resources = {
         sectionTag: '功能特色',
         title: '為美業量身打造',
         items: [
-          {
-            title: '地圖搜尋空間',
-            desc: '即時查看附近可用空間，價格一目瞭然',
-          },
-          {
-            title: '智慧篩選',
-            desc: '依設備、服務類型、評分、3D 實景精準篩選',
-          },
-          {
-            title: '即時通訊',
-            desc: '屋主與職人直接溝通，快速確認細節',
-          },
-          {
-            title: '日曆預約管理',
-            desc: '視覺化排程，一眼掌握所有預約狀態',
-          },
-        ],
-      },
-      market: {
-        sectionTag: '市場機會',
-        title: '美業正在改變',
-        stats: [
-          { number: 'NT$2,800億', label: '台灣美業年產值', sub: '持續成長中' },
-          { number: '15萬+', label: '美容從業人員', sub: '30%+ 為自由工作者' },
-          { number: '零競爭', label: '三方整合平台', sub: '先行者優勢' },
-        ],
-        points: [
-          '皮膚管理、熱蠟除毛、美睫美甲等新興項目快速成長',
-          '自由職人不願受沙龍長約束縛，需要彈性空間',
-          '小紅書 / IG 推動個人品牌崛起，流量在職人而非店面',
+          { title: '地圖搜尋空間', desc: '即時查看附近可用空間，價格一目瞭然' },
+          { title: '智慧篩選', desc: '依設備、服務類型、評分、3D 實景精準篩選' },
+          { title: '即時通訊', desc: '屋主與職人直接溝通，快速確認細節' },
+          { title: '日曆預約管理', desc: '視覺化排程，一眼掌握所有預約狀態' },
         ],
       },
       about: {
@@ -117,8 +92,10 @@ const resources = {
       },
     },
   },
+
   en: {
     translation: {
+      langLabel: 'English',
       nav: {
         features: 'Features',
         howItWorks: 'How It Works',
@@ -126,7 +103,7 @@ const resources = {
         download: 'Download',
       },
       hero: {
-        tagline: "The independent stage for beauty pros",
+        tagline: 'The independent stage for beauty pros',
         title1: 'Your beauty space,',
         title2: 'one tap away.',
         subtitle: "Taiwan's first three-way marketplace integrating spaces, services, and bookings for the beauty industry",
@@ -177,36 +154,10 @@ const resources = {
         sectionTag: 'Features',
         title: 'Built for the beauty industry',
         items: [
-          {
-            title: 'Map-Based Search',
-            desc: 'Browse nearby spaces in real-time with transparent pricing',
-          },
-          {
-            title: 'Smart Filters',
-            desc: 'Filter by equipment, service type, ratings, and 3D virtual tours',
-          },
-          {
-            title: 'In-App Chat',
-            desc: 'Direct messaging between hosts and pros for quick coordination',
-          },
-          {
-            title: 'Calendar Management',
-            desc: 'Visual scheduling to manage all your bookings at a glance',
-          },
-        ],
-      },
-      market: {
-        sectionTag: 'Market Opportunity',
-        title: 'Beauty is changing',
-        stats: [
-          { number: 'NT$280B', label: 'Annual market value', sub: 'And growing' },
-          { number: '150K+', label: 'Beauty professionals', sub: '30%+ freelancers' },
-          { number: 'Blue Ocean', label: 'No integrated platform', sub: 'First-mover advantage' },
-        ],
-        points: [
-          'Skin care, waxing, lash & nail services are booming with no dedicated platform',
-          'Freelance pros want flexibility, not long-term salon contracts',
-          'Social media drives personal brands — traffic follows the pro, not the shop',
+          { title: 'Map-Based Search', desc: 'Browse nearby spaces in real-time with transparent pricing' },
+          { title: 'Smart Filters', desc: 'Filter by equipment, service type, ratings, and 3D virtual tours' },
+          { title: 'In-App Chat', desc: 'Direct messaging between hosts and pros for quick coordination' },
+          { title: 'Calendar Management', desc: 'Visual scheduling to manage all your bookings at a glance' },
         ],
       },
       about: {
@@ -232,7 +183,472 @@ const resources = {
       },
     },
   },
+
+  ja: {
+    translation: {
+      langLabel: '日本語',
+      nav: {
+        features: '機能紹介',
+        howItWorks: '使い方',
+        about: '私たちについて',
+        download: 'ダウンロード',
+      },
+      hero: {
+        tagline: '美容プロのための独立ステージ',
+        title1: 'あなたの美容スペース、',
+        title2: 'ワンタップで。',
+        subtitle: '台湾初、スペース・サービス・予約を統合した美容業界の三者マーケットプレイス',
+        cta: '今すぐダウンロード',
+        ctaSub: '美容の旅を始めよう',
+      },
+      ecosystem: {
+        sectionTag: 'エコシステム',
+        title: 'ひとつのプラットフォーム、三者がWin-Win',
+        subtitle: '美容業界のすべての役割の課題を解決します',
+        host: {
+          role: 'スペースオーナー',
+          pain: '空きスペースの効率的な貸出手段や管理ツールがない',
+          solution: 'スペースを掲載、楽に収益化',
+          desc: '3Dバーチャルツアー、スマート料金設定、自動管理であなたのスペースを発見されやすく',
+        },
+        beautician: {
+          role: '美容プロ',
+          pain: '独立スペースが見つからない、サロンの長期契約はコストが高すぎる',
+          solution: '柔軟にレンタル、独立して働く',
+          desc: '時間単位の柔軟なレンタル、パーソナルブランドの構築、評価を積み上げて事業を成長',
+        },
+        consumer: {
+          role: '消費者',
+          badge: '近日公開',
+          pain: '質の高い独立プロが見つけにくい、予約プロセスが不透明',
+          solution: '安心して検索、透明な予約',
+          desc: '実績ある評価、透明な料金、安全な決済で、あなただけの美容体験を',
+        },
+      },
+      howItWorks: {
+        sectionTag: '使い方',
+        title: '3ステップで美容の旅を始めよう',
+        hostTab: 'オーナーの方',
+        beauticianTab: '美容プロの方',
+        hostSteps: [
+          { step: '01', title: 'スペースを掲載', desc: '写真をアップロード、時間帯と料金を設定。3Dツアーでスペースの魅力をアピール' },
+          { step: '02', title: '予約を受ける', desc: 'プロがスペースを閲覧・予約。自動で通知が届きます' },
+          { step: '03', title: '楽に収益化', desc: '安全な決済で自動精算。スペース管理に集中できます' },
+        ],
+        beauticianSteps: [
+          { step: '01', title: 'スペースを探す', desc: '地図検索、設備でフィルター — 最適なワークスペースを見つけよう' },
+          { step: '02', title: '予約する', desc: '柔軟な時間帯予約。当日からお客様を迎えられます' },
+          { step: '03', title: 'ブランドを築く', desc: 'プロフィールを作成、評価を集めて、事業を拡大しよう' },
+        ],
+      },
+      features: {
+        sectionTag: '機能紹介',
+        title: '美容業界のために設計',
+        items: [
+          { title: 'マップ検索', desc: '近くの空きスペースをリアルタイムで閲覧、料金も一目瞭然' },
+          { title: 'スマートフィルター', desc: '設備、サービス種類、評価、3Dツアーで精密に絞り込み' },
+          { title: 'アプリ内チャット', desc: 'オーナーとプロの直接やり取りで、スピーディーに詳細を確認' },
+          { title: 'カレンダー管理', desc: 'ビジュアルなスケジュール管理で、全予約を一目で把握' },
+        ],
+      },
+      about: {
+        sectionTag: '私たちについて',
+        title: "Let's build the future\nof beauty together.",
+        desc: 'SoloBeautéは、すべての美容プロが自分だけのステージを持つべきだと信じています。オーナー、プロ、消費者の三者がWin-Winとなるエコシステムを、テクノロジーの力で構築しています。',
+        founder: 'Jasper — テクニカルファウンダー',
+        founderDesc: 'フルスタック開発者として、iOS App・バックエンド・インフラをひとりで構築。三者マーケットプレイスの成功の鍵は技術ではなく、業界の人脈と信頼にあると確信。',
+      },
+      cta: {
+        title: '始める準備はできましたか？',
+        subtitle: 'SoloBeautéをダウンロードして、美容の新しい章を開こう',
+        button: 'ダウンロード',
+        iosHint: '現在iOSに対応。Android版は近日公開予定。',
+      },
+      footer: {
+        slogan: '美容プロのための独立ステージ',
+        contact: 'お問い合わせ',
+        email: 'hello@solobeaute.com',
+        legal: 'プライバシーポリシー',
+        terms: '利用規約',
+        rights: '© 2026 SoloBeauté. All rights reserved.',
+      },
+    },
+  },
+
+  ko: {
+    translation: {
+      langLabel: '한국어',
+      nav: {
+        features: '기능 소개',
+        howItWorks: '이용 방법',
+        about: '소개',
+        download: '다운로드',
+      },
+      hero: {
+        tagline: '뷰티 프로를 위한 독립 무대',
+        title1: '나만의 뷰티 공간,',
+        title2: '한 번에 찾기.',
+        subtitle: '대만 최초, 공간·서비스·예약을 통합한 뷰티 업계 3자 마켓플레이스',
+        cta: '지금 다운로드',
+        ctaSub: '뷰티 여정을 시작하세요',
+      },
+      ecosystem: {
+        sectionTag: '에코시스템',
+        title: '하나의 플랫폼, 세 가지 윈윈',
+        subtitle: '뷰티 업계의 모든 역할의 문제를 해결합니다',
+        host: {
+          role: '공간 호스트',
+          pain: '유휴 공간을 효율적으로 임대할 채널이나 관리 도구가 없음',
+          solution: '공간을 등록하고, 편하게 수익 창출',
+          desc: '3D 가상 투어, 스마트 가격 설정, 자동 관리로 공간을 알리세요',
+        },
+        beautician: {
+          role: '뷰티 프로',
+          pain: '독립 공간을 찾기 어렵고, 살롱 장기 계약은 비용이 너무 높음',
+          solution: '유연하게 임대, 독립적으로 운영',
+          desc: '시간 단위 유연한 임대, 퍼스널 브랜드 구축, 평가 쌓기로 사업 성장',
+        },
+        consumer: {
+          role: '소비자',
+          badge: '곧 오픈',
+          pain: '양질의 독립 프로를 찾기 어렵고, 예약 과정이 불투명',
+          solution: '안심 검색, 투명한 예약',
+          desc: '검증된 리뷰, 투명한 가격, 안전한 결제로 나만의 뷰티 경험을',
+        },
+      },
+      howItWorks: {
+        sectionTag: '이용 방법',
+        title: '세 단계로 뷰티 여정 시작하기',
+        hostTab: '호스트입니다',
+        beauticianTab: '뷰티 프로입니다',
+        hostSteps: [
+          { step: '01', title: '공간 등록', desc: '사진 업로드, 시간대와 가격 설정. 3D 투어로 공간을 돋보이게' },
+          { step: '02', title: '예약 수락', desc: '프로가 공간을 둘러보고 예약. 자동으로 알림을 받으세요' },
+          { step: '03', title: '편안한 수익', desc: '안전한 결제로 자동 정산. 공간 관리에 집중하세요' },
+        ],
+        beauticianSteps: [
+          { step: '01', title: '공간 찾기', desc: '지도 검색, 장비 필터링 — 최적의 작업 공간을 찾으세요' },
+          { step: '02', title: '예약하기', desc: '유연한 시간 단위 예약. 당일부터 고객을 맞이하세요' },
+          { step: '03', title: '브랜드 구축', desc: '프로필 만들기, 리뷰 모으기, 사업 확장하기' },
+        ],
+      },
+      features: {
+        sectionTag: '기능 소개',
+        title: '뷰티 업계를 위해 설계',
+        items: [
+          { title: '지도 검색', desc: '근처 이용 가능한 공간을 실시간으로 확인, 가격도 한눈에' },
+          { title: '스마트 필터', desc: '장비, 서비스 유형, 평점, 3D 투어로 정밀 필터링' },
+          { title: '앱 내 채팅', desc: '호스트와 프로의 직접 소통으로 빠르게 세부사항 확인' },
+          { title: '캘린더 관리', desc: '시각적 일정 관리로 모든 예약을 한눈에 파악' },
+        ],
+      },
+      about: {
+        sectionTag: '소개',
+        title: "Let's build the future\nof beauty together.",
+        desc: 'SoloBeauté는 모든 뷰티 프로가 자신만의 무대를 가질 자격이 있다고 믿습니다. 호스트, 프로, 소비자가 모두 윈윈하는 생태계를 기술의 힘으로 구축하고 있습니다.',
+        founder: 'Jasper — 기술 창업자',
+        founderDesc: '풀스택 개발자로서 iOS App, 백엔드, 인프라를 혼자 구축. 3자 마켓플레이스의 성공 열쇠는 기술이 아니라 업계 인맥과 신뢰에 있다고 확신.',
+      },
+      cta: {
+        title: '시작할 준비 되셨나요?',
+        subtitle: 'SoloBeauté를 다운로드하고 뷰티의 새로운 장을 열어보세요',
+        button: '앱 다운로드',
+        iosHint: '현재 iOS 지원. Android 버전 곧 출시 예정.',
+      },
+      footer: {
+        slogan: '뷰티 프로를 위한 독립 무대',
+        contact: '문의하기',
+        email: 'hello@solobeaute.com',
+        legal: '개인정보 처리방침',
+        terms: '이용약관',
+        rights: '© 2026 SoloBeauté. All rights reserved.',
+      },
+    },
+  },
+
+  'zh-CN': {
+    translation: {
+      langLabel: '简体中文',
+      nav: {
+        features: '功能特色',
+        howItWorks: '如何使用',
+        about: '关于我们',
+        download: '下载 App',
+      },
+      hero: {
+        tagline: '美业人的独立舞台',
+        title1: '你的美业空间，',
+        title2: '一键找到。',
+        subtitle: '台湾首个整合空间、服务、预约的美业三方平台',
+        cta: '立即下载',
+        ctaSub: '开始你的美业之旅',
+      },
+      ecosystem: {
+        sectionTag: '三方生态圈',
+        title: '一个平台，三方共赢',
+        subtitle: '我们解决美业中每个角色的痛点',
+        host: {
+          role: '房东',
+          pain: '闲置空间无法有效出租、缺乏线上化管理工具',
+          solution: '上架空间，轻松收租',
+          desc: '3D 实景展示、智能定价、自动化管理，让你的空间被看见',
+        },
+        beautician: {
+          role: '美容师',
+          pain: '找不到独立空间、长约沙龙成本太高',
+          solution: '自由租用，独立接客',
+          desc: '弹性时段租用、建立个人品牌、积累评价，打造你的事业',
+        },
+        consumer: {
+          role: '消费者',
+          badge: '即将开放',
+          pain: '找不到优质独立美容师、预约流程不透明',
+          solution: '安心搜索，透明预约',
+          desc: '真实评价、透明价格、安全支付，享受专属你的美容体验',
+        },
+      },
+      howItWorks: {
+        sectionTag: '如何使用',
+        title: '三步开始你的美业旅程',
+        hostTab: '我是房东',
+        beauticianTab: '我是美容师',
+        hostSteps: [
+          { step: '01', title: '上架空间', desc: '拍照上传、设定时段与价格，3D 实景让空间更吸引人' },
+          { step: '02', title: '接受预约', desc: '美容师浏览并预约你的空间，系统自动通知与管理' },
+          { step: '03', title: '轻松收租', desc: '安全支付自动结算，专注管理你的空间' },
+        ],
+        beauticianSteps: [
+          { step: '01', title: '搜索空间', desc: '地图搜索、筛选设备，找到最适合你的工作空间' },
+          { step: '02', title: '预约租用', desc: '弹性时段预约，当天就能开始接客' },
+          { step: '03', title: '独立经营', desc: '建立个人品牌页、积累评价，壮大你的事业' },
+        ],
+      },
+      features: {
+        sectionTag: '功能特色',
+        title: '为美业量身打造',
+        items: [
+          { title: '地图搜索空间', desc: '实时查看附近可用空间，价格一目了然' },
+          { title: '智能筛选', desc: '按设备、服务类型、评分、3D 实景精准筛选' },
+          { title: '即时通讯', desc: '房东与美容师直接沟通，快速确认细节' },
+          { title: '日历预约管理', desc: '可视化排程，一眼掌握所有预约状态' },
+        ],
+      },
+      about: {
+        sectionTag: '关于我们',
+        title: "Let's build the future\nof beauty together.",
+        desc: 'SoloBeauté 相信每位美容师都值得拥有独立的舞台。我们打造一个让房东、美容师、消费者三方共赢的生态系统，用科技连接美业的每一个环节。',
+        founder: 'Jasper · 技术创始人',
+        founderDesc: '全栈开发者，一人打造 iOS App + Backend + Infrastructure。相信三方市场的成败不在技术，在于行业人脉与信任。',
+      },
+      cta: {
+        title: '准备好了吗？',
+        subtitle: '下载 SoloBeauté，开启你的美业新篇章',
+        button: '下载 App',
+        iosHint: '目前支持 iOS，Android 版即将推出',
+      },
+      footer: {
+        slogan: '美业人的独立舞台',
+        contact: '联系我们',
+        email: 'hello@solobeaute.com',
+        legal: '隐私政策',
+        terms: '使用条款',
+        rights: '© 2026 SoloBeauté. All rights reserved.',
+      },
+    },
+  },
+
+  vi: {
+    translation: {
+      langLabel: 'Tiếng Việt',
+      nav: {
+        features: 'Tính năng',
+        howItWorks: 'Cách hoạt động',
+        about: 'Về chúng tôi',
+        download: 'Tải App',
+      },
+      hero: {
+        tagline: 'Sân khấu độc lập cho chuyên gia làm đẹp',
+        title1: 'Không gian làm đẹp,',
+        title2: 'chỉ một chạm.',
+        subtitle: 'Nền tảng ba bên đầu tiên tại Đài Loan, tích hợp không gian, dịch vụ và đặt lịch cho ngành làm đẹp',
+        cta: 'Tải ngay',
+        ctaSub: 'Bắt đầu hành trình làm đẹp',
+      },
+      ecosystem: {
+        sectionTag: 'Hệ sinh thái',
+        title: 'Một nền tảng, ba bên cùng thắng',
+        subtitle: 'Chúng tôi giải quyết điểm đau của mọi vai trò trong ngành làm đẹp',
+        host: {
+          role: 'Chủ không gian',
+          pain: 'Không gian trống không có kênh cho thuê hiệu quả hay công cụ quản lý',
+          solution: 'Đăng không gian, kiếm thu nhập dễ dàng',
+          desc: 'Tour 3D ảo, định giá thông minh, quản lý tự động — giúp không gian của bạn được nhìn thấy',
+        },
+        beautician: {
+          role: 'Chuyên gia làm đẹp',
+          pain: 'Không tìm được không gian độc lập; hợp đồng dài hạn salon quá tốn kém',
+          solution: 'Thuê linh hoạt, làm việc độc lập',
+          desc: 'Thuê theo giờ linh hoạt, xây dựng thương hiệu cá nhân, tích lũy đánh giá',
+        },
+        consumer: {
+          role: 'Khách hàng',
+          badge: 'Sắp ra mắt',
+          pain: 'Khó tìm chuyên gia độc lập chất lượng; quy trình đặt lịch không minh bạch',
+          solution: 'Tìm kiếm an tâm, đặt lịch minh bạch',
+          desc: 'Đánh giá xác thực, giá cả minh bạch, thanh toán an toàn — làm đẹp theo cách của bạn',
+        },
+      },
+      howItWorks: {
+        sectionTag: 'Cách hoạt động',
+        title: 'Ba bước để bắt đầu hành trình làm đẹp',
+        hostTab: 'Tôi là Chủ nhà',
+        beauticianTab: 'Tôi là Chuyên gia',
+        hostSteps: [
+          { step: '01', title: 'Đăng không gian', desc: 'Tải ảnh lên, thiết lập thời gian & giá cả. Tour 3D giúp không gian nổi bật' },
+          { step: '02', title: 'Nhận đặt lịch', desc: 'Chuyên gia duyệt và đặt không gian. Nhận thông báo tự động' },
+          { step: '03', title: 'Thu nhập nhẹ nhàng', desc: 'Thanh toán an toàn, tự động quyết toán. Tập trung quản lý không gian' },
+        ],
+        beauticianSteps: [
+          { step: '01', title: 'Tìm không gian', desc: 'Tìm kiếm trên bản đồ, lọc theo thiết bị — tìm không gian làm việc hoàn hảo' },
+          { step: '02', title: 'Đặt lịch', desc: 'Đặt lịch theo giờ linh hoạt. Bắt đầu đón khách ngay trong ngày' },
+          { step: '03', title: 'Xây dựng thương hiệu', desc: 'Tạo hồ sơ, thu thập đánh giá và phát triển sự nghiệp' },
+        ],
+      },
+      features: {
+        sectionTag: 'Tính năng',
+        title: 'Thiết kế cho ngành làm đẹp',
+        items: [
+          { title: 'Tìm kiếm bản đồ', desc: 'Xem không gian gần đây theo thời gian thực với giá cả minh bạch' },
+          { title: 'Bộ lọc thông minh', desc: 'Lọc theo thiết bị, loại dịch vụ, đánh giá và tour 3D ảo' },
+          { title: 'Chat trong ứng dụng', desc: 'Nhắn tin trực tiếp giữa chủ nhà và chuyên gia để phối hợp nhanh' },
+          { title: 'Quản lý lịch', desc: 'Lịch trình trực quan để quản lý tất cả đặt lịch trong một cái nhìn' },
+        ],
+      },
+      about: {
+        sectionTag: 'Về chúng tôi',
+        title: "Let's build the future\nof beauty together.",
+        desc: 'SoloBeauté tin rằng mỗi chuyên gia làm đẹp đều xứng đáng có sân khấu riêng. Chúng tôi xây dựng hệ sinh thái nơi chủ nhà, chuyên gia và khách hàng đều cùng thắng — được hỗ trợ bởi công nghệ kết nối mọi phần của ngành làm đẹp.',
+        founder: 'Jasper — Nhà sáng lập kỹ thuật',
+        founderDesc: 'Lập trình viên full-stack, một mình xây dựng iOS App, Backend và Infrastructure. Tin rằng chìa khóa thành công của thị trường ba bên là mối quan hệ ngành và sự tin tưởng.',
+      },
+      cta: {
+        title: 'Sẵn sàng bắt đầu?',
+        subtitle: 'Tải SoloBeauté và mở ra chương mới trong sự nghiệp làm đẹp',
+        button: 'Tải App',
+        iosHint: 'Hiện hỗ trợ iOS. Phiên bản Android sắp ra mắt.',
+      },
+      footer: {
+        slogan: 'Sân khấu độc lập cho chuyên gia làm đẹp',
+        contact: 'Liên hệ',
+        email: 'hello@solobeaute.com',
+        legal: 'Chính sách bảo mật',
+        terms: 'Điều khoản sử dụng',
+        rights: '© 2026 SoloBeauté. All rights reserved.',
+      },
+    },
+  },
+
+  th: {
+    translation: {
+      langLabel: 'ภาษาไทย',
+      nav: {
+        features: 'ฟีเจอร์',
+        howItWorks: 'วิธีใช้งาน',
+        about: 'เกี่ยวกับเรา',
+        download: 'ดาวน์โหลด',
+      },
+      hero: {
+        tagline: 'เวทีอิสระสำหรับมืออาชีพด้านความงาม',
+        title1: 'พื้นที่ความงามของคุณ',
+        title2: 'แค่แตะเดียว',
+        subtitle: 'แพลตฟอร์มสามฝ่ายแห่งแรกของไต้หวัน ที่รวมพื้นที่ บริการ และการจองสำหรับอุตสาหกรรมความงาม',
+        cta: 'ดาวน์โหลดเลย',
+        ctaSub: 'เริ่มต้นเส้นทางความงามของคุณ',
+      },
+      ecosystem: {
+        sectionTag: 'ระบบนิเวศ',
+        title: 'หนึ่งแพลตฟอร์ม สามฝ่ายชนะ',
+        subtitle: 'เราแก้ปัญหาให้ทุกบทบาทในอุตสาหกรรมความงาม',
+        host: {
+          role: 'เจ้าของพื้นที่',
+          pain: 'พื้นที่ว่างไม่มีช่องทางให้เช่าอย่างมีประสิทธิภาพหรือเครื่องมือจัดการ',
+          solution: 'ลงประกาศพื้นที่ สร้างรายได้ง่ายๆ',
+          desc: 'ทัวร์เสมือนจริง 3D, กำหนดราคาอัจฉริยะ, จัดการอัตโนมัติ — ทำให้พื้นที่ของคุณถูกค้นพบ',
+        },
+        beautician: {
+          role: 'มืออาชีพด้านความงาม',
+          pain: 'หาพื้นที่อิสระไม่ได้ สัญญาระยะยาวกับร้านแพงเกินไป',
+          solution: 'เช่าอย่างยืดหยุ่น ทำงานอย่างอิสระ',
+          desc: 'เช่ารายชั่วโมงอย่างยืดหยุ่น สร้างแบรนด์ส่วนตัว สะสมรีวิว เพื่อเติบโต',
+        },
+        consumer: {
+          role: 'ผู้บริโภค',
+          badge: 'เร็วๆ นี้',
+          pain: 'หามืออาชีพอิสระคุณภาพยาก กระบวนการจองไม่โปร่งใส',
+          solution: 'ค้นหาอย่างมั่นใจ จองอย่างโปร่งใส',
+          desc: 'รีวิวจริง ราคาโปร่งใส การชำระเงินปลอดภัย — ประสบการณ์ความงามในแบบของคุณ',
+        },
+      },
+      howItWorks: {
+        sectionTag: 'วิธีใช้งาน',
+        title: 'สามขั้นตอนเริ่มต้นเส้นทางความงาม',
+        hostTab: 'ฉันเป็นเจ้าของพื้นที่',
+        beauticianTab: 'ฉันเป็นมืออาชีพ',
+        hostSteps: [
+          { step: '01', title: 'ลงประกาศพื้นที่', desc: 'อัปโหลดรูป ตั้งเวลาและราคา ทัวร์ 3D ทำให้พื้นที่โดดเด่น' },
+          { step: '02', title: 'รับการจอง', desc: 'มืออาชีพเรียกดูและจองพื้นที่ รับการแจ้งเตือนอัตโนมัติ' },
+          { step: '03', title: 'รายได้สบายๆ', desc: 'การชำระเงินปลอดภัย คำนวณอัตโนมัติ มุ่งเน้นจัดการพื้นที่' },
+        ],
+        beauticianSteps: [
+          { step: '01', title: 'ค้นหาพื้นที่', desc: 'ค้นหาบนแผนที่ กรองตามอุปกรณ์ — หาพื้นที่ทำงานที่เหมาะสม' },
+          { step: '02', title: 'จองเลย', desc: 'จองรายชั่วโมงอย่างยืดหยุ่น เริ่มรับลูกค้าได้ในวันเดียวกัน' },
+          { step: '03', title: 'สร้างแบรนด์', desc: 'สร้างโปรไฟล์ สะสมรีวิว และขยายธุรกิจของคุณ' },
+        ],
+      },
+      features: {
+        sectionTag: 'ฟีเจอร์',
+        title: 'ออกแบบเพื่ออุตสาหกรรมความงาม',
+        items: [
+          { title: 'ค้นหาบนแผนที่', desc: 'ดูพื้นที่ว่างใกล้เคียงแบบเรียลไทม์ พร้อมราคาโปร่งใส' },
+          { title: 'ตัวกรองอัจฉริยะ', desc: 'กรองตามอุปกรณ์ ประเภทบริการ คะแนน และทัวร์ 3D' },
+          { title: 'แชทในแอป', desc: 'ส่งข้อความโดยตรงระหว่างเจ้าของและมืออาชีพเพื่อประสานงานรวดเร็ว' },
+          { title: 'จัดการปฏิทิน', desc: 'จัดตารางแบบภาพ จัดการการจองทั้งหมดในมุมมองเดียว' },
+        ],
+      },
+      about: {
+        sectionTag: 'เกี่ยวกับเรา',
+        title: "Let's build the future\nof beauty together.",
+        desc: 'SoloBeauté เชื่อว่ามืออาชีพด้านความงามทุกคนสมควรมีเวทีของตัวเอง เรากำลังสร้างระบบนิเวศที่เจ้าของ มืออาชีพ และผู้บริโภคล้วนได้ประโยชน์ — ขับเคลื่อนด้วยเทคโนโลยีที่เชื่อมต่อทุกส่วนของอุตสาหกรรมความงาม',
+        founder: 'Jasper — ผู้ก่อตั้งฝ่ายเทคนิค',
+        founderDesc: 'นักพัฒนา full-stack สร้าง iOS App, Backend และ Infrastructure ด้วยตัวเอง เชื่อว่ากุญแจสู่ความสำเร็จของตลาดสามฝ่ายคือเครือข่ายอุตสาหกรรมและความไว้วางใจ',
+      },
+      cta: {
+        title: 'พร้อมเริ่มต้นหรือยัง?',
+        subtitle: 'ดาวน์โหลด SoloBeauté และเปิดบทใหม่ในเส้นทางความงาม',
+        button: 'ดาวน์โหลด App',
+        iosHint: 'รองรับ iOS ในขณะนี้ เวอร์ชัน Android เร็วๆ นี้',
+      },
+      footer: {
+        slogan: 'เวทีอิสระสำหรับมืออาชีพด้านความงาม',
+        contact: 'ติดต่อเรา',
+        email: 'hello@solobeaute.com',
+        legal: 'นโยบายความเป็นส่วนตัว',
+        terms: 'ข้อกำหนดการใช้งาน',
+        rights: '© 2026 SoloBeauté. All rights reserved.',
+      },
+    },
+  },
 };
+
+export const LANGUAGES = [
+  { code: 'zh', label: '繁體中文', short: '繁中' },
+  { code: 'en', label: 'English', short: 'EN' },
+  { code: 'ja', label: '日本語', short: 'JA' },
+  { code: 'ko', label: '한국어', short: 'KO' },
+  { code: 'zh-CN', label: '简体中文', short: '简中' },
+  { code: 'vi', label: 'Tiếng Việt', short: 'VI' },
+  { code: 'th', label: 'ภาษาไทย', short: 'TH' },
+];
 
 i18n.use(initReactI18next).init({
   resources,

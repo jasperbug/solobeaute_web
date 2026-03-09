@@ -33,7 +33,7 @@
 
   /* Typography */
   --font-heading: 'Inter', -apple-system, 'Helvetica Neue', sans-serif;
-  --font-body: 'Noto Sans TC', 'Inter', -apple-system, sans-serif;
+  --font-body: 'Noto Sans TC', 'Noto Sans SC', 'Noto Sans JP', 'Noto Sans KR', 'Noto Sans Thai', 'Inter', -apple-system, sans-serif;
   --font-display: 'Cormorant Garamond', 'Georgia', serif;
 
   /* Spacing — generous breathing room */

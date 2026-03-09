@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
+import { LANGUAGES } from './i18n'
 import './App.css'
 
 /* ── Subtle fade-in (Adaline-style: minimal, precise) ── */
@@ -53,6 +54,8 @@ export default function App() {
   const { t, i18n } = useTranslation()
   const [scrolled, setScrolled] = useState(false)
   const [mobileMenu, setMobileMenu] = useState(false)
+  const [langOpen, setLangOpen] = useState(false)
+  const langRef = useRef(null)
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 40)
@@ -60,7 +63,13 @@ export default function App() {
     return () => window.removeEventListener('scroll', fn)
   }, [])
 
-  const toggleLang = () => i18n.changeLanguage(i18n.language === 'zh' ? 'en' : 'zh')
+  useEffect(() => {
+    const fn = (e) => { if (langRef.current && !langRef.current.contains(e.target)) setLangOpen(false) }
+    document.addEventListener('mousedown', fn)
+    return () => document.removeEventListener('mousedown', fn)
+  }, [])
+
+  const currentLang = LANGUAGES.find(l => l.code === i18n.language) || LANGUAGES[0]
 
   return (
     <div className="app">
@@ -78,10 +87,26 @@ export default function App() {
             <a href="#about" onClick={() => setMobileMenu(false)}>{t('nav.about')}</a>
           </div>
           <div className="nav__right">
-            <button className="nav__lang" onClick={toggleLang}>
-              {Icon.globe}
-              <span>{i18n.language === 'zh' ? 'EN' : '中文'}</span>
-            </button>
+            <div className="lang-picker" ref={langRef}>
+              <button className="nav__lang" onClick={() => setLangOpen(!langOpen)}>
+                {Icon.globe}
+                <span>{currentLang.short}</span>
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              {langOpen && (
+                <div className="lang-dropdown">
+                  {LANGUAGES.map(l => (
+                    <button
+                      key={l.code}
+                      className={`lang-dropdown__item ${l.code === i18n.language ? 'lang-dropdown__item--active' : ''}`}
+                      onClick={() => { i18n.changeLanguage(l.code); setLangOpen(false) }}
+                    >
+                      {l.label}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
             <a href="#download" className="btn-primary btn--sm">{t('nav.download')}</a>
           </div>
           <button className={`hamburger ${mobileMenu ? 'hamburger--open' : ''}`} onClick={() => setMobileMenu(!mobileMenu)} aria-label="Menu">
