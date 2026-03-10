@@ -27,7 +27,7 @@ const shots = {
   list: '/images/app-screenshots/IMG_2378.PNG',
   filter: '/images/app-screenshots/IMG_2380.PNG',
   chat: '/images/app-screenshots/IMG_2381.PNG',
-  profile: '/images/app-screenshots/IMG_2382.PNG',
+  profile: '/images/app-screenshots/IMG_2378.PNG',
   bookingList: '/images/app-screenshots/IMG_2383.PNG',
   bookingCal: '/images/app-screenshots/IMG_2384.PNG',
 }
