@@ -786,6 +786,7 @@
   .hero__carousel {
     display: block;
     overflow: hidden;
+    padding-bottom: 40px;
   }
   .hero__actions { flex-direction: column; }
 
