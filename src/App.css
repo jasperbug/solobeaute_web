@@ -208,29 +208,55 @@
 
 .hero__phones {
   display: flex;
-  align-items: flex-end;
+  align-items: flex-end;       /* 底部對齊 */
   justify-content: center;
-  gap: 24px;
+  gap: 20px;
+  padding-top: 40px;           /* 預留向上放大的空間 */
 }
 
+.hero__phone {
+  transition: transform 0.7s cubic-bezier(0.25, 0.8, 0.25, 1),
+              opacity 0.5s ease,
+              width 0.7s cubic-bezier(0.25, 0.8, 0.25, 1);
+  cursor: pointer;
+  transform-origin: bottom center;  /* 從底部向上放大 */
+  will-change: transform, opacity, width;
+}
+
+/* Default state: center large, sides small */
 .hero__phone--center {
   width: 260px;
   z-index: 2;
+  opacity: 1;
 }
 
 .hero__phone--left,
 .hero__phone--right {
   width: 200px;
-  opacity: 0.45;
+  opacity: 0.5;
   z-index: 1;
+  transform: scale(0.88);
 }
 
-.hero__phone--left {
-  transform: translateY(24px) scale(0.9);
+/* Active state (hovered or default center) */
+.hero__phone--active {
+  width: 280px;
+  opacity: 1;
+  z-index: 3;
+  transform: scale(1.08);     /* 底部固定向上放大 */
 }
 
-.hero__phone--right {
-  transform: translateY(24px) scale(0.9);
+/* Faded state (not hovered when something else is) */
+.hero__phone--faded {
+  width: 180px;
+  opacity: 0.3;
+  z-index: 1;
+  transform: scale(0.82);
+}
+
+/* When center is default (no hover), keep normal scale */
+.hero__phone--default {
+  transform: scale(1) !important;
 }
 
 .hero__glow {
@@ -709,10 +735,12 @@
   .hamburger--open span:nth-child(3) { transform: rotate(-45deg) translate(4px, -4px); }
 
   .hero { padding: 140px 0 60px; }
-  .hero__phones { gap: 12px; }
+  .hero__phones { gap: 12px; padding-top: 0; }
   .hero__phone--center { width: 200px; }
   .hero__phone--left,
   .hero__phone--right { display: none; }
+  .hero__phone--active { width: 200px; transform: none; }
+  .hero__phone--default { transform: none !important; }
   .hero__actions { flex-direction: column; }
 
   .eco__grid { grid-template-columns: 1fr; }

@@ -55,6 +55,7 @@ export default function App() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileMenu, setMobileMenu] = useState(false)
   const [langOpen, setLangOpen] = useState(false)
+  const [heroHover, setHeroHover] = useState(null)
   const langRef = useRef(null)
 
   useEffect(() => {
@@ -138,16 +139,26 @@ export default function App() {
           </Reveal>
 
           <Reveal delay={0.3} className="hero__showcase">
-            <div className="hero__phones">
-              <div className="phone-frame hero__phone--left">
-                <img src={shots.list} alt="Space List" />
-              </div>
-              <div className="phone-frame hero__phone--center">
-                <img src={shots.map} alt="Map View" />
-              </div>
-              <div className="phone-frame hero__phone--right">
-                <img src={shots.bookingCal} alt="Calendar" />
-              </div>
+            <div className="hero__phones" onMouseLeave={() => setHeroHover(null)}>
+              {[
+                { key: 'left', src: shots.list, alt: 'Space List' },
+                { key: 'center', src: shots.map, alt: 'Map View' },
+                { key: 'right', src: shots.bookingCal, alt: 'Calendar' },
+              ].map(({ key, src, alt }) => {
+                const isHovered = heroHover === key
+                const hasHover = heroHover !== null
+                const isDefault = !hasHover && key === 'center'
+                const isActive = isHovered || isDefault
+                return (
+                  <div
+                    key={key}
+                    className={`phone-frame hero__phone hero__phone--${key} ${isActive ? 'hero__phone--active' : ''} ${hasHover && !isHovered ? 'hero__phone--faded' : ''} ${isDefault ? 'hero__phone--default' : ''}`}
+                    onMouseEnter={() => setHeroHover(key)}
+                  >
+                    <img src={src} alt={alt} />
+                  </div>
+                )
+              })}
             </div>
             <div className="hero__glow" />
           </Reveal>
