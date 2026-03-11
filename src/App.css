@@ -208,55 +208,54 @@
 
 .hero__phones {
   display: flex;
-  align-items: flex-end;       /* 底部對齊 */
+  align-items: flex-end;
   justify-content: center;
-  gap: 20px;
-  padding-top: 40px;           /* 預留向上放大的空間 */
+  gap: 24px;
+  padding-top: 48px;
 }
 
 .hero__phone {
+  width: 240px;                /* 統一基礎寬度，只用 scale 控制大小 */
   transition: transform 0.7s cubic-bezier(0.25, 0.8, 0.25, 1),
-              opacity 0.5s ease,
-              width 0.7s cubic-bezier(0.25, 0.8, 0.25, 1);
+              opacity 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
   cursor: pointer;
-  transform-origin: bottom center;  /* 從底部向上放大 */
-  will-change: transform, opacity, width;
+  transform-origin: bottom center;
+  will-change: transform, opacity;
 }
 
-/* Default state: center large, sides small */
-.hero__phone--center {
-  width: 260px;
-  z-index: 2;
-  opacity: 1;
-}
-
+/* Default: sides smaller + dimmed */
 .hero__phone--left,
 .hero__phone--right {
-  width: 200px;
-  opacity: 0.5;
+  transform: scale(0.85);
+  opacity: 0.45;
   z-index: 1;
-  transform: scale(0.88);
 }
 
-/* Active state (hovered or default center) */
+/* Default: center normal size */
+.hero__phone--center {
+  transform: scale(1);
+  opacity: 1;
+  z-index: 2;
+}
+
+/* Hovered phone: pop up */
 .hero__phone--active {
-  width: 280px;
+  transform: scale(1.1);
   opacity: 1;
   z-index: 3;
-  transform: scale(1.08);     /* 底部固定向上放大 */
 }
 
-/* Faded state (not hovered when something else is) */
+/* Non-hovered phones shrink further */
 .hero__phone--faded {
-  width: 180px;
-  opacity: 0.3;
+  transform: scale(0.78);
+  opacity: 0.28;
   z-index: 1;
-  transform: scale(0.82);
 }
 
-/* When center is default (no hover), keep normal scale */
+/* Center resting state (no hover anywhere) — no pop */
 .hero__phone--default {
   transform: scale(1) !important;
+  opacity: 1 !important;
 }
 
 .hero__glow {
@@ -736,11 +735,11 @@
 
   .hero { padding: 140px 0 60px; }
   .hero__phones { gap: 12px; padding-top: 0; }
-  .hero__phone--center { width: 200px; }
+  .hero__phone { width: 200px; }
   .hero__phone--left,
   .hero__phone--right { display: none; }
-  .hero__phone--active { width: 200px; transform: none; }
-  .hero__phone--default { transform: none !important; }
+  .hero__phone--active,
+  .hero__phone--default { transform: scale(1) !important; }
   .hero__actions { flex-direction: column; }
 
   .eco__grid { grid-template-columns: 1fr; }
