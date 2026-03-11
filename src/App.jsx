@@ -56,6 +56,8 @@ export default function App() {
   const [mobileMenu, setMobileMenu] = useState(false)
   const [langOpen, setLangOpen] = useState(false)
   const [heroHover, setHeroHover] = useState(null)
+  const [heroSlide, setHeroSlide] = useState(1)        // 0=left, 1=center, 2=right
+  const touchStart = useRef(null)
   const langRef = useRef(null)
 
   useEffect(() => {
@@ -139,7 +141,8 @@ export default function App() {
           </Reveal>
 
           <Reveal delay={0.3} className="hero__showcase">
-            <div className="hero__phones" onMouseLeave={() => setHeroHover(null)}>
+            {/* Desktop: hover interaction */}
+            <div className="hero__phones hero__phones--desktop" onMouseLeave={() => setHeroHover(null)}>
               {[
                 { key: 'left', src: shots.list, alt: 'Space List' },
                 { key: 'center', src: shots.map, alt: 'Map View' },
@@ -160,6 +163,38 @@ export default function App() {
                 )
               })}
             </div>
+
+            {/* Mobile: swipe carousel */}
+            <div
+              className="hero__carousel"
+              onTouchStart={e => { touchStart.current = e.touches[0].clientX }}
+              onTouchEnd={e => {
+                if (touchStart.current === null) return
+                const diff = touchStart.current - e.changedTouches[0].clientX
+                if (Math.abs(diff) > 50) {
+                  setHeroSlide(prev => diff > 0 ? Math.min(prev + 1, 2) : Math.max(prev - 1, 0))
+                }
+                touchStart.current = null
+              }}
+            >
+              <div className="hero__track" style={{ transform: `translateX(-${heroSlide * 100}%)` }}>
+                {[
+                  { src: shots.list, alt: 'Space List' },
+                  { src: shots.map, alt: 'Map View' },
+                  { src: shots.bookingCal, alt: 'Calendar' },
+                ].map(({ src, alt }, i) => (
+                  <div key={i} className="hero__slide phone-frame">
+                    <img src={src} alt={alt} />
+                  </div>
+                ))}
+              </div>
+              <div className="hero__dots">
+                {[0, 1, 2].map(i => (
+                  <button key={i} className={`hero__dot ${heroSlide === i ? 'hero__dot--active' : ''}`} onClick={() => setHeroSlide(i)} />
+                ))}
+              </div>
+            </div>
+
             <div className="hero__glow" />
           </Reveal>
         </div>
