@@ -183,8 +183,10 @@ export default function App() {
                   { src: shots.map, alt: 'Map View' },
                   { src: shots.bookingCal, alt: 'Calendar' },
                 ].map(({ src, alt }, i) => (
-                  <div key={i} className="hero__slide phone-frame">
-                    <img src={src} alt={alt} />
+                  <div key={i} className="hero__slide">
+                    <div className="phone-frame">
+                      <img src={src} alt={alt} />
+                    </div>
                   </div>
                 ))}
               </div>
