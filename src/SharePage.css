@@ -1,0 +1,220 @@
+.share-page {
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at top right, rgba(214, 176, 162, 0.38), transparent 28%),
+    linear-gradient(180deg, #f9f4ef 0%, #f4ece7 100%);
+  color: #2c1320;
+}
+
+.share-page__backdrop {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 10% 10%, rgba(123, 51, 79, 0.08), transparent 30%),
+    radial-gradient(circle at 90% 80%, rgba(123, 51, 79, 0.1), transparent 25%);
+  pointer-events: none;
+}
+
+.share-page__shell {
+  position: relative;
+  z-index: 1;
+  width: min(960px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 32px 0 56px;
+}
+
+.share-page__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.74);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 14px 30px rgba(44, 19, 32, 0.08);
+}
+
+.share-page__brand img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.share-page__brand span {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.share-card {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  border-radius: 32px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 28px 60px rgba(44, 19, 32, 0.12);
+  backdrop-filter: blur(18px);
+}
+
+.share-card--state {
+  min-height: 420px;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 48px 32px;
+}
+
+.share-card--state h1 {
+  margin: 0 0 10px;
+  font-size: 32px;
+}
+
+.share-card__media {
+  min-height: 420px;
+  background: linear-gradient(135deg, #7b334f, #d6b0a2);
+}
+
+.share-card__media img,
+.share-card__media-fallback {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.share-card__media img {
+  object-fit: cover;
+}
+
+.share-card__media-fallback {
+  display: grid;
+  place-items: center;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.28em;
+}
+
+.share-card__body {
+  padding: 44px 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+.share-card__eyebrow {
+  margin: 0 0 12px;
+  color: #7b334f;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.share-card__title {
+  margin: 0;
+  font-size: clamp(32px, 4vw, 48px);
+  line-height: 1.08;
+}
+
+.share-card__summary {
+  margin: 14px 0 0;
+  font-size: 18px;
+  line-height: 1.7;
+  color: rgba(44, 19, 32, 0.72);
+}
+
+.share-card__metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.share-card__metrics span,
+.share-card__tags span {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(123, 51, 79, 0.08);
+  color: #7b334f;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.share-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.share-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: auto;
+  padding-top: 36px;
+}
+
+.share-card__primary,
+.share-card__secondary {
+  min-height: 48px;
+  padding: 12px 20px;
+  border-radius: 14px;
+  border: 1px solid transparent;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+
+.share-card__primary {
+  background: #7b334f;
+  color: #fff;
+  box-shadow: 0 16px 28px rgba(123, 51, 79, 0.2);
+}
+
+.share-card__secondary {
+  background: transparent;
+  color: #7b334f;
+  border-color: rgba(123, 51, 79, 0.22);
+}
+
+.share-card__primary:hover,
+.share-card__secondary:hover {
+  transform: translateY(-1px);
+}
+
+.share-card__hint {
+  margin: 16px 0 0;
+  font-size: 13px;
+  line-height: 1.7;
+  color: rgba(44, 19, 32, 0.58);
+}
+
+@media (max-width: 820px) {
+  .share-page__shell {
+    width: min(100%, calc(100% - 24px));
+    padding-top: 24px;
+  }
+
+  .share-card {
+    grid-template-columns: 1fr;
+  }
+
+  .share-card__media {
+    min-height: 280px;
+  }
+
+  .share-card__body {
+    padding: 28px 22px 24px;
+  }
+
+  .share-card__actions {
+    padding-top: 28px;
+  }
+}
