@@ -320,7 +320,7 @@ export default function App() {
             <div className="footer__links">
               <a href="#">{t('footer.legal')}</a>
               <a href="#">{t('footer.terms')}</a>
-              <a href="mailto:hello@solobeaute.com">{t('footer.contact')}</a>
+              <a href="mailto:meigo@solobeaute.com">{t('footer.contact')}</a>
             </div>
           </div>
           <p className="footer__copy">{t('footer.rights')}</p>

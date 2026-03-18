@@ -85,7 +85,7 @@ const resources = {
       footer: {
         slogan: '職人的獨立舞台',
         contact: '聯絡我們',
-        email: 'hello@solobeaute.com',
+        email: 'meigo@solobeaute.com',
         legal: '隱私政策',
         terms: '使用條款',
         rights: '© 2026 SoloBeauté. All rights reserved.',
@@ -176,7 +176,7 @@ const resources = {
       footer: {
         slogan: 'The independent stage for beauty pros',
         contact: 'Contact Us',
-        email: 'hello@solobeaute.com',
+        email: 'meigo@solobeaute.com',
         legal: 'Privacy Policy',
         terms: 'Terms of Service',
         rights: '© 2026 SoloBeauté. All rights reserved.',
@@ -267,7 +267,7 @@ const resources = {
       footer: {
         slogan: '美容プロのための独立ステージ',
         contact: 'お問い合わせ',
-        email: 'hello@solobeaute.com',
+        email: 'meigo@solobeaute.com',
         legal: 'プライバシーポリシー',
         terms: '利用規約',
         rights: '© 2026 SoloBeauté. All rights reserved.',
@@ -358,7 +358,7 @@ const resources = {
       footer: {
         slogan: '뷰티 프로를 위한 독립 무대',
         contact: '문의하기',
-        email: 'hello@solobeaute.com',
+        email: 'meigo@solobeaute.com',
         legal: '개인정보 처리방침',
         terms: '이용약관',
         rights: '© 2026 SoloBeauté. All rights reserved.',
@@ -449,7 +449,7 @@ const resources = {
       footer: {
         slogan: '美业人的独立舞台',
         contact: '联系我们',
-        email: 'hello@solobeaute.com',
+        email: 'meigo@solobeaute.com',
         legal: '隐私政策',
         terms: '使用条款',
         rights: '© 2026 SoloBeauté. All rights reserved.',
@@ -540,7 +540,7 @@ const resources = {
       footer: {
         slogan: 'Sân khấu độc lập cho chuyên gia làm đẹp',
         contact: 'Liên hệ',
-        email: 'hello@solobeaute.com',
+        email: 'meigo@solobeaute.com',
         legal: 'Chính sách bảo mật',
         terms: 'Điều khoản sử dụng',
         rights: '© 2026 SoloBeauté. All rights reserved.',
@@ -631,7 +631,7 @@ const resources = {
       footer: {
         slogan: 'เวทีอิสระสำหรับมืออาชีพด้านความงาม',
         contact: 'ติดต่อเรา',
-        email: 'hello@solobeaute.com',
+        email: 'meigo@solobeaute.com',
         legal: 'นโยบายความเป็นส่วนตัว',
         terms: 'ข้อกำหนดการใช้งาน',
         rights: '© 2026 SoloBeauté. All rights reserved.',
