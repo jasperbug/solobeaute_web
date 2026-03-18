@@ -338,8 +338,10 @@ export default function App() {
               <a href="#">{t('footer.legal')}</a>
               <a href="#">{t('footer.terms')}</a>
               <a href="mailto:meigo@solobeaute.com">{t('footer.contact')}</a>
+              {/* TODO: Instagram 和 LINE 連結準備好後取消註解
               <a href="https://instagram.com/solobeaute.tw" target="_blank" rel="noopener noreferrer">{t('footer.instagram')}</a>
               <a href="https://lin.ee/solobeaute" target="_blank" rel="noopener noreferrer">{t('footer.line')}</a>
+              */}
             </div>
           </div>
           <p className="footer__copy">{t('footer.rights')}</p>
