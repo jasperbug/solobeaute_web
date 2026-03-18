@@ -701,7 +701,6 @@
 }
 
 .faq__list {
-  max-width: 680px;
   margin: var(--gap-lg) 0 0;
   display: flex;
   flex-direction: column;
