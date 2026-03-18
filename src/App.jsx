@@ -23,13 +23,15 @@ function Reveal({ children, delay = 0, className = '' }) {
 
 /* ── Screenshots mapping ── */
 const shots = {
-  map: '/images/app-screenshots/IMG_2379.PNG',
-  list: '/images/app-screenshots/IMG_2378.PNG',
+  map: '/images/app-screenshots/map_fixed.PNG',
+  list: '/images/app-screenshots/list.PNG',
   filter: '/images/app-screenshots/IMG_2380.PNG',
-  chat: '/images/app-screenshots/IMG_2381.PNG',
-  profile: '/images/app-screenshots/IMG_2378.PNG',
-  bookingList: '/images/app-screenshots/IMG_2383.PNG',
-  bookingCal: '/images/app-screenshots/IMG_2384.PNG',
+  chat: '/images/app-screenshots/IMG_2490_fixed.PNG',
+  dashboard: '/images/app-screenshots/IMG_2482.PNG',
+  bookingList: '/images/app-screenshots/IMG_2485.PNG',
+  bookingCal: '/images/app-screenshots/IMG_2489.PNG',
+  ar3d: '/images/app-screenshots/IMG_2486.PNG',
+  revenue: '/images/app-screenshots/IMG_2491.PNG',
 }
 
 /* ── Icons (minimal stroke) ── */
@@ -146,7 +148,7 @@ export default function App() {
               {[
                 { key: 'left', src: shots.list, alt: 'Space List' },
                 { key: 'center', src: shots.map, alt: 'Map View' },
-                { key: 'right', src: shots.bookingCal, alt: 'Calendar' },
+                { key: 'right', src: shots.ar3d, alt: '3D Tour' },
               ].map(({ key, src, alt }) => {
                 const isHovered = heroHover === key
                 const hasHover = heroHover !== null
@@ -181,7 +183,7 @@ export default function App() {
                 {[
                   { src: shots.list, alt: 'Space List' },
                   { src: shots.map, alt: 'Map View' },
-                  { src: shots.bookingCal, alt: 'Calendar' },
+                  { src: shots.ar3d, alt: '3D Tour' },
                 ].map(({ src, alt }, i) => (
                   <div key={i} className="hero__slide">
                     <div className="phone-frame">
@@ -386,7 +388,7 @@ function HowItWorks({ t }) {
     ? t('howItWorks.hostSteps', { returnObjects: true })
     : t('howItWorks.beauticianSteps', { returnObjects: true })
   const stepShots = tab === 'host'
-    ? [shots.profile, shots.bookingList, shots.bookingCal]
+    ? [shots.dashboard, shots.bookingList, shots.revenue]
     : [shots.map, shots.list, shots.bookingCal]
 
   return (

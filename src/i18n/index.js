@@ -63,10 +63,10 @@ const resources = {
         sectionTag: '功能特色',
         title: '為美業量身打造',
         items: [
-          { title: '地圖搜尋空間', desc: '即時查看附近可用空間，價格一目瞭然' },
-          { title: '智慧篩選', desc: '依設備、服務類型、評分、3D 實景精準篩選' },
-          { title: '即時通訊', desc: '屋主與職人直接溝通，快速確認細節' },
-          { title: '日曆預約管理', desc: '視覺化排程，一眼掌握所有預約狀態' },
+          { title: '地圖搜尋', desc: '即時瀏覽附近可租用空間，價格、距離、設備一目瞭然' },
+          { title: '精準篩選', desc: '依美容床、美甲桌、洗髮台等設備類型，搭配評分與 3D 實景快速找到理想空間' },
+          { title: '即時通訊', desc: '預約前直接與屋主溝通，確認空間細節、設備狀況，減少來回溝通成本' },
+          { title: '預約管理', desc: '日曆視圖一覽所有預約，待確認、已確認、已完成狀態清楚標示' },
         ],
       },
       about: {
@@ -166,10 +166,10 @@ const resources = {
         sectionTag: 'Features',
         title: 'Built for the beauty industry',
         items: [
-          { title: 'Map-Based Search', desc: 'Browse nearby spaces in real-time with transparent pricing' },
-          { title: 'Smart Filters', desc: 'Filter by equipment, service type, ratings, and 3D virtual tours' },
-          { title: 'In-App Chat', desc: 'Direct messaging between hosts and pros for quick coordination' },
-          { title: 'Calendar Management', desc: 'Visual scheduling to manage all your bookings at a glance' },
+          { title: 'Map Search', desc: 'Browse rentable spaces nearby with pricing, distance, and equipment info at a glance' },
+          { title: 'Smart Filters', desc: 'Find your ideal space by equipment type — beauty beds, nail tables, shampoo stations — plus ratings and 3D tours' },
+          { title: 'In-App Chat', desc: 'Message hosts directly before booking to confirm space details and equipment availability' },
+          { title: 'Booking Management', desc: 'Calendar view of all bookings with clear status labels — pending, confirmed, completed' },
         ],
       },
       about: {
@@ -269,10 +269,10 @@ const resources = {
         sectionTag: '機能紹介',
         title: '美容業界のために設計',
         items: [
-          { title: 'マップ検索', desc: '近くの空きスペースをリアルタイムで閲覧、料金も一目瞭然' },
-          { title: 'スマートフィルター', desc: '設備、サービス種類、評価、3Dツアーで精密に絞り込み' },
-          { title: 'アプリ内チャット', desc: 'オーナーとプロの直接やり取りで、スピーディーに詳細を確認' },
-          { title: 'カレンダー管理', desc: 'ビジュアルなスケジュール管理で、全予約を一目で把握' },
+          { title: 'マップ検索', desc: '近くのレンタルスペースをリアルタイムで閲覧、料金・距離・設備が一目瞭然' },
+          { title: '精密フィルター', desc: '施術ベッド・ネイルデスク・シャンプー台など設備タイプ別に、評価や3Dツアーで理想の空間を検索' },
+          { title: 'アプリ内チャット', desc: '予約前にオーナーと直接やり取り、空間の詳細や設備状況を確認してコミュニケーションコストを削減' },
+          { title: '予約管理', desc: 'カレンダービューで全予約を一覧、確認待ち・確認済み・完了のステータスが明確に表示' },
         ],
       },
       about: {
@@ -372,10 +372,10 @@ const resources = {
         sectionTag: '기능 소개',
         title: '뷰티 업계를 위해 설계',
         items: [
-          { title: '지도 검색', desc: '근처 이용 가능한 공간을 실시간으로 확인, 가격도 한눈에' },
-          { title: '스마트 필터', desc: '장비, 서비스 유형, 평점, 3D 투어로 정밀 필터링' },
-          { title: '앱 내 채팅', desc: '호스트와 프로의 직접 소통으로 빠르게 세부사항 확인' },
-          { title: '캘린더 관리', desc: '시각적 일정 관리로 모든 예약을 한눈에 파악' },
+          { title: '지도 검색', desc: '근처 임대 가능한 공간을 실시간 탐색, 가격·거리·장비 정보를 한눈에' },
+          { title: '정밀 필터', desc: '미용 베드, 네일 테이블, 샴푸대 등 장비 유형별로 평점과 3D 투어를 활용해 이상적인 공간 검색' },
+          { title: '앱 내 채팅', desc: '예약 전 호스트와 직접 소통하여 공간 세부사항과 장비 상태를 확인' },
+          { title: '예약 관리', desc: '캘린더 뷰로 모든 예약을 한눈에, 대기·확인·완료 상태가 명확히 표시' },
         ],
       },
       about: {
@@ -475,10 +475,10 @@ const resources = {
         sectionTag: '功能特色',
         title: '为美业量身打造',
         items: [
-          { title: '地图搜索空间', desc: '实时查看附近可用空间，价格一目了然' },
-          { title: '智能筛选', desc: '按设备、服务类型、评分、3D 实景精准筛选' },
-          { title: '即时通讯', desc: '房东与美容师直接沟通，快速确认细节' },
-          { title: '日历预约管理', desc: '可视化排程，一眼掌握所有预约状态' },
+          { title: '地图搜索', desc: '即时浏览附近可租用空间，价格、距离、设备一目了然' },
+          { title: '精准筛选', desc: '按美容床、美甲桌、洗发台等设备类型，搭配评分与 3D 实景快速找到理想空间' },
+          { title: '即时通讯', desc: '预约前直接与房东沟通，确认空间细节、设备状况，减少来回沟通成本' },
+          { title: '预约管理', desc: '日历视图一览所有预约，待确认、已确认、已完成状态清楚标示' },
         ],
       },
       about: {
@@ -578,10 +578,10 @@ const resources = {
         sectionTag: 'Tính năng',
         title: 'Thiết kế cho ngành làm đẹp',
         items: [
-          { title: 'Tìm kiếm bản đồ', desc: 'Xem không gian gần đây theo thời gian thực với giá cả minh bạch' },
-          { title: 'Bộ lọc thông minh', desc: 'Lọc theo thiết bị, loại dịch vụ, đánh giá và tour 3D ảo' },
-          { title: 'Chat trong ứng dụng', desc: 'Nhắn tin trực tiếp giữa chủ nhà và chuyên gia để phối hợp nhanh' },
-          { title: 'Quản lý lịch', desc: 'Lịch trình trực quan để quản lý tất cả đặt lịch trong một cái nhìn' },
+          { title: 'Tìm kiếm bản đồ', desc: 'Duyệt không gian cho thuê gần đây theo thời gian thực với giá cả, khoảng cách và thông tin thiết bị' },
+          { title: 'Bộ lọc chính xác', desc: 'Tìm không gian lý tưởng theo loại thiết bị — giường spa, bàn nail, bồn gội — cùng đánh giá và tour 3D' },
+          { title: 'Chat trong ứng dụng', desc: 'Nhắn tin trực tiếp với chủ nhà trước khi đặt để xác nhận chi tiết không gian và tình trạng thiết bị' },
+          { title: 'Quản lý đặt lịch', desc: 'Xem lịch tất cả đặt chỗ với nhãn trạng thái rõ ràng — chờ xác nhận, đã xác nhận, hoàn thành' },
         ],
       },
       about: {
@@ -681,10 +681,10 @@ const resources = {
         sectionTag: 'ฟีเจอร์',
         title: 'ออกแบบเพื่ออุตสาหกรรมความงาม',
         items: [
-          { title: 'ค้นหาบนแผนที่', desc: 'ดูพื้นที่ว่างใกล้เคียงแบบเรียลไทม์ พร้อมราคาโปร่งใส' },
-          { title: 'ตัวกรองอัจฉริยะ', desc: 'กรองตามอุปกรณ์ ประเภทบริการ คะแนน และทัวร์ 3D' },
-          { title: 'แชทในแอป', desc: 'ส่งข้อความโดยตรงระหว่างเจ้าของและมืออาชีพเพื่อประสานงานรวดเร็ว' },
-          { title: 'จัดการปฏิทิน', desc: 'จัดตารางแบบภาพ จัดการการจองทั้งหมดในมุมมองเดียว' },
+          { title: 'ค้นหาบนแผนที่', desc: 'เรียกดูพื้นที่ให้เช่าใกล้เคียงแบบเรียลไทม์ พร้อมราคา ระยะทาง และข้อมูลอุปกรณ์' },
+          { title: 'ตัวกรองแม่นยำ', desc: 'ค้นหาพื้นที่ในฝันตามประเภทอุปกรณ์ — เตียงสปา โต๊ะเล็บ อ่างสระผม — พร้อมคะแนนและทัวร์ 3D' },
+          { title: 'แชทในแอป', desc: 'ส่งข้อความถึงเจ้าของโดยตรงก่อนจองเพื่อยืนยันรายละเอียดพื้นที่และสถานะอุปกรณ์' },
+          { title: 'จัดการการจอง', desc: 'ดูปฏิทินการจองทั้งหมด พร้อมป้ายสถานะชัดเจน — รอยืนยัน ยืนยันแล้ว เสร็จสิ้น' },
         ],
       },
       about: {
