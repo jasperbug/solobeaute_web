@@ -291,6 +291,23 @@ export default function App() {
         </div>
       </section>
 
+      {/* ── FAQ ── */}
+      <section className="faq">
+        <div className="container">
+          <Reveal>
+            <p className="section-tag">{t('faq.sectionTag')}</p>
+            <h2 className="section-title">{t('faq.title')}</h2>
+          </Reveal>
+          <div className="faq__list">
+            {t('faq.items', { returnObjects: true }).map((item, i) => (
+              <Reveal key={i} delay={i * 0.08}>
+                <FaqItem question={item.q} answer={item.a} />
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── CTA ── */}
       <section className="cta" id="download">
         <div className="container">
@@ -321,11 +338,41 @@ export default function App() {
               <a href="#">{t('footer.legal')}</a>
               <a href="#">{t('footer.terms')}</a>
               <a href="mailto:meigo@solobeaute.com">{t('footer.contact')}</a>
+              <a href="https://instagram.com/solobeaute.tw" target="_blank" rel="noopener noreferrer">{t('footer.instagram')}</a>
+              <a href="https://lin.ee/solobeaute" target="_blank" rel="noopener noreferrer">{t('footer.line')}</a>
             </div>
           </div>
           <p className="footer__copy">{t('footer.rights')}</p>
         </div>
       </footer>
+    </div>
+  )
+}
+
+/* ── FAQ Item ── */
+function FaqItem({ question, answer }) {
+  const [open, setOpen] = useState(false)
+  return (
+    <div className={`faq__item ${open ? 'faq__item--open' : ''}`} onClick={() => setOpen(!open)}>
+      <div className="faq__question">
+        <span>{question}</span>
+        <svg className="faq__chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <polyline points="6 9 12 15 18 9" />
+        </svg>
+      </div>
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            className="faq__answer"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
+          >
+            <p>{answer}</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }
