@@ -25,7 +25,7 @@ function Reveal({ children, delay = 0, className = '' }) {
 const shots = {
   map: '/images/app-screenshots/map_fixed.PNG',
   list: '/images/app-screenshots/list.PNG',
-  filter: '/images/app-screenshots/IMG_2380.PNG',
+  filter: '/images/app-screenshots/filter.PNG',
   chat: '/images/app-screenshots/IMG_2490_fixed.PNG',
   dashboard: '/images/app-screenshots/IMG_2482.PNG',
   bookingList: '/images/app-screenshots/IMG_2485.PNG',
