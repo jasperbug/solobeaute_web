@@ -185,4 +185,5 @@ button { font-family: inherit; cursor: pointer; border: none; outline: none; bac
 
   .phone-frame { width: 220px; }
   .phone-frame--sm { width: 140px; }
+  .about__founders { grid-template-columns: 1fr; }
 }

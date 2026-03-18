@@ -576,7 +576,17 @@
 }
 
 .about__inner {
-  max-width: 600px;
+  max-width: 800px;
+}
+
+.about__founders {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.about__avatar--meigo {
+  background: var(--color-accent, #8B6F5E);
 }
 
 .about__title {

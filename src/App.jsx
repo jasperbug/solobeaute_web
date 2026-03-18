@@ -281,11 +281,20 @@ export default function App() {
               <p className="about__desc">{t('about.desc')}</p>
             </Reveal>
             <Reveal delay={0.15}>
-              <div className="about__founder">
-                <div className="about__avatar">J</div>
-                <div>
-                  <p className="about__name">{t('about.founder')}</p>
-                  <p className="about__bio">{t('about.founderDesc')}</p>
+              <div className="about__founders">
+                <div className="about__founder">
+                  <div className="about__avatar about__avatar--meigo">M</div>
+                  <div>
+                    <p className="about__name">{t('about.founder1')}</p>
+                    <p className="about__bio">{t('about.founder1Desc')}</p>
+                  </div>
+                </div>
+                <div className="about__founder">
+                  <div className="about__avatar">J</div>
+                  <div>
+                    <p className="about__name">{t('about.founder2')}</p>
+                    <p className="about__bio">{t('about.founder2Desc')}</p>
+                  </div>
                 </div>
               </div>
             </Reveal>
