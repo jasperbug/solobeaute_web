@@ -133,7 +133,7 @@ export default function App() {
             </h1>
           </Reveal>
           <Reveal delay={0.16}>
-            <p className="hero__desc">{t('hero.subtitle')}</p>
+            <p className="hero__desc" style={{ whiteSpace: 'pre-line' }}>{t('hero.subtitle')}</p>
           </Reveal>
           <Reveal delay={0.24}>
             <div className="hero__actions">
