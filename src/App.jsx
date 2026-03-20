@@ -1,8 +1,7 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
-import { LANGUAGES } from './i18n'
-import './App.css'
+import SiteChrome from './SiteChrome'
 
 /* ── Subtle fade-in (Adaline-style: minimal, precise) ── */
 function Reveal({ children, delay = 0, className = '' }) {
@@ -53,73 +52,13 @@ const featureShots = [shots.map, shots.filter, shots.chat, shots.bookingCal]
 
 /* ======================================== */
 export default function App() {
-  const { t, i18n } = useTranslation()
-  const [scrolled, setScrolled] = useState(false)
-  const [mobileMenu, setMobileMenu] = useState(false)
-  const [langOpen, setLangOpen] = useState(false)
+  const { t } = useTranslation()
   const [heroHover, setHeroHover] = useState(null)
   const [heroSlide, setHeroSlide] = useState(1)        // 0=left, 1=center, 2=right
   const touchStart = useRef(null)
-  const langRef = useRef(null)
-
-  useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 40)
-    window.addEventListener('scroll', fn)
-    return () => window.removeEventListener('scroll', fn)
-  }, [])
-
-  useEffect(() => {
-    const fn = (e) => { if (langRef.current && !langRef.current.contains(e.target)) setLangOpen(false) }
-    document.addEventListener('mousedown', fn)
-    return () => document.removeEventListener('mousedown', fn)
-  }, [])
-
-  const currentLang = LANGUAGES.find(l => l.code === i18n.language) || LANGUAGES[0]
 
   return (
-    <div className="app">
-
-      {/* ── NAV ── */}
-      <nav className={`nav ${scrolled ? 'nav--scrolled' : ''}`}>
-        <div className="nav__inner container">
-          <a href="#" className="nav__logo">
-            <img src="/images/brand/logo.png" alt="SoloBeauté" />
-            <span>SoloBeauté</span>
-          </a>
-          <div className={`nav__links ${mobileMenu ? 'nav__links--open' : ''}`}>
-            <a href="#features" onClick={() => setMobileMenu(false)}>{t('nav.features')}</a>
-            <a href="#how-it-works" onClick={() => setMobileMenu(false)}>{t('nav.howItWorks')}</a>
-            <a href="#about" onClick={() => setMobileMenu(false)}>{t('nav.about')}</a>
-          </div>
-          <div className="nav__right">
-            <div className="lang-picker" ref={langRef}>
-              <button className="nav__lang" onClick={() => setLangOpen(!langOpen)}>
-                {Icon.globe}
-                <span>{currentLang.short}</span>
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6 9 12 15 18 9"/></svg>
-              </button>
-              {langOpen && (
-                <div className="lang-dropdown">
-                  {LANGUAGES.map(l => (
-                    <button
-                      key={l.code}
-                      className={`lang-dropdown__item ${l.code === i18n.language ? 'lang-dropdown__item--active' : ''}`}
-                      onClick={() => { i18n.changeLanguage(l.code); setLangOpen(false) }}
-                    >
-                      {l.label}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-            <a href="#download" className="btn-primary btn--sm">{t('nav.download')}</a>
-          </div>
-          <button className={`hamburger ${mobileMenu ? 'hamburger--open' : ''}`} onClick={() => setMobileMenu(!mobileMenu)} aria-label="Menu">
-            <span /><span /><span />
-          </button>
-        </div>
-      </nav>
-
+    <SiteChrome>
       {/* ── HERO ── */}
       <section className="hero">
         <div className="hero__inner container">
@@ -333,32 +272,7 @@ export default function App() {
           </Reveal>
         </div>
       </section>
-
-      {/* ── FOOTER ── */}
-      <footer className="footer">
-        <div className="container">
-          <div className="footer__inner">
-            <div className="footer__brand">
-              <img src="/images/brand/logo.png" alt="" className="footer__logo" />
-              <div>
-                <span className="footer__name">SoloBeauté</span>
-                <span className="footer__slogan">{t('footer.slogan')}</span>
-              </div>
-            </div>
-            <div className="footer__links">
-              <a href="#">{t('footer.legal')}</a>
-              <a href="#">{t('footer.terms')}</a>
-              <a href="mailto:meigo@solobeaute.com">{t('footer.contact')}</a>
-              {/* TODO: Instagram 和 LINE 連結準備好後取消註解
-              <a href="https://instagram.com/solobeaute.tw" target="_blank" rel="noopener noreferrer">{t('footer.instagram')}</a>
-              <a href="https://lin.ee/solobeaute" target="_blank" rel="noopener noreferrer">{t('footer.line')}</a>
-              */}
-            </div>
-          </div>
-          <p className="footer__copy">{t('footer.rights')}</p>
-        </div>
-      </footer>
-    </div>
+    </SiteChrome>
   )
 }
 
