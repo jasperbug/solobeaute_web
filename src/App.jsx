@@ -76,7 +76,7 @@ export default function App() {
           </Reveal>
           <Reveal delay={0.24}>
             <div className="hero__actions">
-              <a href="#download" className="btn-primary">{Icon.apple}{t('hero.cta')}</a>
+              <a href="https://apps.apple.com/tw/app/solobeaute/id6760957242" target="_blank" rel="noopener noreferrer" className="btn-primary">{Icon.apple}{t('hero.cta')}</a>
               <a href="#features" className="btn-ghost">{t('nav.features')}{Icon.arrow}</a>
             </div>
           </Reveal>
@@ -266,7 +266,7 @@ export default function App() {
               <img src="/images/brand/logo.png" alt="SoloBeauté" className="cta__logo" />
               <h2 className="cta__title">{t('cta.title')}</h2>
               <p className="cta__sub">{t('cta.subtitle')}</p>
-              <a href="#" className="btn-primary btn--lg">{Icon.apple}{t('cta.button')}</a>
+              <a href="https://apps.apple.com/tw/app/solobeaute/id6760957242" target="_blank" rel="noopener noreferrer" className="btn-primary btn--lg">{Icon.apple}{t('cta.button')}</a>
               <p className="cta__hint">{t('cta.iosHint')}</p>
             </div>
           </Reveal>

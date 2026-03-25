@@ -97,7 +97,7 @@ export default function SiteChrome({ children }) {
                 </div>
               )}
             </div>
-            <a href={anchorHref('download')} className="btn-primary btn--sm" onClick={closeMenus}>
+            <a href="https://apps.apple.com/tw/app/solobeaute/id6760957242" target="_blank" rel="noopener noreferrer" className="btn-primary btn--sm" onClick={closeMenus}>
               {t('nav.download')}
             </a>
           </div>
