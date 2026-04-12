@@ -49,6 +49,10 @@
   gap: 32px;
 }
 
+.nav__mobile-menu {
+  display: none;
+}
+
 .nav__links a {
   font-size: 0.8rem;
   font-weight: 400;
@@ -820,7 +824,7 @@
    RESPONSIVE
    ======================================== */
 @media (max-width: 768px) {
-  .nav__links {
+  .nav__mobile-menu {
     display: none;
     position: fixed;
     inset: 0;
@@ -833,8 +837,8 @@
     z-index: 99;
   }
 
-  .nav__links--open { display: flex; }
-  .nav__links--open a { font-size: 1.1rem; color: var(--color-text); }
+  .nav__mobile-menu--open { display: flex; }
+  .nav__mobile-menu a { font-size: 1.1rem; color: var(--color-text); }
 
   .btn--sm { display: none; }
   .hamburger { display: flex; z-index: 101; }

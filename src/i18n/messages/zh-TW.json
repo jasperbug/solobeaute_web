@@ -1,0 +1,249 @@
+{
+  "langLabel": "繁體中文",
+  "nav": {
+    "features": "功能特色",
+    "howItWorks": "如何運作",
+    "about": "關於我們",
+    "discover": "找職人",
+    "download": "下載 App",
+    "login": "登入"
+  },
+  "hero": {
+    "tagline": "職人的獨立舞台",
+    "title1": "你的美業空間",
+    "title2": "一鍵找到",
+    "subtitle": "Beauty Everyway\n讓每一次的服務，都有最好的空間和最對的人",
+    "cta": "立即下載",
+    "ctaSub": "開始你的美業之旅"
+  },
+  "ecosystem": {
+    "sectionTag": "三個角色，一個舞台",
+    "title": "一個 SoloBeauté，三方共贏",
+    "subtitle": "我們解決美業中每個角色的痛點",
+    "host": {
+      "role": "屋主",
+      "pain": "你的空間明明很好，卻只在閒置。沒有穩定的租客，也沒有好的管理工具。",
+      "solution": "上架空間，輕鬆收租",
+      "desc": "3D 實景讓職人一秒愛上你的空間，智慧定價幫你找到最好的價格，自動化管理讓你不用盯著手機。"
+    },
+    "beautician": {
+      "role": "美容職人",
+      "pain": "每個月付高額租金綁在一個固定位置，還是到處找臨時場地？你值得更好的選擇。",
+      "solution": "自由租用，獨立接客",
+      "desc": "想接客的時候租、不想的時候休息。建立你自己的品牌頁面，讓客人跟著你，不是跟著沙龍。"
+    },
+    "consumer": {
+      "role": "消費者",
+      "badge": "即將開放",
+      "pain": "想找好的美甲師，但只能靠朋友推薦或碰運氣。預約流程不透明，價格不確定。",
+      "solution": "安心搜尋，透明預約",
+      "desc": "真實評價、透明價格、安全金流，享受專屬你的美容體驗"
+    }
+  },
+  "howItWorks": {
+    "sectionTag": "如何運作",
+    "title": "三步驟，開始你的美業旅程",
+    "hostTab": "我是屋主",
+    "beauticianTab": "我是職人",
+    "hostSteps": [
+      {
+        "step": "01",
+        "title": "上架空間",
+        "desc": "拍照上傳、設定時段與價格，3D 實景讓空間更吸引人"
+      },
+      {
+        "step": "02",
+        "title": "接受預約",
+        "desc": "職人瀏覽並預約你的空間，系統自動通知與管理"
+      },
+      {
+        "step": "03",
+        "title": "輕鬆收租",
+        "desc": "安全金流自動結算，專注管理你的空間"
+      }
+    ],
+    "beauticianSteps": [
+      {
+        "step": "01",
+        "title": "搜尋空間",
+        "desc": "地圖搜尋、篩選設備，找到最適合你的工作空間"
+      },
+      {
+        "step": "02",
+        "title": "預約租用",
+        "desc": "彈性時段預約，當天就能開始接客"
+      },
+      {
+        "step": "03",
+        "title": "獨立營業",
+        "desc": "建立個人品牌頁、累積作品與口碑，壯大你的事業"
+      }
+    ]
+  },
+  "features": {
+    "sectionTag": "功能特色",
+    "title": "為美業量身打造",
+    "items": [
+      {
+        "title": "地圖搜尋",
+        "desc": "打開 App 就能看到附近所有可租用的美業空間。價格、距離、設備一目瞭然，不用再一間一間打電話問。"
+      },
+      {
+        "title": "精準篩選",
+        "desc": "你需要美容床還是美甲桌？要有洗髮台還是 3D 實景？設定好條件，系統幫你篩到剩最適合的。"
+      },
+      {
+        "title": "即時通訊",
+        "desc": "看到喜歡的空間？直接傳訊息問屋主。「請問有提供毛巾嗎？」「停車方便嗎？」預約前先聊清楚。"
+      },
+      {
+        "title": "預約管理",
+        "desc": "你的行程一目瞭然：今天在大安區、明天在中山區。待確認、已確認、已完成，三種狀態清楚標示。"
+      }
+    ]
+  },
+  "about": {
+    "sectionTag": "關於我們",
+    "title": "一起打造\n美業的未來。",
+    "desc": "SoloBeauté 不是在辦公室裡想出來的。Jasper 寫程式、Meigo 跑市場，一個懂技術、一個懂產業。我們相信，好的美業服務不是靠功能多，是靠真正理解這個行業的人去串起每一個環節。",
+    "founder1": "Meigo・共同創辦人",
+    "founder1Desc": "美業職人出身，做過第一線、也管過店。現在用累積的產業人脈和實戰經驗，幫 SoloBeauté 把空間和職人真正連起來。",
+    "founder2": "Jasper・創辦人",
+    "founder2Desc": "寫程式的"
+  },
+  "faq": {
+    "sectionTag": "常見問題",
+    "title": "你可能想知道的事",
+    "items": [
+      {
+        "q": "職人需要付費才能加入嗎？",
+        "a": "加入 SoloBeauté 完全免費。你只在成功完成預約時，才會被收取少量服務費。早鳥職人還享有 3 個月免佣金優惠。"
+      },
+      {
+        "q": "空間出租安全嗎？",
+        "a": "所有預約都透過平台進行，包含身份驗證與完整的預約紀錄。屋主可以自由選擇接受或拒絕預約，也可以設定自己的出租規則。"
+      },
+      {
+        "q": "金流怎麼處理？",
+        "a": "目前初期階段以現場現金交易為主，確保簡單直接。未來會開通線上安全金流，所有交易都有保障。"
+      },
+      {
+        "q": "消費者什麼時候可以使用？",
+        "a": "消費者端即將開放。目前我們正在建立足夠的職人和空間供給，確保上線時消費者能有好的體驗。"
+      },
+      {
+        "q": "我是新手職人，剛開始接案可以用嗎？",
+        "a": "當然可以，SoloBeauté 就是為了降低創業門檻而存在的。不用簽長約、不用付押金、不用裝潢。有客人的時候租空間就好，沒客人的時候也不會有負擔。"
+      },
+      {
+        "q": "屋主需要準備什麼才能上架？",
+        "a": "空間照片、可出租的時段、你想要的價格，這三樣就夠了。如果你不擅長拍照也沒關係，我們有專人可以協助拍攝和上架，整個過程大約 30 分鐘。"
+      },
+      {
+        "q": "SoloBeauté 跟其他共享空間有什麼不同？",
+        "a": "我們不只是幫你找空間。SoloBeauté 還幫職人建立個人品牌頁面、管理預約、整理作品與品牌內容。更重要的是，我們的團隊有美業實戰經驗 — Meigo 本身就是職人出身，理解你的需求不是靠猜的。"
+      }
+    ]
+  },
+  "cta": {
+    "title": "你的下一步，從這裡開始",
+    "subtitle": "不管你是想出租空間的屋主，還是想獨立接案的職人，SoloBeauté 都是你的起點。",
+    "button": "下載 App",
+    "iosHint": "目前支援 iOS，Android 版即將推出"
+  },
+  "footer": {
+    "slogan": "職人的獨立舞台",
+    "contact": "聯絡我們",
+    "email": "meigo@solobeaute.com",
+    "legal": "隱私政策",
+    "terms": "使用條款",
+    "rights": "© 2026 SoloBeauté. All rights reserved.",
+    "instagram": "Instagram",
+    "line": "LINE 官方帳號"
+  },
+  "common": {
+    "backHome": "返回首頁"
+  },
+  "homeSearch": {
+    "keywordPlaceholder": "搜尋美甲、美睫、美髮...",
+    "allCities": "全部城市",
+    "allCategories": "全部類別",
+    "submit": "開始搜尋",
+    "categoriesTag": "服務分類",
+    "categoriesTitle": "先從你想做的服務開始",
+    "categoriesSubtitle": "用分類快速進入搜尋結果，直接看到你所在城市的職人。"
+  },
+  "categories": {
+    "nail": "美甲",
+    "lash": "美睫",
+    "hair": "美髮",
+    "facial": "護膚",
+    "massage": "按摩",
+    "makeup": "彩妝",
+    "brow": "紋繡",
+    "sportsMassage": "運動按摩",
+    "other": "其他"
+  },
+  "featured": {
+    "sectionTag": "推薦職人",
+    "title": "正在被看見的品牌",
+    "subtitle": "從 production 精選正在經營中的職人，保留真實作品、服務與地區資訊。",
+    "beautyPro": "美容職人",
+    "availableOnline": "可預約"
+  },
+  "search": {
+    "sectionTag": "搜尋結果",
+    "pageTitle": "探索職人",
+    "pageSubtitle": "依照地區、類別與認證狀態，找到適合你的美業職人。",
+    "metaTitleSuffix": "職人推薦",
+    "metaDescription": "搜尋 SoloBeauté 上的職人品牌頁、作品與服務項目。",
+    "resultsUnit": "位職人",
+    "allCities": "全部城市",
+    "districtPlaceholder": "行政區",
+    "allCategories": "全部類別",
+    "keywordPlaceholder": "關鍵字",
+    "verifiedOnly": "只看已認證",
+    "apply": "套用篩選",
+    "loadMore": "載入更多",
+    "emptyTitle": "目前沒有符合條件的職人",
+    "emptyDescription": "可以放寬地區或類別條件，或回到首頁重新開始探索。",
+    "emptyCta": "回首頁",
+    "sort": {
+      "newest": "最新加入",
+      "priceAsc": "價格低到高",
+      "priceDesc": "價格高到低"
+    },
+    "categoryLabels": {
+      "nail": "美甲",
+      "lash": "美睫",
+      "hair": "美髮",
+      "facial": "護膚",
+      "massage": "按摩",
+      "makeup": "彩妝",
+      "brow": "紋繡",
+      "sportsMassage": "運動按摩",
+      "other": "其他"
+    }
+  },
+  "beautician": {
+    "verified": "已認證",
+    "brandPage": "職人品牌頁",
+    "startingFrom": "起",
+    "services": "項服務",
+    "profileLinkHint": "完整作品與服務內容都在品牌頁內。",
+    "viewBrandPage": "查看品牌頁",
+    "minutes": "分鐘",
+    "backToSearch": "返回搜尋",
+    "announcementTag": "公告",
+    "servicesTag": "服務項目",
+    "servicesTitle": "服務內容",
+    "contactTag": "聯繫方式",
+    "contactTitle": "立即聯繫"
+  },
+  "login": {
+    "sectionTag": "登入",
+    "title": "消費者登入即將開放",
+    "description": "目前 web 端先開放搜尋與品牌頁瀏覽。登入、預約與付款流程會在後續階段接上。",
+    "backHome": "先回首頁"
+  }
+}

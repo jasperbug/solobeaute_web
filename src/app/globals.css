@@ -1,0 +1,30 @@
+@import '../index.css';
+@import '../App.css';
+@import '../LegalPage.css';
+@import '../SharePage.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    min-height: 100vh;
+  }
+}
+
+@layer components {
+  .sb-shell {
+    @apply mx-auto w-full max-w-container px-5 md:px-8;
+  }
+
+  .sb-card {
+    @apply rounded-card border border-black/5 bg-white shadow-soft;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}

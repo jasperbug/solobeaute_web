@@ -1,0 +1,249 @@
+{
+  "langLabel": "English",
+  "nav": {
+    "features": "Features",
+    "howItWorks": "How It Works",
+    "about": "About",
+    "discover": "Find a Pro",
+    "download": "Download",
+    "login": "Log in"
+  },
+  "hero": {
+    "tagline": "The independent stage for beauty pros",
+    "title1": "Your beauty space,",
+    "title2": "one tap away.",
+    "subtitle": "Beauty Everyway\nthe right space and the right people, for every service",
+    "cta": "Download Now",
+    "ctaSub": "Start your beauty journey"
+  },
+  "ecosystem": {
+    "sectionTag": "Three roles, one stage",
+    "title": "One SoloBeauté, three winners",
+    "subtitle": "We solve pain points for every role in the beauty industry",
+    "host": {
+      "role": "Space Host",
+      "pain": "Your space is great — but it sits empty. No steady renters, no good management tools.",
+      "solution": "List your space, earn effortlessly",
+      "desc": "3D tours that make pros fall in love with your space. Smart pricing that finds the sweet spot. Automated management so you can stop refreshing your phone."
+    },
+    "beautician": {
+      "role": "Beauty Pro",
+      "pain": "Locked into expensive monthly leases, or scrambling to find last-minute spaces? You deserve better.",
+      "solution": "Rent flexibly, work independently",
+      "desc": "Rent when you have clients, rest when you don't. Build your own brand page — let clients follow you, not the salon."
+    },
+    "consumer": {
+      "role": "Consumer",
+      "badge": "Coming Soon",
+      "pain": "Want a great nail artist but your only options are word-of-mouth or luck. Booking is opaque, pricing uncertain.",
+      "solution": "Search safely, book transparently",
+      "desc": "Verified reviews, transparent pricing, secure payments — beauty on your terms"
+    }
+  },
+  "howItWorks": {
+    "sectionTag": "How It Works",
+    "title": "Three steps to start your beauty journey",
+    "hostTab": "I'm a Host",
+    "beauticianTab": "I'm a Beauty Pro",
+    "hostSteps": [
+      {
+        "step": "01",
+        "title": "List Your Space",
+        "desc": "Upload photos, set availability & pricing. 3D tours make your space stand out"
+      },
+      {
+        "step": "02",
+        "title": "Accept Bookings",
+        "desc": "Pros browse and book your space. Get notified automatically"
+      },
+      {
+        "step": "03",
+        "title": "Earn Passively",
+        "desc": "Secure payments settled automatically. Focus on what matters"
+      }
+    ],
+    "beauticianSteps": [
+      {
+        "step": "01",
+        "title": "Find a Space",
+        "desc": "Search by map, filter by equipment — find the perfect workspace"
+      },
+      {
+        "step": "02",
+        "title": "Book & Go",
+        "desc": "Flexible hourly bookings. Start seeing clients the same day"
+      },
+      {
+        "step": "03",
+        "title": "Build Your Brand",
+        "desc": "Create your brand page, showcase your work, and grow your business"
+      }
+    ]
+  },
+  "features": {
+    "sectionTag": "Features",
+    "title": "Built for the beauty industry",
+    "items": [
+      {
+        "title": "Map Search",
+        "desc": "Open the app and see every rentable beauty space nearby. Pricing, distance, equipment — all at a glance. No more calling around."
+      },
+      {
+        "title": "Smart Filters",
+        "desc": "Need a beauty bed or a nail table? Want a shampoo station or a 3D tour? Set your filters, and we'll narrow it down to your perfect match."
+      },
+      {
+        "title": "In-App Chat",
+        "desc": "Found a space you like? Message the host directly. \"Do you provide towels?\" \"Is parking easy?\" Get answers before you book."
+      },
+      {
+        "title": "Booking Management",
+        "desc": "Your schedule at a glance: Da'an District today, Zhongshan tomorrow. Pending, confirmed, completed — three statuses, crystal clear."
+      }
+    ]
+  },
+  "about": {
+    "sectionTag": "About Us",
+    "title": "Let's build the future\nof beauty together.",
+    "desc": "SoloBeauté wasn't dreamed up in an office. Jasper writes the code, Meigo works the market — one knows technology, the other knows the industry. We believe great beauty services aren't built with more features, but by people who truly understand the trade.",
+    "founder1": "Meigo — Co-Founder",
+    "founder1Desc": "Started as a beauty professional, managed studios, built industry connections. Now uses that frontline experience and network to match the right spaces with the right pros on SoloBeauté.",
+    "founder2": "Jasper — Founder",
+    "founder2Desc": "The coder."
+  },
+  "faq": {
+    "sectionTag": "FAQ",
+    "title": "Things you might want to know",
+    "items": [
+      {
+        "q": "Do beauty pros need to pay to join?",
+        "a": "Joining SoloBeauté is completely free. You only pay a small service fee when a booking is completed. Early bird pros enjoy 3 months commission-free."
+      },
+      {
+        "q": "Is renting out my space safe?",
+        "a": "All bookings go through the platform with identity verification and a complete booking record. Hosts can freely accept or decline bookings and set their own rental rules."
+      },
+      {
+        "q": "How are payments handled?",
+        "a": "During the early stage, transactions are handled in cash on-site for simplicity. Secure online payments are coming soon, with full transaction protection."
+      },
+      {
+        "q": "When can consumers start using the app?",
+        "a": "The consumer side is coming soon. We are building up enough pros and spaces first to ensure a great experience at launch."
+      },
+      {
+        "q": "I'm just starting out — can I still use SoloBeauté?",
+        "a": "Absolutely. SoloBeauté exists to lower the barrier to going independent. No long-term lease, no deposit, no renovation costs. Just rent a space when you have a client, and relax when you don't."
+      },
+      {
+        "q": "What do hosts need to get started?",
+        "a": "Space photos, available time slots, and your desired pricing — that's it. If you're not great at photography, we can help. The whole setup process takes about 30 minutes."
+      },
+      {
+        "q": "How is SoloBeauté different from other shared spaces?",
+        "a": "We don't just help you find a space. SoloBeauté also helps pros build personal brand pages, manage bookings, and organize their portfolio and brand presence. And our team has real beauty industry experience — Meigo is a former pro himself, so we understand your needs firsthand."
+      }
+    ]
+  },
+  "cta": {
+    "title": "Your next step starts here",
+    "subtitle": "Whether you're a host looking to rent out your space, or a pro ready to go independent — SoloBeauté is where you begin.",
+    "button": "Download App",
+    "iosHint": "Currently available on iOS. Android coming soon."
+  },
+  "footer": {
+    "slogan": "The independent stage for beauty pros",
+    "contact": "Contact Us",
+    "email": "meigo@solobeaute.com",
+    "legal": "Privacy Policy",
+    "terms": "Terms of Service",
+    "rights": "© 2026 SoloBeauté. All rights reserved.",
+    "instagram": "Instagram",
+    "line": "LINE Official"
+  },
+  "common": {
+    "backHome": "Back Home"
+  },
+  "homeSearch": {
+    "keywordPlaceholder": "Search nail, lash, hair...",
+    "allCities": "All cities",
+    "allCategories": "All categories",
+    "submit": "Search",
+    "categoriesTag": "Categories",
+    "categoriesTitle": "Start with the service you need",
+    "categoriesSubtitle": "Jump into discovery faster and browse active beauty pros by category."
+  },
+  "categories": {
+    "nail": "Nail",
+    "lash": "Lash",
+    "hair": "Hair",
+    "facial": "Facial",
+    "massage": "Massage",
+    "makeup": "Makeup",
+    "brow": "Brow",
+    "sportsMassage": "Sports Massage",
+    "other": "Other"
+  },
+  "featured": {
+    "sectionTag": "Featured Pros",
+    "title": "Beauty brands getting discovered",
+    "subtitle": "A production-backed selection of active beauty pros with real services, photos and locations.",
+    "beautyPro": "Beauty Pro",
+    "availableOnline": "Available"
+  },
+  "search": {
+    "sectionTag": "Search Results",
+    "pageTitle": "Discover Beauty Pros",
+    "pageSubtitle": "Filter by location, category and verification to find the right SoloBeauté pro.",
+    "metaTitleSuffix": "beauty pros",
+    "metaDescription": "Search SoloBeauté for beauty pros, services, and public brand pages.",
+    "resultsUnit": "pros",
+    "allCities": "All cities",
+    "districtPlaceholder": "District",
+    "allCategories": "All categories",
+    "keywordPlaceholder": "Keyword",
+    "verifiedOnly": "Verified only",
+    "apply": "Apply filters",
+    "loadMore": "Load more",
+    "emptyTitle": "No beauty pros match these filters",
+    "emptyDescription": "Try a broader city or category, or return home to start over.",
+    "emptyCta": "Go home",
+    "sort": {
+      "newest": "Newest",
+      "priceAsc": "Lowest price",
+      "priceDesc": "Highest price"
+    },
+    "categoryLabels": {
+      "nail": "Nail",
+      "lash": "Lash",
+      "hair": "Hair",
+      "facial": "Facial",
+      "massage": "Massage",
+      "makeup": "Makeup",
+      "brow": "Brow",
+      "sportsMassage": "Sports Massage",
+      "other": "Other"
+    }
+  },
+  "beautician": {
+    "verified": "Verified",
+    "brandPage": "Brand page",
+    "startingFrom": "From",
+    "services": "services",
+    "profileLinkHint": "Open the full brand page for services and portfolio.",
+    "viewBrandPage": "View brand page",
+    "minutes": "min",
+    "backToSearch": "Back to search",
+    "announcementTag": "Announcement",
+    "servicesTag": "Services",
+    "servicesTitle": "What this pro offers",
+    "contactTag": "Contact",
+    "contactTitle": "Reach out directly"
+  },
+  "login": {
+    "sectionTag": "Login",
+    "title": "Consumer login is coming soon",
+    "description": "The web experience currently focuses on discovery and public brand pages. Booking and payment flows will follow in the next phase.",
+    "backHome": "Back home"
+  }
+}
