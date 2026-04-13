@@ -2,28 +2,13 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useLocale, useTranslations } from 'next-intl'
 
-import { formatCurrency, getBeauticianDiscoveryImage, getServiceAreaLabel, getStartingPrice, resolveImageUrl } from '@/lib/format'
+import { formatCurrency, getBeauticianDiscoveryImage, getDisplayInitials, getServiceAreaLabel, getStartingPrice, resolveImageUrl } from '@/lib/format'
 import type { BeauticianSummary } from '@/lib/types'
 import { Badge } from '../ui/Badge'
 import { CheckCircleIcon } from '../ui/Icons'
 
 type BeauticianCardProps = {
   beautician: BeauticianSummary
-}
-
-function getDisplayInitials(name: string) {
-  const compactName = name.trim()
-
-  if (!compactName) {
-    return 'SB'
-  }
-
-  const latinParts = compactName.split(/\s+/).filter(Boolean)
-  if (latinParts.length > 1) {
-    return latinParts.slice(0, 2).map((part) => part[0]?.toUpperCase() ?? '').join('')
-  }
-
-  return Array.from(compactName).slice(0, 2).join('').toUpperCase()
 }
 
 export function BeauticianCard({ beautician }: BeauticianCardProps) {

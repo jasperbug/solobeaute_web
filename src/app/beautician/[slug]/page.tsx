@@ -9,7 +9,7 @@ import { Badge } from '@/components/ui/Badge'
 import { CheckCircleIcon } from '@/components/ui/Icons'
 import { fetchBeauticianBySlug } from '@/lib/api'
 import { DEFAULT_METADATA_IMAGE, SITE_URL, SOCIAL_LABELS } from '@/lib/constants'
-import { formatExperience, getServiceAreaLabel, normalizeSocialUrl, resolveImageUrl, sortSocialLinks } from '@/lib/format'
+import { formatExperience, getBeauticianDiscoveryImage, getDisplayInitials, getServiceAreaLabel, normalizeSocialUrl, resolveImageUrl, sortSocialLinks } from '@/lib/format'
 
 type BrandPageProps = {
   params: { slug: string }
@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: BrandPageProps): Promise<Meta
 
   const serviceArea = getServiceAreaLabel(beautician.serviceArea)
   const description = [beautician.bio?.slice(0, 150) ?? beautician.specialties.join('、'), serviceArea].filter(Boolean).join(' · ')
-  const image = resolveImageUrl(beautician.user.avatarUrl || beautician.portfolioPreviewUrl) ?? DEFAULT_METADATA_IMAGE
+  const image = getBeauticianDiscoveryImage(beautician) ?? DEFAULT_METADATA_IMAGE
 
   return {
     title: `${beautician.displayName} - ${beautician.specialties.join('、')}`,
@@ -42,8 +42,6 @@ export async function generateMetadata({ params }: BrandPageProps): Promise<Meta
   }
 }
 
-export const revalidate = 600
-
 export default async function BeauticianBrandPage({ params }: BrandPageProps) {
   const beautician = await fetchBeauticianBySlug(params.slug)
   const t = await getTranslations()
@@ -55,6 +53,8 @@ export default async function BeauticianBrandPage({ params }: BrandPageProps) {
   const serviceArea = getServiceAreaLabel(beautician.serviceArea)
   const experience = formatExperience(beautician.yearsExperience)
   const socialLinks = sortSocialLinks(beautician.socialLinks)
+  const heroImage = getBeauticianDiscoveryImage(beautician)
+  const displayInitials = getDisplayInitials(beautician.displayName)
   const showcaseImages = [beautician.user.avatarUrl, ...beautician.portfolioUrls, ...beautician.announcementImageUrls]
     .map((value) => resolveImageUrl(value))
     .filter((value): value is string => Boolean(value))
@@ -90,9 +90,18 @@ export default async function BeauticianBrandPage({ params }: BrandPageProps) {
         <section className="sb-card overflow-hidden">
           <div className="grid gap-8 p-6 md:grid-cols-[220px_1fr] md:p-8">
             <div className="relative mx-auto h-[220px] w-[220px] overflow-hidden rounded-full bg-black/5">
-              {beautician.user.avatarUrl ? (
-                <Image src={resolveImageUrl(beautician.user.avatarUrl) ?? ''} alt={beautician.displayName} fill className="object-cover" />
-              ) : null}
+              {heroImage ? (
+                <Image src={heroImage} alt={beautician.displayName} fill className="object-cover object-center" />
+              ) : (
+                <div className="flex h-full items-center justify-center bg-surface-warm text-center">
+                  <div className="space-y-3 px-6">
+                    <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-white text-3xl font-semibold tracking-normal text-brand shadow-soft">
+                      {displayInitials}
+                    </div>
+                    <p className="line-clamp-2 text-sm font-medium text-ink/70">{beautician.displayName}</p>
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className="space-y-5">

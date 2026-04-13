@@ -1,6 +1,9 @@
+import type { AbstractIntlMessages } from 'next-intl'
 import { cookies, headers } from 'next/headers'
 import { getRequestConfig } from 'next-intl/server'
 
+import enMessages from './messages/en.json'
+import zhTwMessages from './messages/zh-TW.json'
 import {
   DEFAULT_LOCALE,
   LOCALE_COOKIE_NAME,
@@ -9,8 +12,8 @@ import {
 } from './config'
 
 const MESSAGES = {
-  en: require('./messages/en.json'),
-  'zh-TW': require('./messages/zh-TW.json'),
+  en: enMessages,
+  'zh-TW': zhTwMessages,
 } as const
 
 export default getRequestConfig(async () => {
@@ -24,6 +27,6 @@ export default getRequestConfig(async () => {
 
   return {
     locale,
-    messages: MESSAGES[locale],
+    messages: MESSAGES[locale] as unknown as AbstractIntlMessages,
   }
 })

@@ -1,6 +1,21 @@
 import { APP_DEEP_LINK_SCHEME, SITE_URL } from './constants'
 import type { BeauticianDetail, BeauticianSummary, PublicReview, ServiceArea, ShareEntityType, SpaceSummary } from './types'
 
+export function getDisplayInitials(name: string) {
+  const compactName = name.trim()
+
+  if (!compactName) {
+    return 'SB'
+  }
+
+  const latinParts = compactName.split(/\s+/).filter(Boolean)
+  if (latinParts.length > 1) {
+    return latinParts.slice(0, 2).map((part) => part[0]?.toUpperCase() ?? '').join('')
+  }
+
+  return Array.from(compactName).slice(0, 2).join('').toUpperCase()
+}
+
 export function formatCurrency(value: number | null | undefined, locale = 'zh-TW') {
   if (value === null || value === undefined || Number.isNaN(value)) {
     return null
