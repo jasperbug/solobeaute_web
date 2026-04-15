@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { getTranslations } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 
+import { BeauticianGallery } from '@/components/beautician/BeauticianGallery'
 import { ServiceCard } from '@/components/beautician/ServiceCard'
 import { Badge } from '@/components/ui/Badge'
 import { CheckCircleIcon } from '@/components/ui/Icons'
@@ -55,9 +56,13 @@ export default async function BeauticianBrandPage({ params }: BrandPageProps) {
   const socialLinks = sortSocialLinks(beautician.socialLinks)
   const heroImage = getBeauticianDiscoveryImage(beautician)
   const displayInitials = getDisplayInitials(beautician.displayName)
-  const showcaseImages = [beautician.user.avatarUrl, ...beautician.portfolioUrls, ...beautician.announcementImageUrls]
-    .map((value) => resolveImageUrl(value))
-    .filter((value): value is string => Boolean(value))
+  const galleryImages = Array.from(
+    new Set(
+      [...beautician.portfolioUrls, ...beautician.announcementImageUrls]
+        .map((value) => resolveImageUrl(value))
+        .filter((value): value is string => Boolean(value))
+    )
+  ).slice(0, 8)
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BeautySalon',
@@ -147,7 +152,7 @@ export default async function BeauticianBrandPage({ params }: BrandPageProps) {
           </div>
         </section>
 
-        {beautician.announcement || showcaseImages.length > 0 ? (
+        {beautician.announcement || galleryImages.length > 0 ? (
           <section className="sb-card space-y-6 p-6 md:p-8">
             <div className="space-y-2">
               <p className="section-tag">{t('beautician.announcementTag')}</p>
@@ -156,14 +161,8 @@ export default async function BeauticianBrandPage({ params }: BrandPageProps) {
               ) : null}
             </div>
 
-            {showcaseImages.length > 0 ? (
-              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-                {showcaseImages.slice(0, 8).map((image) => (
-                  <div key={image} className="relative aspect-[4/5] overflow-hidden rounded-xl bg-black/5">
-                    <Image src={image} alt={beautician.displayName} fill className="object-cover" />
-                  </div>
-                ))}
-              </div>
+            {galleryImages.length > 0 ? (
+              <BeauticianGallery images={galleryImages} displayName={beautician.displayName} />
             ) : null}
           </section>
         ) : null}
