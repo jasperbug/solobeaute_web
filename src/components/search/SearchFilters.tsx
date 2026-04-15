@@ -39,7 +39,6 @@ export function SearchFilters({ initialValues }: SearchFiltersProps) {
       search,
       sortBy,
       verified: verified ? 'true' : '',
-      page: '1',
     }
 
     Object.entries(nextValues).forEach(([key, value]) => {
@@ -50,6 +49,7 @@ export function SearchFilters({ initialValues }: SearchFiltersProps) {
       }
     })
 
+    params.delete('page')
     router.push(`/search?${params.toString()}`)
   }
 

@@ -1,10 +1,11 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
 import { getTranslations } from 'next-intl/server'
+import { redirect } from 'next/navigation'
 
 import { BeauticianCard } from '@/components/beautician/BeauticianCard'
 import { SearchFilters } from '@/components/search/SearchFilters'
 import { EmptyState } from '@/components/ui/EmptyState'
+import { Pagination } from '@/components/ui/Pagination'
 import { fetchBeauticians } from '@/lib/api'
 import { CATEGORY_OPTIONS } from '@/lib/constants'
 import type { BeauticianSearchParams } from '@/lib/types'
@@ -48,6 +49,36 @@ function categoryLabel(category: string | undefined) {
   return CATEGORY_OPTIONS.find((item) => item.value === category)?.labelKey ?? category
 }
 
+function buildPageHref(params: BeauticianSearchParams, targetPage: number) {
+  const nextParams = new URLSearchParams()
+  const nextFilters = {
+    limit: params.limit,
+    category: params.category,
+    specialty: params.specialty,
+    city: params.city,
+    district: params.district,
+    minPrice: params.minPrice,
+    maxPrice: params.maxPrice,
+    minRating: params.minRating,
+    verified: params.verified ? 'true' : undefined,
+    search: params.search,
+    sortBy: params.sortBy,
+  }
+
+  Object.entries(nextFilters).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== '') {
+      nextParams.set(key, String(value))
+    }
+  })
+
+  if (targetPage > 1) {
+    nextParams.set('page', String(targetPage))
+  }
+
+  const query = nextParams.toString()
+  return query ? `/search?${query}` : '/search'
+}
+
 export async function generateMetadata({ searchParams }: SearchPageProps): Promise<Metadata> {
   const t = await getTranslations()
   const params = parseSearchParams(searchParams)
@@ -70,33 +101,17 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   const t = await getTranslations()
   const params = parseSearchParams(searchParams)
   const response = await fetchBeauticians(params)
+  const currentPage = params.page ?? 1
+
+  if (response.pagination.total > 0 && currentPage > response.pagination.totalPages) {
+    redirect(buildPageHref(params, response.pagination.totalPages))
+  }
+
   const categoryKey = categoryLabel(params.category)
   const localizedCategory = categoryKey && categoryKey !== params.category
     ? t(`search.categoryLabels.${categoryKey}`)
     : params.category
   const headingBits = [params.city, params.district, localizedCategory, response.pagination.total ? `${response.pagination.total} ${t('search.resultsUnit')}` : null].filter(Boolean)
-  const hasNextPage = response.pagination.page < response.pagination.totalPages
-  const nextPageParams = new URLSearchParams()
-
-  const nextFilters = {
-    limit: params.limit,
-    category: params.category,
-    city: params.city,
-    district: params.district,
-    minPrice: params.minPrice,
-    maxPrice: params.maxPrice,
-    verified: params.verified ? 'true' : undefined,
-    search: params.search,
-    sortBy: params.sortBy,
-  }
-
-  Object.entries(nextFilters).forEach(([key, value]) => {
-    if (value !== undefined && value !== null && value !== '') {
-      nextPageParams.set(key, String(value))
-    }
-  })
-
-  nextPageParams.set('page', String((params.page ?? 1) + 1))
 
   return (
     <main className="bg-[var(--color-bg)] pb-20 pt-32">
@@ -126,14 +141,16 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
           </div>
         )}
 
-        {hasNextPage ? (
+        {response.data.length > 0 && response.pagination.totalPages > 1 ? (
           <div className="flex justify-center">
-            <Link
-              href={`/search?${nextPageParams.toString()}`}
-              className="inline-flex min-h-11 items-center rounded-lg border border-brand px-5 text-sm font-medium text-brand transition hover:bg-brand hover:text-white"
-            >
-              {t('search.loadMore')}
-            </Link>
+            <Pagination
+              currentPage={response.pagination.page}
+              totalPages={response.pagination.totalPages}
+              buildHref={(page) => buildPageHref(params, page)}
+              previousLabel={t('search.previousPage')}
+              nextLabel={t('search.nextPage')}
+              ariaLabel={t('search.paginationLabel')}
+            />
           </div>
         ) : null}
       </div>
