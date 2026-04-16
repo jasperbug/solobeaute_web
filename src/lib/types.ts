@@ -71,7 +71,7 @@ export type BeauticianSummary = {
   services: BeauticianService[]
   serviceArea: ServiceArea
   portfolioPreviewUrl: string | null
-  reviewStatus: 'APPROVED' | 'PENDING' | 'CHANGES_REQUESTED' | string
+  reviewStatus: 'APPROVED' | 'PENDING' | 'CHANGES_REQUESTED'
   serviceCount?: number
 }
 

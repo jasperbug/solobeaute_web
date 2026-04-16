@@ -1,7 +1,10 @@
 import type { AppLocale } from '@/i18n/config'
 
+export const API_ORIGIN =
+  process.env.NEXT_PUBLIC_API_ORIGIN ?? 'https://api.solobeaute.com'
+
 export const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL ?? 'https://api.solobeaute.com/api/v1'
+  process.env.NEXT_PUBLIC_API_URL ?? `${API_ORIGIN}/api/v1`
 
 export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.solobeaute.com'

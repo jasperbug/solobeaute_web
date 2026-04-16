@@ -1,4 +1,4 @@
-import { APP_DEEP_LINK_SCHEME, SITE_URL } from './constants'
+import { API_ORIGIN, APP_DEEP_LINK_SCHEME, SITE_URL } from './constants'
 import type { BeauticianDetail, BeauticianSummary, PublicReview, ServiceArea, ShareEntityType, SpaceSummary } from './types'
 
 export function getDisplayInitials(name: string) {
@@ -71,7 +71,7 @@ export function buildAppDeepLink(type: ShareEntityType, id: string) {
 export function resolveImageUrl(path: string | null | undefined) {
   if (!path) return null
   if (path.startsWith('http')) return path
-  return `https://api.solobeaute.com${path}`
+  return `${API_ORIGIN}${path}`
 }
 
 export function getBeauticianDiscoveryImage(

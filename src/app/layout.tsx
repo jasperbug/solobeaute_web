@@ -22,6 +22,15 @@ export const metadata: Metadata = {
     type: 'website',
     images: ['/og-image.png'],
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'SoloBeauté',
+    description: '職人的獨立舞台，從搜尋職人、品牌頁到分享預覽，讓每次美容服務都找到最適合的空間與人。',
+    images: ['/og-image.png'],
+  },
+  alternates: {
+    canonical: './',
+  },
   icons: {
     icon: '/images/brand/logo.png',
   },

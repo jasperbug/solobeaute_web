@@ -48,7 +48,7 @@ export async function fetchBeauticians(params: BeauticianSearchParams = {}) {
 
 export const fetchFeaturedBeauticians = cache(async (limit = 6): Promise<BeauticianSummary[]> => {
   const response = await fetch(`${API_BASE_URL}/beauticians/featured?limit=${limit}`, {
-    cache: 'no-store',
+    next: { revalidate: 3600 },
   })
 
   if (!response.ok) {

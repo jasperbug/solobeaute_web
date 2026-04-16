@@ -57,7 +57,7 @@ export function Header() {
   )
 
   function setLocaleCookie(nextLocale: AppLocale) {
-    document.cookie = `${LOCALE_COOKIE_NAME}=${nextLocale}; path=/; max-age=31536000; samesite=lax`
+    document.cookie = `${LOCALE_COOKIE_NAME}=${nextLocale}; path=/; max-age=31536000; samesite=lax; secure`
     router.refresh()
   }
 
@@ -89,7 +89,7 @@ export function Header() {
           </Link>
 
           <div className="lang-picker" ref={langRef}>
-            <button className="nav__lang" onClick={() => setLangOpen((open) => !open)} type="button">
+            <button className="nav__lang" onClick={() => setLangOpen((open) => !open)} type="button" aria-expanded={langOpen} aria-haspopup="true">
               <GlobeIcon className="h-4 w-4" />
               <span>{currentLanguage.short}</span>
               <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
