@@ -55,7 +55,12 @@ export function SearchFilters({ initialValues }: SearchFiltersProps) {
 
   return (
     <div className="sb-card grid gap-3 p-4 md:grid-cols-2 xl:grid-cols-7">
-      <select className="rounded-lg border border-black/10 px-3 py-3 text-sm" value={city} onChange={(event) => setCity(event.target.value)}>
+      <select
+        className="rounded-lg border border-black/10 px-3 py-3 text-sm"
+        value={city}
+        onChange={(event) => setCity(event.target.value)}
+        aria-label={t('allCities')}
+      >
         <option value="">{t('allCities')}</option>
         {CITY_OPTIONS.map((option) => (
           <option key={option} value={option}>{option}</option>
@@ -67,9 +72,15 @@ export function SearchFilters({ initialValues }: SearchFiltersProps) {
         placeholder={t('districtPlaceholder')}
         value={district}
         onChange={(event) => setDistrict(event.target.value)}
+        aria-label={t('districtPlaceholder')}
       />
 
-      <select className="rounded-lg border border-black/10 px-3 py-3 text-sm" value={category} onChange={(event) => setCategory(event.target.value)}>
+      <select
+        className="rounded-lg border border-black/10 px-3 py-3 text-sm"
+        value={category}
+        onChange={(event) => setCategory(event.target.value)}
+        aria-label={t('allCategories')}
+      >
         <option value="">{t('allCategories')}</option>
         {CATEGORY_OPTIONS.map((option) => (
           <option key={option.value} value={option.value}>{t(`categoryLabels.${option.labelKey}`)}</option>
@@ -81,9 +92,15 @@ export function SearchFilters({ initialValues }: SearchFiltersProps) {
         placeholder={t('keywordPlaceholder')}
         value={search}
         onChange={(event) => setSearch(event.target.value)}
+        aria-label={t('keywordPlaceholder')}
       />
 
-      <select className="rounded-lg border border-black/10 px-3 py-3 text-sm" value={sortBy} onChange={(event) => setSortBy(normalizeSortBy(event.target.value))}>
+      <select
+        className="rounded-lg border border-black/10 px-3 py-3 text-sm"
+        value={sortBy}
+        onChange={(event) => setSortBy(normalizeSortBy(event.target.value))}
+        aria-label={t('sort.newest')}
+      >
         <option value="newest">{t('sort.newest')}</option>
         <option value="priceAsc">{t('sort.priceAsc')}</option>
         <option value="priceDesc">{t('sort.priceDesc')}</option>
@@ -93,6 +110,7 @@ export function SearchFilters({ initialValues }: SearchFiltersProps) {
         type="button"
         className={`rounded-lg border px-4 py-3 text-sm font-medium ${verified ? 'border-brand bg-brand/10 text-brand' : 'border-black/10 text-black/55'}`}
         onClick={() => setVerified((value) => !value)}
+        aria-pressed={verified}
       >
         {t('verifiedOnly')}
       </button>

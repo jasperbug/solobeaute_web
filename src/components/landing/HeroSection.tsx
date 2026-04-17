@@ -14,10 +14,14 @@ const heroShots = {
   ar3d: '/images/app-screenshots/IMG_2486.PNG',
 }
 
+// Index of the image shown on initial mobile render. Keep this in sync with the
+// `priority` prop below so the mobile LCP image is pre-loaded.
+const HERO_INITIAL_SLIDE = 1
+
 export function HeroSection() {
   const t = useTranslations()
   const [heroHover, setHeroHover] = useState<string | null>(null)
-  const [heroSlide, setHeroSlide] = useState(1)
+  const [heroSlide, setHeroSlide] = useState(HERO_INITIAL_SLIDE)
   const touchStart = useRef<number | null>(null)
 
   return (
@@ -67,7 +71,14 @@ export function HeroSection() {
                   className={`phone-frame hero__phone hero__phone--${key} ${isActive ? 'hero__phone--active' : ''} ${hasHover && !isHovered ? 'hero__phone--faded' : ''} ${isDefault ? 'hero__phone--default' : ''}`}
                   onMouseEnter={() => setHeroHover(key)}
                 >
-                  <Image src={src} alt={alt} width={240} height={520} />
+                  <Image
+                    src={src}
+                    alt={alt}
+                    width={240}
+                    height={520}
+                    priority={key === 'center'}
+                    sizes="(max-width: 768px) 80vw, 260px"
+                  />
                 </div>
               )
             })}
@@ -91,7 +102,14 @@ export function HeroSection() {
               {Object.values(heroShots).map((src, index) => (
                 <div key={src} className="hero__slide">
                   <div className="phone-frame">
-                    <Image src={src} alt={`Hero screenshot ${index + 1}`} width={260} height={540} />
+                    <Image
+                      src={src}
+                      alt={`Hero screenshot ${index + 1}`}
+                      width={260}
+                      height={540}
+                      priority={index === HERO_INITIAL_SLIDE}
+                      sizes="(max-width: 768px) 80vw, 260px"
+                    />
                   </div>
                 </div>
               ))}

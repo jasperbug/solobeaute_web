@@ -246,7 +246,28 @@
     "servicesTag": "Services",
     "servicesTitle": "What this pro offers",
     "contactTag": "Contact",
-    "contactTitle": "Reach out directly"
+    "contactTitle": "Reach out directly",
+    "notFound": "Beautician not found",
+    "fallbackSummary": "Beautician brand page",
+    "experienceYears": "{years} years of experience",
+    "noReviews": "No reviews yet"
+  },
+  "share": {
+    "defaultTitle": "SoloBeauté Share",
+    "defaultDescription": "SoloBeauté share page",
+    "notFoundTitle": "Content not found",
+    "notFoundDescription": "We couldn't find this shared content",
+    "backHome": "Back to SoloBeauté",
+    "eyebrowSpace": "Shared space",
+    "eyebrowBeautician": "Shared beautician",
+    "typeSpace": "SPACE",
+    "typeBeautician": "BEAUTICIAN",
+    "servicesCount": "{count} services",
+    "priceFrom": "From NT${price}",
+    "openInApp": "Open in App",
+    "copyLink": "Copy link",
+    "copiedLink": "Link copied",
+    "hint": "No app installed? You can still view this content right here in the browser."
   },
   "login": {
     "sectionTag": "Login",

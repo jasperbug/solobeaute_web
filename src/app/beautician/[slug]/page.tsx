@@ -19,8 +19,9 @@ type BrandPageProps = {
 export async function generateMetadata({ params }: BrandPageProps): Promise<Metadata> {
   const beautician = await fetchBeauticianBySlug(params.slug)
   if (!beautician) {
+    const t = await getTranslations('beautician')
     return {
-      title: '職人不存在',
+      title: t('notFound'),
     }
   }
 
@@ -52,7 +53,10 @@ export default async function BeauticianBrandPage({ params }: BrandPageProps) {
   }
 
   const serviceArea = getServiceAreaLabel(beautician.serviceArea)
-  const experience = formatExperience(beautician.yearsExperience)
+  const experienceYears = formatExperience(beautician.yearsExperience)
+  const experience = experienceYears
+    ? t('beautician.experienceYears', { years: experienceYears })
+    : null
   const socialLinks = sortSocialLinks(beautician.socialLinks)
   const heroImage = getBeauticianDiscoveryImage(beautician)
   const displayInitials = getDisplayInitials(beautician.displayName)

@@ -1,11 +1,9 @@
-'use client'
-
-import { useTranslations } from 'next-intl'
+import { getTranslations } from 'next-intl/server'
 
 import { Reveal } from '../ui/Reveal'
 
-export function AboutSection() {
-  const t = useTranslations('about')
+export async function AboutSection() {
+  const t = await getTranslations('about')
 
   return (
     <section className="about" id="about">

@@ -246,7 +246,28 @@
     "servicesTag": "服務項目",
     "servicesTitle": "服務內容",
     "contactTag": "聯繫方式",
-    "contactTitle": "立即聯繫"
+    "contactTitle": "立即聯繫",
+    "notFound": "職人不存在",
+    "fallbackSummary": "美容師品牌頁",
+    "experienceYears": "{years} 年經驗",
+    "noReviews": "尚無評價"
+  },
+  "share": {
+    "defaultTitle": "SoloBeauté 分享",
+    "defaultDescription": "SoloBeauté 分享頁",
+    "notFoundTitle": "內容不存在",
+    "notFoundDescription": "找不到這個分享內容",
+    "backHome": "返回 SoloBeauté",
+    "eyebrowSpace": "分享空間",
+    "eyebrowBeautician": "分享美容師",
+    "typeSpace": "SPACE",
+    "typeBeautician": "BEAUTICIAN",
+    "servicesCount": "{count} 項服務",
+    "priceFrom": "NT${price} 起",
+    "openInApp": "在 App 開啟",
+    "copyLink": "複製連結",
+    "copiedLink": "已複製連結",
+    "hint": "沒有安裝 App 也可以直接在這個網頁查看內容。"
   },
   "login": {
     "sectionTag": "登入",

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 type CopyButtonProps = {
   value: string
@@ -11,12 +11,24 @@ type CopyButtonProps = {
 
 export function CopyButton({ value, idleLabel, copiedLabel, className = '' }: CopyButtonProps) {
   const [copied, setCopied] = useState(false)
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+      }
+    }
+  }, [])
 
   async function onCopy() {
     try {
       await navigator.clipboard.writeText(value)
       setCopied(true)
-      window.setTimeout(() => setCopied(false), 1800)
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+      }
+      timeoutRef.current = setTimeout(() => setCopied(false), 1800)
     } catch {
       setCopied(false)
     }

@@ -28,20 +28,20 @@ export function formatCurrency(value: number | null | undefined, locale = 'zh-TW
   }).format(value)
 }
 
-export function formatCompactRating(value: number, count: number) {
+export function formatCompactRating(value: number, count: number): string | null {
   if (!count) {
-    return '尚無評價'
+    return null
   }
 
   return `${value.toFixed(1)} (${count})`
 }
 
-export function formatExperience(yearsExperience: number | null | undefined) {
+export function formatExperience(yearsExperience: number | null | undefined): number | null {
   if (!yearsExperience) {
     return null
   }
 
-  return `${yearsExperience} 年經驗`
+  return yearsExperience
 }
 
 export function getServiceAreaLabel(serviceArea: ServiceArea) {
@@ -100,17 +100,19 @@ export function getShareHeroImage(type: ShareEntityType, data: SpaceSummary | Be
   )
 }
 
-export function buildBeauticianSummary(profile: BeauticianDetail | BeauticianSummary) {
-  const experience = formatExperience(profile.yearsExperience)
-  if (experience) {
-    return experience
+export function buildBeauticianSummary(
+  profile: BeauticianDetail | BeauticianSummary,
+  labels: { experienceYears: (years: number) => string; fallback: string }
+): string {
+  if (profile.yearsExperience) {
+    return labels.experienceYears(profile.yearsExperience)
   }
 
   if (profile.specialties.length > 0) {
     return profile.specialties.slice(0, 3).join(' ・ ')
   }
 
-  return '美容師品牌頁'
+  return labels.fallback
 }
 
 export function normalizeSocialUrl(type: string, value: string | undefined) {

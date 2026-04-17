@@ -15,13 +15,18 @@ function FaqItem({ question, answer }: { question: string; answer: string }) {
   const [open, setOpen] = useState(false)
 
   return (
-    <div className={`faq__item ${open ? 'faq__item--open' : ''}`} onClick={() => setOpen((value) => !value)}>
-      <div className="faq__question">
+    <div className={`faq__item ${open ? 'faq__item--open' : ''}`}>
+      <button
+        type="button"
+        className="faq__question"
+        onClick={() => setOpen((value) => !value)}
+        aria-expanded={open}
+      >
         <span>{question}</span>
-        <svg className="faq__chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <svg className="faq__chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
           <polyline points="6 9 12 15 18 9" />
         </svg>
-      </div>
+      </button>
       <AnimatePresence>
         {open ? (
           <motion.div

@@ -1,12 +1,10 @@
-'use client'
-
-import { useTranslations } from 'next-intl'
+import { getTranslations } from 'next-intl/server'
 
 import { HomeIcon, ScissorsIcon, UsersIcon } from '../ui/Icons'
 import { Reveal } from '../ui/Reveal'
 
-export function EcosystemSection() {
-  const t = useTranslations('ecosystem')
+export async function EcosystemSection() {
+  const t = await getTranslations('ecosystem')
 
   const roles = [
     { key: 'host', icon: <HomeIcon className="h-5 w-5" /> },
