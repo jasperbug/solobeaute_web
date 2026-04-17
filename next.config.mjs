@@ -19,7 +19,10 @@ const nextConfig = {
         hostname: 'placehold.co',
       },
     ],
-    minimumCacheTTL: 31536000,
+    // Conservative default: 1 day. Safe to raise to 31536000 once the
+    // backend guarantees image URLs are immutable / content-addressed
+    // (e.g. include a hash or version in the path).
+    minimumCacheTTL: 86400,
   },
   reactStrictMode: true,
   poweredByHeader: false,
