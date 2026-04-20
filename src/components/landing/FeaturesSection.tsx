@@ -7,14 +7,18 @@ import { ImageLightbox } from '../ui/ImageLightbox'
 import { PhoneFrame } from '../ui/PhoneFrame'
 import { Reveal } from '../ui/Reveal'
 
-const featureShots = [
-  '/images/app-screenshots/IMG_2486.PNG',
-  '/images/app-screenshots/map_fixed.PNG',
-  '/images/app-screenshots/IMG_2489.PNG',
-  '/images/app-screenshots/IMG_2491.PNG',
-]
+const featureVisuals = {
+  filter: '/images/app-screenshots/filter.PNG',
+  map: '/images/app-screenshots/map_fixed.PNG',
+  message: '/images/app-screenshots/IMG_2490_fixed.PNG',
+  booking: '/images/app-screenshots/IMG_2489.PNG',
+} as const
 
-type FeatureItem = {
+const featureOrder = ['filter', 'map', 'message', 'booking'] as const
+
+type FeatureKey = (typeof featureOrder)[number]
+
+type FeatureCopy = {
   tag: string
   title: string
   desc: string
@@ -23,10 +27,15 @@ type FeatureItem = {
 export function FeaturesSection() {
   const t = useTranslations('features')
   const tCommon = useTranslations('common')
-  const items = t.raw('items') as FeatureItem[]
+  const itemsByKey = t.raw('items') as Record<FeatureKey, FeatureCopy>
   const [activePreview, setActivePreview] = useState<number | null>(null)
-  const previewItems = items.map((item, index) => ({
-    src: featureShots[index] ?? featureShots[0],
+  const items = featureOrder.map((key) => ({
+    key,
+    ...itemsByKey[key],
+    src: featureVisuals[key],
+  }))
+  const previewItems = items.map((item) => ({
+    src: item.src,
     alt: item.title,
     caption: item.tag,
   }))
@@ -45,7 +54,7 @@ export function FeaturesSection() {
               <div className={`feat__item ${index % 2 === 1 ? 'feat__item--reverse' : ''}`}>
                 <div className="feat__visual">
                   <PhoneFrame
-                    src={featureShots[index] ?? featureShots[0]}
+                    src={item.src}
                     alt={item.title}
                     onClick={() => setActivePreview(index)}
                     buttonLabel={`${tCommon('openPreview')} · ${item.title}`}

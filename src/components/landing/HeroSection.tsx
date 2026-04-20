@@ -33,20 +33,28 @@ export function HeroSection() {
   return (
     <section className="hero">
       <div className="hero__inner container">
-        <Reveal>
-          <p className="hero__label">{t('hero.kicker')}</p>
-        </Reveal>
-        <Reveal delay={0.08}>
-          <h1 className="hero__title">
-            {t('hero.title1')}
-            <br />
-            <em className="hero__accent">{t('hero.title2')}</em>
-          </h1>
-        </Reveal>
-        <Reveal delay={0.16}>
-          <p className="hero__desc">{t('hero.subtitle')}</p>
-        </Reveal>
-        <Reveal delay={0.24}>
+        <div className="hero__intro">
+          <Reveal>
+            <p className="hero__label">{t('hero.kicker')}</p>
+          </Reveal>
+          <Reveal delay={0.08}>
+            <h1 className="hero__title">
+              <span className="hero__title-line">{t('hero.title1')}</span>
+              <em className="hero__title-line hero__accent">{t('hero.title2')}</em>
+            </h1>
+          </Reveal>
+          <Reveal delay={0.16}>
+            <p className="hero__promise">
+              <span>{t('hero.promiseLine1')}</span>
+              <span>{t('hero.promiseLine2')}</span>
+            </p>
+          </Reveal>
+          <Reveal delay={0.24}>
+            <p className="hero__desc">{t('hero.detail')}</p>
+          </Reveal>
+        </div>
+
+        <Reveal delay={0.32} className="hero__lower">
           <div className="hero__actions">
             <a href={APP_STORE_URL} target="_blank" rel="noopener noreferrer" className="btn-primary">
               <AppleIcon className="h-[18px] w-[18px]" />
@@ -59,7 +67,7 @@ export function HeroSection() {
           </div>
         </Reveal>
 
-        <Reveal delay={0.3} className="hero__showcase">
+        <Reveal delay={0.4} className="hero__showcase">
           <div className="hero__phones hero__phones--desktop">
             {desktopShots.map(({ key, src, alt, caption }, index) => (
               <PhoneFrame

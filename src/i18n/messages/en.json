@@ -10,10 +10,12 @@
     "login": "Log in"
   },
   "hero": {
-    "kicker": "TAIWAN · iOS",
+    "kicker": "Beauty Everyway",
     "title1": "The independent stage",
     "title2": "for beauty pros",
-    "subtitle": "No more calling studio after studio. Open the app, browse spaces, pricing, and real views, then message the host directly. Rent when you have clients. Rest when you don't.",
+    "promiseLine1": "So every service comes with",
+    "promiseLine2": "the right space and the right match.",
+    "detail": "Rent beauty workspaces by the hour. Open the app to compare spaces, pricing, and 3D tours, then message hosts directly.",
     "cta": "Download iOS App",
     "secondaryCta": "I'm a Host",
     "listAlt": "SoloBeauté space list view",
@@ -100,29 +102,29 @@
   },
   "features": {
     "sectionTag": "FEATURES",
-    "title": "Make finding space genuinely usable",
-    "items": [
-      {
-        "tag": "01 · LIST",
-        "title": "See enough before you decide",
-        "desc": "List view, pricing, equipment, and area context live in one place, so you can make an early decision before reaching out."
+    "title": "From finding space to managing bookings, keep the workflow clear",
+    "items": {
+      "filter": {
+        "tag": "01 · FILTER",
+        "title": "Narrow the search before you start comparing",
+        "desc": "Set the right equipment, area, and service type first so you are not evaluating every listing from scratch."
       },
-      {
+      "map": {
         "tag": "02 · MAP",
-        "title": "Think in working radius, not just addresses",
+        "title": "Use the map to judge today's working radius",
         "desc": "Check which district fits today's clients, whether transit works, and whether the location still makes sense once the day gets busy."
       },
-      {
-        "tag": "03 · CHAT",
-        "title": "Message directly instead of relaying details",
-        "desc": "Ask about towels, equipment, parking, or entry rules without bouncing through three different channels."
+      "message": {
+        "tag": "03 · MESSAGE",
+        "title": "Ask directly instead of relaying details",
+        "desc": "Confirm towels, equipment, entry rules, or last-minute questions with the host inside the app instead of chasing answers across calls and chats."
       },
-      {
-        "tag": "04 · SCHEDULE",
-        "title": "Keep your work rhythm in your own hands",
-        "desc": "Know where you're working, what is confirmed, and what still needs follow-up so independent work stays manageable."
+      "booking": {
+        "tag": "04 · BOOKING",
+        "title": "Keep bookings clear so your rhythm stays stable",
+        "desc": "See where you are working, which time slots are confirmed, and what still needs follow-up at a glance so independent work stays manageable."
       }
-    ]
+    }
   },
   "about": {
     "sectionTag": "ABOUT",

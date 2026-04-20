@@ -8,7 +8,7 @@ import { HowItWorksSection } from './HowItWorksSection'
 
 export function LandingPage() {
   return (
-    <>
+    <main className="landing-page">
       <HeroSection />
       <EcosystemSection />
       <FeaturesSection />
@@ -16,6 +16,6 @@ export function LandingPage() {
       <AboutSection />
       <FaqSection />
       <CtaSection />
-    </>
+    </main>
   )
 }
