@@ -5,24 +5,31 @@
    ======================================== */
 
 :root {
-  /* Core palette — Warm rice-white base */
+  /* Core palette — Website v2 */
   --color-bg: #FAFAF7;
   --color-bg-warm: #F5F3EE;
   --color-bg-card: #FFFFFF;
-  --color-bg-dark: #2C2420;
+  --color-bg-dark: #2C2C2C;
   --color-bg-dark-soft: #3A3530;
 
   /* Brand accent — SoloBeauté identity */
   --color-accent: #C4A265;
   --color-accent-soft: #D4C4A0;
   --color-brand: #9B6B7A;
+  --color-brand-deep: #7E4E5C;
   --color-brand-light: #C8A0AD;
-  --color-brand-bg: rgba(155, 107, 122, 0.06);
+  --color-brand-bg: #F6ECEE;
+  --color-verified: #C4A265;
+  --color-verified-bg: rgba(196, 162, 101, 0.14);
 
-  /* Text — warm charcoal spectrum */
-  --color-text: #2C2C2C;
-  --color-text-secondary: #7A7672;
-  --color-text-tertiary: #B0ACA6;
+  /* Text — handoff v2 */
+  --fg-1: #2C2C2C;
+  --fg-2: #5A5A5A;
+  --fg-3: #8A8580;
+  --fg-heading: #4A3328;
+  --color-text: var(--fg-1);
+  --color-text-secondary: var(--fg-2);
+  --color-text-tertiary: var(--fg-3);
   --color-text-light: #F5F0EB;
   --color-text-light-secondary: rgba(245, 240, 235, 0.6);
 
@@ -32,13 +39,13 @@
   --color-border-light: rgba(255, 255, 255, 0.1);
 
   /* Typography */
-  --font-heading: 'Inter', -apple-system, 'Helvetica Neue', sans-serif;
-  --font-body: 'Noto Sans TC', 'Noto Sans SC', 'Noto Sans JP', 'Noto Sans KR', 'Noto Sans Thai', 'Inter', -apple-system, sans-serif;
-  --font-display: 'Cormorant Garamond', 'Georgia', serif;
+  --font-heading: var(--font-sans-tc), 'Noto Sans TC', -apple-system, 'Helvetica Neue', sans-serif;
+  --font-body: var(--font-sans-tc), 'Noto Sans TC', -apple-system, 'Helvetica Neue', sans-serif;
+  --font-display: var(--font-display-serif), 'Cormorant Garamond', 'Georgia', serif;
 
   /* Spacing — generous breathing room */
-  --section-padding: 140px;
-  --container-max: 1080px;
+  --section-padding: 96px;
+  --container-max: 1200px;
   --container-padding: 32px;
   --gap-lg: 64px;
   --gap-md: 32px;
@@ -68,6 +75,7 @@ body {
   font-weight: 400;
   font-size: 15px;
   overflow-x: hidden;
+  word-break: auto-phrase;
 }
 
 img { max-width: 100%; height: auto; display: block; }
@@ -83,10 +91,10 @@ button { font-family: inherit; cursor: pointer; border: none; outline: none; bac
 
 /* Section Label — delicate, upper */
 .section-tag {
-  font-family: var(--font-heading);
-  font-size: 0.68rem;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
   font-weight: 500;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--color-brand);
   margin-bottom: 12px;
@@ -94,20 +102,20 @@ button { font-family: inherit; cursor: pointer; border: none; outline: none; bac
 
 /* Section Title */
 .section-title {
-  font-family: var(--font-heading);
-  font-size: clamp(1.5rem, 3vw, 2rem);
-  font-weight: 600;
-  line-height: 1.3;
-  letter-spacing: -0.02em;
-  color: var(--color-text);
-  margin-bottom: 10px;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--fg-1);
+  margin-bottom: 12px;
 }
 
 .section-subtitle {
-  font-size: 0.92rem;
-  color: var(--color-text-secondary);
+  font-size: 0.98rem;
+  color: var(--fg-2);
   line-height: 1.8;
-  max-width: 460px;
+  max-width: 620px;
 }
 
 /* Buttons — soft pill */
@@ -118,8 +126,8 @@ button { font-family: inherit; cursor: pointer; border: none; outline: none; bac
   padding: 13px 30px;
   background: var(--color-brand);
   color: #FFFFFF;
-  font-family: var(--font-heading);
-  font-size: 0.85rem;
+  font-family: var(--font-body);
+  font-size: 0.88rem;
   font-weight: 500;
   border-radius: 50px;
   transition: all var(--duration) var(--ease);
@@ -127,7 +135,7 @@ button { font-family: inherit; cursor: pointer; border: none; outline: none; bac
 }
 
 .btn-primary:hover {
-  background: var(--color-brand-light);
+  background: var(--color-brand-deep);
   transform: translateY(-1px);
 }
 
@@ -138,8 +146,8 @@ button { font-family: inherit; cursor: pointer; border: none; outline: none; bac
   padding: 12px 26px;
   background: transparent;
   color: var(--color-text-secondary);
-  font-family: var(--font-heading);
-  font-size: 0.83rem;
+  font-family: var(--font-body);
+  font-size: 0.84rem;
   font-weight: 500;
   border: 1px solid var(--color-border);
   border-radius: 50px;
@@ -151,28 +159,204 @@ button { font-family: inherit; cursor: pointer; border: none; outline: none; bac
   color: var(--color-brand);
 }
 
-/* Phone Mockup — clean, floating */
+.btn-dark {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: var(--fg-1);
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 0.84rem;
+  font-weight: 500;
+  border-radius: 999px;
+  transition: all var(--duration) var(--ease);
+}
+
+.btn-dark:hover {
+  background: var(--color-brand-deep);
+  transform: translateY(-1px);
+}
+
+.btn-light {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 36px;
+  background: #fff;
+  color: var(--fg-1);
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  font-weight: 500;
+  border-radius: 999px;
+  transition: all var(--duration) var(--ease);
+}
+
+.btn-light:hover {
+  background: var(--color-brand-bg);
+  transform: translateY(-1px);
+}
+
+/* Phone Mockup — handoff v2 shell */
 .phone-frame {
   position: relative;
   width: 260px;
-  border-radius: 28px;
-  overflow: hidden;
-  background: #FFFFFF;
-  box-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.04),
-    0 8px 32px rgba(0, 0, 0, 0.06),
-    0 24px 60px rgba(0, 0, 0, 0.04);
+  aspect-ratio: 13 / 27;
+  padding: 7px;
+  border-radius: 38px;
+  background: #1A1A1A;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.15);
   flex-shrink: 0;
 }
 
-.phone-frame img {
+.phone-frame__button {
+  padding: 0;
+  border: none;
+  background: none;
+  line-height: 0;
+  border-radius: 38px;
+  cursor: zoom-in;
+}
+
+.phone-frame__button:focus-visible {
+  outline: 2px solid rgba(155, 107, 122, 0.35);
+  outline-offset: 12px;
+}
+
+.phone-frame__screen {
+  position: absolute;
+  inset: 7px;
+  overflow: hidden;
+  border-radius: 31px;
+  background: #FFFFFF;
+}
+
+.phone-frame__screen img {
   width: 100%;
+  height: 100%;
   display: block;
+  object-fit: cover;
 }
 
 .phone-frame--sm {
   width: 180px;
-  border-radius: 22px;
+  padding: 6px;
+  border-radius: 30px;
+}
+
+.phone-frame--sm .phone-frame__screen {
+  inset: 6px;
+  border-radius: 24px;
+}
+
+.phone-frame--lightbox {
+  width: min(360px, 84vw);
+  padding: 8px;
+  border-radius: 42px;
+}
+
+.phone-frame--lightbox .phone-frame__screen {
+  inset: 8px;
+  border-radius: 34px;
+}
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 140;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(20, 18, 17, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 24px;
+}
+
+.lightbox__inner {
+  position: relative;
+  width: min(100%, 1080px);
+  min-height: min(82vh, 760px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox__topbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8px 16px;
+}
+
+.lightbox__counter {
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.lightbox__close,
+.lightbox__nav {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.24);
+  color: #fff;
+  transition: all 0.2s ease;
+}
+
+.lightbox__close:hover,
+.lightbox__nav:hover:not(:disabled) {
+  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(0, 0, 0, 0.38);
+}
+
+.lightbox__nav:disabled {
+  opacity: 0.32;
+  cursor: not-allowed;
+}
+
+.lightbox__nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.2rem;
+}
+
+.lightbox__nav--prev {
+  left: 0;
+}
+
+.lightbox__nav--next {
+  right: 0;
+}
+
+.lightbox__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.lightbox__image {
+  object-fit: cover;
+}
+
+.lightbox__caption {
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+  text-align: center;
 }
 
 /* ── Responsive ── */
@@ -183,7 +367,46 @@ button { font-family: inherit; cursor: pointer; border: none; outline: none; bac
     --gap-lg: 40px;
   }
 
-  .phone-frame { width: 220px; }
+  .phone-frame {
+    width: 220px;
+    padding: 6px;
+    border-radius: 34px;
+  }
+
+  .phone-frame__screen {
+    inset: 6px;
+    border-radius: 28px;
+  }
+
   .phone-frame--sm { width: 140px; }
+  .phone-frame--lightbox { width: min(300px, 82vw); }
   .about__founders { grid-template-columns: 1fr; }
+
+  .lightbox {
+    padding: 20px 16px;
+  }
+
+  .lightbox__inner {
+    min-height: auto;
+    padding: 56px 0;
+  }
+
+  .lightbox__topbar {
+    top: -4px;
+    padding: 0;
+  }
+
+  .lightbox__nav {
+    top: auto;
+    bottom: -12px;
+    transform: none;
+  }
+
+  .lightbox__nav--prev {
+    left: calc(50% - 58px);
+  }
+
+  .lightbox__nav--next {
+    right: calc(50% - 58px);
+  }
 }

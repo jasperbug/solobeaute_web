@@ -6,7 +6,7 @@ import tseslint from 'typescript-eslint'
 import { globalIgnores } from 'eslint/config'
 
 export default tseslint.config(
-  globalIgnores(['.next/**', 'dist/**', 'node_modules/**']),
+  globalIgnores(['.next/**', 'dist/**', 'node_modules/**', 'handoff/**']),
   {
     files: ['**/*.{js,mjs,cjs,jsx,ts,tsx}'],
     languageOptions: {

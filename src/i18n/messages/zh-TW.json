@@ -4,112 +4,140 @@
     "features": "功能特色",
     "howItWorks": "如何運作",
     "about": "關於我們",
+    "faq": "常見問題",
     "discover": "找職人",
-    "download": "下載 App",
+    "download": "下載 iOS App",
     "login": "登入"
   },
   "hero": {
-    "tagline": "職人的獨立舞台",
-    "title1": "你的美業空間",
-    "title2": "一鍵找到",
-    "subtitle": "Beauty Everyway\n讓每一次的服務，都有最好的空間和最對的人",
-    "cta": "立即下載",
-    "ctaSub": "開始你的美業之旅"
+    "kicker": "TAIWAN · iOS",
+    "title1": "台灣美業職人的",
+    "title2": "獨立舞台",
+    "subtitle": "不用再一間一間打電話問。打開 App，看空間、看價錢、看實景，直接訊息屋主。想接客的時候租，不想的時候休息。",
+    "cta": "下載 iOS App",
+    "secondaryCta": "我是屋主",
+    "listAlt": "SoloBeauté 空間列表畫面",
+    "listCaption": "列表 · LIST",
+    "mapAlt": "SoloBeauté 地圖搜尋畫面",
+    "mapCaption": "地圖 · MAP",
+    "arAlt": "SoloBeauté 3D 實景畫面",
+    "arCaption": "3D 實景 · TOUR"
   },
   "ecosystem": {
-    "sectionTag": "三個角色，一個舞台",
-    "title": "一個 SoloBeauté，三方共贏",
-    "subtitle": "我們解決美業中每個角色的痛點",
-    "host": {
-      "role": "屋主",
-      "pain": "你的空間明明很好，卻只在閒置。沒有穩定的租客，也沒有好的管理工具。",
-      "solution": "上架空間，輕鬆收租",
-      "desc": "3D 實景讓職人一秒愛上你的空間，智慧定價幫你找到最好的價格，自動化管理讓你不用盯著手機。"
-    },
+    "sectionTag": "生態系 · ECOSYSTEM",
+    "title": "三個角色，一個飛輪",
+    "subtitle": "SoloBeauté 先服務職人，再讓屋主的空間被更有效使用；消費者導流是下一層成長。",
     "beautician": {
-      "role": "美容職人",
-      "pain": "每個月付高額租金綁在一個固定位置，還是到處找臨時場地？你值得更好的選擇。",
-      "solution": "自由租用，獨立接客",
-      "desc": "想接客的時候租、不想的時候休息。建立你自己的品牌頁面，讓客人跟著你，不是跟著沙龍。"
+      "tag": "職人 · PRO",
+      "priority": "我們服務的核心",
+      "title": "想接客的時候租，不想的時候休息",
+      "desc": "找得到可用空間、談得到清楚條件、留下自己的品牌頁。客人跟著你，不是跟著店。 ",
+      "cta": "下載 iOS App"
+    },
+    "host": {
+      "tag": "屋主 · HOST",
+      "title": "讓閒置時段變成收入",
+      "desc": "把原本空著的椅子、房間和時段整理好，給真正需要的人。空間被更有效使用，你也多一條穩定收入來源。",
+      "cta": "下載 iOS App"
     },
     "consumer": {
-      "role": "消費者",
-      "badge": "即將開放",
-      "pain": "想找好的美甲師，但只能靠朋友推薦或碰運氣。預約流程不透明，價格不確定。",
-      "solution": "安心搜尋，透明預約",
-      "desc": "真實評價、透明價格、安全金流，享受專屬你的美容體驗"
+      "tag": "消費者 · CLIENT",
+      "priority": "即將開放 · WEB ONLY",
+      "title": "找到那位對的職人",
+      "desc": "透過職人目錄，看作品、看服務內容與品牌資訊，直接聯繫職人。預約仍透過職人的個人管道完成。",
+      "cta": "找職人"
     }
   },
   "howItWorks": {
     "sectionTag": "如何運作",
-    "title": "三步驟，開始你的美業旅程",
+    "title": "四個步驟，開始做生意",
     "hostTab": "我是屋主",
     "beauticianTab": "我是職人",
     "hostSteps": [
       {
         "step": "01",
-        "title": "上架空間",
-        "desc": "拍照上傳、設定時段與價格，3D 實景讓空間更吸引人"
+        "title": "整理你的空間資訊",
+        "desc": "把場地照片、設備、可出租時段與價格整理好，讓職人看得懂、也看得安心。"
       },
       {
         "step": "02",
-        "title": "接受預約",
-        "desc": "職人瀏覽並預約你的空間，系統自動通知與管理"
+        "title": "上架可出租時段",
+        "desc": "把閒置時段放上平台，不需要整天回訊息，也不用先談一輪才知道能不能租。"
       },
       {
         "step": "03",
-        "title": "輕鬆收租",
-        "desc": "安全金流自動結算，專注管理你的空間"
+        "title": "收到職人詢問與預約",
+        "desc": "有興趣的職人會直接找到你，確認合適後再合作，節奏比傳統招租更有效率。"
+      },
+      {
+        "step": "04",
+        "title": "把閒置變成營收",
+        "desc": "讓空間使用率提高，同時保留你原本的營運節奏，不必為了出租重做整套流程。"
       }
     ],
     "beauticianSteps": [
       {
         "step": "01",
-        "title": "搜尋空間",
-        "desc": "地圖搜尋、篩選設備，找到最適合你的工作空間"
+        "title": "打開 App 找空間",
+        "desc": "看地點、看設備、看價格，也能先看實景，篩掉不合適的場地。"
       },
       {
         "step": "02",
-        "title": "預約租用",
-        "desc": "彈性時段預約，當天就能開始接客"
+        "title": "直接聯繫屋主",
+        "desc": "看到合適的空間就直接談，不需要靠朋友介紹，也不用花大量時間一間一間詢問。"
       },
       {
         "step": "03",
-        "title": "獨立營業",
-        "desc": "建立個人品牌頁、累積作品與口碑，壯大你的事業"
+        "title": "彈性租用、開始接客",
+        "desc": "有案子時就租，沒有案子時就停，減少固定租金壓力，保留工作的主導權。"
+      },
+      {
+        "step": "04",
+        "title": "建立自己的品牌頁",
+        "desc": "把作品、服務與品牌資訊整理好，讓客人認識的是你，不只是你今天在哪裡服務。"
       }
     ]
   },
   "features": {
-    "sectionTag": "功能特色",
-    "title": "為美業量身打造",
+    "sectionTag": "功能特色 · FEATURES",
+    "title": "把找空間這件事，做到真的好用",
     "items": [
       {
-        "title": "地圖搜尋",
-        "desc": "打開 App 就能看到附近所有可租用的美業空間。價格、距離、設備一目瞭然，不用再一間一間打電話問。"
+        "tag": "01 · LIST",
+        "title": "先看得到，再決定要不要談",
+        "desc": "列表、價格、設備與區域整理在同一個畫面，先有基本判斷，再決定是否進一步聯繫。"
       },
       {
-        "title": "精準篩選",
-        "desc": "你需要美容床還是美甲桌？要有洗髮台還是 3D 實景？設定好條件，系統幫你篩到剩最適合的。"
+        "tag": "02 · MAP",
+        "title": "用地圖思考你的工作半徑",
+        "desc": "今天要去哪一區接客、要不要靠近捷運、要不要方便停車，打開地圖就能快速判斷。"
       },
       {
-        "title": "即時通訊",
-        "desc": "看到喜歡的空間？直接傳訊息問屋主。「請問有提供毛巾嗎？」「停車方便嗎？」預約前先聊清楚。"
+        "tag": "03 · CHAT",
+        "title": "直接訊息，不再來回轉述",
+        "desc": "需要確認毛巾、設備或進場規則時，直接問屋主，比打電話四處碰運氣更省時間。"
       },
       {
-        "title": "預約管理",
-        "desc": "你的行程一目瞭然：今天在大安區、明天在中山區。待確認、已確認、已完成，三種狀態清楚標示。"
+        "tag": "04 · SCHEDULE",
+        "title": "把工作安排回到自己手上",
+        "desc": "哪天在哪裡服務、哪個案子已確認、哪個還在談，節奏清楚，才能真的獨立接案。"
       }
     ]
   },
   "about": {
-    "sectionTag": "關於我們",
-    "title": "一起打造\n美業的未來。",
-    "desc": "SoloBeauté 不是在辦公室裡想出來的。Jasper 寫程式、Meigo 跑市場，一個懂技術、一個懂產業。我們相信，好的美業服務不是靠功能多，是靠真正理解這個行業的人去串起每一個環節。",
-    "founder1": "Meigo・共同創辦人",
-    "founder1Desc": "美業職人出身，做過第一線、也管過店。現在用累積的產業人脈和實戰經驗，幫 SoloBeauté 把空間和職人真正連起來。",
-    "founder2": "Jasper・創辦人",
-    "founder2Desc": "寫程式的"
+    "sectionTag": "關於我們 · ABOUT",
+    "title": "一起打造美業新未來",
+    "desc": "SoloBeauté 不是在會議室裡想出來的。一個懂技術，一個懂台灣美業現場。我們做的是一個真的能讓職人開始接案、讓屋主開始出租的工具。",
+    "founder1": {
+      "name": "Jasper",
+      "role": "寫程式的",
+      "desc": "把產品、系統和網站一個一個搭起來，目標很直接：讓這個產業少一點阻力，多一點可以開始做事的工具。"
+    },
+    "founder2": {
+      "name": "Meigo",
+      "role": "美業職人",
+      "desc": "長期在台灣美業第一線工作，知道職人怎麼找空間、怎麼接客，也知道什麼流程只是把事情變複雜。"
+    }
   },
   "faq": {
     "sectionTag": "常見問題",
@@ -141,28 +169,40 @@
       },
       {
         "q": "SoloBeauté 跟其他共享空間有什麼不同？",
-        "a": "我們不只是幫你找空間。SoloBeauté 還幫職人建立個人品牌頁面、管理預約、整理作品與品牌內容。更重要的是，我們的團隊有美業實戰經驗 — Meigo 本身就是職人出身，理解你的需求不是靠猜的。"
+        "a": "我們不只是幫你找空間。SoloBeauté 還幫職人建立個人品牌頁面、管理預約、整理作品與品牌內容。更重要的是，我們的團隊有美業實戰經驗，Meigo 長期在第一線工作，理解你的需求不是靠猜的。"
       }
     ]
   },
   "cta": {
-    "title": "你的下一步，從這裡開始",
-    "subtitle": "不管你是想出租空間的屋主，還是想獨立接案的職人，SoloBeauté 都是你的起點。",
-    "button": "下載 App",
+    "tag": "準備好了嗎",
+    "title": "你的下一個工作空間，下一個客人",
+    "subtitle": "下載 SoloBeauté iOS App，開始找空間、接案子、建立自己的品牌頁。",
+    "button": "下載 iOS App",
     "iosHint": "目前支援 iOS，Android 版即將推出"
   },
   "footer": {
-    "slogan": "職人的獨立舞台",
-    "contact": "聯絡我們",
-    "email": "meigo@solobeaute.com",
-    "legal": "隱私政策",
+    "slogan": "台灣美業職人的獨立舞台",
+    "description": "找空間、開工作、做生意。",
+    "productTitle": "產品",
+    "productFindPros": "找職人",
+    "productDownload": "下載 iOS App",
+    "aboutTitle": "關於",
+    "aboutUs": "關於我們",
+    "faq": "常見問題",
+    "legalTitle": "法律",
+    "privacy": "隱私政策",
     "terms": "使用條款",
+    "support": "支援中心",
     "rights": "© 2026 SoloBeauté. All rights reserved.",
-    "instagram": "Instagram",
-    "line": "LINE 官方帳號"
+    "madeIn": "Made in Taipei · 台北 · 台中 · 高雄"
   },
   "common": {
-    "backHome": "返回首頁"
+    "backHome": "返回首頁",
+    "openPreview": "查看畫面預覽",
+    "closePreview": "關閉畫面預覽",
+    "previousPreview": "上一張畫面",
+    "nextPreview": "下一張畫面",
+    "previewCount": "{current} / {total}"
   },
   "homeSearch": {
     "keywordPlaceholder": "搜尋美甲、美睫、美髮...",
@@ -192,17 +232,22 @@
     "availableOnline": "可預約"
   },
   "search": {
-    "sectionTag": "搜尋結果",
-    "pageTitle": "探索職人",
-    "pageSubtitle": "依照地區、類別與認證狀態，找到適合你的美業職人。",
-    "metaTitleSuffix": "職人推薦",
-    "metaDescription": "搜尋 SoloBeauté 上的職人品牌頁、作品與服務項目。",
+    "sectionTag": "找職人 · DIRECTORY",
+    "pageTitle": "美業職人目錄",
+    "locationTitle": "{location} 的美業職人",
+    "pageSubtitle": "看作品、看服務內容、看品牌資訊，找到適合你的美業職人。",
+    "metaTitleSuffix": "美業職人目錄",
+    "metaDescription": "搜尋 SoloBeauté 上的職人品牌頁、作品與服務內容，直接前往品牌頁聯繫職人。",
     "resultsUnit": "位職人",
+    "directoryTitle": "導流頁面",
+    "directoryBody": "預約請直接透過職人的個人管道聯繫。網站先幫你找到人，後續由你與職人自行確認。",
+    "directoryTagline": "DIRECT CONTACT",
     "allCities": "全部城市",
     "districtPlaceholder": "行政區",
     "allCategories": "全部類別",
     "keywordPlaceholder": "關鍵字",
     "verifiedOnly": "只看已認證",
+    "sortLabel": "排序方式",
     "apply": "套用篩選",
     "loadMore": "載入更多",
     "previousPage": "上一頁",

@@ -49,12 +49,14 @@ export function FaqSection() {
   const items = t.raw('items') as FaqItemData[]
 
   return (
-    <section className="faq">
+    <section className="faq" id="faq">
       <div className="container">
-        <Reveal>
-          <p className="section-tag">{t('sectionTag')}</p>
-          <h2 className="section-title">{t('title')}</h2>
-        </Reveal>
+        <div className="faq__intro">
+          <Reveal>
+            <p className="section-tag">{t('sectionTag')}</p>
+            <h2 className="section-title">{t('title')}</h2>
+          </Reveal>
+        </div>
 
         <div className="faq__list">
           {items.map((item, index) => (

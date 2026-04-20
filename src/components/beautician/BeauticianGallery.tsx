@@ -3,7 +3,7 @@
 import type { TouchEvent } from 'react'
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 type BeauticianGalleryProps = {
   images: string[]
@@ -39,11 +39,11 @@ export function BeauticianGallery({ images, displayName }: BeauticianGalleryProp
     setActiveIndex(index)
   }
 
-  function closeViewer() {
+  const closeViewer = useCallback(() => {
     setActiveIndex(null)
-  }
+  }, [])
 
-  function showPrevious() {
+  const showPrevious = useCallback(() => {
     setActiveIndex((current) => {
       if (current === null || current <= 0) {
         return current
@@ -51,9 +51,9 @@ export function BeauticianGallery({ images, displayName }: BeauticianGalleryProp
 
       return current - 1
     })
-  }
+  }, [])
 
-  function showNext() {
+  const showNext = useCallback(() => {
     setActiveIndex((current) => {
       if (current === null || current >= images.length - 1) {
         return current
@@ -61,7 +61,7 @@ export function BeauticianGallery({ images, displayName }: BeauticianGalleryProp
 
       return current + 1
     })
-  }
+  }, [images.length])
 
   function handleTouchStart(event: TouchEvent<HTMLDivElement>) {
     touchStartXRef.current = event.changedTouches[0]?.clientX ?? null
@@ -99,6 +99,7 @@ export function BeauticianGallery({ images, displayName }: BeauticianGalleryProp
     })
 
     document.body.style.overflow = 'hidden'
+    const restoreTargets = triggerRefs.current
 
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key === 'Escape') {
@@ -131,10 +132,10 @@ export function BeauticianGallery({ images, displayName }: BeauticianGalleryProp
 
       const triggerIndex = lastFocusedIndexRef.current
       if (triggerIndex !== null) {
-        triggerRefs.current[triggerIndex]?.focus()
+        restoreTargets[triggerIndex]?.focus()
       }
     }
-  }, [images.length, isOpen])
+  }, [closeViewer, images.length, isOpen, showNext, showPrevious])
 
   return (
     <>

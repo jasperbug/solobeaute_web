@@ -111,17 +111,34 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   const localizedCategory = categoryKey && categoryKey !== params.category
     ? t(`search.categoryLabels.${categoryKey}`)
     : params.category
-  const headingBits = [params.city, params.district, localizedCategory, response.pagination.total ? `${response.pagination.total} ${t('search.resultsUnit')}` : null].filter(Boolean)
+  const headingPrefix = [params.city, params.district].filter(Boolean).join(' · ')
+  const pageHeading = headingPrefix
+    ? t('search.locationTitle', { location: headingPrefix })
+    : t('search.pageTitle')
+  const resultSummary = [localizedCategory, response.pagination.total ? `${response.pagination.total} ${t('search.resultsUnit')}` : null]
+    .filter(Boolean)
+    .join(' · ')
 
   return (
-    <main className="bg-[var(--color-bg)] pb-20 pt-32">
-      <div className="container space-y-8">
-        <div className="space-y-3">
-          <p className="section-tag">{t('search.sectionTag')}</p>
-          <h1 className="text-balance text-3xl font-semibold text-ink md:text-4xl">
-            {headingBits.length > 0 ? headingBits.join(' · ') : t('search.pageTitle')}
-          </h1>
-          <p className="text-sm leading-7 text-black/60">{t('search.pageSubtitle')}</p>
+    <main className="search-directory">
+      <div className="container">
+        <div className="search-directory__hero">
+          <div className="search-directory__copy">
+            <p className="section-tag">{t('search.sectionTag')}</p>
+            <h1 className="search-directory__title">{pageHeading}</h1>
+            <p className="search-directory__subtitle">{t('search.pageSubtitle')}</p>
+            {resultSummary ? (
+              <p className="search-directory__summary">{resultSummary}</p>
+            ) : null}
+          </div>
+
+          <div className="search-directory__notice">
+            <div>
+              <p className="search-directory__notice-title">{t('search.directoryTitle')}</p>
+              <p className="search-directory__notice-body">{t('search.directoryBody')}</p>
+            </div>
+            <p className="search-directory__notice-tag">{t('search.directoryTagline')}</p>
+          </div>
         </div>
 
         <SearchFilters initialValues={params} />
@@ -134,7 +151,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
             ctaLabel={t('search.emptyCta')}
           />
         ) : (
-          <div className="grid gap-5 lg:grid-cols-2">
+          <div className="search-directory__results">
             {response.data.map((beautician) => (
               <BeauticianCard key={beautician.id} beautician={beautician} />
             ))}
@@ -142,7 +159,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
         )}
 
         {response.data.length > 0 && response.pagination.totalPages > 1 ? (
-          <div className="flex justify-center">
+          <div className="search-directory__pagination">
             <Pagination
               currentPage={response.pagination.page}
               totalPages={response.pagination.totalPages}

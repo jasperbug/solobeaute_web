@@ -6,6 +6,7 @@ import { useState } from 'react'
 
 import { CATEGORY_OPTIONS, CITY_OPTIONS } from '@/lib/constants'
 import type { BeauticianSearchParams } from '@/lib/types'
+import { SearchIcon } from '../ui/Icons'
 
 type SearchFiltersProps = {
   initialValues: BeauticianSearchParams
@@ -54,74 +55,81 @@ export function SearchFilters({ initialValues }: SearchFiltersProps) {
   }
 
   return (
-    <div className="sb-card grid gap-3 p-4 md:grid-cols-2 xl:grid-cols-7">
-      <select
-        className="rounded-lg border border-black/10 px-3 py-3 text-sm"
-        value={city}
-        onChange={(event) => setCity(event.target.value)}
-        aria-label={t('allCities')}
-      >
-        <option value="">{t('allCities')}</option>
-        {CITY_OPTIONS.map((option) => (
-          <option key={option} value={option}>{option}</option>
-        ))}
-      </select>
+    <div className="search-filters">
+      <div className="search-filters__controls">
+        <label className="search-filters__field search-filters__field--search">
+          <SearchIcon className="search-filters__icon" />
+          <input
+            className="search-filters__input"
+            placeholder={t('keywordPlaceholder')}
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+            aria-label={t('keywordPlaceholder')}
+          />
+        </label>
 
-      <input
-        className="rounded-lg border border-black/10 px-3 py-3 text-sm"
-        placeholder={t('districtPlaceholder')}
-        value={district}
-        onChange={(event) => setDistrict(event.target.value)}
-        aria-label={t('districtPlaceholder')}
-      />
+        <select
+          className="search-filters__field search-filters__select"
+          value={city}
+          onChange={(event) => setCity(event.target.value)}
+          aria-label={t('allCities')}
+        >
+          <option value="">{t('allCities')}</option>
+          {CITY_OPTIONS.map((option) => (
+            <option key={option} value={option}>{option}</option>
+          ))}
+        </select>
 
-      <select
-        className="rounded-lg border border-black/10 px-3 py-3 text-sm"
-        value={category}
-        onChange={(event) => setCategory(event.target.value)}
-        aria-label={t('allCategories')}
-      >
-        <option value="">{t('allCategories')}</option>
-        {CATEGORY_OPTIONS.map((option) => (
-          <option key={option.value} value={option.value}>{t(`categoryLabels.${option.labelKey}`)}</option>
-        ))}
-      </select>
+        <input
+          className="search-filters__field search-filters__input"
+          placeholder={t('districtPlaceholder')}
+          value={district}
+          onChange={(event) => setDistrict(event.target.value)}
+          aria-label={t('districtPlaceholder')}
+        />
 
-      <input
-        className="rounded-lg border border-black/10 px-3 py-3 text-sm"
-        placeholder={t('keywordPlaceholder')}
-        value={search}
-        onChange={(event) => setSearch(event.target.value)}
-        aria-label={t('keywordPlaceholder')}
-      />
+        <select
+          className="search-filters__field search-filters__select"
+          value={category}
+          onChange={(event) => setCategory(event.target.value)}
+          aria-label={t('allCategories')}
+        >
+          <option value="">{t('allCategories')}</option>
+          {CATEGORY_OPTIONS.map((option) => (
+            <option key={option.value} value={option.value}>{t(`categoryLabels.${option.labelKey}`)}</option>
+          ))}
+        </select>
 
-      <select
-        className="rounded-lg border border-black/10 px-3 py-3 text-sm"
-        value={sortBy}
-        onChange={(event) => setSortBy(normalizeSortBy(event.target.value))}
-        aria-label={t('sort.newest')}
-      >
-        <option value="newest">{t('sort.newest')}</option>
-        <option value="priceAsc">{t('sort.priceAsc')}</option>
-        <option value="priceDesc">{t('sort.priceDesc')}</option>
-      </select>
+        <select
+          className="search-filters__field search-filters__select"
+          value={sortBy}
+          onChange={(event) => setSortBy(normalizeSortBy(event.target.value))}
+          aria-label={t('sortLabel')}
+        >
+          <option value="newest">{t('sort.newest')}</option>
+          <option value="priceAsc">{t('sort.priceAsc')}</option>
+          <option value="priceDesc">{t('sort.priceDesc')}</option>
+        </select>
 
-      <button
-        type="button"
-        className={`rounded-lg border px-4 py-3 text-sm font-medium ${verified ? 'border-brand bg-brand/10 text-brand' : 'border-black/10 text-black/55'}`}
-        onClick={() => setVerified((value) => !value)}
-        aria-pressed={verified}
-      >
-        {t('verifiedOnly')}
-      </button>
+        <button
+          type="button"
+          className={`search-filters__field search-filters__toggle ${verified ? 'search-filters__toggle--active' : ''}`}
+          onClick={() => setVerified((value) => !value)}
+          aria-pressed={verified}
+        >
+          {t('verifiedOnly')}
+        </button>
+      </div>
 
-      <button
-        type="button"
-        onClick={applyFilters}
-        className="rounded-lg bg-brand px-4 py-3 text-sm font-medium text-white transition hover:bg-brand-light xl:col-span-7"
-      >
-        {t('apply')}
-      </button>
+      <div className="search-filters__actions">
+        <button
+          type="button"
+          onClick={applyFilters}
+          className="search-filters__submit"
+        >
+          {t('apply')}
+        </button>
+      </div>
     </div>
   )
 }

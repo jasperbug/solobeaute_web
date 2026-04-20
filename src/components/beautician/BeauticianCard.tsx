@@ -59,7 +59,7 @@ export function BeauticianCard({ beautician }: BeauticianCardProps) {
               <div className="flex flex-wrap items-center gap-2">
                 <h2 className="line-clamp-2 text-xl font-semibold text-ink">{beautician.displayName}</h2>
                 {beautician.reviewStatus === 'APPROVED' ? (
-                  <Badge>
+                  <Badge tone="verified">
                     <span className="inline-flex items-center gap-1">
                       <CheckCircleIcon className="h-4 w-4" />
                       {t('verified')}
@@ -88,7 +88,7 @@ export function BeauticianCard({ beautician }: BeauticianCardProps) {
           </div>
 
           {beautician.bio ? (
-            <p className="line-clamp-2 text-sm leading-7 text-black/65">{beautician.bio}</p>
+            <p className="line-clamp-2 text-sm leading-7 text-[var(--fg-2)]">{beautician.bio}</p>
           ) : null}
 
           {previewImages.length > 0 ? (
@@ -102,7 +102,7 @@ export function BeauticianCard({ beautician }: BeauticianCardProps) {
           ) : null}
 
           <div className="mt-auto flex flex-wrap items-center justify-between gap-4 pt-2">
-            <p className="text-xs text-black/45">{t('profileLinkHint')}</p>
+            <p className="text-xs text-[var(--fg-3)]">{t('profileLinkHint')}</p>
             <Link
               href={`/beautician/${beautician.slug ?? beautician.id}`}
               className="inline-flex min-h-11 items-center rounded-lg border border-brand px-4 text-sm font-medium text-brand transition hover:bg-brand hover:text-white"

@@ -118,7 +118,7 @@ export default async function BeauticianBrandPage({ params }: BrandPageProps) {
                 <div className="flex flex-wrap items-center gap-3">
                   <h1 className="text-3xl font-semibold text-ink md:text-4xl">{beautician.displayName}</h1>
                   {beautician.reviewStatus === 'APPROVED' ? (
-                    <Badge>
+                    <Badge tone="verified">
                       <span className="inline-flex items-center gap-1">
                         <CheckCircleIcon className="h-4 w-4" />
                         {t('beautician.verified')}

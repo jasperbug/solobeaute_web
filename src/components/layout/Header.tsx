@@ -51,13 +51,15 @@ export function Header() {
       { href: pathname === '/' ? '#features' : '/#features', label: t('nav.features') },
       { href: pathname === '/' ? '#how-it-works' : '/#how-it-works', label: t('nav.howItWorks') },
       { href: pathname === '/' ? '#about' : '/#about', label: t('nav.about') },
+      { href: pathname === '/' ? '#faq' : '/#faq', label: t('nav.faq') },
       { href: '/search', label: t('nav.discover') },
     ],
     [pathname, t]
   )
 
   function setLocaleCookie(nextLocale: AppLocale) {
-    document.cookie = `${LOCALE_COOKIE_NAME}=${nextLocale}; path=/; max-age=31536000; samesite=lax; secure`
+    const secure = window.location.protocol === 'https:' ? '; secure' : ''
+    document.cookie = `${LOCALE_COOKIE_NAME}=${nextLocale}; path=/; max-age=31536000; samesite=lax${secure}`
     router.refresh()
   }
 
@@ -84,10 +86,6 @@ export function Header() {
         </div>
 
         <div className="nav__right">
-          <Link href="/login" className="hidden text-xs text-[var(--color-text-secondary)] md:inline-flex">
-            {t('nav.login')}
-          </Link>
-
           <div className="lang-picker" ref={langRef}>
             <button className="nav__lang" onClick={() => setLangOpen((open) => !open)} type="button" aria-expanded={langOpen} aria-haspopup="true" aria-label={currentLanguage.label}>
               <GlobeIcon className="h-4 w-4" />
@@ -120,7 +118,7 @@ export function Header() {
             href={APP_STORE_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-primary btn--sm"
+            className="btn-dark btn--sm"
           >
             <AppleIcon className="h-[18px] w-[18px]" />
             {t('nav.download')}

@@ -1,6 +1,5 @@
 'use client'
 
-import Image from 'next/image'
 import { useTranslations } from 'next-intl'
 
 import { APP_STORE_URL } from '@/lib/constants'
@@ -15,10 +14,10 @@ export function CtaSection() {
       <div className="container">
         <Reveal>
           <div className="cta__inner">
-            <Image src="/images/brand/logo.png" alt="SoloBeauté" className="cta__logo" width={52} height={52} />
+            <p className="cta__tag">{t('tag')}</p>
             <h2 className="cta__title">{t('title')}</h2>
             <p className="cta__sub">{t('subtitle')}</p>
-            <a href={APP_STORE_URL} target="_blank" rel="noopener noreferrer" className="btn-primary btn--lg">
+            <a href={APP_STORE_URL} target="_blank" rel="noopener noreferrer" className="btn-light">
               <AppleIcon className="h-[18px] w-[18px]" />
               {t('button')}
             </a>

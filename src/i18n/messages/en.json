@@ -4,112 +4,140 @@
     "features": "Features",
     "howItWorks": "How It Works",
     "about": "About",
+    "faq": "FAQ",
     "discover": "Find a Pro",
-    "download": "Download",
+    "download": "Download iOS App",
     "login": "Log in"
   },
   "hero": {
-    "tagline": "The independent stage for beauty pros",
-    "title1": "Your beauty space,",
-    "title2": "one tap away.",
-    "subtitle": "Beauty Everyway\nthe right space and the right people, for every service",
-    "cta": "Download Now",
-    "ctaSub": "Start your beauty journey"
+    "kicker": "TAIWAN · iOS",
+    "title1": "The independent stage",
+    "title2": "for beauty pros",
+    "subtitle": "No more calling studio after studio. Open the app, browse spaces, pricing, and real views, then message the host directly. Rent when you have clients. Rest when you don't.",
+    "cta": "Download iOS App",
+    "secondaryCta": "I'm a Host",
+    "listAlt": "SoloBeauté space list view",
+    "listCaption": "LIST",
+    "mapAlt": "SoloBeauté map search view",
+    "mapCaption": "MAP",
+    "arAlt": "SoloBeauté 3D tour view",
+    "arCaption": "3D TOUR"
   },
   "ecosystem": {
-    "sectionTag": "Three roles, one stage",
-    "title": "One SoloBeauté, three winners",
-    "subtitle": "We solve pain points for every role in the beauty industry",
-    "host": {
-      "role": "Space Host",
-      "pain": "Your space is great — but it sits empty. No steady renters, no good management tools.",
-      "solution": "List your space, earn effortlessly",
-      "desc": "3D tours that make pros fall in love with your space. Smart pricing that finds the sweet spot. Automated management so you can stop refreshing your phone."
-    },
+    "sectionTag": "ECOSYSTEM",
+    "title": "Three roles, one flywheel",
+    "subtitle": "SoloBeauté serves beauty pros first, helps hosts monetize idle capacity second, and adds consumer discovery as the next layer.",
     "beautician": {
-      "role": "Beauty Pro",
-      "pain": "Locked into expensive monthly leases, or scrambling to find last-minute spaces? You deserve better.",
-      "solution": "Rent flexibly, work independently",
-      "desc": "Rent when you have clients, rest when you don't. Build your own brand page — let clients follow you, not the salon."
+      "tag": "PRO",
+      "priority": "Our core customer",
+      "title": "Rent when you have clients. Rest when you don't.",
+      "desc": "Find workable spaces, confirm the details directly, and build a public brand page that belongs to you instead of the venue.",
+      "cta": "Download iOS App"
+    },
+    "host": {
+      "tag": "HOST",
+      "title": "Turn idle hours into revenue",
+      "desc": "Package the chairs, rooms, and time slots you already have, then make them bookable for beauty pros who actually need them.",
+      "cta": "Download iOS App"
     },
     "consumer": {
-      "role": "Consumer",
-      "badge": "Coming Soon",
-      "pain": "Want a great nail artist but your only options are word-of-mouth or luck. Booking is opaque, pricing uncertain.",
-      "solution": "Search safely, book transparently",
-      "desc": "Verified reviews, transparent pricing, secure payments — beauty on your terms"
+      "tag": "CLIENT",
+      "priority": "Coming soon · web only",
+      "title": "Find the right beauty pro",
+      "desc": "Browse portfolios, services, and brand details, then contact the pro directly through their own channel.",
+      "cta": "Find a Pro"
     }
   },
   "howItWorks": {
     "sectionTag": "How It Works",
-    "title": "Three steps to start your beauty journey",
+    "title": "Four steps to start doing business",
     "hostTab": "I'm a Host",
     "beauticianTab": "I'm a Beauty Pro",
     "hostSteps": [
       {
         "step": "01",
-        "title": "List Your Space",
-        "desc": "Upload photos, set availability & pricing. 3D tours make your space stand out"
+        "title": "Organize your space details",
+        "desc": "Prepare photos, equipment, available hours, and pricing so beauty pros can understand the offer at a glance."
       },
       {
         "step": "02",
-        "title": "Accept Bookings",
-        "desc": "Pros browse and book your space. Get notified automatically"
+        "title": "Publish rentable time slots",
+        "desc": "Put idle hours online so pros can reach you without weeks of back-and-forth messages."
       },
       {
         "step": "03",
-        "title": "Earn Passively",
-        "desc": "Secure payments settled automatically. Focus on what matters"
+        "title": "Receive direct inquiries",
+        "desc": "Interested pros contact you directly, confirm the fit, and move forward only when the match makes sense."
+      },
+      {
+        "step": "04",
+        "title": "Turn idle capacity into income",
+        "desc": "Increase utilization without rebuilding your whole operation around rental management."
       }
     ],
     "beauticianSteps": [
       {
         "step": "01",
-        "title": "Find a Space",
-        "desc": "Search by map, filter by equipment — find the perfect workspace"
+        "title": "Open the app and search",
+        "desc": "Browse areas, equipment, pricing, and real views so you can rule out bad-fit spaces faster."
       },
       {
         "step": "02",
-        "title": "Book & Go",
-        "desc": "Flexible hourly bookings. Start seeing clients the same day"
+        "title": "Contact the host directly",
+        "desc": "Ask the real questions before you commit instead of relying on referrals or calling one space at a time."
       },
       {
         "step": "03",
-        "title": "Build Your Brand",
-        "desc": "Create your brand page, showcase your work, and grow your business"
+        "title": "Rent flexibly and start taking clients",
+        "desc": "Book when you have demand and stop when you don't, without carrying a fixed studio cost every month."
+      },
+      {
+        "step": "04",
+        "title": "Build your own brand page",
+        "desc": "Show services, portfolio, and brand details so clients remember you, not just the room you worked in."
       }
     ]
   },
   "features": {
-    "sectionTag": "Features",
-    "title": "Built for the beauty industry",
+    "sectionTag": "FEATURES",
+    "title": "Make finding space genuinely usable",
     "items": [
       {
-        "title": "Map Search",
-        "desc": "Open the app and see every rentable beauty space nearby. Pricing, distance, equipment — all at a glance. No more calling around."
+        "tag": "01 · LIST",
+        "title": "See enough before you decide",
+        "desc": "List view, pricing, equipment, and area context live in one place, so you can make an early decision before reaching out."
       },
       {
-        "title": "Smart Filters",
-        "desc": "Need a beauty bed or a nail table? Want a shampoo station or a 3D tour? Set your filters, and we'll narrow it down to your perfect match."
+        "tag": "02 · MAP",
+        "title": "Think in working radius, not just addresses",
+        "desc": "Check which district fits today's clients, whether transit works, and whether the location still makes sense once the day gets busy."
       },
       {
-        "title": "In-App Chat",
-        "desc": "Found a space you like? Message the host directly. \"Do you provide towels?\" \"Is parking easy?\" Get answers before you book."
+        "tag": "03 · CHAT",
+        "title": "Message directly instead of relaying details",
+        "desc": "Ask about towels, equipment, parking, or entry rules without bouncing through three different channels."
       },
       {
-        "title": "Booking Management",
-        "desc": "Your schedule at a glance: Da'an District today, Zhongshan tomorrow. Pending, confirmed, completed — three statuses, crystal clear."
+        "tag": "04 · SCHEDULE",
+        "title": "Keep your work rhythm in your own hands",
+        "desc": "Know where you're working, what is confirmed, and what still needs follow-up so independent work stays manageable."
       }
     ]
   },
   "about": {
-    "sectionTag": "About Us",
-    "title": "Let's build the future\nof beauty together.",
-    "desc": "SoloBeauté wasn't dreamed up in an office. Jasper writes the code, Meigo works the market — one knows technology, the other knows the industry. We believe great beauty services aren't built with more features, but by people who truly understand the trade.",
-    "founder1": "Meigo — Co-Founder",
-    "founder1Desc": "Started as a beauty professional, managed studios, built industry connections. Now uses that frontline experience and network to match the right spaces with the right pros on SoloBeauté.",
-    "founder2": "Jasper — Founder",
-    "founder2Desc": "The coder."
+    "sectionTag": "ABOUT",
+    "title": "Building the future of beauty together",
+    "desc": "SoloBeauté did not come from a conference room deck. One founder understands systems, the other understands the day-to-day reality of Taiwan's beauty industry. The product is built to help pros actually start working and hosts actually start listing.",
+    "founder1": {
+      "name": "Jasper",
+      "role": "Builds the product",
+      "desc": "Designs the system, the website, and the app with one goal: remove friction so beauty pros can get to work faster."
+    },
+    "founder2": {
+      "name": "Meigo",
+      "role": "Beauty Professional",
+      "desc": "Has worked closely with beauty pros in Taiwan and understands how space, client work, and day-to-day operations really fit together."
+    }
   },
   "faq": {
     "sectionTag": "FAQ",
@@ -141,28 +169,40 @@
       },
       {
         "q": "How is SoloBeauté different from other shared spaces?",
-        "a": "We don't just help you find a space. SoloBeauté also helps pros build personal brand pages, manage bookings, and organize their portfolio and brand presence. And our team has real beauty industry experience — Meigo is a former pro himself, so we understand your needs firsthand."
+        "a": "We do more than help you find a space. SoloBeauté also helps pros build a brand page, manage bookings, and organize their portfolio and brand presence. More importantly, our team understands the beauty industry firsthand. Meigo has worked on the front line, so we are not guessing at what pros actually need."
       }
     ]
   },
   "cta": {
-    "title": "Your next step starts here",
-    "subtitle": "Whether you're a host looking to rent out your space, or a pro ready to go independent — SoloBeauté is where you begin.",
-    "button": "Download App",
+    "tag": "Ready when you are",
+    "title": "Your next workspace, your next client",
+    "subtitle": "Download the SoloBeauté iOS app to find space, take clients, and build a brand page that feels like your own business.",
+    "button": "Download iOS App",
     "iosHint": "Currently available on iOS. Android coming soon."
   },
   "footer": {
-    "slogan": "The independent stage for beauty pros",
-    "contact": "Contact Us",
-    "email": "meigo@solobeaute.com",
-    "legal": "Privacy Policy",
+    "slogan": "The independent stage for beauty pros in Taiwan",
+    "description": "Find space, work independently, build a business.",
+    "productTitle": "Product",
+    "productFindPros": "Find a Pro",
+    "productDownload": "Download iOS App",
+    "aboutTitle": "About",
+    "aboutUs": "About Us",
+    "faq": "FAQ",
+    "legalTitle": "Legal",
+    "privacy": "Privacy Policy",
     "terms": "Terms of Service",
+    "support": "Support",
     "rights": "© 2026 SoloBeauté. All rights reserved.",
-    "instagram": "Instagram",
-    "line": "LINE Official"
+    "madeIn": "Made in Taipei · Taipei · Taichung · Kaohsiung"
   },
   "common": {
-    "backHome": "Back Home"
+    "backHome": "Back Home",
+    "openPreview": "Open preview",
+    "closePreview": "Close preview",
+    "previousPreview": "Previous preview",
+    "nextPreview": "Next preview",
+    "previewCount": "{current} / {total}"
   },
   "homeSearch": {
     "keywordPlaceholder": "Search nail, lash, hair...",
@@ -192,17 +232,22 @@
     "availableOnline": "Available"
   },
   "search": {
-    "sectionTag": "Search Results",
-    "pageTitle": "Discover Beauty Pros",
-    "pageSubtitle": "Filter by location, category and verification to find the right SoloBeauté pro.",
-    "metaTitleSuffix": "beauty pros",
-    "metaDescription": "Search SoloBeauté for beauty pros, services, and public brand pages.",
+    "sectionTag": "DIRECTORY",
+    "pageTitle": "Beauty Pro Directory",
+    "locationTitle": "Beauty Pros in {location}",
+    "pageSubtitle": "Browse portfolios, services, and brand details to find the right beauty pro.",
+    "metaTitleSuffix": "beauty pro directory",
+    "metaDescription": "Search SoloBeauté for beauty pro brand pages, portfolios, and service details, then contact the pro directly.",
     "resultsUnit": "pros",
+    "directoryTitle": "Directory page",
+    "directoryBody": "Bookings happen through each pro's own channel. The website helps you find the right person, then takes you to their brand page.",
+    "directoryTagline": "DIRECT CONTACT",
     "allCities": "All cities",
     "districtPlaceholder": "District",
     "allCategories": "All categories",
     "keywordPlaceholder": "Keyword",
     "verifiedOnly": "Verified only",
+    "sortLabel": "Sort results",
     "apply": "Apply filters",
     "loadMore": "Load more",
     "previousPage": "Previous",
