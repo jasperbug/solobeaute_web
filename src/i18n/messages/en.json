@@ -18,6 +18,8 @@
     "detail": "Rent beauty workspaces by the hour. Open the app to compare spaces, pricing, and 3D tours, then message hosts directly.",
     "cta": "Download iOS App",
     "secondaryCta": "I'm a Host",
+    "proCta": "I'm a Beauty Pro",
+    "hostCta": "I'm a Space Host",
     "listAlt": "SoloBeauté space list view",
     "listCaption": "LIST",
     "mapAlt": "SoloBeauté map search view",
@@ -174,6 +176,23 @@
         "a": "We do more than help you find a space. SoloBeauté also helps pros build a brand page, manage bookings, and organize their portfolio and brand presence. More importantly, our team understands the beauty industry firsthand. Meigo has worked on the front line, so we are not guessing at what pros actually need."
       }
     ]
+  },
+  "calculator": {
+    "sectionTag": "ROI CALCULATOR",
+    "title": "Estimate your idle space earnings",
+    "subtitle": "Rent out your idle beauty chair, treatment room, or entire salon to independent pros. Drag the slider to see your potential passive income.",
+    "spaceLabel": "Select Space Type",
+    "hoursLabel": "Estimated hours rentable per week",
+    "hoursUnit": "hours / week",
+    "resultTitle": "Estimated Passive Income / Month",
+    "cta": "Download the App to Start Earning",
+    "hint": "*Calculated based on standard market hourly rental rates in Taiwan (hair chair $180/hr, spa treatment room $250/hr, nail desk $150/hr, full salon studio $500/hr). Actual revenue depends on your pricing, equipment, and market demand.",
+    "types": {
+      "chair": "Hair Chair / Beauty Bed",
+      "room": "SPA Treatment Room",
+      "nailDesk": "Nail / Lash Desk",
+      "studio": "Full Salon Studio"
+    }
   },
   "cta": {
     "tag": "Ready when you are",

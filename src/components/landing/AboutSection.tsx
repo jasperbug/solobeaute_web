@@ -30,7 +30,9 @@ export async function AboutSection() {
             <div className="about__founders">
               {founders.map((founder) => (
                 <div className="about__founder" key={founder.key}>
-                  <div className={founder.className}>{founder.initial}</div>
+                  <div className={founder.className}>
+                    <span className="relative z-10">{founder.initial}</span>
+                  </div>
                   <h3 className="about__name">{t(`${founder.key}.name`)}</h3>
                   <p className="about__role">{t(`${founder.key}.role`)}</p>
                   <p className="about__bio">{t(`${founder.key}.desc`)}</p>

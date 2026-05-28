@@ -1,7 +1,7 @@
 'use client'
 
 import { AnimatePresence, motion } from 'framer-motion'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslations } from 'next-intl'
 
 import { HomeIcon, ScissorsIcon } from '../ui/Icons'
@@ -16,6 +16,17 @@ type StepItem = {
 export function HowItWorksSection() {
   const t = useTranslations('howItWorks')
   const [tab, setTab] = useState<'host' | 'beautician'>('host')
+
+  useEffect(() => {
+    const handleSwitchTab = (event: Event) => {
+      const customEvent = event as CustomEvent<'host' | 'beautician'>
+      if (customEvent.detail) {
+        setTab(customEvent.detail)
+      }
+    }
+    window.addEventListener('switch-hiw-tab', handleSwitchTab)
+    return () => window.removeEventListener('switch-hiw-tab', handleSwitchTab)
+  }, [])
 
   const steps = (
     tab === 'host'

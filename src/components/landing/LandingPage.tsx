@@ -1,4 +1,5 @@
 import { AboutSection } from './AboutSection'
+import { CalculatorSection } from './CalculatorSection'
 import { CtaSection } from './CtaSection'
 import { EcosystemSection } from './EcosystemSection'
 import { FaqSection } from './FaqSection'
@@ -13,6 +14,7 @@ export function LandingPage() {
       <EcosystemSection />
       <FeaturesSection />
       <HowItWorksSection />
+      <CalculatorSection />
       <AboutSection />
       <FaqSection />
       <CtaSection />
