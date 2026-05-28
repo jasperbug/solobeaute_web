@@ -1432,7 +1432,7 @@
     display: none;
     position: fixed;
     inset: 0;
-    z-index: 99;
+    z-index: 999;
     padding: 110px 24px 40px;
     background: rgba(250, 250, 247, 0.97);
     backdrop-filter: blur(20px);
@@ -1452,13 +1452,17 @@
     color: var(--fg-1);
   }
 
+  .nav__mobile-menu .btn-dark {
+    color: #FFFFFF !important;
+  }
+
   .btn--sm {
     display: none;
   }
 
   .hamburger {
     display: flex;
-    z-index: 101;
+    z-index: 1000;
   }
 
   .hamburger--open span:nth-child(1) {

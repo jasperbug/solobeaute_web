@@ -64,78 +64,80 @@ export function Header() {
   }
 
   return (
-    <nav className={`nav ${scrolled ? 'nav--scrolled' : ''}`}>
-      <div className="nav__inner container">
-        <Link href="/" className="nav__logo" onClick={() => setMobileMenu(false)}>
-          <Image src="/images/brand/logo.png" alt="SoloBeauté" width={30} height={30} priority />
-          <span>SoloBeauté</span>
-        </Link>
+    <>
+      <nav className={`nav ${scrolled ? 'nav--scrolled' : ''}`}>
+        <div className="nav__inner container">
+          <Link href="/" className="nav__logo" onClick={() => setMobileMenu(false)}>
+            <Image src="/images/brand/logo.png" alt="SoloBeauté" width={30} height={30} priority />
+            <span>SoloBeauté</span>
+          </Link>
 
-        <div className="md:hidden">
-          <MobileNav isOpen={mobileMenu} nav={navLinks} onNavigate={() => setMobileMenu(false)} />
-        </div>
-
-        <div className="hidden items-center gap-8 md:flex">
-          <div className="nav__links">
-            {navLinks.map((item) => (
-              <Link key={item.href} href={item.href}>
-                {item.label}
-              </Link>
-            ))}
-          </div>
-        </div>
-
-        <div className="nav__right">
-          <div className="lang-picker" ref={langRef}>
-            <button className="nav__lang" onClick={() => setLangOpen((open) => !open)} type="button" aria-expanded={langOpen} aria-haspopup="true" aria-label={currentLanguage.label}>
-              <GlobeIcon className="h-4 w-4" />
-              <span>{currentLanguage.short}</span>
-              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <polyline points="6 9 12 15 18 9" />
-              </svg>
-            </button>
-
-            {langOpen && (
-              <div className="lang-dropdown">
-                {LANGUAGE_OPTIONS.map((language) => (
-                  <button
-                    key={language.value}
-                    className={`lang-dropdown__item ${language.value === locale ? 'lang-dropdown__item--active' : ''}`}
-                    onClick={() => {
-                      setLocaleCookie(language.value)
-                      setLangOpen(false)
-                    }}
-                    type="button"
-                  >
-                    {language.label}
-                  </button>
-                ))}
-              </div>
-            )}
+          <div className="hidden items-center gap-8 md:flex">
+            <div className="nav__links">
+              {navLinks.map((item) => (
+                <Link key={item.href} href={item.href}>
+                  {item.label}
+                </Link>
+              ))}
+            </div>
           </div>
 
-          <a
-            href={APP_STORE_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-dark btn--sm"
+          <div className="nav__right">
+            <div className="lang-picker" ref={langRef}>
+              <button className="nav__lang" onClick={() => setLangOpen((open) => !open)} type="button" aria-expanded={langOpen} aria-haspopup="true" aria-label={currentLanguage.label}>
+                <GlobeIcon className="h-4 w-4" />
+                <span>{currentLanguage.short}</span>
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <polyline points="6 9 12 15 18 9" />
+                </svg>
+              </button>
+
+              {langOpen && (
+                <div className="lang-dropdown">
+                  {LANGUAGE_OPTIONS.map((language) => (
+                    <button
+                      key={language.value}
+                      className={`lang-dropdown__item ${language.value === locale ? 'lang-dropdown__item--active' : ''}`}
+                      onClick={() => {
+                        setLocaleCookie(language.value)
+                        setLangOpen(false)
+                      }}
+                      type="button"
+                    >
+                      {language.label}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <a
+              href={APP_STORE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-dark btn--sm"
+            >
+              <AppleIcon className="h-[18px] w-[18px]" />
+              {t('nav.download')}
+            </a>
+          </div>
+
+          <button
+            className={`hamburger ${mobileMenu ? 'hamburger--open' : ''}`}
+            onClick={() => setMobileMenu((open) => !open)}
+            aria-label="Menu"
+            type="button"
           >
-            <AppleIcon className="h-[18px] w-[18px]" />
-            {t('nav.download')}
-          </a>
+            <span />
+            <span />
+            <span />
+          </button>
         </div>
+      </nav>
 
-        <button
-          className={`hamburger ${mobileMenu ? 'hamburger--open' : ''}`}
-          onClick={() => setMobileMenu((open) => !open)}
-          aria-label="Menu"
-          type="button"
-        >
-          <span />
-          <span />
-          <span />
-        </button>
+      <div className="md:hidden">
+        <MobileNav isOpen={mobileMenu} nav={navLinks} onNavigate={() => setMobileMenu(false)} />
       </div>
-    </nav>
+    </>
   )
 }
