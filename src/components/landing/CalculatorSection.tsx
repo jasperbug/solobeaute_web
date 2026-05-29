@@ -64,6 +64,7 @@ export function CalculatorSection() {
                     key={space.key}
                     type="button"
                     onClick={() => setSpaceType(space.key)}
+                    aria-pressed={spaceType === space.key}
                     className={`calc-type-btn ${spaceType === space.key ? 'calc-type-btn--active' : ''}`}
                   >
                     <div className="calc-type-btn__icon-wrap">
@@ -83,7 +84,7 @@ export function CalculatorSection() {
                 <div className="slider-header">
                   <span className="calc-sec__label">{t('hoursLabel')}</span>
                   <span className="slider-value">
-                    {hours} <span className="text-xs text-[var(--fg-3)] font-sans">{t('hoursUnit')}</span>
+                    {hours} <span className="text-xs text-[var(--fg-2)] font-sans">{t('hoursUnit')}</span>
                   </span>
                 </div>
                 <div className="slider-input-wrap">
@@ -105,11 +106,11 @@ export function CalculatorSection() {
             <div className="calc-result">
               <div className="space-y-1">
                 <p className="calc-result__label">{t('resultTitle')}</p>
-                <p className="text-xs text-[var(--fg-3)]">
+                <p className="text-xs text-[var(--fg-2)]">
                   {t(`types.${spaceType}`)} · NT${hourlyRate}/hr · {hours}hr/wk
                 </p>
               </div>
-              <div className="calc-result__value">
+              <div className="calc-result__value" aria-live="polite" aria-atomic="true">
                 {formatIncome(monthlyEarnings)}
                 <span className="calc-result__value-suffix"> / {locale === 'en' ? 'mo' : '月'}</span>
               </div>
