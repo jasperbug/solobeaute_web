@@ -159,6 +159,14 @@ button { font-family: inherit; cursor: pointer; border: none; outline: none; bac
   color: var(--color-brand);
 }
 
+/* Restore a visible keyboard focus ring (the global button reset above sets
+   outline:none, which removes it for every button). WCAG 2.4.7 Focus Visible. */
+.btn-primary:focus-visible,
+.btn-ghost:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 3px;
+}
+
 .btn-dark {
   display: inline-flex;
   align-items: center;

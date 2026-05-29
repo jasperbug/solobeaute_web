@@ -30,6 +30,16 @@ export function HeroSection() {
     { key: 'right', src: heroShots.ar3d, alt: t('hero.arAlt'), caption: t('hero.arCaption') },
   ] as const
 
+  const handleScrollAndSwitchTab = (targetTab: 'host' | 'beautician') => {
+    const el = document.getElementById('how-it-works')
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' })
+    }
+    // Dispatch custom event to let HowItWorksSection know it should switch tab
+    const event = new CustomEvent('switch-hiw-tab', { detail: targetTab })
+    window.dispatchEvent(event)
+  }
+
   return (
     <section className="hero">
       <div className="hero__inner container">
@@ -55,15 +65,27 @@ export function HeroSection() {
         </div>
 
         <Reveal delay={0.32} className="hero__lower">
-          <div className="hero__actions">
+          <div className="hero__actions flex flex-wrap gap-4 items-center">
             <a href={APP_STORE_URL} target="_blank" rel="noopener noreferrer" className="btn-primary">
               <AppleIcon className="h-[18px] w-[18px]" />
               {t('hero.cta')}
             </a>
-            <a href="#how-it-works" className="btn-ghost">
-              {t('hero.secondaryCta')}
+            <button
+              onClick={() => handleScrollAndSwitchTab('beautician')}
+              className="btn-ghost"
+              type="button"
+            >
+              {t('hero.proCta')}
               <ArrowRightIcon className="h-4 w-4" />
-            </a>
+            </button>
+            <button
+              onClick={() => handleScrollAndSwitchTab('host')}
+              className="btn-ghost"
+              type="button"
+            >
+              {t('hero.hostCta')}
+              <ArrowRightIcon className="h-4 w-4" />
+            </button>
           </div>
         </Reveal>
 
