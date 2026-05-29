@@ -17,7 +17,6 @@
     "promiseLine2": "都有最好的空間和最對的人。",
     "detail": "美業空間租賃。用小時租用已經備好的工作空間。打開 App，看空間、看價錢、看 3D 實景，直接訊息屋主。",
     "cta": "下載 iOS App",
-    "secondaryCta": "我是屋主",
     "proCta": "我是美業職人",
     "hostCta": "我是空間屋主",
     "listAlt": "SoloBeauté 空間列表畫面",
@@ -187,6 +186,8 @@
     "resultTitle": "預估每月增加被動收入",
     "cta": "立即下載 App 開始上架",
     "hint": "*此為依據台灣美業平均時租行情估計之數值（美髮椅 $180/hr、美容床 $250/hr、美甲桌 $150/hr、整間工作室 $500/hr）。實際收入依您的定價、設備及市場接受度而定。",
+    "rateDetail": "NT${rate}/小時 · {hours} 小時/週",
+    "perMonth": "月",
     "types": {
       "chair": "美髮椅 / 美容床",
       "room": "獨立美容包廂",

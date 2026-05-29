@@ -32,12 +32,11 @@ export function HeroSection() {
 
   const handleScrollAndSwitchTab = (targetTab: 'host' | 'beautician') => {
     const el = document.getElementById('how-it-works')
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' })
-    }
-    // Dispatch custom event to let HowItWorksSection know it should switch tab
-    const event = new CustomEvent('switch-hiw-tab', { detail: targetTab })
-    window.dispatchEvent(event)
+    if (!el) return
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' })
+    // Let HowItWorksSection know it should switch tab (kept coupled to the scroll)
+    window.dispatchEvent(new CustomEvent('switch-hiw-tab', { detail: targetTab }))
   }
 
   return (

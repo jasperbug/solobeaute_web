@@ -17,9 +17,13 @@ export function MobileNav({ isOpen, onNavigate, nav }: MobileNavProps) {
     <div
       className={`nav__mobile-menu ${isOpen ? 'nav__mobile-menu--open' : ''}`}
       onClick={onNavigate}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Menu"
+      aria-hidden={!isOpen}
     >
       {nav.map((item) => (
-        <Link key={item.href} href={item.href} onClick={onNavigate}>
+        <Link key={item.href} href={item.href}>
           {item.label}
         </Link>
       ))}
@@ -28,7 +32,6 @@ export function MobileNav({ isOpen, onNavigate, nav }: MobileNavProps) {
         target="_blank"
         rel="noopener noreferrer"
         className="btn-dark nav__mobile-action"
-        onClick={onNavigate}
       >
         <AppleIcon className="h-4 w-4" />
         {t('download')}

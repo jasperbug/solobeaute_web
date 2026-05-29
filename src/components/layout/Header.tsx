@@ -44,6 +44,21 @@ export function Header() {
     setLangOpen(false)
   }, [pathname])
 
+  // While the full-screen mobile menu is open, lock body scroll and allow Esc to close it.
+  useEffect(() => {
+    if (!mobileMenu) return
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setMobileMenu(false)
+    }
+    document.addEventListener('keydown', onKeyDown)
+    return () => {
+      document.body.style.overflow = previousOverflow
+      document.removeEventListener('keydown', onKeyDown)
+    }
+  }, [mobileMenu])
+
   const currentLanguage = LANGUAGE_OPTIONS.find((item) => item.value === locale) ?? LANGUAGE_OPTIONS[0]
 
   const navLinks = useMemo(
