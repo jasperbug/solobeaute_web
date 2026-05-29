@@ -14,7 +14,10 @@ export function MobileNav({ isOpen, onNavigate, nav }: MobileNavProps) {
   const t = useTranslations('nav')
 
   return (
-    <div className={`nav__mobile-menu ${isOpen ? 'nav__mobile-menu--open' : ''}`}>
+    <div
+      className={`nav__mobile-menu ${isOpen ? 'nav__mobile-menu--open' : ''}`}
+      onClick={onNavigate}
+    >
       {nav.map((item) => (
         <Link key={item.href} href={item.href} onClick={onNavigate}>
           {item.label}
