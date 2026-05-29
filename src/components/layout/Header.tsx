@@ -65,7 +65,7 @@ export function Header() {
 
   return (
     <>
-      <nav className={`nav ${scrolled ? 'nav--scrolled' : ''}`}>
+      <nav className={`nav ${scrolled ? 'nav--scrolled' : ''} ${mobileMenu ? 'nav--menu-open' : ''}`}>
         <div className="nav__inner container">
           <Link href="/" className="nav__logo" onClick={() => setMobileMenu(false)}>
             <Image src="/images/brand/logo.png" alt="SoloBeauté" width={30} height={30} priority />

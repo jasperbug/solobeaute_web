@@ -18,6 +18,15 @@
   border-bottom: 1px solid var(--color-border);
 }
 
+/* When the mobile menu is open, lift the whole bar (logo + close button) above
+   the full-screen overlay (z-index 999). The hamburger's own z-index is trapped
+   inside .nav's stacking context, so the close (X) icon was being painted over
+   by the overlay; raising .nav itself fixes it. The overlay reserves 110px of
+   top padding for this bar. */
+.nav--menu-open {
+  z-index: 1000;
+}
+
 .nav__inner {
   display: flex;
   align-items: center;
