@@ -1870,6 +1870,14 @@
   box-shadow: 0 3px 12px rgba(155, 107, 122, 0.5);
 }
 
+/* Firefox: style the rail explicitly to match Chrome (which renders the input's
+   own background as the track). */
+.calc-slider::-moz-range-track {
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(155, 107, 122, 0.08);
+}
+
 .calc-slider::-moz-range-thumb {
   width: 24px;
   height: 24px;

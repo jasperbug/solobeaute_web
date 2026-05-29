@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useLocale, useTranslations } from 'next-intl'
+import { useTranslations } from 'next-intl'
 
 import { APP_STORE_URL } from '@/lib/constants'
 import { CalendarIcon, HomeIcon, ScissorsIcon, StarIcon, AppleIcon } from '../ui/Icons'
@@ -15,21 +15,22 @@ interface SpaceConfig {
   icon: React.ReactNode
 }
 
+// Static config — hoisted to module scope so the icon elements aren't
+// re-instantiated on every render. Icons are decorative (aria-hidden).
+const SPACES: SpaceConfig[] = [
+  { key: 'chair', hourlyRate: 180, icon: <ScissorsIcon className="h-5 w-5" aria-hidden /> },
+  { key: 'room', hourlyRate: 250, icon: <HomeIcon className="h-5 w-5" aria-hidden /> },
+  { key: 'nailDesk', hourlyRate: 150, icon: <StarIcon className="h-5 w-5" aria-hidden /> },
+  { key: 'studio', hourlyRate: 500, icon: <CalendarIcon className="h-5 w-5" aria-hidden /> },
+]
+
 export function CalculatorSection() {
   const t = useTranslations('calculator')
-  const locale = useLocale()
-  
+
   const [spaceType, setSpaceType] = useState<SpaceType>('chair')
   const [hours, setHours] = useState<number>(15)
 
-  const spaces: SpaceConfig[] = [
-    { key: 'chair', hourlyRate: 180, icon: <ScissorsIcon className="h-5 w-5" /> },
-    { key: 'room', hourlyRate: 250, icon: <HomeIcon className="h-5 w-5" /> },
-    { key: 'nailDesk', hourlyRate: 150, icon: <StarIcon className="h-5 w-5" /> },
-    { key: 'studio', hourlyRate: 500, icon: <CalendarIcon className="h-5 w-5" /> },
-  ]
-
-  const activeSpace = spaces.find((s) => s.key === spaceType) ?? spaces[0]
+  const activeSpace = SPACES.find((s) => s.key === spaceType) ?? SPACES[0]
   const hourlyRate = activeSpace.hourlyRate
 
   // Calculation: Hourly Rate * Hours per week * 4.33 weeks per month
@@ -59,7 +60,7 @@ export function CalculatorSection() {
             <div className="calc-sec__group">
               <span className="calc-sec__label">{t('spaceLabel')}</span>
               <div className="calc-grid">
-                {spaces.map((space) => (
+                {SPACES.map((space) => (
                   <button
                     key={space.key}
                     type="button"
@@ -107,12 +108,12 @@ export function CalculatorSection() {
               <div className="space-y-1">
                 <p className="calc-result__label">{t('resultTitle')}</p>
                 <p className="text-xs text-[var(--fg-2)]">
-                  {t(`types.${spaceType}`)} · NT${hourlyRate}/hr · {hours}hr/wk
+                  {t(`types.${spaceType}`)} · {t('rateDetail', { rate: hourlyRate, hours })}
                 </p>
               </div>
               <div className="calc-result__value" aria-live="polite" aria-atomic="true">
                 {formatIncome(monthlyEarnings)}
-                <span className="calc-result__value-suffix"> / {locale === 'en' ? 'mo' : '月'}</span>
+                <span className="calc-result__value-suffix"> / {t('perMonth')}</span>
               </div>
             </div>
           </div>

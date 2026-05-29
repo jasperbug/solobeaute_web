@@ -17,7 +17,6 @@
     "promiseLine2": "the right space and the right match.",
     "detail": "Rent beauty workspaces by the hour. Open the app to compare spaces, pricing, and 3D tours, then message hosts directly.",
     "cta": "Download iOS App",
-    "secondaryCta": "I'm a Host",
     "proCta": "I'm a Beauty Pro",
     "hostCta": "I'm a Space Host",
     "listAlt": "SoloBeauté space list view",
@@ -187,6 +186,8 @@
     "resultTitle": "Estimated Passive Income / Month",
     "cta": "Download the App to Start Earning",
     "hint": "*Calculated based on standard market hourly rental rates in Taiwan (hair chair $180/hr, spa treatment room $250/hr, nail desk $150/hr, full salon studio $500/hr). Actual revenue depends on your pricing, equipment, and market demand.",
+    "rateDetail": "NT${rate}/hr · {hours}hr/wk",
+    "perMonth": "mo",
     "types": {
       "chair": "Hair Chair / Beauty Bed",
       "room": "SPA Treatment Room",
