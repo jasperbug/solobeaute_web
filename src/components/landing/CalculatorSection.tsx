@@ -36,11 +36,10 @@ export function CalculatorSection() {
   const monthlyEarnings = Math.round(hourlyRate * hours * 4.33)
 
   const formatIncome = (amount: number) => {
-    return new Intl.NumberFormat(locale === 'en' ? 'en-US' : 'zh-TW', {
-      style: 'currency',
-      currency: 'TWD',
-      maximumFractionDigits: 0,
-    }).format(amount)
+    // Always prefix an explicit "NT$" so the headline figure is unambiguous and
+    // matches the "NT$.../hr" detail line. (Intl currency:'TWD' renders a bare
+    // "$" under the zh-TW locale, which reads like USD to Taiwanese users.)
+    return `NT$${new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(amount)}`
   }
 
   return (

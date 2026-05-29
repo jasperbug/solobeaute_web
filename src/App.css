@@ -1866,6 +1866,23 @@
   box-shadow: 0 3px 12px rgba(155, 107, 122, 0.5);
 }
 
+/* Visible keyboard focus for the calculator controls (.calc-slider sets
+   outline:none above; the buttons inherit the global button outline reset).
+   WCAG 2.4.7 Focus Visible. */
+.calc-slider:focus-visible,
+.calc-type-btn:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 3px;
+}
+
+.calc-slider:focus-visible::-webkit-slider-thumb {
+  box-shadow: 0 0 0 4px rgba(155, 107, 122, 0.35);
+}
+
+.calc-slider:focus-visible::-moz-range-thumb {
+  box-shadow: 0 0 0 4px rgba(155, 107, 122, 0.35);
+}
+
 .calc-result {
   margin-top: 32px;
   padding-top: 32px;
