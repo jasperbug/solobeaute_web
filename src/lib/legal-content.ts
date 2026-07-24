@@ -61,6 +61,67 @@ export const legalContent = {
         },
       ],
     },
+    deleteAccount: {
+      eyebrow: '帳號與資料',
+      title: '刪除 SoloBeaute 帳號',
+      intro:
+        '你可以直接在 SoloBeaute App 內永久刪除帳號。若已無法登入，也可以在此頁面提出刪除申請；不需要重新安裝 App 或建立新帳號。',
+      updatedAt: '最後更新日期：2026 年 7 月 24 日',
+      action: {
+        label: '寄送帳號刪除申請',
+        href: 'mailto:meigo@solobeaute.com?subject=%5BSoloBeaute%5D%20Account%20Deletion%20Request',
+      },
+      metadata: [
+        { label: 'App 名稱', value: 'SoloBeaute' },
+        {
+          label: '刪除申請信箱',
+          value: 'meigo@solobeaute.com',
+          href: 'mailto:meigo@solobeaute.com?subject=%5BSoloBeaute%5D%20Account%20Deletion%20Request',
+        },
+      ],
+      sections: [
+        {
+          title: '方法一：在 App 內自行刪除',
+          points: [
+            '登入 SoloBeaute，點選底部導覽列的「我的」。',
+            '在帳號選單中點選「刪除帳號」。',
+            '閱讀刪除說明，勾選「我已了解刪除帳號是永久性的」。',
+            '輸入 DELETE，點選「永久刪除帳號」，並在最後確認視窗中選擇「刪除」。',
+          ],
+        },
+        {
+          title: '方法二：無法登入時從網頁申請',
+          paragraphs: [
+            '點選本頁的「寄送帳號刪除申請」，或寄信至 meigo@solobeaute.com，主旨請填寫「[SoloBeaute] 帳號刪除申請」。請提供註冊手機號碼或電子郵件，以及原本使用的登入方式（手機、Apple 或 Google），以便我們核對帳號所有權。',
+            '請勿在信件中提供密碼、簡訊驗證碼、信用卡完整卡號或 Apple／Google 帳號密碼。我們可能要求額外的非敏感資料確認帳號所有權；確認完成後，將於 30 日內處理刪除。',
+          ],
+        },
+        {
+          title: '刪除或匿名化的資料',
+          points: [
+            '登入權限、存取憑證、裝置推播 Token，以及 Apple／Google 帳號綁定資訊。',
+            '姓名、電話號碼、電子郵件、頭像、個人偏好、已儲存付款方式、收藏與封鎖清單。',
+            '公開的職人品牌資料、作品集與個人介紹會匿名化；空間與服務會停止公開展示。',
+            '可移除的個人照片與檔案會排入刪除流程。個人資料及備份副本最遲於 30 日內移除或匿名化。',
+          ],
+        },
+        {
+          title: '依法或為保障交易安全而保留的資料',
+          paragraphs: [
+            '依會計、稅務、交易、退款、申訴與防詐需求，預約、交易、發票、付款與必要的爭議處理紀錄可能保留至少 5 年，或依法令要求的更長期間。這些紀錄會與公開身份分離，不再用於登入、行銷或公開展示。',
+            '與交易、爭議、評論或訊息相關的最低必要紀錄，可能在移除直接識別資訊後保留，以維護其他使用者權益、處理申訴或遵守法律。無法再識別個人的彙總統計資料可能持續保留。',
+          ],
+        },
+        {
+          title: '刪除前請先確認',
+          points: [
+            '帳號刪除後無法復原，也無法再使用原帳號登入。',
+            '若仍有進行中的預約、退款、撥款或申訴，請先完成處理再刪除帳號。',
+            '若日後再次使用 SoloBeaute，需要重新註冊帳號。',
+          ],
+        },
+      ],
+    },
     privacy: {
       eyebrow: '隱私政策',
       title: 'SoloBeauté 隱私政策',
@@ -223,6 +284,67 @@ export const legalContent = {
         {
           q: 'How do I update my profile?',
           a: 'Go to the "My" page and tap your avatar or name to edit basic personal information. Professionals can update their brand introduction, portfolio, certifications, and social links in their "Brand Page". Hosts can edit space information, photos, and pricing in "My Spaces". To change your linked phone number or social accounts, go to "Settings > Account Linking".',
+        },
+      ],
+    },
+    deleteAccount: {
+      eyebrow: 'Account & data',
+      title: 'Delete your SoloBeaute account',
+      intro:
+        'You can permanently delete your account inside the SoloBeaute app. If you can no longer sign in, you can submit a deletion request from this page without reinstalling the app or creating another account.',
+      updatedAt: 'Last updated: July 24, 2026',
+      action: {
+        label: 'Email an account deletion request',
+        href: 'mailto:meigo@solobeaute.com?subject=%5BSoloBeaute%5D%20Account%20Deletion%20Request',
+      },
+      metadata: [
+        { label: 'App name', value: 'SoloBeaute' },
+        {
+          label: 'Deletion request email',
+          value: 'meigo@solobeaute.com',
+          href: 'mailto:meigo@solobeaute.com?subject=%5BSoloBeaute%5D%20Account%20Deletion%20Request',
+        },
+      ],
+      sections: [
+        {
+          title: 'Option 1: Delete your account in the app',
+          points: [
+            'Sign in to SoloBeaute and open “My” from the bottom navigation.',
+            'Select “Delete Account” from the account menu.',
+            'Review the deletion notice and acknowledge that account deletion is permanent.',
+            'Enter DELETE, select “Delete Account Permanently,” and confirm “Delete” in the final dialog.',
+          ],
+        },
+        {
+          title: 'Option 2: Request deletion if you cannot sign in',
+          paragraphs: [
+            'Select “Email an account deletion request” on this page, or email meigo@solobeaute.com with the subject “[SoloBeaute] Account Deletion Request.” Include the phone number or email registered to the account and whether you used phone, Apple, or Google sign-in so we can verify account ownership.',
+            'Never include your password, SMS verification code, full payment-card number, or Apple/Google password. We may request additional non-sensitive information to verify ownership. Once verified, we will complete the deletion within 30 days.',
+          ],
+        },
+        {
+          title: 'Data deleted or anonymized',
+          points: [
+            'Sign-in access, access credentials, device push tokens, and Apple/Google account links.',
+            'Name, phone number, email, avatar, preferences, saved payment methods, favorites, and block lists.',
+            'Public professional profile data, portfolios, and introductions are anonymized; spaces and services are removed from public display.',
+            'Removable personal photos and files are queued for deletion. Personal data and backup copies are removed or anonymized within 30 days.',
+          ],
+        },
+        {
+          title: 'Data retained for legal and transaction-safety purposes',
+          paragraphs: [
+            'Booking, transaction, invoice, payment, refund, dispute, and anti-fraud records may be retained for at least five years, or longer when required by law. These records are separated from your public identity and are not used for sign-in, marketing, or public display.',
+            'The minimum records necessary for transactions, disputes, reviews, or messages may be retained after direct identifiers are removed to protect other users, resolve disputes, or comply with law. Aggregated statistics that can no longer identify you may be retained.',
+          ],
+        },
+        {
+          title: 'Before deleting your account',
+          points: [
+            'Account deletion cannot be undone, and the original account cannot be used to sign in again.',
+            'Complete any active bookings, refunds, payouts, or disputes before deleting your account.',
+            'If you use SoloBeaute again, you will need to register a new account.',
+          ],
         },
       ],
     },

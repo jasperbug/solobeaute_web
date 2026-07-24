@@ -45,6 +45,33 @@
   font-weight: 500;
 }
 
+.legal-page__action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  margin-top: 22px;
+  padding: 0 22px;
+  border-radius: 999px;
+  background: var(--color-brand);
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.legal-page__action:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgb(128 40 73 / 18%);
+}
+
+.legal-page__action:focus-visible {
+  outline: 3px solid rgb(128 40 73 / 24%);
+  outline-offset: 3px;
+}
+
 .legal-page__body {
   padding: 40px 0 96px;
 }

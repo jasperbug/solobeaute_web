@@ -19,6 +19,7 @@ Next.js 14 App Router web frontend for `www.solobeaute.com`.
 - `/privacy`
 - `/terms`
 - `/support`
+- `/delete-account`
 - `/login`
 
 ## Commands

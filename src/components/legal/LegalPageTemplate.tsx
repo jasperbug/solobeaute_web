@@ -3,19 +3,21 @@ import { useLocale } from 'next-intl'
 
 import { legalContent } from '@/lib/legal-content'
 
-type LegalType = 'support' | 'privacy' | 'terms'
+type LegalType = 'support' | 'privacy' | 'terms' | 'deleteAccount'
 
 const uiCopy = {
   zh: {
     support: '客服支援',
     privacy: '隱私政策',
     terms: '服務條款',
+    deleteAccount: '刪除帳號',
     faq: '常見問題',
   },
   en: {
     support: 'Support',
     privacy: 'Privacy',
     terms: 'Terms',
+    deleteAccount: 'Delete account',
     faq: 'FAQ',
   },
 } as const
@@ -39,7 +41,13 @@ export function LegalPageTemplate({ type }: { type: LegalType }) {
             <Link href="/support">{labels.support}</Link>
             <Link href="/privacy">{labels.privacy}</Link>
             <Link href="/terms">{labels.terms}</Link>
+            <Link href="/delete-account">{labels.deleteAccount}</Link>
           </div>
+          {'action' in content && content.action ? (
+            <a className="legal-page__action" href={content.action.href}>
+              {content.action.label}
+            </a>
+          ) : null}
         </div>
       </div>
 
