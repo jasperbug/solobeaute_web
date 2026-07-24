@@ -21,6 +21,7 @@ export function Footer() {
     { href: '/privacy', label: t('privacy') },
     { href: '/terms', label: t('terms') },
     { href: '/support', label: t('support') },
+    { href: '/delete-account', label: t('deleteAccount') },
   ]
 
   return (
