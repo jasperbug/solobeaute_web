@@ -1,4 +1,5 @@
 import { API_ORIGIN, APP_DEEP_LINK_SCHEME, SITE_URL } from './constants'
+import { encodePathSegment, normalizeSocialUrl } from './security'
 import type { BeauticianDetail, BeauticianSummary, PublicReview, ServiceArea, ShareEntityType, SpaceSummary } from './types'
 
 export function getDisplayInitials(name: string) {
@@ -61,11 +62,11 @@ export function getStartingPrice(profile: Pick<BeauticianSummary, 'services'>) {
 }
 
 export function buildShareUrl(type: ShareEntityType, id: string) {
-  return `${SITE_URL}/share/${type}/${id}`
+  return `${SITE_URL}/share/${type}/${encodePathSegment(id)}`
 }
 
 export function buildAppDeepLink(type: ShareEntityType, id: string) {
-  return `${APP_DEEP_LINK_SCHEME}${type}/${id}`
+  return `${APP_DEEP_LINK_SCHEME}${type}/${encodePathSegment(id)}`
 }
 
 export function resolveImageUrl(path: string | null | undefined) {
@@ -113,28 +114,6 @@ export function buildBeauticianSummary(
   }
 
   return labels.fallback
-}
-
-export function normalizeSocialUrl(type: string, value: string | undefined) {
-  if (!value) {
-    return null
-  }
-
-  if (value.startsWith('http://') || value.startsWith('https://')) {
-    return value
-  }
-
-  switch (type) {
-    case 'instagram':
-      return `https://www.instagram.com/${value.replace(/^@/, '')}`
-    case 'facebook':
-      return `https://www.facebook.com/${value.replace(/^\//, '')}`
-    case 'threads':
-      return `https://www.threads.net/@${value.replace(/^@/, '')}`
-    case 'website':
-    default:
-      return `https://${value.replace(/^https?:\/\//, '')}`
-  }
 }
 
 export function sortSocialLinks(socialLinks: BeauticianDetail['socialLinks']): Array<{ key: string; href: string }> {

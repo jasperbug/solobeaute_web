@@ -15,6 +15,9 @@ type SearchPageProps = {
 }
 
 const ALLOWED_SORTS = new Set(['newest', 'priceAsc', 'priceDesc'])
+const MAX_PAGE = 10_000
+const MAX_LIMIT = 100
+const MAX_FILTER_LENGTH = 100
 
 function pickFirst(value: string | string[] | undefined) {
   return Array.isArray(value) ? value[0] : value
@@ -24,22 +27,31 @@ function normalizeSortBy(value: string | undefined) {
   return value && ALLOWED_SORTS.has(value) ? value : 'newest'
 }
 
-function parsePositiveInt(value: string | string[] | undefined, fallback: number) {
+function parsePositiveInt(value: string | string[] | undefined, fallback: number, max: number) {
   const parsed = Number(pickFirst(value) ?? '')
-  return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback
+  return Number.isSafeInteger(parsed) && parsed > 0 ? Math.min(parsed, max) : fallback
+}
+
+function parseOptionalNumber(value: string | string[] | undefined) {
+  const parsed = Number(pickFirst(value) ?? '')
+  return Number.isFinite(parsed) && parsed >= 0 ? parsed : undefined
+}
+
+function boundedText(value: string | string[] | undefined) {
+  return pickFirst(value)?.slice(0, MAX_FILTER_LENGTH)
 }
 
 function parseSearchParams(searchParams: SearchPageProps['searchParams']): BeauticianSearchParams {
   return {
-    page: parsePositiveInt(searchParams.page, 1),
-    limit: parsePositiveInt(searchParams.limit, 20),
-    category: pickFirst(searchParams.category),
-    city: pickFirst(searchParams.city),
-    district: pickFirst(searchParams.district),
-    minPrice: pickFirst(searchParams.minPrice) ? Number(pickFirst(searchParams.minPrice)) : undefined,
-    maxPrice: pickFirst(searchParams.maxPrice) ? Number(pickFirst(searchParams.maxPrice)) : undefined,
+    page: parsePositiveInt(searchParams.page, 1, MAX_PAGE),
+    limit: parsePositiveInt(searchParams.limit, 20, MAX_LIMIT),
+    category: boundedText(searchParams.category),
+    city: boundedText(searchParams.city),
+    district: boundedText(searchParams.district),
+    minPrice: parseOptionalNumber(searchParams.minPrice),
+    maxPrice: parseOptionalNumber(searchParams.maxPrice),
     verified: pickFirst(searchParams.verified) === 'true',
-    search: pickFirst(searchParams.search),
+    search: boundedText(searchParams.search),
     sortBy: normalizeSortBy(pickFirst(searchParams.sortBy)),
   }
 }

@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 
 import { LandingPage } from '@/components/landing/LandingPage'
 import { SITE_URL } from '@/lib/constants'
+import { serializeJsonLd } from '@/lib/security'
 
 export const metadata: Metadata = {
   title: 'SoloBeauté — 台灣美業職人的獨立舞台',
@@ -45,7 +46,7 @@ export default function HomePage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
       />
       <LandingPage />
     </>

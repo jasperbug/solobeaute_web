@@ -10,7 +10,8 @@ import { Badge } from '@/components/ui/Badge'
 import { CheckCircleIcon } from '@/components/ui/Icons'
 import { fetchBeauticianBySlug } from '@/lib/api'
 import { DEFAULT_METADATA_IMAGE, SITE_URL, SOCIAL_LABELS } from '@/lib/constants'
-import { formatExperience, getBeauticianDiscoveryImage, getDisplayInitials, getServiceAreaLabel, normalizeSocialUrl, resolveImageUrl, sortSocialLinks } from '@/lib/format'
+import { formatExperience, getBeauticianDiscoveryImage, getDisplayInitials, getServiceAreaLabel, resolveImageUrl, sortSocialLinks } from '@/lib/format'
+import { encodePathSegment, serializeJsonLd } from '@/lib/security'
 
 type BrandPageProps = {
   params: { slug: string }
@@ -33,7 +34,7 @@ export async function generateMetadata({ params }: BrandPageProps): Promise<Meta
     title: `${beautician.displayName} - ${beautician.specialties.join('、')}`,
     description,
     alternates: {
-      canonical: `${SITE_URL}/beautician/${params.slug}`,
+      canonical: `${SITE_URL}/beautician/${encodePathSegment(params.slug)}`,
     },
     openGraph: {
       title: beautician.displayName,
@@ -83,7 +84,7 @@ export default async function BeauticianBrandPage({ params }: BrandPageProps) {
     <main className="bg-[var(--color-bg)] pb-20 pt-32">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
       />
 
       <div className="container space-y-8">
@@ -191,7 +192,7 @@ export default async function BeauticianBrandPage({ params }: BrandPageProps) {
               {socialLinks.map((item) => (
                 <a
                   key={item.key}
-                  href={normalizeSocialUrl(item.key, beautician.socialLinks[item.key as keyof typeof beautician.socialLinks]) ?? item.href}
+                  href={item.href}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex min-h-11 items-center rounded-lg bg-brand px-4 text-sm font-medium text-white transition hover:bg-brand-light"
