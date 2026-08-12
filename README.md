@@ -5,22 +5,18 @@ Next.js 14 App Router web frontend for `www.solobeaute.com`.
 ## Android App Links
 
 `src/app/.well-known/assetlinks.json/route.ts` delegates canonical share URLs
-on `www.solobeaute.com` to `com.solobeauty.android`. Configure the Vercel
-environment variable `ANDROID_APP_LINKS_SHA256_FINGERPRINTS` with the current
-and rotated Google Play App Signing SHA-256 fingerprints, separated by a comma
-or newline. Copy both values directly from Play Console > App integrity; a
-SHA-256 value cannot be reconstructed from its SHA-1 fingerprint.
+on `www.solobeaute.com` to `com.solobeauty.android` using the current and
+rotated Google Play App Signing SHA-256 fingerprints.
 
 The accepted pair is pinned in code to the current and rotated certificates
 whose SHA-1/SHA-256 pairings are backed by same-account Firebase Cloud Audit
-event sequences from 2026-07-30 and 2026-07-27. Runtime configuration must
-match that audited pair exactly; extra certificates are rejected.
+event sequences from 2026-07-30 and 2026-07-27. These fingerprints are public
+Digital Asset Links identifiers, not secrets. Build-time validation keeps the
+statement limited to exactly that pair and rejects the known upload key, debug
+key, malformed values, and extra certificates.
 
-The route deliberately returns `503` when either certificate is missing,
-malformed, or when the known local upload-key certificate is supplied. This
-prevents a plausible-looking but unverifiable statement from reaching
-production. `npm run build` runs `npm run check:assetlinks` first to preserve
-these constraints.
+The route is static and cacheable. `npm run build` runs
+`npm run check:assetlinks` first to preserve these constraints.
 
 After deploying, verify the endpoint itself without following redirects:
 

@@ -1,6 +1,5 @@
-export const androidAppLinksFingerprintEnv = 'ANDROID_APP_LINKS_SHA256_FINGERPRINTS'
 export const androidAppLinksPackage = 'com.solobeauty.android'
-export const androidAppLinksPlaySigningFingerprints = [
+const auditedPlaySigningFingerprints = [
   // Current and rotated Play App Signing keys, paired to their known SHA-1
   // records by the same-account Firebase Cloud Audit event sequences.
   'C7:47:53:A0:5D:A8:50:64:DB:81:D7:E3:E9:70:BF:13:30:AA:62:DF:4A:52:A5:45:10:3E:4E:9F:57:1B:47:25',
@@ -9,21 +8,22 @@ export const androidAppLinksPlaySigningFingerprints = [
 
 const uploadKeySha256 =
   '3C:D2:89:92:20:70:77:70:14:4B:97:A4:05:96:0B:42:12:CD:59:ED:6F:5D:90:C9:05:A3:74:B8:C8:72:26:9D'
+const debugKeySha256 =
+  'B4:6B:88:2C:A9:52:B3:A0:4E:0E:3E:8A:D0:90:83:10:38:56:20:38:06:70:37:3A:2E:8C:56:D6:E1:D5:40:9C'
 const sha256FingerprintPattern = /^(?:[0-9A-F]{2}:){31}[0-9A-F]{2}$/
 
-export function parsePlaySigningFingerprints(rawValue: string | undefined): string[] {
+export function validatePlaySigningFingerprints(values: readonly string[]): string[] {
   const fingerprints = [
     ...new Set(
-      (rawValue ?? '')
-        .split(/[\s,;]+/)
+      values
         .map((value) => value.trim().toUpperCase())
         .filter(Boolean),
     ),
   ]
 
-  if (fingerprints.length !== androidAppLinksPlaySigningFingerprints.length) {
+  if (fingerprints.length !== auditedPlaySigningFingerprints.length) {
     throw new Error(
-      `${androidAppLinksFingerprintEnv} must contain exactly the current and rotated Play App Signing SHA-256 fingerprints`,
+      'Asset Links must contain exactly the current and rotated Play App Signing SHA-256 fingerprints',
     )
   }
 
@@ -34,28 +34,35 @@ export function parsePlaySigningFingerprints(rawValue: string | undefined): stri
     if (fingerprint === uploadKeySha256) {
       throw new Error('The Android upload-key certificate must not be trusted for App Links')
     }
+    if (fingerprint === debugKeySha256) {
+      throw new Error('The Android debug certificate must not be trusted for App Links')
+    }
   }
 
   const configuredFingerprints = new Set(fingerprints)
-  for (const requiredFingerprint of androidAppLinksPlaySigningFingerprints) {
+  for (const requiredFingerprint of auditedPlaySigningFingerprints) {
     if (!configuredFingerprints.has(requiredFingerprint)) {
       throw new Error(
-        `${androidAppLinksFingerprintEnv} does not match the audited Play App Signing certificates`,
+        'Asset Links do not match the audited Play App Signing certificates',
       )
     }
   }
 
-  return [...androidAppLinksPlaySigningFingerprints]
+  return [...auditedPlaySigningFingerprints]
 }
 
-export function buildAndroidAssetLinks(fingerprints: string[]) {
+export const androidAppLinksPlaySigningFingerprints = Object.freeze(
+  validatePlaySigningFingerprints(auditedPlaySigningFingerprints),
+)
+
+export function buildAndroidAssetLinks() {
   return [
     {
       relation: ['delegate_permission/common.handle_all_urls'],
       target: {
         namespace: 'android_app',
         package_name: androidAppLinksPackage,
-        sha256_cert_fingerprints: fingerprints,
+        sha256_cert_fingerprints: androidAppLinksPlaySigningFingerprints,
       },
     },
   ]
