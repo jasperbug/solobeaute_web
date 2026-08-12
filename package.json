@@ -3,6 +3,8 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
+    "check:assetlinks": "node scripts/check-assetlinks.mjs",
+    "prebuild": "npm run check:assetlinks",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
