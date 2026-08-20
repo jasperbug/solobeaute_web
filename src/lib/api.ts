@@ -1,6 +1,7 @@
 import { cache } from 'react'
 
 import { API_BASE_URL } from './constants'
+import { encodePathSegment } from './security'
 import type {
   BeauticianDetail,
   BeauticianDetailResponse,
@@ -60,7 +61,7 @@ export const fetchFeaturedBeauticians = cache(async (limit = 6): Promise<Beautic
 })
 
 export const fetchBeauticianBySlug = cache(async (slug: string): Promise<BeauticianDetail | null> => {
-  const response = await fetch(`${API_BASE_URL}/beauticians/${slug}`, {
+  const response = await fetch(`${API_BASE_URL}/beauticians/${encodePathSegment(slug)}`, {
     cache: 'no-store',
   })
 
@@ -78,7 +79,7 @@ export const fetchBeauticianBySlug = cache(async (slug: string): Promise<Beautic
 
 export async function fetchShareEntity(type: ShareEntityType, id: string) {
   const endpoint = type === 'space' ? 'spaces' : 'beauticians'
-  const response = await fetch(`${API_BASE_URL}/${endpoint}/${id}`, {
+  const response = await fetch(`${API_BASE_URL}/${endpoint}/${encodePathSegment(id)}`, {
     cache: 'no-store',
   })
 
