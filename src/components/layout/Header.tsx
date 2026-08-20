@@ -6,9 +6,8 @@ import { usePathname, useRouter } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
 import { useEffect, useMemo, useRef, useState } from 'react'
 
-import { APP_STORE_URL } from '@/lib/constants'
 import { LOCALE_COOKIE_NAME, LANGUAGE_OPTIONS, type AppLocale } from '@/i18n/config'
-import { AppleIcon, GlobeIcon } from '../ui/Icons'
+import { DownloadIcon, GlobeIcon } from '../ui/Icons'
 import { MobileNav } from './MobileNav'
 
 export function Header() {
@@ -72,6 +71,10 @@ export function Header() {
     [pathname, t]
   )
 
+  // Both stores live in the landing page download section, so the nav CTA is
+  // platform-neutral and points there instead of favouring one store.
+  const downloadHref = pathname === '/' ? '#download' : '/#download'
+
   function setLocaleCookie(nextLocale: AppLocale) {
     const secure = window.location.protocol === 'https:' ? '; secure' : ''
     document.cookie = `${LOCALE_COOKIE_NAME}=${nextLocale}; path=/; max-age=31536000; samesite=lax${secure}`
@@ -126,15 +129,10 @@ export function Header() {
               )}
             </div>
 
-            <a
-              href={APP_STORE_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-dark btn--sm"
-            >
-              <AppleIcon className="h-[18px] w-[18px]" />
+            <Link href={downloadHref} className="btn-dark btn--sm">
+              <DownloadIcon className="h-[18px] w-[18px]" aria-hidden="true" focusable="false" />
               {t('nav.download')}
-            </a>
+            </Link>
           </div>
 
           <button
@@ -151,7 +149,11 @@ export function Header() {
       </nav>
 
       <div className="md:hidden">
-        <MobileNav isOpen={mobileMenu} nav={navLinks} onNavigate={() => setMobileMenu(false)} />
+        <MobileNav
+          isOpen={mobileMenu}
+          nav={navLinks}
+          onNavigate={() => setMobileMenu(false)}
+        />
       </div>
     </>
   )

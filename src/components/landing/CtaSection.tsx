@@ -2,9 +2,8 @@
 
 import { useTranslations } from 'next-intl'
 
-import { APP_STORE_URL } from '@/lib/constants'
-import { AppleIcon } from '../ui/Icons'
 import { Reveal } from '../ui/Reveal'
+import { StoreButtons } from '../ui/StoreButtons'
 
 export function CtaSection() {
   const t = useTranslations('cta')
@@ -17,11 +16,8 @@ export function CtaSection() {
             <p className="cta__tag">{t('tag')}</p>
             <h2 className="cta__title">{t('title')}</h2>
             <p className="cta__sub">{t('subtitle')}</p>
-            <a href={APP_STORE_URL} target="_blank" rel="noopener noreferrer" className="btn-light">
-              <AppleIcon className="h-[18px] w-[18px]" />
-              {t('button')}
-            </a>
-            <p className="cta__hint">{t('iosHint')}</p>
+            <StoreButtons buttonClassName="btn-light" />
+            <p className="cta__hint">{t('platformHint')}</p>
           </div>
         </Reveal>
       </div>

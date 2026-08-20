@@ -25,7 +25,7 @@ export const legalContent = {
           points: [
             '註冊方式、手機號碼或 Apple / Google 登入資訊',
             '預約編號、空間名稱、評價內容或相關截圖',
-            '發生時間、裝置型號與 iOS 版本',
+            '發生時間、裝置型號與 iOS / Android 版本',
             '若涉及爭議，請附上完整背景說明與可佐證資料',
           ],
         },
@@ -251,7 +251,7 @@ export const legalContent = {
           points: [
             'Your login method, phone number, or Apple / Google sign-in details',
             'Booking number, space name, review content, or related screenshots',
-            'The time of the issue, your device model, and iOS version',
+            'The time of the issue, your device model, and iOS or Android version',
             'A complete description of the issue and any supporting material for disputes',
           ],
         },

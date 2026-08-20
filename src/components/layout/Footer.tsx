@@ -2,14 +2,15 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useTranslations } from 'next-intl'
 
-import { APP_STORE_URL } from '@/lib/constants'
+import { APP_STORE_URL, PLAY_STORE_URL } from '@/lib/constants'
 
 export function Footer() {
   const t = useTranslations('footer')
 
   const productLinks = [
-    { href: '/search', label: t('productFindPros') },
-    { href: APP_STORE_URL, label: t('productDownload'), external: true },
+    { href: '/search', label: t('productFindPros'), external: false },
+    { href: APP_STORE_URL, label: t('productDownloadIos'), external: true },
+    { href: PLAY_STORE_URL, label: t('productDownloadAndroid'), external: true },
   ]
 
   const aboutLinks = [

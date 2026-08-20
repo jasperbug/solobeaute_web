@@ -3,8 +3,9 @@
 import { useState } from 'react'
 import { useTranslations } from 'next-intl'
 
-import { APP_STORE_URL } from '@/lib/constants'
-import { CalendarIcon, HomeIcon, ScissorsIcon, StarIcon, AppleIcon } from '../ui/Icons'
+import Link from 'next/link'
+
+import { CalendarIcon, HomeIcon, ScissorsIcon, StarIcon, DownloadIcon } from '../ui/Icons'
 import { Reveal } from '../ui/Reveal'
 
 type SpaceType = 'chair' | 'room' | 'nailDesk' | 'studio'
@@ -121,10 +122,10 @@ export function CalculatorSection() {
 
         <Reveal delay={0.25}>
           <div className="calc-bottom">
-            <a href={APP_STORE_URL} target="_blank" rel="noopener noreferrer" className="btn-primary">
-              <AppleIcon className="h-[18px] w-[18px]" />
+            <Link href="#download" className="btn-primary">
+              <DownloadIcon className="h-[18px] w-[18px]" aria-hidden="true" focusable="false" />
               {t('cta')}
-            </a>
+            </Link>
             <p className="calc-hint">{t('hint')}</p>
           </div>
         </Reveal>

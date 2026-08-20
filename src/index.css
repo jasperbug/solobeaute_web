@@ -216,6 +216,24 @@ button { font-family: inherit; cursor: pointer; border: none; outline: none; bac
   transform: translateY(-1px);
 }
 
+/* Paired App Store / Google Play links. Wraps rather than overflowing so the
+   two buttons stack on narrow screens instead of pushing the layout wide. */
+.store-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Tighten the pill padding on phones so both stores still fit on one row. */
+@media (max-width: 768px) {
+  .store-actions > a {
+    padding-left: 22px;
+    padding-right: 22px;
+  }
+}
+
 /* Phone Mockup — handoff v2 shell */
 .phone-frame {
   position: relative;

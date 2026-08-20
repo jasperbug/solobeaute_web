@@ -6,7 +6,7 @@
     "about": "About",
     "faq": "FAQ",
     "discover": "Find a Pro",
-    "download": "Download iOS App",
+    "download": "Download App",
     "login": "Log in"
   },
   "hero": {
@@ -16,7 +16,6 @@
     "promiseLine1": "So every service comes with",
     "promiseLine2": "the right space and the right match.",
     "detail": "Rent beauty workspaces by the hour. Open the app to compare spaces, pricing, and 3D tours, then message hosts directly.",
-    "cta": "Download iOS App",
     "proCta": "I'm a Beauty Pro",
     "hostCta": "I'm a Space Host",
     "listAlt": "SoloBeauté space list view",
@@ -35,13 +34,13 @@
       "priority": "Our core customer",
       "title": "Rent when you have clients. Rest when you don't.",
       "desc": "Find workable spaces, confirm the details directly, and build a public brand page that belongs to you instead of the venue.",
-      "cta": "Download iOS App"
+      "cta": "Download the App"
     },
     "host": {
       "tag": "HOST",
       "title": "Turn idle hours into revenue",
       "desc": "Package the chairs, rooms, and time slots you already have, then make them bookable for beauty pros who actually need them.",
-      "cta": "Download iOS App"
+      "cta": "Download the App"
     },
     "consumer": {
       "tag": "CLIENT",
@@ -198,16 +197,16 @@
   "cta": {
     "tag": "Ready when you are",
     "title": "Your next workspace, your next client",
-    "subtitle": "Download the SoloBeauté iOS app to find space, take clients, and build a brand page that feels like your own business.",
-    "button": "Download iOS App",
-    "iosHint": "Currently available on iOS. Android coming soon."
+    "subtitle": "Download the SoloBeauté app to find space, take clients, and build a brand page that feels like your own business.",
+    "platformHint": "Available on iOS and Android."
   },
   "footer": {
     "slogan": "The independent stage for beauty pros in Taiwan",
     "description": "Find space, work independently, build a business.",
     "productTitle": "Product",
     "productFindPros": "Find a Pro",
-    "productDownload": "Download iOS App",
+    "productDownloadIos": "Download iOS App",
+    "productDownloadAndroid": "Download Android App",
     "aboutTitle": "About",
     "aboutUs": "About Us",
     "faq": "FAQ",
@@ -225,7 +224,11 @@
     "closePreview": "Close preview",
     "previousPreview": "Previous preview",
     "nextPreview": "Next preview",
-    "previewCount": "{current} / {total}"
+    "previewCount": "{current} / {total}",
+    "appStore": "App Store",
+    "googlePlay": "Google Play",
+    "appStoreAria": "Download SoloBeauté for iOS on the App Store",
+    "googlePlayAria": "Download SoloBeauté for Android on Google Play"
   },
   "homeSearch": {
     "keywordPlaceholder": "Search nail, lash, hair...",
