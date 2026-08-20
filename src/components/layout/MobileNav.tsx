@@ -1,8 +1,6 @@
 import Link from 'next/link'
-import { useTranslations } from 'next-intl'
 
-import { APP_STORE_URL } from '@/lib/constants'
-import { AppleIcon } from '../ui/Icons'
+import { StoreButtons } from '../ui/StoreButtons'
 
 type MobileNavProps = {
   isOpen: boolean
@@ -10,8 +8,9 @@ type MobileNavProps = {
   nav: Array<{ href: string; label: string }>
 }
 
+// 行動選單直接列出兩個商店連結：分享頁/職人頁訪客一鍵就能安裝，
+// 不用先繞回首頁的 #download 區塊（桌機版 Header 仍用錨點）。
 export function MobileNav({ isOpen, onNavigate, nav }: MobileNavProps) {
-  const t = useTranslations('nav')
 
   return (
     <div
@@ -27,15 +26,7 @@ export function MobileNav({ isOpen, onNavigate, nav }: MobileNavProps) {
           {item.label}
         </Link>
       ))}
-      <a
-        href={APP_STORE_URL}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="btn-dark nav__mobile-action"
-      >
-        <AppleIcon className="h-4 w-4" />
-        {t('download')}
-      </a>
+      <StoreButtons buttonClassName="btn-dark nav__mobile-action" />
     </div>
   )
 }

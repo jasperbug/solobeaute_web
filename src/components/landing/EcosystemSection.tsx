@@ -1,17 +1,18 @@
 import Link from 'next/link'
 import { getTranslations } from 'next-intl/server'
 
-import { APP_STORE_URL } from '@/lib/constants'
 import { HomeIcon, ScissorsIcon, UsersIcon } from '../ui/Icons'
 import { Reveal } from '../ui/Reveal'
 
 export async function EcosystemSection() {
   const t = await getTranslations('ecosystem')
 
+  // Pro/host cards point at the download section further down this page, which
+  // offers both the App Store and Google Play instead of a single platform.
   const roles = [
-    { key: 'beautician', icon: <ScissorsIcon className="h-5 w-5" />, showPriority: true, href: APP_STORE_URL, external: true },
-    { key: 'host', icon: <HomeIcon className="h-5 w-5" />, showPriority: false, href: APP_STORE_URL, external: true },
-    { key: 'consumer', icon: <UsersIcon className="h-5 w-5" />, showPriority: true, href: '/search', external: false },
+    { key: 'beautician', icon: <ScissorsIcon className="h-5 w-5" />, showPriority: true, href: '#download' },
+    { key: 'host', icon: <HomeIcon className="h-5 w-5" />, showPriority: false, href: '#download' },
+    { key: 'consumer', icon: <UsersIcon className="h-5 w-5" />, showPriority: true, href: '/search' },
   ] as const
 
   return (
@@ -39,20 +40,9 @@ export async function EcosystemSection() {
                 <h3 className="eco__role">{t(`${role.key}.title`)}</h3>
                 <div className="eco__divider" />
                 <p className="eco__desc">{t(`${role.key}.desc`)}</p>
-                {role.external ? (
-                  <a
-                    href={role.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="eco__cta eco__cta--link"
-                  >
-                    {t(`${role.key}.cta`)}
-                  </a>
-                ) : (
-                  <Link href={role.href} className="eco__cta eco__cta--link">
-                    {t(`${role.key}.cta`)}
-                  </Link>
-                )}
+                <Link href={role.href} className="eco__cta eco__cta--link">
+                  {t(`${role.key}.cta`)}
+                </Link>
               </div>
             </Reveal>
           ))}

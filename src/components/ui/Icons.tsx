@@ -89,6 +89,27 @@ export function AppleIcon(props: IconProps) {
   )
 }
 
+export function GooglePlayIcon(props: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+      <path d="M1.34.92A1.98 1.98 0 0 0 1.23 1.56v20.88c0 .25.04.46.11.64l11.22-11.08L1.34.92Z" />
+      <path d="M16.2 10.09 2.79.24C2.42.03 2.03-.06 1.68.03l12.53 12.03 1.99-1.97Z" />
+      <path d="M1.68 24.09c.35.08.74 0 1.11-.22l13.41-9.84-1.99-1.97L1.68 24.09Z" />
+      <path d="m22.02 13.3-3.92 2.21-3.51-3.49 3.54-3.52 3.89 2.2c1.3.65 1.3 2.29 0 2.6Z" />
+    </svg>
+  )
+}
+
+export function DownloadIcon(props: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" {...props}>
+      <line x1="12" y1="3" x2="12" y2="15" />
+      <polyline points="7 10 12 15 17 10" />
+      <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" />
+    </svg>
+  )
+}
+
 export function ArrowRightIcon(props: IconProps) {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" {...props}>

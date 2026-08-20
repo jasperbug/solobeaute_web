@@ -3,11 +3,11 @@
 import { useTranslations } from 'next-intl'
 import { useRef, useState } from 'react'
 
-import { APP_STORE_URL } from '@/lib/constants'
-import { AppleIcon, ArrowRightIcon } from '../ui/Icons'
+import { ArrowRightIcon } from '../ui/Icons'
 import { ImageLightbox } from '../ui/ImageLightbox'
 import { PhoneFrame } from '../ui/PhoneFrame'
 import { Reveal } from '../ui/Reveal'
+import { StoreButtons } from '../ui/StoreButtons'
 
 const heroShots = {
   list: '/images/app-screenshots/list.PNG',
@@ -65,10 +65,7 @@ export function HeroSection() {
 
         <Reveal delay={0.32} className="hero__lower">
           <div className="hero__actions flex flex-wrap gap-4 items-center">
-            <a href={APP_STORE_URL} target="_blank" rel="noopener noreferrer" className="btn-primary">
-              <AppleIcon className="h-[18px] w-[18px]" />
-              {t('hero.cta')}
-            </a>
+            <StoreButtons buttonClassName="btn-primary" />
             <button
               onClick={() => handleScrollAndSwitchTab('beautician')}
               className="btn-ghost"

@@ -11,6 +11,9 @@ export const SITE_URL =
 
 export const APP_STORE_URL = 'https://apps.apple.com/tw/app/solobeaute/id6760957242'
 
+export const PLAY_STORE_URL =
+  'https://play.google.com/store/apps/details?id=com.solobeauty.android'
+
 export const APP_DEEP_LINK_SCHEME = 'tw.solobeauty.app://'
 
 export const CATEGORY_OPTIONS = [

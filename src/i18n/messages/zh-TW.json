@@ -6,7 +6,7 @@
     "about": "關於我們",
     "faq": "常見問題",
     "discover": "找職人",
-    "download": "下載 iOS App",
+    "download": "下載 App",
     "login": "登入"
   },
   "hero": {
@@ -16,7 +16,6 @@
     "promiseLine1": "讓每一次的服務，",
     "promiseLine2": "都有最好的空間和最對的人。",
     "detail": "美業空間租賃。用小時租用已經備好的工作空間。打開 App，看空間、看價錢、看 3D 實景，直接訊息屋主。",
-    "cta": "下載 iOS App",
     "proCta": "我是美業職人",
     "hostCta": "我是空間屋主",
     "listAlt": "SoloBeauté 空間列表畫面",
@@ -35,13 +34,13 @@
       "priority": "我們服務的核心",
       "title": "想接客的時候租，不想的時候休息",
       "desc": "找得到可用空間、談得到清楚條件、留下自己的品牌頁。客人跟著你，不是跟著店。 ",
-      "cta": "下載 iOS App"
+      "cta": "下載 App"
     },
     "host": {
       "tag": "屋主 · HOST",
       "title": "讓閒置時段變成收入",
       "desc": "把原本空著的椅子、房間和時段整理好，給真正需要的人。空間被更有效使用，你也多一條穩定收入來源。",
-      "cta": "下載 iOS App"
+      "cta": "下載 App"
     },
     "consumer": {
       "tag": "消費者 · CLIENT",
@@ -198,16 +197,16 @@
   "cta": {
     "tag": "準備好了嗎",
     "title": "你的下一個工作空間，下一個客人",
-    "subtitle": "下載 SoloBeauté iOS App，開始找空間、接案子、建立自己的品牌頁。",
-    "button": "下載 iOS App",
-    "iosHint": "目前支援 iOS，Android 版即將推出"
+    "subtitle": "下載 SoloBeauté App，開始找空間、接案子、建立自己的品牌頁。",
+    "platformHint": "iOS 與 Android 雙平台皆可下載"
   },
   "footer": {
     "slogan": "台灣美業職人的獨立舞台",
     "description": "找空間、開工作、做生意。",
     "productTitle": "產品",
     "productFindPros": "找職人",
-    "productDownload": "下載 iOS App",
+    "productDownloadIos": "下載 iOS App",
+    "productDownloadAndroid": "下載 Android App",
     "aboutTitle": "關於",
     "aboutUs": "關於我們",
     "faq": "常見問題",
@@ -225,7 +224,11 @@
     "closePreview": "關閉畫面預覽",
     "previousPreview": "上一張畫面",
     "nextPreview": "下一張畫面",
-    "previewCount": "{current} / {total}"
+    "previewCount": "{current} / {total}",
+    "appStore": "App Store",
+    "googlePlay": "Google Play",
+    "appStoreAria": "從 App Store 下載 SoloBeauté iOS App",
+    "googlePlayAria": "從 Google Play 下載 SoloBeauté Android App"
   },
   "homeSearch": {
     "keywordPlaceholder": "搜尋美甲、美睫、美髮...",
