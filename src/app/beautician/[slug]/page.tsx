@@ -29,16 +29,24 @@ export async function generateMetadata({ params }: BrandPageProps): Promise<Meta
   const description = [beautician.bio?.slice(0, 150) ?? beautician.specialties.join('、'), serviceArea].filter(Boolean).join(' · ')
   const image = getBeauticianDiscoveryImage(beautician) ?? DEFAULT_METADATA_IMAGE
 
+  // A profile is reachable both by slug and by UUID (the UUID form is kept for
+  // in-app share links). Point both at ONE preferred URL — derived from the
+  // fetched record, never from `params.slug` — or the two forms each declare
+  // themselves canonical and Google splits the ranking signals between them.
+  const canonicalUrl = `${SITE_URL}/beautician/${beautician.slug ?? beautician.id}`
+
   return {
     title: `${beautician.displayName} - ${beautician.specialties.join('、')}`,
     description,
     alternates: {
-      canonical: `${SITE_URL}/beautician/${params.slug}`,
+      canonical: canonicalUrl,
     },
     openGraph: {
       title: beautician.displayName,
       description,
+      siteName: 'SoloBeauté',
       type: 'profile',
+      url: canonicalUrl,
       images: [image],
     },
   }

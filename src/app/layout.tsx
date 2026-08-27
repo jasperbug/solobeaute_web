@@ -37,6 +37,8 @@ export const metadata: Metadata = {
     title: 'SoloBeauté',
     description: '給職人找空間、給屋主出租空間，也提供找職人導流入口。',
     type: 'website',
+    // Relative, so each route resolves its own og:url against metadataBase.
+    url: './',
     images: ['/og-image.png'],
   },
   twitter: {

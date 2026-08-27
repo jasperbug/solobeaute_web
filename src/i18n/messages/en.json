@@ -147,11 +147,11 @@
     "items": [
       {
         "q": "Do beauty pros need to pay to join?",
-        "a": "Joining SoloBeauté is completely free. You only pay a small service fee when a booking is completed. Early bird pros enjoy 3 months commission-free."
+        "a": "Joining SoloBeauté is completely free. The platform does not handle payments — rent is settled directly with the host on site, and we take no commission."
       },
       {
         "q": "Is renting out my space safe?",
-        "a": "All bookings go through the platform with identity verification and a complete booking record. Hosts can freely accept or decline bookings and set their own rental rules."
+        "a": "Space bookings go through the platform, and hosts are free to accept or decline and to set their own rental rules. Client-side service bookings are still arranged through each pro's own channels."
       },
       {
         "q": "How are payments handled?",
@@ -184,14 +184,13 @@
     "hoursUnit": "hours / week",
     "resultTitle": "Estimated Passive Income / Month",
     "cta": "Download the App to Start Earning",
-    "hint": "*Calculated based on standard market hourly rental rates in Taiwan (hair chair $180/hr, spa treatment room $250/hr, nail desk $150/hr, full salon studio $500/hr). Actual revenue depends on your pricing, equipment, and market demand.",
+    "hint": "*Based on the actual listed rates of the 15 spaces currently on SoloBeauté (open space median $170/hr, curtained area $200/hr, private room $220/hr; platform range NT$100–350, median NT$200). This is the listed rate multiplied by the hours you enter — not a guarantee of income. Actual occupancy depends on location, equipment and demand.",
     "rateDetail": "NT${rate}/hr · {hours}hr/wk",
     "perMonth": "mo",
     "types": {
-      "chair": "Hair Chair / Beauty Bed",
-      "room": "SPA Treatment Room",
-      "nailDesk": "Nail / Lash Desk",
-      "studio": "Full Salon Studio"
+      "open": "Open Space",
+      "curtain": "Curtained Area",
+      "private": "Private Room"
     }
   },
   "cta": {
