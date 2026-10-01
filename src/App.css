@@ -842,6 +842,7 @@
 }
 
 .faq__question {
+  list-style: none;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -864,7 +865,20 @@
   transition: transform 0.25s var(--ease);
 }
 
-.faq__item--open .faq__chevron {
+.faq__question::-webkit-details-marker {
+  display: none;
+}
+
+.faq__question::marker {
+  content: '';
+}
+
+.faq__question:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+}
+
+.faq__item[open] .faq__chevron {
   transform: rotate(180deg);
 }
 

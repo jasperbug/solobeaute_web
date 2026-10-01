@@ -49,6 +49,13 @@ export async function generateMetadata({ params }: BrandPageProps): Promise<Meta
       url: canonicalUrl,
       images: [image],
     },
+    // Without this, profiles inherit the site-wide homepage Twitter card copy.
+    twitter: {
+      card: 'summary_large_image',
+      title: beautician.displayName,
+      description,
+      images: [image],
+    },
   }
 }
 
@@ -75,15 +82,21 @@ export default async function BeauticianBrandPage({ params }: BrandPageProps) {
         .filter((value): value is string => Boolean(value))
     )
   ).slice(0, 8)
+  const canonicalUrl = `${SITE_URL}/beautician/${beautician.slug ?? beautician.id}`
+  // Taiwan address levels: city/county (縣市) is the region, district (區) is
+  // the locality. Omit the locality rather than repeating the city.
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BeautySalon',
     name: beautician.displayName,
     description: beautician.bio ?? beautician.specialties.join('、'),
+    url: canonicalUrl,
+    image: heroImage ?? undefined,
     address: beautician.serviceArea ? {
       '@type': 'PostalAddress',
-      addressLocality: beautician.serviceArea.city,
-      addressRegion: beautician.serviceArea.district ?? beautician.serviceArea.city,
+      addressRegion: beautician.serviceArea.city,
+      addressLocality: beautician.serviceArea.district || undefined,
+      addressCountry: 'TW',
     } : undefined,
   }
 
@@ -91,7 +104,7 @@ export default async function BeauticianBrandPage({ params }: BrandPageProps) {
     <main className="bg-[var(--color-bg)] pb-20 pt-32">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}
       />
 
       <div className="container space-y-8">
@@ -108,7 +121,7 @@ export default async function BeauticianBrandPage({ params }: BrandPageProps) {
           <div className="grid gap-8 p-6 md:grid-cols-[220px_1fr] md:p-8">
             <div className="relative mx-auto h-[220px] w-[220px] overflow-hidden rounded-full bg-black/5">
               {heroImage ? (
-                <Image src={heroImage} alt={beautician.displayName} fill className="object-cover object-center" />
+                <Image src={heroImage} alt={beautician.displayName} fill priority sizes="220px" className="object-cover object-center" />
               ) : (
                 <div className="flex h-full items-center justify-center bg-surface-warm text-center">
                   <div className="space-y-3 px-6">

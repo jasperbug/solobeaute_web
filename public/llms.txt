@@ -1,0 +1,54 @@
+# SoloBeauté
+
+> SoloBeauté（Solobeaute）是台灣的美業空間時租 App：美甲、美睫、美容、紋繡等美業職人，可以按小時租用屋主已經備好的工作空間，時租 NT$100–350，免簽約、免押金、免裝潢，目前空間分布在台北、新北、桃園、台中、高雄、彰化、南投；職人也能免費建立自己的品牌頁。
+>
+> SoloBeauté (Solobeaute) is a Taiwan-based app for renting ready-to-use beauty workspaces by the hour, from NT$100 to NT$350 per hour, with no contract, no deposit and no renovation, in Taipei, New Taipei, Taoyuan, Taichung, Kaohsiung, Changhua and Nantou.
+
+SoloBeauté 和國外的「Solo Beauty」「Solo Beauty Partner」是不同的服務，彼此沒有關係。
+
+## 重點事實（2026 年 10 月）
+
+- 服務對象：美業職人（租空間的人）與空間屋主（把閒置時段租出去的人）
+- 空間：目前有 17 個，分布台北、新北、桃園、台中、高雄、彰化、南投
+- 時租：NT$100–350，多數 NT$150–200；價格由屋主自己訂
+- 空間類型：開放空間、拉簾隔間、獨立房間
+- 條件：按小時租、不簽約、不付押金、不用裝潢
+- 付款：租金到現場用現金付給屋主；加入 SoloBeauté 免費
+- 屋主上架：準備照片、可出租時段與價格即可；團隊可以協助拍攝與上架，大約 30 分鐘
+- 職人品牌頁：免費；填好顯示名稱、服務區域、至少一個服務項目、頭像或作品照這 4 項，就會自動公開在 www.solobeaute.com
+- 消費者線上預約：還沒開放；客人目前是透過職人自己的管道聯繫預約
+- App：iOS、Android
+- 創辦團隊：Jasper Tsai（工程師）、Meigo Liu（美容職人）
+
+## 官方社群
+
+- [Instagram @_solobeaute_](https://www.instagram.com/_solobeaute_/)
+- [Threads @_solobeaute_](https://www.threads.net/@_solobeaute_)
+
+## 網站
+
+- [首頁](https://www.solobeaute.com/)：服務介紹、屋主收益試算、常見問題
+- [找職人](https://www.solobeaute.com/search)：美業職人品牌頁目錄，可以用城市、類別篩選
+- [支援中心](https://www.solobeaute.com/support)
+- [隱私政策](https://www.solobeaute.com/privacy)
+- [使用條款](https://www.solobeaute.com/terms)
+
+## App 下載
+
+- [iOS App Store](https://apps.apple.com/tw/app/solobeaute/id6760957242)
+- [Google Play](https://play.google.com/store/apps/details?id=com.solobeauty.android)
+
+<!-- 上線後再加入：
+## 空間
+- [所有美業空間](https://www.solobeaute.com/spaces)
+- [台北美業空間時租](https://www.solobeaute.com/spaces/city/taipei)
+- [新北美業空間時租](https://www.solobeaute.com/spaces/city/new-taipei)
+- [桃園美業空間時租](https://www.solobeaute.com/spaces/city/taoyuan)
+- [台中美業空間時租](https://www.solobeaute.com/spaces/city/taichung)
+- [高雄美業空間時租](https://www.solobeaute.com/spaces/city/kaohsiung)
+- [彰化美業空間時租](https://www.solobeaute.com/spaces/city/changhua)
+- [南投美業空間時租](https://www.solobeaute.com/spaces/city/nantou)
+## 其他
+- [關於 SoloBeauté](https://www.solobeaute.com/about)
+- [常見問題](https://www.solobeaute.com/faq)
+-->

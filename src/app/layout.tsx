@@ -27,15 +27,17 @@ const cormorantGaramond = Cormorant_Garamond({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'SoloBeauté',
+    default: 'SoloBeauté｜美業空間時租・美容工作室按小時租',
     template: '%s | SoloBeauté',
   },
   description:
-    '給獨立美業職人找空間，也讓屋主把閒置時段變成收入。SoloBeauté 以空間共享為核心，網站同步提供找職人導流入口。',
+    '美甲、美睫、美容職人按小時租現成工作空間，時租 NT$100–350，台北、新北、桃園、台中、高雄、彰化、南投都有。免簽約、免押金、免裝潢，現場付現。',
   openGraph: {
     siteName: 'SoloBeauté',
-    title: 'SoloBeauté',
-    description: '給職人找空間、給屋主出租空間，也提供找職人導流入口。',
+    title: 'SoloBeauté｜美業空間按小時租',
+    description:
+      '打開 App 看空間、看價錢、看 3D 實景，直接跟屋主約時間。時租 NT$100–350，免押金、免長約，台北到高雄 7 縣市都有。',
+    locale: 'zh_TW',
     type: 'website',
     // Relative, so each route resolves its own og:url against metadataBase.
     url: './',
@@ -43,9 +45,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'SoloBeauté',
+    title: 'SoloBeauté｜美業空間按小時租',
     description:
-      '給獨立美業職人找空間，也讓屋主把閒置時段變成收入。SoloBeauté 以空間共享為核心，網站同步提供找職人導流入口。',
+      '打開 App 看空間、看價錢、看 3D 實景，直接跟屋主約時間。時租 NT$100–350，免押金、免長約，台北到高雄 7 縣市都有。',
     images: ['/og-image.png'],
   },
   alternates: {

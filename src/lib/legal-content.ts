@@ -33,7 +33,7 @@ export const legalContent = {
       faqs: [
         {
           q: 'SoloBeauté 是什麼？',
-          a: "SoloBeauté 是台灣首個美業三方媒合平台，專為獨立美業職人打造。平台連結空間屋主（提供美容工作空間出租）、美業職人（美容師、美甲師、美睫師等）及消費者（預約美業服務），讓職人無需高額店面租金即可展開事業，屋主也能靈活出租閒置空間。",
+          a: 'SoloBeauté（Solobeaute）是台灣的美業空間時租 App：美甲、美睫、美容、紋繡等美業職人，可以按小時租用屋主已經備好的工作空間，時租 NT$100–350，免簽約、免押金、免裝潢，目前空間分布在台北、新北、桃園、台中、高雄、彰化、南投；職人也能免費建立自己的品牌頁。',
         },
         {
           q: '我可以同時擁有多個身份嗎？',
@@ -41,7 +41,7 @@ export const legalContent = {
         },
         {
           q: '支援哪些付款方式？',
-          a: '目前平台處於初期營運階段，採用現場現金付款方式，消費者於服務當日直接付費。未來將開放線上信用卡付款，支援 VISA、MasterCard 及 JCB 信用卡，並提供預約時線上刷卡功能。',
+          a: '目前租金是到現場用現金直接付給屋主。進場前付還是做完再付，可以先在 App 裡跟屋主講好。',
         },
         {
           q: '預約有問題怎麼辦？',
@@ -259,7 +259,7 @@ export const legalContent = {
       faqs: [
         {
           q: 'What is SoloBeauté?',
-          a: "SoloBeauté is Taiwan's first three-way beauty industry marketplace, designed for independent beauty professionals. The platform connects space hosts (offering beauty workspace rentals), beauty professionals (estheticians, nail technicians, lash artists, etc.), and consumers (booking beauty services), enabling professionals to start their business without high storefront costs while hosts can flexibly rent out idle spaces.",
+          a: 'SoloBeauté (Solobeaute) is a Taiwan-based app for renting ready-to-use beauty workspaces by the hour. Nail artists, lash artists, estheticians, brow artists and other beauty professionals book spaces that hosts have already set up, from NT$100 to NT$350 per hour, with no contract, no deposit and no renovation. Spaces are currently available in Taipei, New Taipei, Taoyuan, Taichung, Kaohsiung, Changhua and Nantou, and professionals can also create a free brand page.',
         },
         {
           q: 'Can I have multiple roles?',
@@ -267,7 +267,7 @@ export const legalContent = {
         },
         {
           q: 'What payment methods are supported?',
-          a: 'Currently in our early operation phase, we accept cash payments on-site, with consumers paying directly on the day of service. Online credit card payments supporting VISA, MasterCard, and JCB will be available in the future, along with online booking payment functionality.',
+          a: 'Rent is currently paid in cash directly to the host on site. You can agree with the host in the app whether to pay before or after your session.',
         },
         {
           q: 'What if I have booking issues?',

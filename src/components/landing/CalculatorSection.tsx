@@ -19,15 +19,15 @@ interface SpaceConfig {
 // Static config — hoisted to module scope so the icon elements aren't
 // re-instantiated on every render. Icons are decorative (aria-hidden).
 //
-// Rates are the MEDIAN listed hourly rate of the spaces actually on the
-// platform, grouped by Space.spaceType (GET /api/v1/spaces, 15 listings,
-// sampled 2026-08-23): OPEN_SPACE n=7 → 170, CURTAIN_PARTITION n=5 → 200,
-// PRIVATE_ROOM n=3 → 220. Platform-wide range is NT$100–350.
+// Rates are the MEDIAN listed hourly rate of the ACTIVE spaces on
+// SoloBeauté, grouped by Space.spaceType (GET /api/v1/spaces, 17 listings,
+// sampled 2026-10-01): OPEN_SPACE n=7 → 170, CURTAIN_PARTITION n=5 → 200,
+// PRIVATE_ROOM n=5 → 200. Overall range NT$100–350, overall median 200.
 // Keep these in sync with the `calculator.hint` copy when re-sampling.
 const SPACES: SpaceConfig[] = [
   { key: 'open', hourlyRate: 170, icon: <ScissorsIcon className="h-5 w-5" aria-hidden /> },
   { key: 'curtain', hourlyRate: 200, icon: <StarIcon className="h-5 w-5" aria-hidden /> },
-  { key: 'private', hourlyRate: 220, icon: <HomeIcon className="h-5 w-5" aria-hidden /> },
+  { key: 'private', hourlyRate: 200, icon: <HomeIcon className="h-5 w-5" aria-hidden /> },
 ]
 
 export function CalculatorSection() {
