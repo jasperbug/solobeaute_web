@@ -1,6 +1,7 @@
 {
   "langLabel": "繁體中文",
   "nav": {
+    "spaces": "找空間",
     "features": "功能特色",
     "howItWorks": "如何運作",
     "about": "關於我們",
@@ -223,6 +224,7 @@
     "slogan": "台灣美業職人的獨立舞台",
     "description": "找空間、開工作、做生意。",
     "productTitle": "產品",
+    "productFindSpaces": "找空間",
     "productFindPros": "找職人",
     "productDownloadIos": "下載 iOS App",
     "productDownloadAndroid": "下載 Android App",

@@ -1,6 +1,7 @@
 {
   "langLabel": "English",
   "nav": {
+    "spaces": "Spaces",
     "features": "Features",
     "howItWorks": "How It Works",
     "about": "About",
@@ -203,6 +204,7 @@
     "slogan": "The independent stage for beauty pros in Taiwan",
     "description": "Find space, work independently, build a business.",
     "productTitle": "Product",
+    "productFindSpaces": "Find spaces",
     "productFindPros": "Find a Pro",
     "productDownloadIos": "Download iOS App",
     "productDownloadAndroid": "Download Android App",

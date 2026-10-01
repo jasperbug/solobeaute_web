@@ -146,3 +146,90 @@ export type ShareableBeauticianResponse = {
   success: true
   data: BeauticianDetail
 }
+
+// ---------------------------------------------------------------------------
+// Public space pages (/spaces, /spaces/[id])
+//
+// PRIVACY: the backend /spaces endpoints also return the full street address,
+// latitude/longitude, host name/avatar, camera locations, bookings and
+// schedules. NONE of those fields exist on PublicSpace on purpose: raw API
+// records are reduced to this whitelist in `toPublicSpace()` (lib/spaces.ts)
+// on the server, so the extra fields can never reach the HTML, JSON-LD or the
+// RSC payload. Do not add address / latitude / longitude / host here without
+// Jasper's sign-off (approved scope: city + district only).
+// ---------------------------------------------------------------------------
+
+export type SpaceStatus = 'DRAFT' | 'ACTIVE' | 'INACTIVE' | 'SUSPENDED'
+
+export type SpaceType = 'OPEN_SPACE' | 'CURTAIN_PARTITION' | 'PRIVATE_ROOM'
+
+export type CameraDisclosureStatus = 'HAS_CAMERA' | 'NO_CAMERA' | 'UNDISCLOSED'
+
+export type PublicSpacePhoto = {
+  url: string
+  category: string | null
+}
+
+export type PublicSpace = {
+  id: string
+  title: string
+  description: string | null
+  city: string | null
+  district: string | null
+  spaceType: SpaceType | null
+  isFullyPrivate: boolean
+  hourlyRate: number | null
+  halfDayRate: number | null
+  fullDayRate: number | null
+  minimumHours: number | null
+  maxCapacity: number | null
+  equipment: string[]
+  recommendedServices: string[]
+  prohibitedServices: string[]
+  cameraDisclosureStatus: CameraDisclosureStatus | null
+  coverPhotoUrl: string | null
+  photos: PublicSpacePhoto[]
+  roomScanUrl: string | null
+  ratingAvg: number
+  ratingCount: number
+  updatedAt: string | null
+}
+
+/** Shape of the raw backend record — only the fields we read. */
+export type RawSpaceRecord = {
+  id: string
+  status?: SpaceStatus | string | null
+  deletedAt?: string | null
+  title?: string | null
+  description?: string | null
+  city?: string | null
+  district?: string | null
+  spaceType?: string | null
+  isFullyPrivate?: boolean | null
+  hourlyRate?: number | null
+  halfDayRate?: number | null
+  fullDayRate?: number | null
+  minimumHours?: number | null
+  maxCapacity?: number | null
+  equipment?: string[] | null
+  recommendedServices?: string[] | null
+  prohibitedServices?: string[] | null
+  cameraDisclosureStatus?: string | null
+  coverPhoto?: { url?: string | null } | null
+  photos?: Array<{ url?: string | null; category?: string | null; sortOrder?: number | null }> | null
+  roomScan?: { usdzUrl?: string | null } | null
+  ratingAvg?: number | null
+  ratingCount?: number | null
+  updatedAt?: string | null
+}
+
+export type RawSpaceListResponse = {
+  success: boolean
+  data: RawSpaceRecord[]
+  pagination?: Pagination
+}
+
+export type RawSpaceDetailResponse = {
+  success: boolean
+  data: RawSpaceRecord
+}

@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next'
 
 import { API_BASE_URL, SITE_URL } from '@/lib/constants'
+import { fetchPublicSpaces } from '@/lib/spaces'
 import type { BeauticianSearchResponse, BeauticianSummary } from '@/lib/types'
 
 const API_PAGE_LIMIT = 50
@@ -39,6 +40,7 @@ async function fetchAllBeauticians(): Promise<BeauticianSummary[]> {
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPages: MetadataRoute.Sitemap = [
     { url: SITE_URL, changeFrequency: 'weekly', priority: 1.0 },
+    { url: `${SITE_URL}/spaces`, changeFrequency: 'daily', priority: 0.9 },
     { url: `${SITE_URL}/search`, changeFrequency: 'daily', priority: 0.9 },
     { url: `${SITE_URL}/privacy`, changeFrequency: 'yearly', priority: 0.3 },
     { url: `${SITE_URL}/terms`, changeFrequency: 'yearly', priority: 0.3 },
@@ -72,5 +74,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error('[sitemap] failed to build dynamic beautician entries:', error)
   }
 
-  return [...staticPages, ...beauticianPages]
+  let spacePages: MetadataRoute.Sitemap = []
+
+  try {
+    // fetchPublicSpaces() keeps only status === 'ACTIVE' (and not deleted), the
+    // same rule /spaces/[id] uses to decide between 200 and 404.
+    const spaces = await fetchPublicSpaces()
+    spacePages = spaces.map((space) => ({
+      url: `${SITE_URL}/spaces/${space.id}`,
+      ...(space.updatedAt ? { lastModified: space.updatedAt } : {}),
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    }))
+    console.log(`[sitemap] emitted ${spacePages.length} space entries`)
+  } catch (error) {
+    console.error('[sitemap] failed to build dynamic space entries:', error)
+  }
+
+  return [...staticPages, ...spacePages, ...beauticianPages]
 }

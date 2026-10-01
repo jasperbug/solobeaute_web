@@ -8,6 +8,7 @@ export function Footer() {
   const t = useTranslations('footer')
 
   const productLinks = [
+    { href: '/spaces', label: t('productFindSpaces'), external: false },
     { href: '/search', label: t('productFindPros'), external: false },
     { href: APP_STORE_URL, label: t('productDownloadIos'), external: true },
     { href: PLAY_STORE_URL, label: t('productDownloadAndroid'), external: true },
