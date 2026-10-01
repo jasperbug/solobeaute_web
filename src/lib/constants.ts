@@ -14,7 +14,24 @@ export const APP_STORE_URL = 'https://apps.apple.com/tw/app/solobeaute/id6760957
 export const PLAY_STORE_URL =
   'https://play.google.com/store/apps/details?id=com.solobeauty.android'
 
+// Official SoloBeauté social accounts (both @_solobeaute_, verified 2026-10-01).
+export const INSTAGRAM_URL = 'https://www.instagram.com/_solobeaute_/'
+
+export const THREADS_URL = 'https://www.threads.net/@_solobeaute_'
+
 export const APP_DEEP_LINK_SCHEME = 'tw.solobeauty.app://'
+
+// The seven cities/counties that currently have spaces on SoloBeauté.
+// Used for Organization `areaServed`; keep in sync with footer.madeIn copy.
+export const SERVICE_AREAS = [
+  '台北市',
+  '新北市',
+  '桃園市',
+  '台中市',
+  '高雄市',
+  '彰化縣',
+  '南投縣',
+] as const
 
 export const CATEGORY_OPTIONS = [
   { value: 'NAIL', labelKey: 'nail', emoji: '💅' },

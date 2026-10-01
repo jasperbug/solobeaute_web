@@ -26,7 +26,7 @@
     "arCaption": "3D TOUR"
   },
   "ecosystem": {
-    "sectionTag": "ECOSYSTEM",
+    "sectionTag": "ROLES",
     "title": "Three roles, one flywheel",
     "subtitle": "SoloBeauté serves beauty pros first, helps hosts monetize idle capacity second, and adds consumer discovery as the next layer.",
     "beautician": {
@@ -147,15 +147,15 @@
     "items": [
       {
         "q": "Do beauty pros need to pay to join?",
-        "a": "Joining SoloBeauté is completely free. The platform does not handle payments — rent is settled directly with the host on site, and we take no commission."
+        "a": "Joining SoloBeauté is free. SoloBeauté does not handle payments — rent is paid in cash directly to the host on site."
       },
       {
         "q": "Is renting out my space safe?",
-        "a": "Space bookings go through the platform, and hosts are free to accept or decline and to set their own rental rules. Client-side service bookings are still arranged through each pro's own channels."
+        "a": "Space bookings are made in the SoloBeauté app, and hosts are free to accept or decline and to set their own rental rules. Client-side service bookings are still arranged through each pro's own channels."
       },
       {
         "q": "How are payments handled?",
-        "a": "During the early stage, transactions are handled in cash on-site for simplicity. Secure online payments are coming soon, with full transaction protection."
+        "a": "Rent is currently paid in cash directly to the host on site."
       },
       {
         "q": "When can consumers start using the app?",
@@ -184,7 +184,7 @@
     "hoursUnit": "hours / week",
     "resultTitle": "Estimated Passive Income / Month",
     "cta": "Download the App to Start Earning",
-    "hint": "*Based on the actual listed rates of the 15 spaces currently on SoloBeauté (open space median $170/hr, curtained area $200/hr, private room $220/hr; platform range NT$100–350, median NT$200). This is the listed rate multiplied by the hours you enter — not a guarantee of income. Actual occupancy depends on location, equipment and demand.",
+    "hint": "*Based on the actual listed rates of the 15 spaces on SoloBeauté when sampled in August 2026 (open space median $170/hr, curtained area $200/hr, private room $220/hr; overall range NT$100–350, median NT$200). This is the listed rate multiplied by the hours you enter — not a guarantee of income. Actual occupancy depends on location, equipment and demand.",
     "rateDetail": "NT${rate}/hr · {hours}hr/wk",
     "perMonth": "mo",
     "types": {
@@ -215,7 +215,12 @@
     "support": "Support",
     "deleteAccount": "Delete account",
     "rights": "© 2026 SoloBeauté. All rights reserved.",
-    "madeIn": "Made in Taipei · Taipei · Taichung · Kaohsiung"
+    "madeIn": "Made in Taipei · Taipei · New Taipei · Taoyuan · Taichung · Kaohsiung · Changhua · Nantou",
+    "socialLabel": "Follow SoloBeauté",
+    "instagram": "Instagram",
+    "threads": "Threads",
+    "instagramAria": "SoloBeauté on Instagram (@_solobeaute_)",
+    "threadsAria": "SoloBeauté on Threads (@_solobeaute_)"
   },
   "common": {
     "backHome": "Back Home",
