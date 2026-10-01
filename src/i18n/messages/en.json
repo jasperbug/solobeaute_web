@@ -131,12 +131,12 @@
     "title": "Building the future of beauty together",
     "desc": "SoloBeauté did not come from a conference room deck. One founder understands systems, the other understands the day-to-day reality of Taiwan's beauty industry. The product is built to help pros actually start working and hosts actually start listing.",
     "founder1": {
-      "name": "Jasper",
-      "role": "Builds the product",
+      "name": "Jasper Tsai",
+      "role": "Engineer",
       "desc": "Designs the system, the website, and the app with one goal: remove friction so beauty pros can get to work faster."
     },
     "founder2": {
-      "name": "Meigo",
+      "name": "Meigo Liu",
       "role": "Beauty Professional",
       "desc": "Has worked on the front line of Taiwan's beauty industry for years, understands the daily rhythm of beauty pros, and knows which processes truly help and which only add burden."
     }
@@ -171,7 +171,7 @@
       },
       {
         "q": "How is SoloBeauté different from other shared spaces?",
-        "a": "We do more than help you find a space. SoloBeauté also helps pros build a brand page, manage bookings, and organize their portfolio and brand presence. More importantly, our team understands the beauty industry firsthand. Meigo has worked on the front line, so we are not guessing at what pros actually need."
+        "a": "We do more than help you find a space. SoloBeauté also helps pros build a brand page, manage bookings, and organize their portfolio and brand presence. More importantly, our team understands the beauty industry firsthand. Co-founder Meigo Liu has worked on the front line, so we are not guessing at what pros actually need."
       }
     ]
   },
@@ -184,7 +184,7 @@
     "hoursUnit": "hours / week",
     "resultTitle": "Estimated Passive Income / Month",
     "cta": "Download the App to Start Earning",
-    "hint": "*Based on the actual listed rates of the 15 spaces on SoloBeauté when sampled in August 2026 (open space median $170/hr, curtained area $200/hr, private room $220/hr; overall range NT$100–350, median NT$200). This is the listed rate multiplied by the hours you enter — not a guarantee of income. Actual occupancy depends on location, equipment and demand.",
+    "hint": "*Based on the actual listed rates of the 17 spaces live on SoloBeauté on 1 October 2026 (open space median NT$170/hr, curtained area NT$200/hr, private room NT$200/hr; overall range NT$100–350, overall median NT$200). This is the listed rate multiplied by the hours you enter — not a guarantee of income. Actual occupancy depends on location, equipment and demand.",
     "rateDetail": "NT${rate}/hr · {hours}hr/wk",
     "perMonth": "mo",
     "types": {

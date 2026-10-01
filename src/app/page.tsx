@@ -74,12 +74,11 @@ export default async function HomePage() {
           {
             '@type': 'Person',
             name: 'Jasper Tsai',
-            alternateName: '蔡維哲',
             jobTitle: '工程師',
           },
           {
             '@type': 'Person',
-            name: 'Meigo',
+            name: 'Meigo Liu',
             jobTitle: '美容職人',
           },
         ],

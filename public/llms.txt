@@ -18,7 +18,7 @@ SoloBeauté 和國外的「Solo Beauty」「Solo Beauty Partner」是不同的�
 - 職人品牌頁：免費；填好顯示名稱、服務區域、至少一個服務項目、頭像或作品照這 4 項，就會自動公開在 www.solobeaute.com
 - 消費者線上預約：還沒開放；客人目前是透過職人自己的管道聯繫預約
 - App：iOS、Android
-- 創辦團隊：Jasper Tsai（蔡維哲，工程師）、Meigo（美容職人）
+- 創辦團隊：Jasper Tsai（工程師）、Meigo Liu（美容職人）
 
 ## 官方社群
 
