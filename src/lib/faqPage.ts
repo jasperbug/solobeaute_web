@@ -1,4 +1,6 @@
 import { SPACE_CITIES, cityPagePath, normalizeCityName } from './cities'
+import { buildPriceReport } from './priceReport'
+import { formatNtd } from './spaces'
 import type { PublicSpace } from './types'
 
 // ---------------------------------------------------------------------------
@@ -48,6 +50,32 @@ function equipmentAnswer(spaces: PublicSpace[] | null): string {
   return `${base}以目前上架的 ${spaces.length} 間空間來看，${counts.map((c) => `${c.count} 間有${c.label}`).join('、')}。${tail}`
 }
 
+function browEntry(spaces: PublicSpace[] | null): FaqEntry {
+  const q = '有適合霧眉、霧唇的工作室可以按小時租嗎？'
+  const linkText = '霧眉師租工作室'
+  const tail = `每個空間適合的服務以空間頁上屋主的標示為準；更多數字見時租行情的「${linkText}」段落。`
+  const links = [{ text: linkText, href: '/spaces/price-report#brow' }]
+  const brow = spaces && spaces.length ? buildPriceReport(spaces).professions.find((p) => p.key === 'brow') : undefined
+  if (!brow) {
+    return { q, a: `有。部分空間的屋主標示適合霧眉、霧唇，App 和空間頁會列出每個空間適合的服務和設備。${tail}`, links }
+  }
+  if (brow.count === 0) {
+    return { q, a: `目前還沒有屋主標示適合霧眉、霧唇的空間，新空間陸續上架中。${tail}`, links }
+  }
+  const h = brow.hourly
+  const rate = h.min !== null && h.max !== null
+    ? (h.min === h.max ? `時租 ${formatNtd(h.min)}` : `時租 ${formatNtd(h.min)}–${h.max.toLocaleString('en-US')}${h.count >= 2 && h.median !== null ? `，中位數 ${formatNtd(h.median)}` : ''}`)
+    : ''
+  const bed = brow.equipment.find((e) => e.label === '美容床')
+  const parts = [
+    `有。目前上架的 ${spaces?.length ?? 0} 間空間中，${brow.count} 間屋主標示適合霧眉、霧唇`,
+    rate || null,
+    bed && bed.count > 0 ? `${bed.count} 間有美容床` : null,
+    brow.cities.length ? `分布在${brow.cities.map((c) => `${c.short} ${c.count} 間`).join('、')}` : null,
+  ].filter(Boolean)
+  return { q, a: `${parts.join('，')}。${tail}`, links }
+}
+
 function citiesEntry(spaces: PublicSpace[] | null): FaqEntry {
   const cities = SPACE_CITIES.map((city) => ({
     city,
@@ -82,6 +110,7 @@ export function buildFaqGroups(home: FaqItem[], spaces: PublicSpace[] | null): F
           a: '先在 SoloBeauté App 找到合適的空間，看清楚照片、設備、價格和最低租用時數；有問題可以直接傳訊息問屋主。選好日期和時段後送出預約，屋主確認後預約才成立，App 會通知你。當天依約到場使用，租金在現場用現金付給屋主。屋主可以接受或拒絕預約，送出後請留意 App 通知。',
         },
         h(HOME.services),
+        browEntry(spaces),
         { q: '租一個空間包含哪些東西？', a: equipmentAnswer(spaces) },
         h(HOME.cities),
         citiesEntry(spaces),

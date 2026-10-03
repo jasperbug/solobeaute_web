@@ -348,3 +348,103 @@ export function buildCityFaq(stats: CityStats, allStats: CityStats[], dateLabel:
 }
 
 export { cityPagePath, getCityBySlug }
+
+// --- extra city sections (monthly_check.md #6–#11) ---------------------------
+// Everything below is computed from the live space list; a section or sentence
+// is only produced when the data for it actually exists.
+
+/** Cities whose space list is split into per-district subsections. */
+const DISTRICT_SECTION_CITIES = ['new-taipei', 'taoyuan']
+
+export type DistrictSection = {
+  district: string
+  /** e.g. 新北板橋美業空間時租 */
+  heading: string
+  anchor: string
+  summary: string
+  spaces: PublicSpace[]
+}
+
+function rangeOf(spaces: PublicSpace[]): string {
+  const rates = spaces.map((s) => s.hourlyRate).filter((r): r is number => r !== null)
+  if (!rates.length) return ''
+  const min = Math.min(...rates)
+  const max = Math.max(...rates)
+  return min === max ? formatNtd(min) : `${formatNtd(min)}–${max}`
+}
+
+export function buildDistrictSections(stats: CityStats): DistrictSection[] {
+  if (!DISTRICT_SECTION_CITIES.includes(stats.city.slug)) return []
+  if (stats.districts.length < 2) return []
+  return stats.districts.map(({ label: district, count }) => {
+    const spaces = stats.spaces.filter((s) => s.district === district)
+    const services = SERVICE_GROUPS
+      .map((group) => ({ group, n: spaces.filter((s) => s.recommendedServices.some(group.match)).length }))
+      .filter((item) => item.n > 0)
+    const rate = rangeOf(spaces)
+    const types = countBy(spaces.map((s) => spaceTypeLabel(s.spaceType)))
+    const parts = [
+      `${stats.city.name}${district}目前有 ${count} 個美業空間`,
+      types.length ? `類型是${types.map((t) => (count === 1 ? t.label : `${t.label} ${t.count} 個`)).join('、')}` : null,
+      rate ? `時租 ${rate}` : null,
+    ].filter(Boolean)
+    let summary = `${parts.join('，')}。`
+    if (services.length) {
+      summary += count === 1
+        ? `屋主標示適合${services.map((s) => s.group.prose).join('、')}。`
+        : `依屋主標示，${services.map((s) => `${s.n} 個適合${s.group.prose}`).join('、')}。`
+    }
+    return {
+      district,
+      // 桃園區 → 「桃園市桃園區」, not 「桃園桃園」.
+      heading: stripDistrictSuffix(district) === stats.city.short
+        ? `${stats.city.name}${district}美業空間時租`
+        : `${stats.city.short}${stripDistrictSuffix(district)}美業空間時租`,
+      anchor: `district-${encodeURIComponent(district)}`,
+      summary,
+      spaces,
+    }
+  })
+}
+
+/** H2 of the space list. 高雄 uses 「共享空間」 to match how people search there. */
+export function buildCityListHeading(stats: CityStats): string {
+  return stats.city.slug === 'kaohsiung' ? `${stats.city.short}美業共享空間` : `${stats.city.short}的美業空間`
+}
+
+/** Short note under the 高雄 「共享空間」 heading. */
+export function buildSharedSpaceNote(stats: CityStats): string | null {
+  if (stats.city.slug !== 'kaohsiung' || stats.count === 0) return null
+  return `SoloBeauté 上的空間由不同屋主上架，美業職人按小時共用、有預約才租。${stats.city.short}目前有 ${stats.count} 個，位於${stats.districts.map((d) => d.label).join('、')}。`
+}
+
+/**
+ * One extra sentence placed right under the H1 for cities where the search
+ * wording differs from the default copy (台中 美容床, 南投 美容工作室時租).
+ */
+export function buildCityLeadNote(stats: CityStats, allStats: CityStats[]): string | null {
+  const { city, count, spaces } = stats
+  if (count === 0) return null
+  if (city.slug === 'taichung') {
+    const withBed = spaces.filter((s) => s.equipment.includes('美容床'))
+    if (withBed.length === 0) return null
+    const rate = rangeOf(withBed)
+    const share = withBed.length === count
+      ? (count === 1 ? '這個空間有美容床' : `${count} 個空間都有美容床`)
+      : `${count} 個空間中有 ${withBed.length} 個有美容床`
+    return `${city.short}美容床時租：${share}${rate ? `，時租 ${rate}` : ''}。`
+  }
+  if (city.slug === 'nantou') {
+    const rate = rateText(stats)
+    const services = Array.from(new Set(spaces.flatMap((s) => s.recommendedServices))).slice(0, 5)
+    const nearby = nearbyCities(stats, allStats)
+    const hasPrimary = stats.services.some((s) => PRIMARY_GROUP_KEYS.includes(s.key) && s.count > 0)
+    let text = `南投美容工作室時租：SoloBeauté 在${city.name}目前有 ${count} 個美業空間${rate ? `，時租 ${rate}` : ''}`
+    text += services.length ? `，屋主標示適合的服務是${services.join('、')}。` : '。'
+    if (!hasPrimary && nearby.length) {
+      text += `要找美睫、美容（臉部護膚）空間的職人，可以看看鄰近的${nearby.map((n) => `${n.city.short}（${n.count} 個）`).join('、')}。`
+    }
+    return text
+  }
+  return null
+}

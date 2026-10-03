@@ -58,4 +58,4 @@ SoloBeauté 和國外的「Solo Beauty」「Solo Beauty Partner」「Soo Beauté
 ## 其他
 
 - [關於 SoloBeauté](https://www.solobeaute.com/about)：由工程師 Jasper Tsai 和美容職人 Meigo Liu 共同創辦，服務內容與目前的數字
-- [English](https://www.solobeaute.com/en)：English summary of SoloBeauté and its 2026 hourly beauty workspace rental price data (range, median, half-day / full-day rates, by city)
+- [English](https://www.solobeaute.com/en)：English version of the 2026 Taiwan beauty workspace hourly rental price report: range, median, price distribution, by city, space type and profession (lash, nail, brow), half-day / full-day rates, minimum hours, equipment, FAQ and how to cite

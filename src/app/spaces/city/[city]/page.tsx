@@ -11,6 +11,10 @@ import {
   buildCityDescription,
   buildCityFaq,
   buildCityH1,
+  buildCityLeadNote,
+  buildCityListHeading,
+  buildDistrictSections,
+  buildSharedSpaceNote,
   buildCityIntro,
   buildCityOgTitle,
   buildCityTitle,
@@ -94,6 +98,10 @@ export default async function CitySpacesPage({ params }: CityPageProps) {
   const intro = buildCityIntro(stats, allStats, dateLabel)
   const faq = buildCityFaq(stats, allStats, dateLabel)
   const otherCities = allStats.filter((item) => item.city.slug !== city.slug)
+  const leadNote = buildCityLeadNote(stats, allStats)
+  const listHeading = buildCityListHeading(stats)
+  const sharedNote = buildSharedSpaceNote(stats)
+  const districtSections = buildDistrictSections(stats)
 
   const facts = [
     { label: '空間數', value: `${stats.count} 個` },
@@ -171,6 +179,9 @@ export default async function CitySpacesPage({ params }: CityPageProps) {
         <header className="space-y-4">
           <p className="section-tag">{city.name}・美業空間時租</p>
           <h1 className="text-3xl font-semibold leading-tight text-ink md:text-4xl">{h1}</h1>
+          {leadNote ? (
+            <p className="max-w-3xl text-base font-medium leading-8 text-ink [font-family:var(--font-body)] lining-nums" data-city-lead-note>{leadNote}</p>
+          ) : null}
           <div className="max-w-3xl space-y-3 text-base leading-8 text-black/65" data-city-intro>
             {intro.map((paragraph) => (
               <p key={paragraph}>{paragraph}</p>
@@ -192,14 +203,46 @@ export default async function CitySpacesPage({ params }: CityPageProps) {
         {spaces.length > 0 ? (
           <section className="space-y-5" aria-labelledby="city-spaces">
             <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-              <h2 id="city-spaces" className="section-title">{city.short}的美業空間</h2>
+              <h2 id="city-spaces" className="section-title">{listHeading}</h2>
               <span className="text-sm text-black/55 [font-family:var(--font-body)] lining-nums">共 {spaces.length} 間</span>
             </div>
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {spaces.map((space) => (
-                <SpaceCard key={space.id} space={space} />
-              ))}
-            </div>
+            {sharedNote ? (
+              <p className="max-w-3xl text-sm leading-7 text-black/65 [font-family:var(--font-body)] lining-nums" data-city-shared-note>{sharedNote}</p>
+            ) : null}
+            {districtSections.length > 0 ? (
+              <>
+                <nav aria-label="依區瀏覽" className="flex flex-wrap gap-2">
+                  {districtSections.map((section) => (
+                    <a
+                      key={section.district}
+                      href={`#${section.anchor}`}
+                      className="inline-flex min-h-10 items-center rounded-full border border-black/10 bg-white px-4 text-sm text-ink transition hover:border-brand hover:text-brand [font-family:var(--font-body)] lining-nums"
+                    >
+                      {section.district} · {section.spaces.length} 間
+                    </a>
+                  ))}
+                </nav>
+                {districtSections.map((section) => (
+                  <div key={section.district} id={section.anchor} className="scroll-mt-28 space-y-4" data-city-district>
+                    <div className="space-y-1">
+                      <h3 className="text-xl font-semibold text-ink">{section.heading}</h3>
+                      <p className="max-w-3xl text-sm leading-7 text-black/65 [font-family:var(--font-body)] lining-nums">{section.summary}</p>
+                    </div>
+                    <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                      {section.spaces.map((space) => (
+                        <SpaceCard key={space.id} space={space} headingLevel="h3" />
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </>
+            ) : (
+              <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                {spaces.map((space) => (
+                  <SpaceCard key={space.id} space={space} />
+                ))}
+              </div>
+            )}
           </section>
         ) : null}
 
