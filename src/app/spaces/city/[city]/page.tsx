@@ -236,6 +236,14 @@ export default async function CitySpacesPage({ params }: CityPageProps) {
                 全部美業空間
               </Link>
             </li>
+            <li>
+              <Link
+                href="/spaces/price-report"
+                className="inline-flex min-h-10 items-center rounded-full border border-black/10 bg-white px-4 text-sm text-ink transition hover:border-brand hover:text-brand [font-family:var(--font-body)] lining-nums"
+              >
+                全台時租行情
+              </Link>
+            </li>
           </ul>
         </section>
 

@@ -65,11 +65,18 @@ export default async function RootLayout({
 }>) {
   const locale = await getLocale()
   const messages = await getMessages()
+  // faq.items holds {placeholder} templates that only server components fill
+  // with live data (src/lib/faqStats.ts); don't ship the raw templates to the
+  // client bundle / RSC payload.
+  const faqMessages = (messages.faq ?? {}) as Record<string, unknown>
+  const { items: _faqItems, ...faqClient } = faqMessages
+  void _faqItems
+  const clientMessages = { ...messages, faq: faqClient }
 
   return (
     <html lang={locale} className={`${notoSansTc.variable} ${cormorantGaramond.variable}`}>
       <body>
-        <NextIntlClientProvider locale={locale} messages={messages}>
+        <NextIntlClientProvider locale={locale} messages={clientMessages as typeof messages}>
           <div className="app">
             <Header />
             {children}

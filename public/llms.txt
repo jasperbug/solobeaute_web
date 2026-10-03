@@ -4,13 +4,13 @@
 >
 > SoloBeauté (Solobeaute) is a Taiwan-based app for renting ready-to-use beauty workspaces by the hour, from NT$100 to NT$350 per hour, with no contract, no deposit and no renovation, in Taipei, New Taipei, Taoyuan, Taichung, Kaohsiung, Changhua and Nantou.
 
-SoloBeauté 和國外的「Solo Beauty」「Solo Beauty Partner」是不同的服務，彼此沒有關係。
+SoloBeauté 和國外的「Solo Beauty」「Solo Beauty Partner」「Soo Beauté」是不同的服務，彼此沒有關係。
 
 ## 重點事實（2026 年 10 月）
 
 - 服務對象：美業職人（租空間的人）與空間屋主（把閒置時段租出去的人）
-- 空間：目前有 17 個，分布台北、新北、桃園、台中、高雄、彰化、南投
-- 時租：NT$100–350，多數 NT$150–200；價格由屋主自己訂
+- 空間：2026 年 10 月有 17 個，分布台北、新北、桃園、台中、高雄、彰化、南投（最新數字見 https://www.solobeaute.com/spaces/price-report）
+- 時租（2026 年 10 月）：NT$100–350，多數 NT$150–200；價格由屋主自己訂
 - 空間類型：開放空間、拉簾隔間、獨立房間
 - 條件：按小時租、不簽約、不付押金、不用裝潢
 - 付款：租金到現場用現金付給屋主；加入 SoloBeauté 免費
@@ -28,6 +28,7 @@ SoloBeauté 和國外的「Solo Beauty」「Solo Beauty Partner」是不同的�
 ## 網站
 
 - [首頁](https://www.solobeaute.com/)：服務介紹、屋主收益試算、常見問題
+- [常見問題](https://www.solobeaute.com/faq)：找空間、預約流程、付款、取消、屋主上架、職人品牌頁等 20 多題問答
 - [找職人](https://www.solobeaute.com/search)：美業職人品牌頁目錄，可以用城市、類別篩選
 - [支援中心](https://www.solobeaute.com/support)
 - [隱私政策](https://www.solobeaute.com/privacy)
@@ -41,6 +42,7 @@ SoloBeauté 和國外的「Solo Beauty」「Solo Beauty Partner」是不同的�
 ## 空間
 
 - [所有美業空間](https://www.solobeaute.com/spaces)：全台上架中的美業空間，依縣市分組，附時租價格
+- [美業空間時租行情](https://www.solobeaute.com/spaces/price-report)：依上架中空間的公開價格即時計算的時租區間、中位數，並依空間類型、縣市、半日／全日價、最低時數、設備與適合服務分類
 - [台北美業空間時租](https://www.solobeaute.com/spaces/city/taipei)：台北市的美業空間列表、時租行情與常見問題
 - [新北美業空間時租](https://www.solobeaute.com/spaces/city/new-taipei)：新北市的美業空間列表、時租行情與常見問題
 - [桃園美業空間時租](https://www.solobeaute.com/spaces/city/taoyuan)：桃園市的美業空間列表、時租行情與常見問題
@@ -53,5 +55,4 @@ SoloBeauté 和國外的「Solo Beauty」「Solo Beauty Partner」是不同的�
 <!-- 上線後再加入：
 ## 其他
 - [關於 SoloBeauté](https://www.solobeaute.com/about)
-- [常見問題](https://www.solobeaute.com/faq)
 -->

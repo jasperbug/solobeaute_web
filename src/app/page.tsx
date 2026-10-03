@@ -11,6 +11,7 @@ import {
   SITE_URL,
   THREADS_URL,
 } from '@/lib/constants'
+import { fillFaqItems, getFaqFacts } from '@/lib/faqStats'
 
 // Homepage copy follows seo_copy_v1.md §1 (zh-TW only; Chinese-only SEO).
 // This title lives in the same segment as the root layout, so the layout's
@@ -55,7 +56,8 @@ export default async function HomePage() {
   const tFaq = await getTranslations('faq')
   // Built from the same messages FaqSection renders, so the JSON-LD always
   // matches the visible (server-rendered) FAQ text exactly.
-  const faqItems = tFaq.raw('items') as FaqItemData[]
+  // {placeholders} are filled with live space data (count, cities, price range).
+  const faqItems = fillFaqItems(tFaq.raw('items') as FaqItemData[], await getFaqFacts())
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -132,7 +134,7 @@ export default async function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}
       />
-      <LandingPage />
+      <LandingPage faqItems={faqItems} />
     </>
   )
 }

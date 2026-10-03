@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { useTranslations } from 'next-intl'
 
 import { Reveal } from '../ui/Reveal'
@@ -28,9 +29,10 @@ function FaqItem({ question, answer }: { question: string; answer: string }) {
   )
 }
 
-export function FaqSection() {
+// `items` = faq.items with live values filled in (src/app/page.tsx), the same
+// array the FAQPage JSON-LD is built from.
+export function FaqSection({ items }: { items: FaqItemData[] }) {
   const t = useTranslations('faq')
-  const items = t.raw('items') as FaqItemData[]
 
   return (
     <section className="faq" id="faq">
@@ -49,6 +51,10 @@ export function FaqSection() {
             </Reveal>
           ))}
         </div>
+
+        <p className="faq__more">
+          <Link href="/faq">{t('more')} →</Link>
+        </p>
       </div>
     </section>
   )

@@ -10,13 +10,14 @@ export function Footer() {
   const productLinks = [
     { href: '/spaces', label: t('productFindSpaces'), external: false },
     { href: '/search', label: t('productFindPros'), external: false },
+    { href: '/spaces/price-report', label: t('productPriceReport'), external: false },
     { href: APP_STORE_URL, label: t('productDownloadIos'), external: true },
     { href: PLAY_STORE_URL, label: t('productDownloadAndroid'), external: true },
   ]
 
   const aboutLinks = [
     { href: '/#about', label: t('aboutUs') },
-    { href: '/#faq', label: t('faq') },
+    { href: '/faq', label: t('faq') },
   ]
 
   const socialLinks = [
