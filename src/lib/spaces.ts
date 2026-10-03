@@ -1,5 +1,6 @@
 import { cache } from 'react'
 
+import { getCityByName } from './cities'
 import { API_BASE_URL, SERVICE_AREAS } from './constants'
 import { resolveImageUrl } from './format'
 import type {
@@ -285,18 +286,8 @@ export function photoAlt(space: PublicSpace, category: string | null, index: num
 
 // City grouping for /spaces -------------------------------------------------
 
-const CITY_SLUGS: Record<string, string> = {
-  台北市: 'taipei',
-  新北市: 'new-taipei',
-  桃園市: 'taoyuan',
-  台中市: 'taichung',
-  高雄市: 'kaohsiung',
-  彰化縣: 'changhua',
-  南投縣: 'nantou',
-}
-
 export function cityAnchor(city: string): string {
-  return `city-${CITY_SLUGS[city] ?? encodeURIComponent(city)}`
+  return `city-${getCityByName(city)?.slug ?? encodeURIComponent(city)}`
 }
 
 export type SpaceCityGroup = {

@@ -6,6 +6,7 @@ import { notFound } from 'next/navigation'
 import { JsonLd } from '@/components/spaces/JsonLd'
 import { SpaceCard } from '@/components/spaces/SpaceCard'
 import { StoreButtons } from '@/components/ui/StoreButtons'
+import { cityPagePath, getCityByName } from '@/lib/cities'
 import { DEFAULT_METADATA_IMAGE, SITE_URL } from '@/lib/constants'
 import { buildAppDeepLink } from '@/lib/format'
 import {
@@ -30,6 +31,12 @@ export const revalidate = 3600
 
 type SpacePageProps = {
   params: { id: string }
+}
+
+/** City landing page when we have one, otherwise the city anchor on /spaces. */
+function cityHref(city: string): string {
+  const known = getCityByName(city)
+  return known ? cityPagePath(known) : `/spaces#${cityAnchor(city)}`
 }
 
 function canonicalUrl(space: Pick<PublicSpace, 'id'>) {
@@ -76,6 +83,7 @@ export async function generateMetadata({ params }: SpacePageProps): Promise<Meta
 
 function buildJsonLd(space: PublicSpace, summary: string) {
   const url = canonicalUrl(space)
+  const cityPage = getCityByName(space.city)
   const placeId = `${url}#place`
   const images = space.photos.map((photo) => photo.url)
 
@@ -143,7 +151,8 @@ function buildJsonLd(space: PublicSpace, summary: string) {
         itemListElement: [
           { '@type': 'ListItem', position: 1, name: 'SoloBeauté', item: SITE_URL },
           { '@type': 'ListItem', position: 2, name: '美業空間', item: `${SITE_URL}/spaces` },
-          { '@type': 'ListItem', position: 3, name: space.title, item: url },
+          ...(cityPage ? [{ '@type': 'ListItem', position: 3, name: cityPage.name, item: `${SITE_URL}${cityPagePath(cityPage)}` }] : []),
+          { '@type': 'ListItem', position: cityPage ? 4 : 3, name: space.title, item: url },
         ],
       },
     ],
@@ -183,6 +192,7 @@ export default async function SpacePage({ params }: SpacePageProps) {
   }
 
   const summary = buildSpaceSummary(space)
+  const cityPage = getCityByName(space.city)
   const related = await relatedSpaces(space)
   const where = locationLabel(space)
   const camera = cameraDisclosureLabel(space.cameraDisclosureStatus)
@@ -214,7 +224,7 @@ export default async function SpacePage({ params }: SpacePageProps) {
             {space.city ? (
               <>
                 <li aria-hidden="true">›</li>
-                <li><Link href={`/spaces#${cityAnchor(space.city)}`} className="hover:text-brand">{space.city}</Link></li>
+                <li><Link href={cityHref(space.city)} className="hover:text-brand">{space.city}</Link></li>
               </>
             ) : null}
             <li aria-hidden="true">›</li>
@@ -359,9 +369,16 @@ export default async function SpacePage({ params }: SpacePageProps) {
                 <SpaceCard key={item.id} space={item} />
               ))}
             </div>
-            <Link href="/spaces" className="inline-flex text-sm text-brand underline-offset-4 hover:underline">
-              看全部美業空間 →
-            </Link>
+            <div className="flex flex-wrap gap-x-6 gap-y-2">
+              {cityPage ? (
+                <Link href={cityPagePath(cityPage)} className="inline-flex text-sm text-brand underline-offset-4 hover:underline">
+                  看{cityPage.short}全部美業空間 →
+                </Link>
+              ) : null}
+              <Link href="/spaces" className="inline-flex text-sm text-brand underline-offset-4 hover:underline">
+                看全部美業空間 →
+              </Link>
+            </div>
           </section>
         ) : null}
       </div>
