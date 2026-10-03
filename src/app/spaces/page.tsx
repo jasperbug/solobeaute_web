@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { JsonLd } from '@/components/spaces/JsonLd'
 import { SpaceCard } from '@/components/spaces/SpaceCard'
 import { StoreButtons } from '@/components/ui/StoreButtons'
+import { cityPagePath, getCityByName } from '@/lib/cities'
 import { SITE_URL } from '@/lib/constants'
 import { fetchPublicSpaces, formatNtd, groupSpacesByCity, rateRange, shortCityName } from '@/lib/spaces'
 import type { PublicSpace } from '@/lib/types'
@@ -132,10 +133,17 @@ export default async function SpacesPage() {
 
         {groups.map((group) => {
           const cityRange = rateRange(group.spaces)
+          const cityPage = getCityByName(group.city)
           return (
             <section key={group.city} id={group.anchor} className="scroll-mt-28 space-y-5">
               <div className="space-y-1">
-                <h2 className="section-title">{shortCityName(group.city)}美業空間時租</h2>
+                <h2 className="section-title">
+                  {cityPage ? (
+                    <Link href={cityPagePath(cityPage)} className="hover:text-brand">{shortCityName(group.city)}美業空間時租</Link>
+                  ) : (
+                    `${shortCityName(group.city)}美業空間時租`
+                  )}
+                </h2>
                 <p className="text-sm text-black/55">
                   {group.city} {group.spaces.length} 個空間
                   {cityRange
@@ -150,6 +158,11 @@ export default async function SpacesPage() {
                   <SpaceCard key={space.id} space={space} />
                 ))}
               </div>
+              {cityPage ? (
+                <Link href={cityPagePath(cityPage)} className="inline-flex text-sm text-brand underline-offset-4 hover:underline">
+                  {cityPage.short}美業空間時租行情與常見問題 →
+                </Link>
+              ) : null}
             </section>
           )
         })}

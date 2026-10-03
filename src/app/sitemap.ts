@@ -1,5 +1,7 @@
 import type { MetadataRoute } from 'next'
 
+import { cityPagePath } from '@/lib/cities'
+import { buildAllCityStats, isCityIndexable } from '@/lib/cityPages'
 import { API_BASE_URL, SITE_URL } from '@/lib/constants'
 import { fetchPublicSpaces } from '@/lib/spaces'
 import type { BeauticianSearchResponse, BeauticianSummary } from '@/lib/types'
@@ -75,6 +77,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }
 
   let spacePages: MetadataRoute.Sitemap = []
+  let cityPages: MetadataRoute.Sitemap = []
 
   try {
     // fetchPublicSpaces() keeps only status === 'ACTIVE' (and not deleted), the
@@ -87,9 +90,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     }))
     console.log(`[sitemap] emitted ${spacePages.length} space entries`)
+    // City landing pages: only the ones that are indexable (≥ 1 ACTIVE space).
+    cityPages = buildAllCityStats(spaces)
+      .filter(isCityIndexable)
+      .map((stats) => ({
+        url: `${SITE_URL}${cityPagePath(stats.city)}`,
+        changeFrequency: 'weekly' as const,
+        priority: 0.85,
+      }))
+    console.log(`[sitemap] emitted ${cityPages.length} city entries`)
   } catch (error) {
     console.error('[sitemap] failed to build dynamic space entries:', error)
   }
 
-  return [...staticPages, ...spacePages, ...beauticianPages]
+  return [...staticPages, ...cityPages, ...spacePages, ...beauticianPages]
 }

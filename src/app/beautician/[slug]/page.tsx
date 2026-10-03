@@ -11,6 +11,41 @@ import { CheckCircleIcon } from '@/components/ui/Icons'
 import { fetchBeauticianBySlug } from '@/lib/api'
 import { DEFAULT_METADATA_IMAGE, SITE_URL, SOCIAL_LABELS } from '@/lib/constants'
 import { formatExperience, getBeauticianDiscoveryImage, getDisplayInitials, getServiceAreaLabel, normalizeSocialUrl, resolveImageUrl, sortSocialLinks } from '@/lib/format'
+import type { BeauticianDetail } from '@/lib/types'
+
+const SHORT_DESCRIPTION_CHARS = 40
+
+/**
+ * Meta description. Keeps the previous format (bio or specialties · area), but
+ * when that comes out very short (e.g. only specialties + city) it is rebuilt
+ * from structured fields only — name, area, specialties, services, years of
+ * experience, portfolio — so nothing is invented.
+ */
+function buildBeauticianDescription(beautician: BeauticianDetail, serviceArea: string | null): string {
+  const bio = beautician.bio?.replace(/\s+/g, ' ').trim() ?? ''
+  const legacy = [bio ? Array.from(bio).slice(0, 150).join('') : beautician.specialties.join('、'), serviceArea].filter(Boolean).join(' · ')
+  if (Array.from(legacy).length >= SHORT_DESCRIPTION_CHARS) {
+    return legacy
+  }
+
+  const activeServices = beautician.services.filter((service) => service.isActive !== false)
+  const offer = beautician.specialties.length > 0
+    ? beautician.specialties.slice(0, 4).join('、')
+    : activeServices.slice(0, 3).map((service) => service.name).join('、')
+  const sentences = [
+    `${beautician.displayName}是${serviceArea ? `${serviceArea}的` : ''}美業職人${offer ? `，提供${offer}` : ''}`,
+  ]
+  if (beautician.yearsExperience && beautician.yearsExperience > 0) {
+    sentences.push(`有 ${beautician.yearsExperience} 年美業經驗`)
+  }
+  const sees = [
+    activeServices.length > 0 ? `${activeServices.length} 個服務項目與價格` : null,
+    beautician.portfolioUrls.length > 0 ? '作品照' : null,
+  ].filter(Boolean)
+  sentences.push(sees.length > 0 ? `在 SoloBeauté 品牌頁查看${activeServices.length > 0 ? ' ' : ''}${sees.join('和')}` : '在 SoloBeauté 查看品牌頁')
+  const generated = `${sentences.join('。')}。`
+  return bio ? Array.from(`${generated}${bio}`).slice(0, 160).join('') : generated
+}
 
 type BrandPageProps = {
   params: { slug: string }
@@ -26,7 +61,7 @@ export async function generateMetadata({ params }: BrandPageProps): Promise<Meta
   }
 
   const serviceArea = getServiceAreaLabel(beautician.serviceArea)
-  const description = [beautician.bio?.slice(0, 150) ?? beautician.specialties.join('、'), serviceArea].filter(Boolean).join(' · ')
+  const description = buildBeauticianDescription(beautician, serviceArea)
   const image = getBeauticianDiscoveryImage(beautician) ?? DEFAULT_METADATA_IMAGE
 
   // A profile is reachable both by slug and by UUID (the UUID form is kept for
