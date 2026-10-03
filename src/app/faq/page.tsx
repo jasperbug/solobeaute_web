@@ -7,6 +7,7 @@ import { JsonLd } from '@/components/spaces/JsonLd'
 import { StoreButtons } from '@/components/ui/StoreButtons'
 import { SITE_URL } from '@/lib/constants'
 import { buildFaqGroups, flattenFaq, type FaqEntry, type FaqItem } from '@/lib/faqPage'
+import { fillFaqItems, getFaqFacts } from '@/lib/faqStats'
 import { fetchPublicSpaces } from '@/lib/spaces'
 import type { PublicSpace } from '@/lib/types'
 
@@ -74,7 +75,7 @@ export default async function FaqPage() {
     console.error('[faq] space data unavailable, using text without counts:', error)
   }
 
-  const groups = buildFaqGroups(home, spaces)
+  const groups = buildFaqGroups(fillFaqItems(home, await getFaqFacts(spaces)), spaces)
   const items = flattenFaq(groups)
 
   const jsonLd = {
