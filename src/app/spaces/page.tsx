@@ -122,9 +122,9 @@ export default async function SpacesPage() {
                 <a
                   key={group.city}
                   href={`#${group.anchor}`}
-                  className="inline-flex min-h-10 items-center rounded-full border border-black/10 bg-white px-4 text-sm text-ink transition hover:border-brand hover:text-brand"
+                  className="inline-flex min-h-10 items-center rounded-full border border-black/10 bg-white px-4 text-sm text-ink transition hover:border-brand hover:text-brand [font-family:var(--font-body)] lining-nums"
                 >
-                  {group.city}（{group.spaces.length}）
+                  {shortCityName(group.city)} · {group.spaces.length} 間
                 </a>
               ))}
             </nav>
@@ -144,12 +144,12 @@ export default async function SpacesPage() {
                     `${shortCityName(group.city)}美業空間時租`
                   )}
                 </h2>
-                <p className="text-sm text-black/55">
-                  {group.city} {group.spaces.length} 個空間
+                <p className="text-sm text-black/55 [font-family:var(--font-body)] lining-nums">
+                  {group.city} · 共 {group.spaces.length} 間
                   {cityRange
                     ? cityRange.min === cityRange.max
-                      ? `，時租 ${formatNtd(cityRange.min)}`
-                      : `，時租 ${formatNtd(cityRange.min)}–${cityRange.max}`
+                      ? ` · 時租 ${formatNtd(cityRange.min)}`
+                      : ` · 時租 ${formatNtd(cityRange.min)}–${cityRange.max}`
                     : ''}
                 </p>
               </div>

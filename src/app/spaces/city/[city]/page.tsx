@@ -191,7 +191,10 @@ export default async function CitySpacesPage({ params }: CityPageProps) {
 
         {spaces.length > 0 ? (
           <section className="space-y-5" aria-labelledby="city-spaces">
-            <h2 id="city-spaces" className="section-title">{city.short}的美業空間（{spaces.length}）</h2>
+            <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+              <h2 id="city-spaces" className="section-title">{city.short}的美業空間</h2>
+              <span className="text-sm text-black/55 [font-family:var(--font-body)] lining-nums">共 {spaces.length} 間</span>
+            </div>
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {spaces.map((space) => (
                 <SpaceCard key={space.id} space={space} />
@@ -219,16 +222,16 @@ export default async function CitySpacesPage({ params }: CityPageProps) {
               <li key={item.city.slug}>
                 <Link
                   href={cityPagePath(item.city)}
-                  className="inline-flex min-h-10 items-center rounded-full border border-black/10 bg-white px-4 text-sm text-ink transition hover:border-brand hover:text-brand"
+                  className="inline-flex min-h-10 items-center rounded-full border border-black/10 bg-white px-4 text-sm text-ink transition hover:border-brand hover:text-brand [font-family:var(--font-body)] lining-nums"
                 >
-                  {item.city.short}美業空間（{item.count}）
+                  {item.city.short}美業空間 · {item.count} 間
                 </Link>
               </li>
             ))}
             <li>
               <Link
                 href="/spaces"
-                className="inline-flex min-h-10 items-center rounded-full border border-black/10 bg-white px-4 text-sm text-ink transition hover:border-brand hover:text-brand"
+                className="inline-flex min-h-10 items-center rounded-full border border-black/10 bg-white px-4 text-sm text-ink transition hover:border-brand hover:text-brand [font-family:var(--font-body)] lining-nums"
               >
                 全部美業空間
               </Link>
