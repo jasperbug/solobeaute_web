@@ -28,6 +28,7 @@ SoloBeauté 和國外的「Solo Beauty」「Solo Beauty Partner」「Soo Beauté
 ## 網站
 
 - [首頁](https://www.solobeaute.com/)：服務介紹、屋主收益試算、常見問題
+- [屋主出租閒置時段](https://www.solobeaute.com/hosts)：屋主上架流程、可以自己決定的事、其他屋主的時租標價分布
 - [常見問題](https://www.solobeaute.com/faq)：找空間、預約流程、付款、取消、屋主上架、職人品牌頁等 20 多題問答
 - [找職人](https://www.solobeaute.com/search)：美業職人品牌頁目錄，可以用城市、類別篩選
 - [支援中心](https://www.solobeaute.com/support)
@@ -42,7 +43,7 @@ SoloBeauté 和國外的「Solo Beauty」「Solo Beauty Partner」「Soo Beauté
 ## 空間
 
 - [所有美業空間](https://www.solobeaute.com/spaces)：全台上架中的美業空間，依縣市分組，附時租價格
-- [美業空間時租行情](https://www.solobeaute.com/spaces/price-report)：依上架中空間的公開價格即時計算的時租區間、中位數，並依空間類型、縣市、半日／全日價、最低時數、設備與適合服務分類
+- [美業空間時租行情](https://www.solobeaute.com/spaces/price-report)：依上架中空間的公開價格即時計算的時租區間、中位數，並依空間類型、縣市、半日／全日價、最低時數、設備與適合服務分類；另有依職業（美睫師、美甲師、霧眉師）的段落、時租和月租示意試算、常見問題、英文摘要與引用方式
 - [台北美業空間時租](https://www.solobeaute.com/spaces/city/taipei)：台北市的美業空間列表、時租行情與常見問題
 - [新北美業空間時租](https://www.solobeaute.com/spaces/city/new-taipei)：新北市的美業空間列表、時租行情與常見問題
 - [桃園美業空間時租](https://www.solobeaute.com/spaces/city/taoyuan)：桃園市的美業空間列表、時租行情與常見問題
@@ -50,9 +51,11 @@ SoloBeauté 和國外的「Solo Beauty」「Solo Beauty Partner」「Soo Beauté
 - [高雄美業空間時租](https://www.solobeaute.com/spaces/city/kaohsiung)：高雄市的美業空間列表、時租行情與常見問題
 - [彰化美業空間時租](https://www.solobeaute.com/spaces/city/changhua)：彰化縣的美業空間列表、時租行情與常見問題
 - [南投美業空間時租](https://www.solobeaute.com/spaces/city/nantou)：南投縣的美業空間列表、時租行情與常見問題
+- [美睫師租工作室](https://www.solobeaute.com/guides/lash-artist-studio)：適合嫁接睫毛、睫毛管理的空間數、時租區間與中位數、縣市分布，以及時租、分租、租位的比較
+- [美容工作室時租還是月租划算](https://www.solobeaute.com/guides/hourly-vs-monthly-rent)：打平時數（月租報價 ÷ 時租）的算法、以時租中位數做的示意試算與比較清單（不含月租行情數字）
 - 每個空間都有自己的頁面（https://www.solobeaute.com/spaces/{空間 ID}）：地區（只到縣市與區）、類型、時租／半日／全日價、設備、適合的服務；完整清單見 [sitemap](https://www.solobeaute.com/sitemap.xml)
 
-<!-- 上線後再加入：
 ## 其他
-- [關於 SoloBeauté](https://www.solobeaute.com/about)
--->
+
+- [關於 SoloBeauté](https://www.solobeaute.com/about)：由工程師 Jasper Tsai 和美容職人 Meigo Liu 共同創辦，服務內容與目前的數字
+- [English](https://www.solobeaute.com/en)：English summary of SoloBeauté and its 2026 hourly beauty workspace rental price data (range, median, half-day / full-day rates, by city)

@@ -1,6 +1,7 @@
 import { SPACE_CITIES, cityPagePath, getCityBySlug, normalizeCityName, type SpaceCity } from './cities'
 import { cameraDisclosureLabel, formatNtd, groupSpacesByCity, spaceTypeLabel } from './spaces'
 import type { PublicSpace, SpaceType } from './types'
+import { taipeiYear } from './editorial'
 
 // ---------------------------------------------------------------------------
 // City landing pages: stats + copy, computed from the live public space list.
@@ -174,7 +175,8 @@ export function buildCityH1(city: SpaceCity): string {
 /** <title> without the layout's " | SoloBeauté" suffix. */
 export function buildCityTitle(stats: CityStats): string {
   const keywords = cityKeywords(stats)
-  return `${stats.city.short}美業空間時租｜${keywords.length ? keywords.join('') : '美容'}工作室出租`
+  // Year first so the title matches 「2026＋城市」 searches (monthly_check.md #5–#11).
+  return `${taipeiYear()} ${stats.city.short}美業空間時租｜${keywords.length ? keywords.join('') : '美容'}工作室出租`
 }
 
 export function buildCityOgTitle(city: SpaceCity): string {

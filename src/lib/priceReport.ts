@@ -37,6 +37,65 @@ export type PriceReport = {
   equipment: ShareRow[]
   withRoomScan: number
   lastUpdated: string | null
+  /** Per-profession view (美睫師／美甲師／霧眉), from the same service matchers. */
+  professions: ProfessionRow[]
+}
+
+export type ProfessionKey = 'lash' | 'nail' | 'brow'
+
+export type ProfessionRow = {
+  key: ProfessionKey
+  /** e.g. 美睫師 */
+  profession: string
+  /** What the hosts tagged, e.g. 嫁接睫毛或睫毛管理 */
+  serviceProse: string
+  count: number
+  /** Share of all public spaces. */
+  share: number
+  hourly: RateSummary
+  halfDay: RateSummary
+  fullDay: RateSummary
+  /** Spaces in this group whose minimum booking is exactly 2 hours. */
+  minTwoHours: number
+  equipment: Array<{ label: string; count: number }>
+  cities: Array<{ label: string; short: string; href: string; count: number }>
+}
+
+const PROFESSIONS: Array<{ key: ProfessionKey; profession: string; serviceProse: string; equipment: string[] }> = [
+  { key: 'lash', profession: '美睫師', serviceProse: '嫁接睫毛或睫毛管理', equipment: ['美容床', '美容燈'] },
+  { key: 'nail', profession: '美甲師', serviceProse: '美甲', equipment: ['美甲桌椅', '美容燈'] },
+  { key: 'brow', profession: '霧眉師', serviceProse: '霧眉、霧唇', equipment: ['美容床', '美容燈'] },
+]
+
+/** Spaces a host tagged as suitable for this profession (same matchers as the city pages). */
+export function spacesForProfession(spaces: PublicSpace[], key: ProfessionKey): PublicSpace[] {
+  const group = SERVICE_GROUPS.find((g) => g.key === key)
+  if (!group) return []
+  return spaces.filter((s) => s.recommendedServices.some(group.match))
+}
+
+function buildProfessions(spaces: PublicSpace[]): ProfessionRow[] {
+  return PROFESSIONS.map((def) => {
+    const list = spacesForProfession(spaces, def.key)
+    return {
+      key: def.key,
+      profession: def.profession,
+      serviceProse: def.serviceProse,
+      count: list.length,
+      share: share(list.length, spaces.length),
+      hourly: summarize(list.map((s) => s.hourlyRate)),
+      halfDay: summarize(list.map((s) => s.halfDayRate)),
+      fullDay: summarize(list.map((s) => s.fullDayRate)),
+      minTwoHours: list.filter((s) => s.minimumHours === 2).length,
+      equipment: def.equipment.map((label) => ({ label, count: list.filter((s) => s.equipment.includes(label)).length })),
+      cities: SPACE_CITIES.map((city) => ({
+        label: city.name,
+        short: city.short,
+        href: cityPagePath(city),
+        count: list.filter((s) => normalizeCityName(s.city) === city.name).length,
+      })).filter((row) => row.count > 0),
+    }
+  })
 }
 
 function summarize(values: Array<number | null>): RateSummary {
@@ -153,9 +212,15 @@ export function buildPriceReport(spaces: PublicSpace[]): PriceReport {
       .slice(0, 12),
     withRoomScan: spaces.filter((s) => s.roomScanUrl).length,
     lastUpdated: updated.length ? updated[updated.length - 1] : null,
+    professions: buildProfessions(spaces),
   }
 }
 
 export function formatShare(value: number): string {
   return `${Math.round(value * 100)}%`
+}
+
+/** Count / share of spaces whose minimum booking is exactly `hours`. */
+export function minimumHoursRow(report: PriceReport, hours: number): ShareRow | null {
+  return report.minimumHours.find((row) => row.label === `${hours} 小時`) ?? null
 }

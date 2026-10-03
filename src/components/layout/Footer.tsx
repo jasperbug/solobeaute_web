@@ -11,13 +11,17 @@ export function Footer() {
     { href: '/spaces', label: t('productFindSpaces'), external: false },
     { href: '/search', label: t('productFindPros'), external: false },
     { href: '/spaces/price-report', label: t('productPriceReport'), external: false },
+    { href: '/guides/lash-artist-studio', label: t('productLashGuide'), external: false },
+    { href: '/guides/hourly-vs-monthly-rent', label: t('productHourlyVsMonthly'), external: false },
+    { href: '/hosts', label: t('productHosts'), external: false },
     { href: APP_STORE_URL, label: t('productDownloadIos'), external: true },
     { href: PLAY_STORE_URL, label: t('productDownloadAndroid'), external: true },
   ]
 
   const aboutLinks = [
-    { href: '/#about', label: t('aboutUs') },
+    { href: '/about', label: t('aboutUs') },
     { href: '/faq', label: t('faq') },
+    { href: '/en', label: t('english') },
   ]
 
   const socialLinks = [

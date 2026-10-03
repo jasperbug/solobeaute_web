@@ -244,6 +244,20 @@ export default async function CitySpacesPage({ params }: CityPageProps) {
                 全台時租行情
               </Link>
             </li>
+            {[
+              { href: '/guides/lash-artist-studio', label: '美睫師租工作室' },
+              { href: '/guides/hourly-vs-monthly-rent', label: '時租和月租怎麼比' },
+              { href: '/hosts', label: '屋主出租閒置時段' },
+            ].map((link) => (
+              <li key={link.href}>
+                <Link
+                  href={link.href}
+                  className="inline-flex min-h-10 items-center rounded-full border border-black/10 bg-white px-4 text-sm text-ink transition hover:border-brand hover:text-brand [font-family:var(--font-body)] lining-nums"
+                >
+                  {link.label}
+                </Link>
+              </li>
+            ))}
           </ul>
         </section>
 
