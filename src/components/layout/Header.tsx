@@ -65,7 +65,7 @@ export function Header() {
       { href: pathname === '/' ? '#features' : '/#features', label: t('nav.features') },
       { href: pathname === '/' ? '#how-it-works' : '/#how-it-works', label: t('nav.howItWorks') },
       { href: pathname === '/' ? '#about' : '/#about', label: t('nav.about') },
-      { href: pathname === '/' ? '#faq' : '/#faq', label: t('nav.faq') },
+      { href: '/faq', label: t('nav.faq') },
       { href: '/spaces', label: t('nav.spaces') },
       { href: '/search', label: t('nav.discover') },
     ],

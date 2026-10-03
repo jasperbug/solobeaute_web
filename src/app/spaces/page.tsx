@@ -116,6 +116,9 @@ export default async function SpacesPage() {
               ? `SoloBeauté 目前有 ${spaces.length} 個屋主備好的美業空間，分布 ${groups.length} 個縣市，時租 ${formatNtd(range.min)}–${range.max}。美甲、美睫、護膚、紋繡職人可以按小時租，免押金、免長約，在 App 直接傳訊息給屋主預約，租金現場付現。`
               : '新空間陸續上架中。下載 SoloBeauté App，就能查看最新的美業空間。'}
           </p>
+          <p className="text-sm">
+            <Link href="/spaces/price-report" className="text-brand underline-offset-4 hover:underline">看全台美業空間時租行情：價格區間、中位數、依類型與縣市 →</Link>
+          </p>
           {groups.length > 0 ? (
             <nav aria-label="依縣市瀏覽" className="flex flex-wrap gap-2 pt-2">
               {groups.map((group) => (

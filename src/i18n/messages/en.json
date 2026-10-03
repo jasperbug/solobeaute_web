@@ -174,7 +174,8 @@
         "q": "How is SoloBeauté different from other shared spaces?",
         "a": "We do more than help you find a space. SoloBeauté also helps pros build a brand page, manage bookings, and organize their portfolio and brand presence. More importantly, our team understands the beauty industry firsthand. Co-founder Meigo Liu has worked on the front line, so we are not guessing at what pros actually need."
       }
-    ]
+    ],
+    "more": "More questions"
   },
   "calculator": {
     "sectionTag": "ROI CALCULATOR",
@@ -206,6 +207,7 @@
     "productTitle": "Product",
     "productFindSpaces": "Find spaces",
     "productFindPros": "Find a Pro",
+    "productPriceReport": "Rental prices",
     "productDownloadIos": "Download iOS App",
     "productDownloadAndroid": "Download Android App",
     "aboutTitle": "About",

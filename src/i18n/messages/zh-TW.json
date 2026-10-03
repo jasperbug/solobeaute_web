@@ -194,7 +194,8 @@
         "q": "SoloBeauté 和一般共享美容工作室有什麼不同？",
         "a": "很多共享工作室是同一個業者經營自己的據點；SoloBeauté 集合了不同屋主在 7 個縣市上架的空間，讓你在同一個 App 裡比較地點、設備和價格。職人還能免費建立品牌頁，讓客人記得的是你。"
       }
-    ]
+    ],
+    "more": "看更多問題"
   },
   "calculator": {
     "sectionTag": "收益試算 · ROI CALCULATOR",
@@ -226,6 +227,7 @@
     "productTitle": "產品",
     "productFindSpaces": "找空間",
     "productFindPros": "找職人",
+    "productPriceReport": "時租行情",
     "productDownloadIos": "下載 iOS App",
     "productDownloadAndroid": "下載 Android App",
     "aboutTitle": "關於",

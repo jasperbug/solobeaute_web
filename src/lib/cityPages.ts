@@ -12,7 +12,7 @@ import type { PublicSpace, SpaceType } from './types'
 /** Pages with fewer spaces than this are rendered but marked noindex. */
 export const CITY_INDEX_MIN_SPACES = 1
 
-type ServiceGroup = {
+export type ServiceGroup = {
   key: string
   /** Search keyword used in title / description, e.g. 美睫 */
   keyword: string
@@ -22,7 +22,7 @@ type ServiceGroup = {
 }
 
 // Priority order matters: it drives the title keywords and sentence order.
-const SERVICE_GROUPS: ServiceGroup[] = [
+export const SERVICE_GROUPS: ServiceGroup[] = [
   { key: 'lash', keyword: '美睫', prose: '嫁接睫毛或睫毛管理', match: (s) => s.includes('睫毛') },
   { key: 'facial', keyword: '美容', prose: '臉部護膚', match: (s) => s.includes('護膚') },
   { key: 'brow', keyword: '霧眉', prose: '霧眉', match: (s) => s.includes('霧眉') },
@@ -61,7 +61,7 @@ function countBy(values: string[]): CountItem[] {
     .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label, 'zh-Hant'))
 }
 
-function median(values: number[]): number | null {
+export function median(values: number[]): number | null {
   if (values.length === 0) return null
   const sorted = values.slice().sort((a, b) => a - b)
   const mid = Math.floor(sorted.length / 2)

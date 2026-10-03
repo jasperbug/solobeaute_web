@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { useTranslations } from 'next-intl'
 
 import { Reveal } from '../ui/Reveal'
@@ -49,6 +50,10 @@ export function FaqSection() {
             </Reveal>
           ))}
         </div>
+
+        <p className="faq__more">
+          <Link href="/faq">{t('more')} →</Link>
+        </p>
       </div>
     </section>
   )
