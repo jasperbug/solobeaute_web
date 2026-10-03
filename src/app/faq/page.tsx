@@ -14,7 +14,7 @@ import type { PublicSpace } from '@/lib/types'
 export const revalidate = 3600
 
 const PAGE_URL = `${SITE_URL}/faq`
-const TITLE = 'SoloBeauté 常見問題｜美業空間時租、預約、付款、上架'
+const TITLE = '常見問題｜美業空間時租、預約、付款、上架'
 const OG_TITLE = 'SoloBeauté 常見問題'
 const DESCRIPTION =
   '美業空間怎麼按小時租、怎麼預約和付款、可以取消嗎、屋主怎麼上架、職人品牌頁怎麼公開？SoloBeauté 常見問題一次看完。'
