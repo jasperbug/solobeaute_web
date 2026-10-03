@@ -135,6 +135,14 @@ export function buildFaqGroups(home: FaqItem[], spaces: PublicSpace[] | null): F
           a: '一般刊登型的出租網站或社團，常見的是月租或長期分租，條件和細節要一則一則問。SoloBeauté 專門做美業空間的按小時租：每個空間都列出時租、設備、適合和不開放的服務、最低租用時數，在 App 裡直接傳訊息給屋主、送出預約，由屋主確認。',
         },
         {
+          q: 'SoloBeauté 和分租、租位有什麼不同？',
+          a: '分租、租位常見的做法，是和店家談一個固定的座位、床位或時段，多半以月計，合約、押金和可用時段依各家而定。SoloBeauté 上的空間按小時租：每個空間列出時租、最低租用時數、設備和適合的服務，有預約才租，在 App 傳訊息給屋主、送出預約，由屋主確認。怎麼算哪一種划算，見「時租和月租怎麼比」；美睫師的比較見「美睫師租工作室」。',
+          links: [
+            { text: '時租和月租怎麼比', href: '/guides/hourly-vs-monthly-rent' },
+            { text: '美睫師租工作室', href: '/guides/lash-artist-studio' },
+          ],
+        },
+        {
           q: 'SoloBeauté 怎麼寫？跟國外的 Solo Beauty、Soo Beauté 有關係嗎？',
           a: '正式名稱是「SoloBeauté」（最後的 é 有重音），App Store 上的名稱寫作「Solobeaute」，兩種寫法都是同一個服務。SoloBeauté 是台灣的美業空間時租 App，和國外的 Solo Beauty、Soo Beauté 等 App 是不同的服務，彼此沒有關係。',
         },

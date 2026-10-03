@@ -2,11 +2,39 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import type { ReactNode } from 'react'
 
+import {
+  Byline,
+  DataTable,
+  FaqBlock,
+  NUM,
+  Section as ContentSection,
+  faqPageSchema,
+  type QA,
+} from '@/components/content/ContentBlocks'
 import { JsonLd } from '@/components/spaces/JsonLd'
 import { StoreButtons } from '@/components/ui/StoreButtons'
 import { dataDateLabel } from '@/lib/cityPages'
 import { SITE_URL } from '@/lib/constants'
-import { buildPriceReport, formatShare, type PriceReport, type RateSummary } from '@/lib/priceReport'
+import {
+  AUTHORS,
+  AUTHOR_REFS,
+  PUBLISHER,
+  REPORT_UPDATED_ISO,
+  REPORT_UPDATED_LABEL,
+  REPORT_UPDATED_LABEL_EN,
+  citationText,
+  personSchema,
+  taipeiYear,
+} from '@/lib/editorial'
+import {
+  buildPriceReport,
+  formatShare,
+  minimumHoursRow,
+  type PriceReport,
+  type ProfessionRow,
+  type RateSummary,
+} from '@/lib/priceReport'
+import { SCENARIO_ASSUMPTION, USAGE_SCENARIOS, monthlyHourlyCost } from '@/lib/rentMath'
 import { fetchPublicSpaces, formatNtd } from '@/lib/spaces'
 
 // Same window as every space fetch in lib/spaces.ts.
@@ -17,10 +45,6 @@ const PAGE_URL = `${SITE_URL}${PAGE_PATH}`
 const ORGANIZATION_ID = `${SITE_URL}/#organization`
 // First publication of this page (not a statistic).
 const FIRST_PUBLISHED = '2026-10-03'
-
-function taipeiYear(now: Date = new Date()): string {
-  return new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Taipei', year: 'numeric' }).format(now)
-}
 
 function taipeiMonthIso(now: Date = new Date()): string {
   const parts = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Taipei', year: 'numeric', month: '2-digit' }).formatToParts(now)
@@ -96,36 +120,6 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-const NUM = '[font-family:var(--font-body)] lining-nums tabular-nums'
-
-function DataTable({ caption, head, rows }: { caption: string; head: string[]; rows: ReactNode[][] }) {
-  return (
-    <div className="overflow-x-auto rounded-2xl border border-black/10 bg-white">
-      <table className={`w-full text-left text-[13px] md:text-sm ${NUM}`}>
-        <caption className="sr-only">{caption}</caption>
-        <thead className="bg-surface-warm text-xs text-black/55">
-          <tr>
-            {head.map((cell) => (
-              <th key={cell} scope="col" className="px-3 py-3 font-medium md:px-4">{cell}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-black/5 text-ink">
-          {rows.map((row, index) => (
-            <tr key={index}>
-              {row.map((cell, cellIndex) => (
-                cellIndex === 0
-                  ? <th key={cellIndex} scope="row" className="px-3 py-3 font-medium md:px-4">{cell}</th>
-                  : <td key={cellIndex} className="whitespace-nowrap px-3 py-3 md:px-4">{cell}</td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  )
-}
-
 function Section({ id, title, note, children }: { id: string; title: string; note?: string; children: ReactNode }) {
   return (
     <section className="space-y-4" aria-labelledby={id}>
@@ -138,6 +132,103 @@ function Section({ id, title, note, children }: { id: string; title: string; not
   )
 }
 
+function professionMedian(row: ProfessionRow): string {
+  return row.hourly.count >= 2 ? medianText(row.hourly) : '—'
+}
+
+function professionSentence(row: ProfessionRow, total: number): string {
+  if (row.count === 0) return `目前還沒有屋主標示適合${row.serviceProse}的空間。`
+  const parts: string[] = []
+  parts.push(`${total} 間空間中，屋主標示適合${row.serviceProse}的有 ${row.count} 間（${formatShare(row.share)}）`)
+  if (row.hourly.count > 0) {
+    parts.push(row.hourly.count >= 2 ? `時租 ${rangeText(row.hourly)}，中位數 ${medianText(row.hourly)}` : `時租 ${rangeText(row.hourly)}`)
+  }
+  const equipment = row.equipment.filter((e) => e.count > 0).map((e) => `${e.count} 間有${e.label}`)
+  if (equipment.length) parts.push(equipment.join('、'))
+  let text = `${parts.join('；')}。`
+  if (row.cities.length) text += `分布在${row.cities.map((c) => `${c.short} ${c.count} 間`).join('、')}。`
+  if (row.minTwoHours > 0) text += `其中 ${row.minTwoHours} 間最低租用 2 小時。`
+  if (row.halfDay.count > 0 || row.fullDay.count > 0) {
+    const day: string[] = []
+    if (row.halfDay.count > 0) day.push(`${row.halfDay.count} 間有半日價（${row.halfDay.count >= 2 ? `中位數 ${medianText(row.halfDay)}` : rangeText(row.halfDay)}）`)
+    if (row.fullDay.count > 0) day.push(`${row.fullDay.count} 間有全日價（${row.fullDay.count >= 2 ? `中位數 ${medianText(row.fullDay)}` : rangeText(row.fullDay)}）`)
+    text += `${day.join('、')}。`
+  }
+  return text
+}
+
+const PROFESSION_NOTES: Record<ProfessionRow['key'], string> = {
+  lash: '美睫通常需要美容床和照明，挑空間時先看設備清單；更多美睫師租工作室的比較，見「美睫師租工作室」。',
+  nail: '適合美甲的空間比美睫、美容少，這是目前上架空間的實際情況；挑空間時先確認有沒有美甲桌椅和照明。',
+  brow: '霧眉、霧唇會用到美容床和照明；部分空間也標示適合霧眉除色、髮際線紋繡，以各空間頁上屋主的標示為準。',
+}
+
+function buildReportFaq(report: PriceReport, dateLabel: string): QA[] {
+  const lash = report.professions.find((p) => p.key === 'lash')
+  const two = minimumHoursRow(report, 2)
+  const quart = report.hourlyQuartiles ? `，中間一半的空間落在 ${formatNtd(report.hourlyQuartiles.q1)}–${report.hourlyQuartiles.q3}` : ''
+  const others = report.minimumHours.filter((row) => row.label !== '2 小時')
+  const median = report.hourly.median
+
+  const items: QA[] = [
+    {
+      question: '美容工作室時租一小時多少錢？',
+      answer: `截至 ${dateLabel}，SoloBeauté 上架中的 ${report.total} 間美業空間，時租中位數 ${medianText(report.hourly)}，區間 ${rangeText(report.hourly)}${quart}。價格由屋主依地點、設備和空間類型自己訂，實際價格以各空間頁和 App 為準。`,
+    },
+  ]
+  if (lash) {
+    const bed = lash.equipment.find((e) => e.label === '美容床')
+    items.push({
+      question: '美睫師租工作室要多少錢？',
+      answer: lash.count > 0
+        ? `屋主標示適合嫁接睫毛或睫毛管理的空間有 ${lash.count} 間（占 ${formatShare(lash.share)}），時租 ${rangeText(lash.hourly)}，中位數 ${professionMedian(lash)}${bed && bed.count > 0 ? `，其中 ${bed.count} 間有美容床` : ''}。詳細比較見「美睫師租工作室」。`
+        : '目前還沒有屋主標示適合美睫的空間。',
+      links: [{ text: '美睫師租工作室', href: '/guides/lash-artist-studio' }],
+    })
+  }
+  items.push({
+    question: '美業空間最少要租幾小時？',
+    answer: two
+      ? `${report.total} 間中有 ${two.count} 間（${formatShare(two.share)}）最低租用 2 小時${others.length ? `，其餘${others.map((row) => ` ${row.count} 間是 ${row.label}`).join('、')}` : ''}。每個空間的最低時數會標在空間頁和 App 裡。`
+      : `最低租用時數由屋主設定：${report.minimumHours.map((row) => `${row.label} ${row.count} 間`).join('、')}。`,
+  })
+  items.push({
+    question: '美容工作室半日租、全日租多少錢？',
+    answer: `${report.halfDay.count} 間有半日價，中位數 ${medianText(report.halfDay)}；${report.fullDay.count} 間有全日價，中位數 ${medianText(report.fullDay)}${report.fullDayHoursEquivalent !== null ? `，大約等於 ${report.fullDayHoursEquivalent} 小時的時租` : ''}。各空間的半日、全日是幾小時，以空間頁和 App 的說明為準。`,
+  })
+  items.push({
+    question: '美容工作室時租和月租怎麼選？',
+    answer: median !== null
+      ? `先估每個月實際會用幾小時。以時租中位數 ${formatNtd(median)} 試算，每月用 16 小時約 ${formatNtd(monthlyHourlyCost(16, median))}；把你拿到的月租報價除以 ${median}，就是打平的時數。每月用的時數低於打平時數，時租的總額比較低；高於的話，再把月租的押金、合約期間等條件一起比較。完整試算見「時租和月租怎麼比」。`
+      : '先估每個月實際會用幾小時，再用「時租 × 時數」和月租報價比較。完整試算見「時租和月租怎麼比」。',
+    links: [{ text: '時租和月租怎麼比', href: '/guides/hourly-vs-monthly-rent' }],
+  })
+  return items
+}
+
+function enRange(summary: Pick<RateSummary, 'min' | 'max'>): string {
+  if (summary.min === null || summary.max === null) return 'n/a'
+  return summary.min === summary.max ? `at ${formatNtd(summary.min)}` : `from ${formatNtd(summary.min)} to ${formatNtd(summary.max)}`
+}
+
+function englishSummary(report: PriceReport): string[] {
+  const two = minimumHoursRow(report, 2)
+  const lash = report.professions.find((p) => p.key === 'lash')
+  const first = `SoloBeauté price data, last updated ${REPORT_UPDATED_LABEL_EN}: across ${report.total} beauty workspaces listed on SoloBeauté in ${report.cityCount} cities and counties in Taiwan, hourly rates range ${enRange(report.hourly)}, with a median of ${medianText(report.hourly)} per hour.`
+  const second: string[] = []
+  if (report.halfDay.count > 0) second.push(`${report.halfDay.count} spaces also list a half-day rate (median ${medianText(report.halfDay)})`)
+  if (report.fullDay.count > 0) second.push(`${report.fullDay.count} list a full-day rate (median ${medianText(report.fullDay)})`)
+  const third: string[] = []
+  if (two) third.push(`${two.count} of ${report.total} spaces (${formatShare(two.share)}) require a 2-hour minimum booking`)
+  if (lash && lash.count > 0) third.push(`${lash.count} (${formatShare(lash.share)}) are marked by hosts as suitable for eyelash extensions`)
+  return [
+    first,
+    second.length ? `${second.join(' and ')}.` : '',
+    third.length ? `${third.join(', and ')}.` : '',
+    'Figures are list prices set by hosts, not transaction prices, and the sample is small. Rates are recalculated hourly from public listings.',
+  ].filter(Boolean)
+}
+
 export default async function PriceReportPage() {
   const spaces = await fetchPublicSpaces()
   const report = buildPriceReport(spaces)
@@ -145,8 +236,13 @@ export default async function PriceReportPage() {
   const h1 = h1Text()
   const description = buildReportDescription(report)
   const lead = buildLead(report, dateLabel)
-  const dateModified = report.lastUpdated ?? new Date().toISOString()
+  // Stable editorial date (lib/editorial.ts), not the render time.
+  const dateModified = REPORT_UPDATED_ISO
   const methodology = `依 SoloBeauté 上架中的 ${report.total} 間空間公開價格計算，資料日期：${dateLabel}。`
+  const faq = buildReportFaq(report, dateLabel)
+  const english = englishSummary(report)
+  const citation = citationText(REPORT_UPDATED_LABEL)
+  const median = report.hourly.median
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -161,14 +257,8 @@ export default async function PriceReportPage() {
         mainEntityOfPage: PAGE_URL,
         datePublished: FIRST_PUBLISHED,
         dateModified,
-        author: { '@type': 'Organization', '@id': ORGANIZATION_ID, name: 'SoloBeauté', url: SITE_URL },
-        publisher: {
-          '@type': 'Organization',
-          '@id': ORGANIZATION_ID,
-          name: 'SoloBeauté',
-          url: SITE_URL,
-          logo: { '@type': 'ImageObject', url: `${SITE_URL}/images/brand/logo.png` },
-        },
+        author: AUTHOR_REFS,
+        publisher: PUBLISHER,
         image: [`${SITE_URL}/og-image.png`],
         about: { '@id': `${PAGE_URL}#dataset` },
       },
@@ -181,7 +271,9 @@ export default async function PriceReportPage() {
         inLanguage: 'zh-TW',
         isAccessibleForFree: true,
         creator: { '@type': 'Organization', '@id': ORGANIZATION_ID, name: 'SoloBeauté', url: SITE_URL },
+        datePublished: FIRST_PUBLISHED,
         dateModified,
+        citation,
         temporalCoverage: taipeiMonthIso(),
         spatialCoverage: { '@type': 'Place', name: '台灣', address: { '@type': 'PostalAddress', addressCountry: 'TW' } },
         keywords: ['美業空間時租', '美容工作室時租', '美睫工作室時租', '霧眉工作室出租', '美甲工作室出租'],
@@ -210,6 +302,8 @@ export default async function PriceReportPage() {
           { '@type': 'ListItem', position: 3, name: '時租行情', item: PAGE_URL },
         ],
       },
+      faqPageSchema(`${PAGE_URL}#faq`, faq),
+      ...AUTHORS.map((author) => personSchema(author)),
     ],
   }
 
@@ -243,6 +337,10 @@ export default async function PriceReportPage() {
           <div className={`space-y-3 text-base leading-8 text-black/70 ${NUM}`} data-report-lead>
             {lead.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
           </div>
+          <p className={`text-sm font-medium text-ink ${NUM}`} data-report-updated>
+            資料更新：<time dateTime={REPORT_UPDATED_ISO}>{REPORT_UPDATED_LABEL}</time>
+          </p>
+          <Byline />
           <dl className={`grid grid-cols-2 gap-3 md:grid-cols-4 ${NUM}`} data-report-facts>
             {facts.map((fact) => (
               <div key={fact.label} className="rounded-2xl border border-black/10 bg-white px-4 py-3">
@@ -311,6 +409,53 @@ export default async function PriceReportPage() {
           />
         </Section>
 
+        <ContentSection id="by-profession" title="依職業看：美睫師、美甲師、霧眉師" note={`依屋主標示的建議服務分類，一間空間可以同時適合多種職業；占比的分母是 ${report.total} 間。`}>
+          <DataTable
+            caption="依職業的時租"
+            head={['職業', '適合的空間', '時租區間', '中位數']}
+            rows={report.professions.map((row) => [
+              <a key={row.key} href={`#${row.key}`} className="text-brand underline-offset-4 hover:underline">{row.profession}</a>,
+              `${row.count} 間（${formatShare(row.share)}）`,
+              rangeText(row.hourly),
+              professionMedian(row),
+            ])}
+          />
+          <div className="space-y-5">
+            {report.professions.map((row) => (
+              <div key={row.key} id={row.key} className="scroll-mt-28 space-y-2">
+                <h3 className="text-lg font-semibold text-ink">{row.profession}租工作室</h3>
+                <p className={`text-sm leading-7 text-black/70 ${NUM}`}>{professionSentence(row, report.total)}</p>
+                <p className={`text-sm leading-7 text-black/55 ${NUM}`}>
+                  {row.key === 'lash' ? (
+                    <>美睫通常需要美容床和照明，挑空間時先看設備清單；更多美睫師租工作室的比較，見<Link href="/guides/lash-artist-studio" className="text-brand underline underline-offset-4">美睫師租工作室</Link>。</>
+                  ) : PROFESSION_NOTES[row.key]}
+                </p>
+              </div>
+            ))}
+          </div>
+        </ContentSection>
+
+        {median !== null ? (
+          <ContentSection id="hourly-vs-monthly" title="時租和月租怎麼比（示意試算）" note={`以下是示意試算，不是市場月租行情：時租用本頁中位數 ${formatNtd(median)}，${SCENARIO_ASSUMPTION}。`}>
+            <DataTable
+              caption="時租每月總額示意試算"
+              head={['每月用量', '每月時數', `時租總額（${formatNtd(median)}／小時）`]}
+              rows={USAGE_SCENARIOS.map((row) => [row.label, `${row.hours} 小時`, formatNtd(monthlyHourlyCost(row.hours, median))])}
+            />
+            <div className={`space-y-2 text-sm leading-7 text-black/70 ${NUM}`}>
+              <p>
+                本頁不提供月租數字。把你拿到的月租報價除以 {median}，就是「打平時數」：每月實際使用的時數低於這個數字，按小時租的總額比較低；高於的話，再把月租的押金、合約期間、水電與耗材是否另計等條件一起比較。
+              </p>
+              {report.fullDayHoursEquivalent !== null ? (
+                <p>如果一天排滿多位客人，也可以看全日價：全日價中位數 {medianText(report.fullDay)}，大約等於 {report.fullDayHoursEquivalent} 小時的時租。</p>
+              ) : null}
+              <p>
+                逐步試算和比較清單，見<Link href="/guides/hourly-vs-monthly-rent" className="text-brand underline underline-offset-4">時租和月租怎麼比</Link>。
+              </p>
+            </div>
+          </ContentSection>
+        ) : null}
+
         <Section id="services" title="適合的服務" note={`依屋主標示的建議服務計算，一間空間可以標示多種服務；占比的分母是 ${report.total} 間。`}>
           <DataTable
             caption="適合的服務"
@@ -330,6 +475,8 @@ export default async function PriceReportPage() {
           ) : null}
         </Section>
 
+        <FaqBlock id="faq" title="時租行情常見問題" items={faq} />
+
         <section className="sb-card space-y-3 p-6 md:p-8" aria-labelledby="method">
           <h2 id="method" className="text-xl font-semibold text-ink">計算方式與限制</h2>
           <ul className={`list-disc space-y-2 pl-5 text-sm leading-7 text-black/65 ${NUM}`}>
@@ -337,9 +484,34 @@ export default async function PriceReportPage() {
             <li>價格是屋主在 SoloBeauté 上公開標示的掛牌價，不是成交價；實際價格以各空間頁和 App 顯示為準。</li>
             <li>中位數：把價格由低到高排列取中間值；偶數筆時取中間兩筆的平均後四捨五入。「中間一半」是第 25 到第 75 百分位（最近排名法）。</li>
             <li>樣本數少（{report.total} 間），單一空間上下架就可能讓數字明顯變動，特別是只有 1–2 間空間的縣市，請當作參考，不要當作市場全貌。</li>
-            <li>頁面每小時依最新的公開資料重新計算。</li>
+            <li>頁面每小時依最新的公開資料重新計算；文字與章節的最後更新日期是 {REPORT_UPDATED_LABEL}。</li>
           </ul>
         </section>
+
+        <section className="rounded-2xl border border-brand/30 bg-white p-6 md:p-8 space-y-3" aria-labelledby="cite" data-report-cite>
+          <h2 id="cite" className="text-xl font-semibold text-ink">如何引用這份資料</h2>
+          <ul className={`list-disc space-y-1 pl-5 text-sm leading-7 text-black/70 ${NUM}`}>
+            <li>樣本：SoloBeauté 上架中（公開）的 {report.total} 間美業空間，分布在 {report.cityCount} 個縣市。</li>
+            <li>方法：彙整屋主在 SoloBeauté 公開標示的掛牌價，計算區間與中位數；不含草稿或已下架的空間，頁面每小時重新計算。</li>
+            <li>最後更新：<time dateTime={REPORT_UPDATED_ISO}>{REPORT_UPDATED_LABEL}</time>；數字會隨空間上下架變動，引用時請註明你查看的日期。</li>
+          </ul>
+          <p className="text-sm text-black/55">建議引用格式：</p>
+          <p className={`rounded-xl bg-surface-warm px-4 py-3 text-sm leading-7 text-ink break-all ${NUM}`} data-report-citation>{citation}</p>
+        </section>
+
+        <section lang="en" className="sb-card space-y-3 p-6 md:p-8" aria-labelledby="english-summary" data-report-english>
+          <h2 id="english-summary" className="text-xl font-semibold text-ink">English summary</h2>
+          <div className={`space-y-2 text-sm leading-7 text-black/70 ${NUM}`}>
+            {english.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+            <p>
+              Suggested citation: SoloBeauté, &ldquo;2026 Taiwan Beauty Workspace Hourly Rental Prices&rdquo;, last updated {REPORT_UPDATED_LABEL_EN}, {PAGE_URL}. More in English: <Link href="/en" className="text-brand underline underline-offset-4">About SoloBeauté (English)</Link>.
+            </p>
+          </div>
+        </section>
+
+        <p className={`text-sm text-black/60 ${NUM}`}>
+          本文由 SoloBeauté 共同創辦人 {AUTHORS.map((a) => `${a.name}（${a.jobTitle}）`).join('、')} 整理。<Link href="/about" className="text-brand underline underline-offset-4">關於我們</Link>
+        </p>
 
         <section className="space-y-4" aria-labelledby="more">
           <h2 id="more" className="text-xl font-semibold text-ink">繼續看</h2>
@@ -354,9 +526,17 @@ export default async function PriceReportPage() {
                 </Link>
               </li>
             ))}
-            <li>
-              <Link href="/faq" className="inline-flex min-h-10 items-center rounded-full border border-black/10 bg-white px-4 text-sm text-ink transition hover:border-brand hover:text-brand">常見問題</Link>
-            </li>
+            {[
+              { href: '/guides/lash-artist-studio', label: '美睫師租工作室' },
+              { href: '/guides/hourly-vs-monthly-rent', label: '時租和月租怎麼比' },
+              { href: '/hosts', label: '屋主出租閒置時段' },
+              { href: '/faq', label: '常見問題' },
+              { href: '/en', label: 'English' },
+            ].map((link) => (
+              <li key={link.href}>
+                <Link href={link.href} className="inline-flex min-h-10 items-center rounded-full border border-black/10 bg-white px-4 text-sm text-ink transition hover:border-brand hover:text-brand">{link.label}</Link>
+              </li>
+            ))}
           </ul>
         </section>
 

@@ -2,7 +2,9 @@ import type { Metadata } from 'next'
 import { getLocale, getTranslations } from 'next-intl/server'
 
 import type { FaqItemData } from '@/components/landing/FaqSection'
+import type { HomeStats } from '@/components/landing/HomeStatsLine'
 import { LandingPage } from '@/components/landing/LandingPage'
+import { dataDateLabel } from '@/lib/cityPages'
 import {
   APP_STORE_URL,
   INSTAGRAM_URL,
@@ -12,6 +14,8 @@ import {
   THREADS_URL,
 } from '@/lib/constants'
 import { fillFaqItems, getFaqFacts } from '@/lib/faqStats'
+import { buildPriceReport } from '@/lib/priceReport'
+import { fetchPublicSpaces } from '@/lib/spaces'
 
 // Homepage copy follows seo_copy_v1.md §1 (zh-TW only; Chinese-only SEO).
 // This title lives in the same segment as the root layout, so the layout's
@@ -50,6 +54,19 @@ export const metadata: Metadata = {
 }
 
 const ORGANIZATION_ID = `${SITE_URL}/#organization`
+
+async function getHomeStats(locale: string): Promise<HomeStats | null> {
+  // The sentence is zh-TW copy; the `en` cookie view keeps the original layout.
+  if (locale !== 'zh-TW') return null
+  try {
+    const report = buildPriceReport(await fetchPublicSpaces())
+    if (report.total === 0 || report.hourly.median === null) return null
+    return { dateLabel: dataDateLabel(), total: report.total, cityCount: report.cityCount, median: report.hourly.median }
+  } catch (error) {
+    console.error('[home] stats line unavailable:', error)
+    return null
+  }
+}
 
 export default async function HomePage() {
   const locale = await getLocale()
@@ -134,7 +151,7 @@ export default async function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}
       />
-      <LandingPage faqItems={faqItems} />
+      <LandingPage faqItems={faqItems} stats={await getHomeStats(locale)} />
     </>
   )
 }
