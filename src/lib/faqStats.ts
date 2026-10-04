@@ -1,4 +1,7 @@
+import type { AppLocale } from '@/i18n/config'
+
 import { SPACE_CITIES, normalizeCityName } from './cities'
+import { cityShortEn, joinEn } from './en'
 import { buildPriceReport } from './priceReport'
 import { fetchPublicSpaces, formatNtd } from './spaces'
 import type { PublicSpace } from './types'
@@ -28,12 +31,20 @@ const FALLBACK_FACTS: FaqFacts = {
   typicalRange: 'NT$150–200',
 }
 
+const FALLBACK_FACTS_EN: FaqFacts = {
+  spaceCount: '17',
+  cityCount: '7',
+  cityList: 'Taipei, New Taipei, Taoyuan, Taichung, Kaohsiung, Changhua and Nantou',
+  rateRange: 'NT$100–350',
+  typicalRange: 'NT$150–200',
+}
+
 function range(min: number, max: number, approx = false): string {
   if (min === max) return approx ? `${formatNtd(min)} 左右` : formatNtd(min)
   return `${formatNtd(min)}–${max.toLocaleString('en-US')}`
 }
 
-export function computeFaqFacts(spaces: PublicSpace[]): FaqFacts | null {
+export function computeFaqFacts(spaces: PublicSpace[], locale: AppLocale = 'zh-TW'): FaqFacts | null {
   if (spaces.length === 0) return null
   const report = buildPriceReport(spaces)
   const cityNames = Array.from(new Set(spaces.map((s) => normalizeCityName(s.city)).filter(Boolean)))
@@ -47,6 +58,16 @@ export function computeFaqFacts(spaces: PublicSpace[]): FaqFacts | null {
     .join('、')
   if (report.hourly.min === null || report.hourly.max === null) return null
   const quart = report.hourlyQuartiles
+  if (locale === 'en') {
+    const sorted = cityNames.slice().sort((a, b) => order(a) - order(b))
+    return {
+      spaceCount: String(spaces.length),
+      cityCount: String(cityNames.length),
+      cityList: joinEn(sorted.map((name) => cityShortEn(name))),
+      rateRange: range(report.hourly.min, report.hourly.max),
+      typicalRange: quart ? range(quart.q1, quart.q3) : range(report.hourly.min, report.hourly.max),
+    }
+  }
   return {
     spaceCount: String(spaces.length),
     cityCount: String(cityNames.length),
@@ -56,13 +77,14 @@ export function computeFaqFacts(spaces: PublicSpace[]): FaqFacts | null {
   }
 }
 
-export async function getFaqFacts(spaces?: PublicSpace[] | null): Promise<FaqFacts> {
+export async function getFaqFacts(spaces?: PublicSpace[] | null, locale: AppLocale = 'zh-TW'): Promise<FaqFacts> {
+  const fallback = locale === 'en' ? FALLBACK_FACTS_EN : FALLBACK_FACTS
   try {
     const list = spaces ?? (await fetchPublicSpaces())
-    return computeFaqFacts(list) ?? FALLBACK_FACTS
+    return computeFaqFacts(list, locale) ?? fallback
   } catch (error) {
     console.error('[faq] live facts unavailable, using 2026-10 snapshot:', error)
-    return FALLBACK_FACTS
+    return fallback
   }
 }
 

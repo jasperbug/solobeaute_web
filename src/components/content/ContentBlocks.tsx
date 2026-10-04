@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import type { ReactNode } from 'react'
 
+import { localizePath } from '@/i18n/config'
 import { AUTHORS } from '@/lib/editorial'
 
 // Small server components shared by the content pages (price report, guides,
@@ -8,9 +9,9 @@ import { AUTHORS } from '@/lib/editorial'
 
 export const NUM = '[font-family:var(--font-body)] lining-nums tabular-nums'
 
-export function Breadcrumbs({ items }: { items: Array<{ label: string; href?: string }> }) {
+export function Breadcrumbs({ items, label = '麵包屑' }: { items: Array<{ label: string; href?: string }>; label?: string }) {
   return (
-    <nav aria-label="麵包屑" className="text-sm text-black/55">
+    <nav aria-label={label} className="text-sm text-black/55">
       <ol className="flex flex-wrap items-center gap-1">
         {items.map((item, index) => (
           <li key={item.label} className="flex items-center gap-1">
@@ -116,11 +117,11 @@ export function FaqBlock({ id, title, items }: { id: string; title: string; item
   )
 }
 
-export function faqPageSchema(id: string, items: QA[]) {
+export function faqPageSchema(id: string, items: QA[], inLanguage: 'zh-TW' | 'en' = 'zh-TW') {
   return {
     '@type': 'FAQPage',
     '@id': id,
-    inLanguage: 'zh-TW',
+    inLanguage,
     mainEntity: items.map((item) => ({
       '@type': 'Question',
       name: item.question,
@@ -145,6 +146,28 @@ export function Byline({ updatedIso, updatedLabel, prefix = '撰文與資料整�
         <>
           <span aria-hidden="true"> · </span>
           最後更新：<time dateTime={updatedIso}>{updatedLabel}</time>
+        </>
+      ) : null}
+    </p>
+  )
+}
+
+/** English byline: "Written and compiled by Meigo Liu (Beauty professional) and Jasper Tsai (Engineer)". */
+export function BylineEn({ updatedIso, updatedLabel, prefix = 'Written and compiled by' }: { updatedIso?: string; updatedLabel?: string; prefix?: string }) {
+  return (
+    <p className={`text-sm leading-7 text-black/60 ${NUM}`} data-byline>
+      {prefix}{' '}
+      {AUTHORS.map((author, index) => (
+        <span key={author.slug}>
+          {index > 0 ? ' and ' : null}
+          <Link href={`${localizePath('/about', 'en')}#${author.slug}`} className="text-ink underline-offset-4 hover:text-brand hover:underline">{author.name}</Link>
+          {' '}({author.jobTitleEn})
+        </span>
+      ))}
+      {updatedIso && updatedLabel ? (
+        <>
+          <span aria-hidden="true"> · </span>
+          Last updated <time dateTime={updatedIso}>{updatedLabel}</time>
         </>
       ) : null}
     </p>
@@ -178,3 +201,14 @@ export const TOPIC_LINKS: Array<{ href: string; label: string }> = [
   { href: '/faq', label: '常見問題' },
   { href: '/about', label: '關於 SoloBeauté' },
 ]
+
+/** English versions of TOPIC_LINKS (all have an /en page). */
+export const TOPIC_LINKS_EN: Array<{ href: string; label: string }> = [
+  { href: '/spaces/price-report', label: '2026 hourly rental prices' },
+  { href: '/guides/lash-artist-studio', label: 'Studios for lash artists' },
+  { href: '/guides/hourly-vs-monthly-rent', label: 'Hourly vs monthly rent' },
+  { href: '/hosts', label: 'For space hosts' },
+  { href: '/spaces', label: 'All beauty workspaces' },
+  { href: '/faq', label: 'FAQ' },
+  { href: '/about', label: 'About SoloBeauté' },
+].map((link) => ({ ...link, href: localizePath(link.href, 'en') }))

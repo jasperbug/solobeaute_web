@@ -58,4 +58,19 @@ SoloBeauté 和國外的「Solo Beauty」「Solo Beauty Partner」「Soo Beauté
 ## 其他
 
 - [關於 SoloBeauté](https://www.solobeaute.com/about)：由工程師 Jasper Tsai 和美容職人 Meigo Liu 共同創辦，服務內容與目前的數字
-- [English](https://www.solobeaute.com/en)：English version of the 2026 Taiwan beauty workspace hourly rental price report: range, median, price distribution, by city, space type and profession (lash, nail, brow), half-day / full-day rates, minimum hours, equipment, FAQ and how to cite
+- [English](https://www.solobeaute.com/en)：English homepage; every page listed below has a full English version under /en
+
+## English pages
+
+Each page below is the English counterpart of the Chinese page at the same path without /en (pages declare zh-TW / en / x-default hreflang alternates). Space titles and descriptions are written by hosts and may remain in Chinese.
+
+- [Home](https://www.solobeaute.com/en): what SoloBeauté is, host earnings estimate, FAQ
+- [All beauty workspaces](https://www.solobeaute.com/en/spaces): every listed workspace in Taiwan, grouped by city, with hourly rates
+- [Hourly price report](https://www.solobeaute.com/en/spaces/price-report): live hourly rental range and median from listed spaces, by space type, city, half-day / full-day rates, minimum hours, equipment and suitable services; sections for lash, nail and brow artists, hourly vs monthly illustration, FAQ and how to cite
+- City pages: [Taipei](https://www.solobeaute.com/en/spaces/city/taipei), [New Taipei](https://www.solobeaute.com/en/spaces/city/new-taipei), [Taoyuan](https://www.solobeaute.com/en/spaces/city/taoyuan), [Taichung](https://www.solobeaute.com/en/spaces/city/taichung), [Kaohsiung](https://www.solobeaute.com/en/spaces/city/kaohsiung), [Changhua](https://www.solobeaute.com/en/spaces/city/changhua), [Nantou](https://www.solobeaute.com/en/spaces/city/nantou): workspace list, hourly rates and FAQ for each city
+- [Studio space for lash artists](https://www.solobeaute.com/en/guides/lash-artist-studio): number of suitable spaces, hourly range and median, cities, and hourly vs shared vs chair rental
+- [Hourly vs monthly studio rent](https://www.solobeaute.com/en/guides/hourly-vs-monthly-rent): the break-even formula (monthly quote ÷ hourly rate), an illustration using the live hourly median, and a checklist
+- [For hosts](https://www.solobeaute.com/en/hosts): how to list idle hours, what hosts decide, and how other hosts price their spaces
+- [FAQ](https://www.solobeaute.com/en/faq): finding a space, booking, payment, cancellation, listing a space and artist pages
+- [About SoloBeauté](https://www.solobeaute.com/en/about): founders Jasper Tsai (engineer) and Meigo Liu (beauty professional), what SoloBeauté does and current numbers
+- Each space has an English page at https://www.solobeaute.com/en/spaces/{space ID}

@@ -1,27 +1,31 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { useTranslations } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 
+import { localizePath, type AppLocale } from '@/i18n/config'
 import { APP_STORE_URL, INSTAGRAM_URL, PLAY_STORE_URL, THREADS_URL } from '@/lib/constants'
+
+import { LanguageLink } from './LanguageLink'
 
 export function Footer() {
   const t = useTranslations('footer')
+  const locale = useLocale() as AppLocale
+  const href = (path: string) => localizePath(path, locale)
 
   const productLinks = [
-    { href: '/spaces', label: t('productFindSpaces'), external: false },
-    { href: '/search', label: t('productFindPros'), external: false },
-    { href: '/spaces/price-report', label: t('productPriceReport'), external: false },
-    { href: '/guides/lash-artist-studio', label: t('productLashGuide'), external: false },
-    { href: '/guides/hourly-vs-monthly-rent', label: t('productHourlyVsMonthly'), external: false },
-    { href: '/hosts', label: t('productHosts'), external: false },
+    { href: href('/spaces'), label: t('productFindSpaces'), external: false },
+    { href: href('/search'), label: t('productFindPros'), external: false },
+    { href: href('/spaces/price-report'), label: t('productPriceReport'), external: false },
+    { href: href('/guides/lash-artist-studio'), label: t('productLashGuide'), external: false },
+    { href: href('/guides/hourly-vs-monthly-rent'), label: t('productHourlyVsMonthly'), external: false },
+    { href: href('/hosts'), label: t('productHosts'), external: false },
     { href: APP_STORE_URL, label: t('productDownloadIos'), external: true },
     { href: PLAY_STORE_URL, label: t('productDownloadAndroid'), external: true },
   ]
 
   const aboutLinks = [
-    { href: '/about', label: t('aboutUs') },
-    { href: '/faq', label: t('faq') },
-    { href: '/en', label: t('english') },
+    { href: href('/about'), label: t('aboutUs') },
+    { href: href('/faq'), label: t('faq') },
   ]
 
   const socialLinks = [
@@ -30,10 +34,10 @@ export function Footer() {
   ]
 
   const legalLinks = [
-    { href: '/privacy', label: t('privacy') },
-    { href: '/terms', label: t('terms') },
-    { href: '/support', label: t('support') },
-    { href: '/delete-account', label: t('deleteAccount') },
+    { href: href('/privacy'), label: t('privacy') },
+    { href: href('/terms'), label: t('terms') },
+    { href: href('/support'), label: t('support') },
+    { href: href('/delete-account'), label: t('deleteAccount') },
   ]
 
   return (
@@ -81,6 +85,11 @@ export function Footer() {
               {aboutLinks.map((item) => (
                 <Link key={item.href} href={item.href}>{item.label}</Link>
               ))}
+              {locale === 'en' ? (
+                <LanguageLink target="zh-TW" label={t('chinese')} />
+              ) : (
+                <LanguageLink target="en" label={t('english')} />
+              )}
             </div>
           </div>
 

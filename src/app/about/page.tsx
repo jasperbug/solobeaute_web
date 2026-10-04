@@ -1,13 +1,16 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { getLocale } from 'next-intl/server'
 
 import { Breadcrumbs, LinkChips, NUM, Prose, Section, TOPIC_LINKS } from '@/components/content/ContentBlocks'
+import { ABOUT_DESCRIPTION_EN, ABOUT_TITLE_EN, AboutEn } from '@/components/en/AboutEn'
 import { JsonLd } from '@/components/spaces/JsonLd'
 import { StoreButtons } from '@/components/ui/StoreButtons'
 import { dataDateLabel } from '@/lib/cityPages'
 import { INSTAGRAM_URL, SITE_URL, THREADS_URL } from '@/lib/constants'
 import { AUTHORS, ORGANIZATION_ID, personId, personSchema } from '@/lib/editorial'
 import { buildPriceReport, type PriceReport } from '@/lib/priceReport'
+import { localeAlternates, localeUrl, ogLocale } from '@/lib/i18nSeo'
 import { fetchPublicSpaces, formatNtd } from '@/lib/spaces'
 
 export const revalidate = 3600
@@ -18,12 +21,17 @@ const TITLE = '關於 SoloBeauté｜由工程師和美容職人共同創辦'
 const DESCRIPTION =
   'SoloBeauté 是台灣的美業空間時租 App，由工程師 Jasper Tsai 和美容職人 Meigo Liu 共同創辦，讓美業職人按小時租用屋主已經備好的工作空間。'
 
-export const metadata: Metadata = {
-  title: TITLE,
-  description: DESCRIPTION,
-  alternates: { canonical: PAGE_URL },
-  openGraph: { title: TITLE, description: DESCRIPTION, siteName: 'SoloBeauté', type: 'website', locale: 'zh_TW', url: PAGE_URL, images: ['/og-image.png'] },
-  twitter: { card: 'summary_large_image', title: TITLE, description: DESCRIPTION, images: ['/og-image.png'] },
+export async function generateMetadata(): Promise<Metadata> {
+  const isEn = (await getLocale()) === 'en'
+  const title = isEn ? ABOUT_TITLE_EN : TITLE
+  const description = isEn ? ABOUT_DESCRIPTION_EN : DESCRIPTION
+  return {
+    title,
+    description,
+    alternates: localeAlternates(PAGE_PATH, isEn ? 'en' : 'zh-TW'),
+    openGraph: { title, description, siteName: 'SoloBeauté', type: 'website', ...ogLocale(isEn ? 'en' : 'zh-TW'), url: isEn ? localeUrl(PAGE_PATH, 'en') : PAGE_URL, images: ['/og-image.png'] },
+    twitter: { card: 'summary_large_image', title, description, images: ['/og-image.png'] },
+  }
 }
 
 // Bios: same wording as the homepage 「關於我們」 section (zh-TW.json about.*).
@@ -43,6 +51,7 @@ async function loadReport(): Promise<PriceReport | null> {
 
 export default async function AboutPage() {
   const report = await loadReport()
+  if ((await getLocale()) === 'en') return <AboutEn report={report} />
   const dateLabel = dataDateLabel()
   // Jasper first on /about (engineer + beauty professional), matching the homepage order.
   const founders = ['jasper-tsai', 'meigo-liu']

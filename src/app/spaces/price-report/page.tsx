@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { getLocale } from 'next-intl/server'
 import type { ReactNode } from 'react'
 
 import {
@@ -11,9 +12,17 @@ import {
   faqPageSchema,
   type QA,
 } from '@/components/content/ContentBlocks'
+import {
+  PRICE_REPORT_FALLBACK_DESCRIPTION_EN,
+  PriceReportEn,
+  buildPriceReportDescriptionEn,
+  priceReportH1En,
+  priceReportTitleEn,
+} from '@/components/en/PriceReportEn'
 import { JsonLd } from '@/components/spaces/JsonLd'
 import { StoreButtons } from '@/components/ui/StoreButtons'
 import { dataDateLabel } from '@/lib/cityPages'
+import { localizePath } from '@/i18n/config'
 import { SITE_URL } from '@/lib/constants'
 import {
   AUTHORS,
@@ -35,6 +44,7 @@ import {
   type RateSummary,
 } from '@/lib/priceReport'
 import { SCENARIO_ASSUMPTION, USAGE_SCENARIOS, monthlyHourlyCost } from '@/lib/rentMath'
+import { localeAlternates, localeUrl, ogLocale } from '@/lib/i18nSeo'
 import { fetchPublicSpaces, formatNtd } from '@/lib/spaces'
 
 // Same window as every space fetch in lib/spaces.ts.
@@ -95,7 +105,34 @@ function buildLead(report: PriceReport, dateLabel: string): string[] {
   return [first.join(''), second.join('')].filter(Boolean)
 }
 
+async function generateMetadataEn(): Promise<Metadata> {
+  const title = priceReportTitleEn()
+  let description = PRICE_REPORT_FALLBACK_DESCRIPTION_EN
+  try {
+    description = buildPriceReportDescriptionEn(buildPriceReport(await fetchPublicSpaces()))
+  } catch (error) {
+    console.error('[price-report:en] metadata fallback:', error)
+  }
+  const ogTitle = `${priceReportH1En()} | SoloBeauté`
+  return {
+    title: { absolute: `${title} | SoloBeauté` },
+    description,
+    alternates: localeAlternates(PAGE_PATH, 'en'),
+    openGraph: {
+      title: ogTitle,
+      description,
+      siteName: 'SoloBeauté',
+      type: 'article',
+      ...ogLocale('en'),
+      url: localeUrl(PAGE_PATH, 'en'),
+      images: ['/og-image.png'],
+    },
+    twitter: { card: 'summary_large_image', title: ogTitle, description, images: ['/og-image.png'] },
+  }
+}
+
 export async function generateMetadata(): Promise<Metadata> {
+  if ((await getLocale()) === 'en') return generateMetadataEn()
   const title = `${h1Text()}｜美容工作室時租價格`
   let description = '依 SoloBeauté 上架中的美業空間公開價格計算的時租行情：價格區間、中位數、空間類型、縣市、半日／全日價、最低時數、設備與適合的服務。'
   try {
@@ -106,13 +143,13 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title,
     description,
-    alternates: { canonical: PAGE_URL },
+    alternates: localeAlternates(PAGE_PATH, 'zh-TW'),
     openGraph: {
       title: `${h1Text()}｜SoloBeauté`,
       description,
       siteName: 'SoloBeauté',
       type: 'article',
-      locale: 'zh_TW',
+      ...ogLocale('zh-TW'),
       url: PAGE_URL,
       images: ['/og-image.png'],
     },
@@ -232,6 +269,8 @@ function englishSummary(report: PriceReport): string[] {
 export default async function PriceReportPage() {
   const spaces = await fetchPublicSpaces()
   const report = buildPriceReport(spaces)
+  // /en/spaces/price-report (src/middleware.ts) renders the English version.
+  if ((await getLocale()) === 'en') return <PriceReportEn report={report} />
   const dateLabel = dataDateLabel()
   const h1 = h1Text()
   const description = buildReportDescription(report)
@@ -504,7 +543,7 @@ export default async function PriceReportPage() {
           <div className={`space-y-2 text-sm leading-7 text-black/70 ${NUM}`}>
             {english.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
             <p>
-              Suggested citation: SoloBeauté, &ldquo;2026 Taiwan Beauty Workspace Hourly Rental Prices&rdquo;, last updated {REPORT_UPDATED_LABEL_EN}, {PAGE_URL}. More in English: <Link href="/en" className="text-brand underline underline-offset-4">About SoloBeauté (English)</Link>.
+              Suggested citation: SoloBeauté, &ldquo;2026 Taiwan Beauty Workspace Hourly Rental Prices&rdquo;, last updated {REPORT_UPDATED_LABEL_EN}, {PAGE_URL}. Full report in English: <a href={localizePath(PAGE_PATH, 'en')} hrefLang="en" className="text-brand underline underline-offset-4">{priceReportH1En()} (English)</a>.
             </p>
           </div>
         </section>
@@ -531,10 +570,15 @@ export default async function PriceReportPage() {
               { href: '/guides/hourly-vs-monthly-rent', label: '時租和月租怎麼比' },
               { href: '/hosts', label: '屋主出租閒置時段' },
               { href: '/faq', label: '常見問題' },
-              { href: '/en', label: 'English' },
+              { href: localizePath(PAGE_PATH, 'en'), label: 'English' },
             ].map((link) => (
               <li key={link.href}>
-                <Link href={link.href} className="inline-flex min-h-10 items-center rounded-full border border-black/10 bg-white px-4 text-sm text-ink transition hover:border-brand hover:text-brand">{link.label}</Link>
+                {link.label === 'English' ? (
+                  // Plain <a>: switching language needs a full load so the layout re-renders in English.
+                  <a href={link.href} hrefLang="en" className="inline-flex min-h-10 items-center rounded-full border border-black/10 bg-white px-4 text-sm text-ink transition hover:border-brand hover:text-brand">{link.label}</a>
+                ) : (
+                  <Link href={link.href} className="inline-flex min-h-10 items-center rounded-full border border-black/10 bg-white px-4 text-sm text-ink transition hover:border-brand hover:text-brand">{link.label}</Link>
+                )}
               </li>
             ))}
           </ul>
