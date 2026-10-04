@@ -14,6 +14,15 @@ import {
 //               → 307 to /en/{path})
 // Routes without an English version are left alone (cookie behaviour as before).
 // No Accept-Language redirects: crawlers must always get the URL they asked for.
+function isDocumentNavigation(request: NextRequest): boolean {
+  const headers = request.headers
+  const purpose = headers.get('sec-purpose') ?? headers.get('purpose') ?? ''
+  if (purpose.includes('prefetch') || headers.has('next-router-prefetch') || headers.has('rsc')) return false
+  const dest = headers.get('sec-fetch-dest')
+  if (dest) return dest === 'document'
+  return (headers.get('accept') ?? '').includes('text/html')
+}
+
 export function middleware(request: NextRequest) {
   const { pathname, search } = request.nextUrl
   const requestHeaders = new Headers(request.headers)
@@ -32,10 +41,11 @@ export function middleware(request: NextRequest) {
     url.pathname = path
     const response = NextResponse.rewrite(url, { request: { headers: requestHeaders } })
     // Remember the choice (same as next-intl's locale cookie) so pages without
-    // an English URL (/search, /support…) also render in English. Skipped for
-    // router prefetches so merely rendering a link never changes the language.
-    const isPrefetch = request.headers.has('next-router-prefetch') || request.headers.get('purpose') === 'prefetch'
-    if (!isPrefetch && request.cookies.get(LOCALE_COOKIE_NAME)?.value !== 'en') {
+    // an English URL (/search, /support…) also render in English. Only for real
+    // document loads: router prefetches / RSC fetches (whose Next.js headers are
+    // stripped before middleware on Vercel) must never change the language just
+    // because a link to /en was rendered.
+    if (isDocumentNavigation(request) && request.cookies.get(LOCALE_COOKIE_NAME)?.value !== 'en') {
       response.cookies.set(LOCALE_COOKIE_NAME, 'en', { path: '/', maxAge: 31536000, sameSite: 'lax' })
     }
     return response
