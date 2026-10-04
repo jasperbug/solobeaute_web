@@ -4,6 +4,7 @@ import { getLocale, getTranslations } from 'next-intl/server'
 import type { FaqItemData } from '@/components/landing/FaqSection'
 import type { HomeStats } from '@/components/landing/HomeStatsLine'
 import { LandingPage } from '@/components/landing/LandingPage'
+import type { AppLocale } from '@/i18n/config'
 import { dataDateLabel } from '@/lib/cityPages'
 import {
   APP_STORE_URL,
@@ -13,7 +14,9 @@ import {
   SITE_URL,
   THREADS_URL,
 } from '@/lib/constants'
-import { fillFaqItems, getFaqFacts } from '@/lib/faqStats'
+import { cityNameEn, monthYearEn } from '@/lib/en'
+import { fillFaqItems, getFaqFacts, type FaqFacts } from '@/lib/faqStats'
+import { localeAlternates, localeUrl, ogLocale } from '@/lib/i18nSeo'
 import { buildPriceReport } from '@/lib/priceReport'
 import { fetchPublicSpaces } from '@/lib/spaces'
 
@@ -29,7 +32,7 @@ const HOME_SOCIAL_DESCRIPTION =
 const BRAND_DEFINITION_SHORT =
   'SoloBeauté 是台灣的美業空間時租 App，美業職人可以按小時租用屋主已經備好的工作空間（NT$100–350／小時），免簽約、免押金，目前在台北、新北、桃園、台中、高雄、彰化、南投。'
 
-export const metadata: Metadata = {
+const ZH_METADATA: Metadata = {
   title: HOME_TITLE,
   description: HOME_DESCRIPTION,
   // Next merges `openGraph` / `twitter` by REPLACING the whole object, not
@@ -41,10 +44,11 @@ export const metadata: Metadata = {
     description: HOME_SOCIAL_DESCRIPTION,
     siteName: 'SoloBeauté',
     type: 'website',
-    locale: 'zh_TW',
+    ...ogLocale('zh-TW'),
     url: SITE_URL,
     images: ['/og-image.png'],
   },
+  alternates: localeAlternates('/', 'zh-TW'),
   twitter: {
     card: 'summary_large_image',
     title: HOME_SOCIAL_TITLE,
@@ -53,15 +57,65 @@ export const metadata: Metadata = {
   },
 }
 
+// English homepage (/en). No fee / "free" / deposit claims; numbers are live.
+const HOME_TITLE_EN = 'SoloBeauté | Beauty Workspaces for Hourly Rent in Taiwan'
+const HOME_SOCIAL_TITLE_EN = 'SoloBeauté | Rent a beauty workspace by the hour, only when you have clients'
+const HOME_DESCRIPTION_EN_FALLBACK =
+  'SoloBeauté is a Taiwan-based app for renting ready-to-use beauty workspaces by the hour. Lash, facial, nail and brow pros browse spaces, message hosts and pay on site.'
+
+function homeDescriptionEn(facts: FaqFacts | null): string {
+  if (!facts) return HOME_DESCRIPTION_EN_FALLBACK
+  return `Rent ready-to-use beauty workspaces by the hour in Taiwan: ${facts.spaceCount} spaces in ${facts.cityList}, ${facts.rateRange} per hour. For lash, facial, nail and brow pros; message hosts in the SoloBeauté app and pay on site.`
+}
+
+function brandDefinitionEn(facts: FaqFacts | null): string {
+  const where = facts ? `, currently with ${facts.spaceCount} spaces in ${facts.cityList} (${facts.rateRange} per hour)` : ''
+  return `SoloBeauté is a Taiwan-based app for renting ready-to-use beauty workspaces by the hour: beauty professionals book spaces that hosts have already set up${where}.`
+}
+
+async function englishFacts(): Promise<FaqFacts | null> {
+  try {
+    return await getFaqFacts(undefined, 'en')
+  } catch {
+    return null
+  }
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = (await getLocale()) as AppLocale
+  if (locale !== 'en') return ZH_METADATA
+  const description = homeDescriptionEn(await englishFacts())
+  const url = localeUrl('/', 'en')
+  return {
+    title: { absolute: HOME_TITLE_EN },
+    description,
+    alternates: localeAlternates('/', 'en'),
+    openGraph: {
+      title: HOME_SOCIAL_TITLE_EN,
+      description,
+      siteName: 'SoloBeauté',
+      type: 'website',
+      ...ogLocale('en'),
+      url,
+      images: ['/og-image.png'],
+    },
+    twitter: { card: 'summary_large_image', title: HOME_SOCIAL_TITLE_EN, description, images: ['/og-image.png'] },
+  }
+}
+
 const ORGANIZATION_ID = `${SITE_URL}/#organization`
 
-async function getHomeStats(locale: string): Promise<HomeStats | null> {
-  // The sentence is zh-TW copy; the `en` cookie view keeps the original layout.
-  if (locale !== 'zh-TW') return null
+async function getHomeStats(locale: AppLocale): Promise<HomeStats | null> {
   try {
     const report = buildPriceReport(await fetchPublicSpaces())
     if (report.total === 0 || report.hourly.median === null) return null
-    return { dateLabel: dataDateLabel(), total: report.total, cityCount: report.cityCount, median: report.hourly.median }
+    return {
+      dateLabel: locale === 'en' ? monthYearEn() : dataDateLabel(),
+      total: report.total,
+      cityCount: report.cityCount,
+      median: report.hourly.median,
+      locale,
+    }
   } catch (error) {
     console.error('[home] stats line unavailable:', error)
     return null
@@ -69,12 +123,14 @@ async function getHomeStats(locale: string): Promise<HomeStats | null> {
 }
 
 export default async function HomePage() {
-  const locale = await getLocale()
+  const locale = (await getLocale()) as AppLocale
+  const isEn = locale === 'en'
   const tFaq = await getTranslations('faq')
   // Built from the same messages FaqSection renders, so the JSON-LD always
   // matches the visible (server-rendered) FAQ text exactly.
   // {placeholders} are filled with live space data (count, cities, price range).
-  const faqItems = fillFaqItems(tFaq.raw('items') as FaqItemData[], await getFaqFacts())
+  const faqItems = fillFaqItems(tFaq.raw('items') as FaqItemData[], await getFaqFacts(undefined, locale))
+  const facts = isEn ? await englishFacts() : null
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -86,19 +142,19 @@ export default async function HomePage() {
         alternateName: ['Solobeaute', 'SoloBeaute'],
         url: SITE_URL,
         logo: `${SITE_URL}/images/brand/logo.png`,
-        description: BRAND_DEFINITION_SHORT,
-        areaServed: [...SERVICE_AREAS],
+        description: isEn ? brandDefinitionEn(facts) : BRAND_DEFINITION_SHORT,
+        areaServed: isEn ? SERVICE_AREAS.map((area) => cityNameEn(area)) : [...SERVICE_AREAS],
         sameAs: [INSTAGRAM_URL, THREADS_URL, APP_STORE_URL, PLAY_STORE_URL],
         founder: [
           {
             '@type': 'Person',
             name: 'Jasper Tsai',
-            jobTitle: '工程師',
+            jobTitle: isEn ? 'Engineer' : '工程師',
           },
           {
             '@type': 'Person',
             name: 'Meigo Liu',
-            jobTitle: '美容職人',
+            jobTitle: isEn ? 'Beauty professional' : '美容職人',
           },
         ],
       },
@@ -108,7 +164,7 @@ export default async function HomePage() {
         name: 'SoloBeauté',
         alternateName: ['Solobeaute', 'SoloBeaute'],
         url: SITE_URL,
-        inLanguage: 'zh-TW',
+        inLanguage: ['zh-TW', 'en'],
         publisher: { '@id': ORGANIZATION_ID },
         potentialAction: {
           '@type': 'SearchAction',
@@ -131,7 +187,7 @@ export default async function HomePage() {
       },
       {
         '@type': 'FAQPage',
-        '@id': `${SITE_URL}/#faq`,
+        '@id': `${localeUrl('/', locale)}#faq`,
         inLanguage: locale,
         mainEntity: faqItems.map((item) => ({
           '@type': 'Question',

@@ -3,8 +3,21 @@ import type { MetadataRoute } from 'next'
 import { cityPagePath } from '@/lib/cities'
 import { buildAllCityStats, isCityIndexable } from '@/lib/cityPages'
 import { API_BASE_URL, SITE_URL } from '@/lib/constants'
+import { localeUrl, sitemapAlternates } from '@/lib/i18nSeo'
 import { fetchPublicSpaces } from '@/lib/spaces'
 import type { BeauticianSearchResponse, BeauticianSummary } from '@/lib/types'
+
+/**
+ * One entry per language for a page that exists in zh-TW and English, each
+ * listing both alternates (+ x-default) as Google recommends for hreflang.
+ */
+function localizedEntries(path: string, entry: Omit<MetadataRoute.Sitemap[number], 'url'>): MetadataRoute.Sitemap {
+  const alternates = sitemapAlternates(path)
+  return [
+    { url: localeUrl(path, 'zh-TW'), ...entry, alternates },
+    { url: localeUrl(path, 'en'), ...entry, alternates },
+  ]
+}
 
 const API_PAGE_LIMIT = 50
 const MAX_PAGES = 20 // safety cap → up to 1000 beauticians
@@ -41,15 +54,14 @@ async function fetchAllBeauticians(): Promise<BeauticianSummary[]> {
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPages: MetadataRoute.Sitemap = [
-    { url: SITE_URL, changeFrequency: 'weekly', priority: 1.0 },
-    { url: `${SITE_URL}/spaces`, changeFrequency: 'daily', priority: 0.9 },
-    { url: `${SITE_URL}/spaces/price-report`, changeFrequency: 'weekly', priority: 0.8 },
-    { url: `${SITE_URL}/guides/lash-artist-studio`, changeFrequency: 'weekly', priority: 0.8 },
-    { url: `${SITE_URL}/guides/hourly-vs-monthly-rent`, changeFrequency: 'monthly', priority: 0.7 },
-    { url: `${SITE_URL}/hosts`, changeFrequency: 'monthly', priority: 0.7 },
-    { url: `${SITE_URL}/faq`, changeFrequency: 'monthly', priority: 0.7 },
-    { url: `${SITE_URL}/about`, changeFrequency: 'monthly', priority: 0.6 },
-    { url: `${SITE_URL}/en`, changeFrequency: 'weekly', priority: 0.6 },
+    ...localizedEntries('/', { changeFrequency: 'weekly', priority: 1.0 }),
+    ...localizedEntries('/spaces', { changeFrequency: 'daily', priority: 0.9 }),
+    ...localizedEntries('/spaces/price-report', { changeFrequency: 'weekly', priority: 0.8 }),
+    ...localizedEntries('/guides/lash-artist-studio', { changeFrequency: 'weekly', priority: 0.8 }),
+    ...localizedEntries('/guides/hourly-vs-monthly-rent', { changeFrequency: 'monthly', priority: 0.7 }),
+    ...localizedEntries('/hosts', { changeFrequency: 'monthly', priority: 0.7 }),
+    ...localizedEntries('/faq', { changeFrequency: 'monthly', priority: 0.7 }),
+    ...localizedEntries('/about', { changeFrequency: 'monthly', priority: 0.6 }),
     { url: `${SITE_URL}/search`, changeFrequency: 'daily', priority: 0.9 },
     { url: `${SITE_URL}/privacy`, changeFrequency: 'yearly', priority: 0.3 },
     { url: `${SITE_URL}/terms`, changeFrequency: 'yearly', priority: 0.3 },
@@ -90,21 +102,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // fetchPublicSpaces() keeps only status === 'ACTIVE' (and not deleted), the
     // same rule /spaces/[id] uses to decide between 200 and 404.
     const spaces = await fetchPublicSpaces()
-    spacePages = spaces.map((space) => ({
-      url: `${SITE_URL}/spaces/${space.id}`,
-      ...(space.updatedAt ? { lastModified: space.updatedAt } : {}),
-      changeFrequency: 'weekly' as const,
-      priority: 0.8,
-    }))
+    spacePages = spaces.flatMap((space) =>
+      localizedEntries(`/spaces/${space.id}`, {
+        ...(space.updatedAt ? { lastModified: space.updatedAt } : {}),
+        changeFrequency: 'weekly',
+        priority: 0.8,
+      })
+    )
     console.log(`[sitemap] emitted ${spacePages.length} space entries`)
     // City landing pages: only the ones that are indexable (≥ 1 ACTIVE space).
     cityPages = buildAllCityStats(spaces)
       .filter(isCityIndexable)
-      .map((stats) => ({
-        url: `${SITE_URL}${cityPagePath(stats.city)}`,
-        changeFrequency: 'weekly' as const,
-        priority: 0.85,
-      }))
+      .flatMap((stats) => localizedEntries(cityPagePath(stats.city), { changeFrequency: 'weekly', priority: 0.85 }))
     console.log(`[sitemap] emitted ${cityPages.length} city entries`)
   } catch (error) {
     console.error('[sitemap] failed to build dynamic space entries:', error)

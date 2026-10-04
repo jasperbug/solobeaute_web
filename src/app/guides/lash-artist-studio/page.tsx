@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { getLocale } from 'next-intl/server'
 
 import {
   Breadcrumbs,
@@ -14,6 +15,7 @@ import {
   faqPageSchema,
   type QA,
 } from '@/components/content/ContentBlocks'
+import { LashGuideEn, lashGuideDescriptionEn, lashGuideTitleEn } from '@/components/en/LashGuideEn'
 import { JsonLd } from '@/components/spaces/JsonLd'
 import { SpaceCard } from '@/components/spaces/SpaceCard'
 import { StoreButtons } from '@/components/ui/StoreButtons'
@@ -21,6 +23,7 @@ import { dataDateLabel } from '@/lib/cityPages'
 import { SITE_URL } from '@/lib/constants'
 import { AUTHORS, AUTHOR_REFS, PUBLISHER, personSchema, taipeiYear } from '@/lib/editorial'
 import { buildPriceReport, formatShare, spacesForProfession, type ProfessionRow, type RateSummary } from '@/lib/priceReport'
+import { localeAlternates, localeUrl, ogLocale } from '@/lib/i18nSeo'
 import { fetchPublicSpaces, formatNtd } from '@/lib/spaces'
 import type { PublicSpace } from '@/lib/types'
 
@@ -73,25 +76,28 @@ async function load(): Promise<{ spaces: PublicSpace[]; lashSpaces: PublicSpace[
 }
 
 export async function generateMetadata(): Promise<Metadata> {
-  let desc = description(undefined, 0)
+  const isEn = (await getLocale()) === 'en'
+  let desc = isEn ? lashGuideDescriptionEn(undefined, 0) : description(undefined, 0)
   try {
     const { row, total } = await load()
-    desc = description(row, total)
+    desc = isEn ? lashGuideDescriptionEn(row, total) : description(row, total)
   } catch (error) {
     console.error('[lash-guide] metadata fallback:', error)
   }
-  const title = `${taipeiYear()} 美睫師租工作室行情｜時租、分租、租位比較`
+  const title = isEn ? lashGuideTitleEn() : `${taipeiYear()} 美睫師租工作室行情｜時租、分租、租位比較`
+  const social = isEn ? `${title} | SoloBeauté` : `${title}｜SoloBeauté`
   return {
     title,
     description: desc,
-    alternates: { canonical: PAGE_URL },
-    openGraph: { title: `${title}｜SoloBeauté`, description: desc, siteName: 'SoloBeauté', type: 'article', locale: 'zh_TW', url: PAGE_URL, images: ['/og-image.png'] },
-    twitter: { card: 'summary_large_image', title: `${title}｜SoloBeauté`, description: desc, images: ['/og-image.png'] },
+    alternates: localeAlternates(PAGE_PATH, isEn ? 'en' : 'zh-TW'),
+    openGraph: { title: social, description: desc, siteName: 'SoloBeauté', type: 'article', ...ogLocale(isEn ? 'en' : 'zh-TW'), url: localeUrl(PAGE_PATH, isEn ? 'en' : 'zh-TW'), images: ['/og-image.png'] },
+    twitter: { card: 'summary_large_image', title: social, description: desc, images: ['/og-image.png'] },
   }
 }
 
 export default async function LashArtistStudioPage() {
   const { lashSpaces, row, total } = await load()
+  if ((await getLocale()) === 'en') return <LashGuideEn lashSpaces={lashSpaces} row={row} total={total} />
   const dateLabel = dataDateLabel()
   const h1 = h1Text()
   const desc = description(row, total)

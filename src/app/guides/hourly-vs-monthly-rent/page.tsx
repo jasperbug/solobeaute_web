@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { getLocale } from 'next-intl/server'
 
 import {
   Breadcrumbs,
@@ -14,6 +15,7 @@ import {
   faqPageSchema,
   type QA,
 } from '@/components/content/ContentBlocks'
+import { HourlyVsMonthlyEn, hourlyVsMonthlyDescriptionEn, hourlyVsMonthlyTitleEn } from '@/components/en/HourlyVsMonthlyEn'
 import { JsonLd } from '@/components/spaces/JsonLd'
 import { StoreButtons } from '@/components/ui/StoreButtons'
 import { dataDateLabel } from '@/lib/cityPages'
@@ -21,6 +23,7 @@ import { SITE_URL } from '@/lib/constants'
 import { AUTHORS, AUTHOR_REFS, PUBLISHER, personSchema, taipeiYear } from '@/lib/editorial'
 import { buildPriceReport, formatShare, minimumHoursRow, type PriceReport } from '@/lib/priceReport'
 import { SCENARIO_ASSUMPTION, USAGE_SCENARIOS, monthlyHourlyCost } from '@/lib/rentMath'
+import { localeAlternates, localeUrl, ogLocale } from '@/lib/i18nSeo'
 import { fetchPublicSpaces, formatNtd } from '@/lib/spaces'
 
 export const revalidate = 3600
@@ -43,24 +46,28 @@ function description(report: PriceReport | null): string {
 }
 
 export async function generateMetadata(): Promise<Metadata> {
-  let desc = description(null)
+  const isEn = (await getLocale()) === 'en'
+  const describe = isEn ? hourlyVsMonthlyDescriptionEn : description
+  let desc = describe(null)
   try {
-    desc = description(buildPriceReport(await fetchPublicSpaces()))
+    desc = describe(buildPriceReport(await fetchPublicSpaces()))
   } catch (error) {
     console.error('[hourly-vs-monthly] metadata fallback:', error)
   }
-  const title = `美容工作室時租 vs 月租怎麼選｜${taipeiYear()} 試算`
+  const title = isEn ? hourlyVsMonthlyTitleEn() : `美容工作室時租 vs 月租怎麼選｜${taipeiYear()} 試算`
+  const social = isEn ? `${title} | SoloBeauté` : `${title}｜SoloBeauté`
   return {
     title,
     description: desc,
-    alternates: { canonical: PAGE_URL },
-    openGraph: { title: `${title}｜SoloBeauté`, description: desc, siteName: 'SoloBeauté', type: 'article', locale: 'zh_TW', url: PAGE_URL, images: ['/og-image.png'] },
-    twitter: { card: 'summary_large_image', title: `${title}｜SoloBeauté`, description: desc, images: ['/og-image.png'] },
+    alternates: localeAlternates(PAGE_PATH, isEn ? 'en' : 'zh-TW'),
+    openGraph: { title: social, description: desc, siteName: 'SoloBeauté', type: 'article', ...ogLocale(isEn ? 'en' : 'zh-TW'), url: localeUrl(PAGE_PATH, isEn ? 'en' : 'zh-TW'), images: ['/og-image.png'] },
+    twitter: { card: 'summary_large_image', title: social, description: desc, images: ['/og-image.png'] },
   }
 }
 
 export default async function HourlyVsMonthlyPage() {
   const report = buildPriceReport(await fetchPublicSpaces())
+  if ((await getLocale()) === 'en') return <HourlyVsMonthlyEn report={report} />
   const dateLabel = dataDateLabel()
   const h1 = h1Text()
   const desc = description(report)

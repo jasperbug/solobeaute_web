@@ -1,5 +1,7 @@
 import Link from 'next/link'
-import { useTranslations } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
+
+import { localizePath, type AppLocale } from '@/i18n/config'
 
 import { Reveal } from '../ui/Reveal'
 
@@ -33,6 +35,7 @@ function FaqItem({ question, answer }: { question: string; answer: string }) {
 // array the FAQPage JSON-LD is built from.
 export function FaqSection({ items }: { items: FaqItemData[] }) {
   const t = useTranslations('faq')
+  const locale = useLocale() as AppLocale
 
   return (
     <section className="faq" id="faq">
@@ -53,7 +56,7 @@ export function FaqSection({ items }: { items: FaqItemData[] }) {
         </div>
 
         <p className="faq__more">
-          <Link href="/faq">{t('more')} →</Link>
+          <Link href={localizePath('/faq', locale)}>{t('more')} →</Link>
         </p>
       </div>
     </section>

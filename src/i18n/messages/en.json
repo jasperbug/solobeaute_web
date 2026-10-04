@@ -147,32 +147,52 @@
     "title": "Things you might want to know",
     "items": [
       {
-        "q": "Do beauty pros need to pay to join?",
-        "a": "Joining SoloBeauté is free. SoloBeauté does not handle payments — rent is paid in cash directly to the host on site."
+        "q": "How much does it cost to rent a beauty studio by the hour?",
+        "a": "Beauty workspaces on SoloBeauté currently rent for {rateRange} per hour, and most are in the {typicalRange} range. Each host sets the price based on location, equipment and space type (open space, curtained partition or private room), and every space shows its hourly rate in the app."
       },
       {
-        "q": "Is renting out my space safe?",
-        "a": "Space bookings are made in the SoloBeauté app, and hosts are free to accept or decline and to set their own rental rules. Client-side service bookings are still arranged through each pro's own channels."
+        "q": "Do I need a long-term contract to rent a nail station or beauty studio?",
+        "a": "No. Spaces on SoloBeauté are rented by the hour, with no long-term contract and nothing to fit out yourself. Book when you have clients and skip it when you don't, so pros who are just starting out aren't tied to a fixed monthly rent."
       },
       {
-        "q": "How are payments handled?",
-        "a": "Rent is currently paid in cash directly to the host on site."
+        "q": "How is rent paid?",
+        "a": "Rent is currently paid in cash, directly to the host on site. You can agree with the host in the app whether to pay before or after your session."
       },
       {
-        "q": "When can consumers start using the app?",
-        "a": "The consumer side is coming soon. We are building up enough pros and spaces first to ensure a great experience at launch."
+        "q": "How do I join SoloBeauté?",
+        "a": "Download the iOS or Android app and sign up. You can then start looking for spaces and set up your own brand page."
       },
       {
-        "q": "I'm just starting out — can I still use SoloBeauté?",
-        "a": "Absolutely. SoloBeauté exists to lower the barrier to going independent. No long-term lease, no deposit, no renovation costs. Just rent a space when you have a client, and relax when you don't."
+        "q": "Which cities have beauty workspaces for rent?",
+        "a": "There are currently {spaceCount} beauty workspaces, in {cityList}. More spaces are being added; the app always shows the latest locations."
       },
       {
-        "q": "What do hosts need to get started?",
-        "a": "Space photos, available time slots, and your desired pricing — that's it. If you're not great at photography, we can help. The whole setup process takes about 30 minutes."
+        "q": "What kinds of beauty services can I use a space for?",
+        "a": "There are spaces suited to nails, lashes, facials, brow and lip embroidery, makeup and more. Equipment varies from space to space; the app lists each space's equipment and the services the host recommends, so check before you book."
       },
       {
-        "q": "How is SoloBeauté different from other shared spaces?",
-        "a": "We do more than help you find a space. SoloBeauté also helps pros build a brand page, manage bookings, and organize their portfolio and brand presence. More importantly, our team understands the beauty industry firsthand. Co-founder Meigo Liu has worked on the front line, so we are not guessing at what pros actually need."
+        "q": "How do I find a space and book a time slot?",
+        "a": "Open the SoloBeauté app and filter by area, equipment and price on the map or in the list; some spaces also have a 3D tour. When you find one that fits, message the host to confirm the details, then send a booking request for the host to confirm."
+      },
+      {
+        "q": "How do I rent out my space to beauty professionals?",
+        "a": "Download the SoloBeauté app, sign up as a host, and list your space with photos, available hours and an hourly rate. If photography isn't your thing, our team can help with photos and setting up the listing; the whole process takes about 30 minutes."
+      },
+      {
+        "q": "Can I rent out my space for just some of the hours?",
+        "a": "Yes. List only the hours your space would otherwise sit empty and keep running your business the rest of the time. You can accept or decline every booking and set your own house rules."
+      },
+      {
+        "q": "How does a pro's brand page go public?",
+        "a": "Fill in four things in the app: a display name, the area you serve, at least one service, and a profile or portfolio photo. Your brand page then goes live on www.solobeaute.com automatically, with no review to wait for."
+      },
+      {
+        "q": "Can clients book a pro directly on the website?",
+        "a": "Not yet. Consumer booking isn't open. For now, clients can browse a pro's brand page, portfolio and services on the website, then contact the pro through their own channels, such as Instagram or LINE."
+      },
+      {
+        "q": "How is SoloBeauté different from a typical shared beauty studio?",
+        "a": "Many shared studios are a single operator running its own locations. SoloBeauté brings together spaces listed by different hosts in {cityCount} cities and counties, so you can compare location, equipment and price in one app. Pros can also set up their own brand page, so clients remember you rather than the room."
       }
     ],
     "more": "More questions"
@@ -217,6 +237,7 @@
     "aboutUs": "About Us",
     "faq": "FAQ",
     "english": "English",
+    "chinese": "繁體中文",
     "legalTitle": "Legal",
     "privacy": "Privacy Policy",
     "terms": "Terms of Service",

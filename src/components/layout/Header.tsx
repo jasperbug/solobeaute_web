@@ -6,14 +6,23 @@ import { usePathname, useRouter } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
 import { useEffect, useMemo, useRef, useState } from 'react'
 
-import { LOCALE_COOKIE_NAME, LANGUAGE_OPTIONS, type AppLocale } from '@/i18n/config'
+import {
+  LOCALE_COOKIE_NAME,
+  LANGUAGE_OPTIONS,
+  hasEnglishVersion,
+  localizePath,
+  stripLocalePrefix,
+  type AppLocale,
+} from '@/i18n/config'
 import { DownloadIcon, GlobeIcon } from '../ui/Icons'
 import { MobileNav } from './MobileNav'
 
 export function Header() {
   const t = useTranslations()
   const locale = useLocale() as AppLocale
-  const pathname = usePathname()
+  const rawPathname = usePathname()
+  // Unprefixed path: /en/faq → /faq (SSR may already see the rewritten path).
+  const pathname = stripLocalePrefix(rawPathname ?? '/').path
   const router = useRouter()
   const [scrolled, setScrolled] = useState(false)
   const [mobileMenu, setMobileMenu] = useState(false)
@@ -68,17 +77,25 @@ export function Header() {
       { href: '/faq', label: t('nav.faq') },
       { href: '/spaces', label: t('nav.spaces') },
       { href: '/search', label: t('nav.discover') },
-    ],
-    [pathname, t]
+    ].map((item) => ({ ...item, href: localizePath(item.href, locale) })),
+    [pathname, t, locale]
   )
 
   // Both stores live in the landing page download section, so the nav CTA is
   // platform-neutral and points there instead of favouring one store.
-  const downloadHref = pathname === '/' ? '#download' : '/#download'
+  const downloadHref = pathname === '/' ? '#download' : localizePath('/#download', locale)
 
+  // Pages with an English version have their own URL (/en/...), so switching
+  // language navigates there (full load, so the root layout re-renders in the
+  // new language). Other pages keep the cookie + refresh behaviour.
   function setLocaleCookie(nextLocale: AppLocale) {
     const secure = window.location.protocol === 'https:' ? '; secure' : ''
     document.cookie = `${LOCALE_COOKIE_NAME}=${nextLocale}; path=/; max-age=31536000; samesite=lax${secure}`
+    const { path } = stripLocalePrefix(window.location.pathname)
+    if (hasEnglishVersion(path)) {
+      window.location.assign(`${localizePath(path, nextLocale)}${window.location.search}${window.location.hash}`)
+      return
+    }
     router.refresh()
   }
 
@@ -86,7 +103,7 @@ export function Header() {
     <>
       <nav className={`nav ${scrolled ? 'nav--scrolled' : ''} ${mobileMenu ? 'nav--menu-open' : ''}`}>
         <div className="nav__inner container">
-          <Link href="/" className="nav__logo" onClick={() => setMobileMenu(false)}>
+          <Link href={localizePath('/', locale)} className="nav__logo" onClick={() => setMobileMenu(false)}>
             <Image src="/images/brand/logo.png" alt="SoloBeauté" width={30} height={30} priority />
             <span>SoloBeauté</span>
           </Link>

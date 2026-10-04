@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { getLocale } from 'next-intl/server'
 
 import {
   Breadcrumbs,
@@ -13,12 +14,14 @@ import {
   faqPageSchema,
   type QA,
 } from '@/components/content/ContentBlocks'
+import { HOSTS_DESCRIPTION_EN, HOSTS_TITLE_EN, HostsEn } from '@/components/en/HostsEn'
 import { JsonLd } from '@/components/spaces/JsonLd'
 import { StoreButtons } from '@/components/ui/StoreButtons'
 import { dataDateLabel } from '@/lib/cityPages'
 import { SITE_URL } from '@/lib/constants'
 import { ORGANIZATION_ID } from '@/lib/editorial'
 import { buildPriceReport, formatShare, type PriceReport, type RateSummary } from '@/lib/priceReport'
+import { localeAlternates, localeUrl, ogLocale } from '@/lib/i18nSeo'
 import { fetchPublicSpaces, formatNtd } from '@/lib/spaces'
 
 export const revalidate = 3600
@@ -29,12 +32,18 @@ const TITLE = '美容室閒置時段出租｜屋主上架說明與時租行情'
 const DESCRIPTION =
   '有閒置的美容室、美睫或美甲座位？在 SoloBeauté App 上架，按小時租給美業職人。只上架空著的時段，每筆預約由你決定接受或拒絕，附其他屋主的時租標價分布。'
 
-export const metadata: Metadata = {
-  title: TITLE,
-  description: DESCRIPTION,
-  alternates: { canonical: PAGE_URL },
-  openGraph: { title: `${TITLE}｜SoloBeauté`, description: DESCRIPTION, siteName: 'SoloBeauté', type: 'website', locale: 'zh_TW', url: PAGE_URL, images: ['/og-image.png'] },
-  twitter: { card: 'summary_large_image', title: `${TITLE}｜SoloBeauté`, description: DESCRIPTION, images: ['/og-image.png'] },
+export async function generateMetadata(): Promise<Metadata> {
+  const isEn = (await getLocale()) === 'en'
+  const title = isEn ? HOSTS_TITLE_EN : TITLE
+  const description = isEn ? HOSTS_DESCRIPTION_EN : DESCRIPTION
+  const social = isEn ? `${title} | SoloBeauté` : `${title}｜SoloBeauté`
+  return {
+    title,
+    description,
+    alternates: localeAlternates(PAGE_PATH, isEn ? 'en' : 'zh-TW'),
+    openGraph: { title: social, description, siteName: 'SoloBeauté', type: 'website', ...ogLocale(isEn ? 'en' : 'zh-TW'), url: isEn ? localeUrl(PAGE_PATH, 'en') : PAGE_URL, images: ['/og-image.png'] },
+    twitter: { card: 'summary_large_image', title: social, description, images: ['/og-image.png'] },
+  }
 }
 
 function range(summary: Pick<RateSummary, 'min' | 'max'>): string {
@@ -72,6 +81,7 @@ function pricingLead(report: PriceReport, dateLabel: string): string {
 
 export default async function HostsPage() {
   const report = buildPriceReport(await fetchPublicSpaces())
+  if ((await getLocale()) === 'en') return <HostsEn report={report} />
   const dateLabel = dataDateLabel()
 
   const jsonLd = {
