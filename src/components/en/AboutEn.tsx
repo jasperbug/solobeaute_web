@@ -4,6 +4,7 @@ import { Breadcrumbs, LinkChips, NUM, Prose, Section, TOPIC_LINKS_EN } from '@/c
 import { JsonLd } from '@/components/spaces/JsonLd'
 import { StoreButtons } from '@/components/ui/StoreButtons'
 import { localizePath } from '@/i18n/config'
+import { BRAND_FACT_EN } from '@/lib/brandFacts'
 import { INSTAGRAM_URL, SITE_URL, THREADS_URL } from '@/lib/constants'
 import { AUTHORS, ORGANIZATION_ID, personId, personSchema } from '@/lib/editorial'
 import { monthYearEn } from '@/lib/en'
@@ -53,6 +54,7 @@ export function AboutEn({ report }: { report: PriceReport | null }) {
         alternateName: ['Solobeaute', 'SoloBeaute'],
         url: SITE_URL,
         logo: `${SITE_URL}/images/brand/logo.png`,
+        description: BRAND_FACT_EN,
         founder: founders.map((author) => ({ '@id': personId(author) })),
         sameAs: [INSTAGRAM_URL, THREADS_URL],
       },
@@ -80,6 +82,7 @@ export function AboutEn({ report }: { report: PriceReport | null }) {
             <p data-about-lead>
               SoloBeauté is a Taiwan-based app for renting beauty workspaces by the hour: nail, lash, facial, brow and other beauty professionals can rent workspaces that hosts have already set up, and hosts with an idle treatment room or station can rent out the hours it would otherwise sit empty.
             </p>
+            <p data-brand-fact>{BRAND_FACT_EN}</p>
             <p>SoloBeauté was co-founded by an engineer and a beauty professional. One knows technology, the other knows the day-to-day reality of Taiwan&apos;s beauty industry, and together we are building a tool that genuinely helps pros start taking clients and hosts start renting out their space.</p>
           </Prose>
         </header>

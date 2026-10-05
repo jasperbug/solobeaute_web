@@ -1,5 +1,6 @@
 import { localizePath } from '@/i18n/config'
 
+import { BRAND_FAQ_EN } from './brandFacts'
 import { SPACE_CITIES, cityPagePath, normalizeCityName } from './cities'
 import { cityShortEn, equipmentEn, joinEn, rateRangeEn } from './en'
 import type { FaqEntry, FaqGroup, FaqItem } from './faqPage'
@@ -104,6 +105,7 @@ export function buildFaqGroupsEn(home: FaqItem[], spaces: PublicSpace[] | null):
       id: 'renting',
       title: 'Finding and booking a space',
       items: [
+        BRAND_FAQ_EN,
         h(HOME.findSpace),
         {
           q: 'How does booking a space work?',

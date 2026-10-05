@@ -1,5 +1,9 @@
 # SoloBeauté
 
+SoloBeauté 是台灣的美業空間時租服務：屋主提供設備齊全的美容工作空間，獨立美容職人（美睫、美甲、美眉等）透過 App 按小時預約使用。由工程師蔡維哲（Jasper Tsai）與美容職人 Meigo Liu 共同創辦。SoloBeauté 不是化妝品或彩妝品牌，與 Solone 等品牌無關，也不是美容展覽品牌；目前尚未開放消費者預約美容服務。
+
+SoloBeauté is a Taiwan-based hourly beauty workspace rental service: hosts list fully equipped beauty workspaces, and independent beauty professionals (lash, nail, brow and more) book them by the hour through the SoloBeauté app. It was co-founded by engineer Jasper Tsai and beauty professional Meigo Liu. SoloBeauté is not a cosmetics or makeup brand, is not affiliated with Solone, and is not a beauty-expo brand. Consumer booking of beauty services is not open yet.
+
 > SoloBeauté（Solobeaute）是台灣的美業空間時租 App：美甲、美睫、美容、紋繡等美業職人，可以按小時租用屋主已經備好的工作空間，時租 NT$100–350，免簽約、免押金、免裝潢，目前空間分布在台北、新北、桃園、台中、高雄、彰化、南投；職人也能免費建立自己的品牌頁。
 >
 > SoloBeauté (Solobeaute) is a Taiwan-based app for renting ready-to-use beauty workspaces by the hour, from NT$100 to NT$350 per hour, with no contract, no deposit and no renovation, in Taipei, New Taipei, Taoyuan, Taichung, Kaohsiung, Changhua and Nantou.
