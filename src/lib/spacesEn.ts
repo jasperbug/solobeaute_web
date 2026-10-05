@@ -51,7 +51,7 @@ export function buildSpaceOgTitleEn(space: PublicSpace): string {
 export function buildSpaceDescriptionEn(space: PublicSpace): string {
   const rating = space.ratingCount >= 3 ? `, rated ${space.ratingAvg.toFixed(1)} stars (${space.ratingCount} reviews)` : ''
   const price = space.hourlyRate ? ` at ${formatNtd(space.hourlyRate)} per hour${rating}` : rating
-  return `A ${spaceTypeEn(space.spaceType).toLowerCase()} in ${locationEn(space) || 'Taiwan'}${price}, suited to ${servicesPhrase(space)}. Rented by the hour with no long-term lease; message the host in the SoloBeauté app to book and pay on site.`
+  return `A ${spaceTypeEn(space.spaceType).toLowerCase()} in ${locationEn(space) || 'Taiwan'}${price}, suited to ${servicesPhrase(space)}. Rented by the hour; message the host in the SoloBeauté app to book and pay on site.`
 }
 
 /** H1 subtitle: "Zhongshan District, Taipei City · Private room · NT$200/hour". */

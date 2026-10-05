@@ -26,10 +26,10 @@ import { fetchPublicSpaces } from '@/lib/spaces'
 // `%s | SoloBeauté` template does NOT apply — the brand is written in full.
 const HOME_TITLE = '美業空間時租・美容工作室按小時租｜SoloBeauté'
 const HOME_DESCRIPTION =
-  '美甲、美睫、美容職人按小時租現成工作空間，時租 NT$100–350，台北、新北、桃園、台中、高雄、彰化、南投都有。免簽約、免押金、免裝潢，現場付現。'
+  '美甲、美睫、美容職人按小時租現成工作空間，時租 NT$100–350，台北、新北、桃園、台中、高雄、彰化、南投都有。現場付現。'
 const HOME_SOCIAL_TITLE = 'SoloBeauté｜美業空間按小時租，有客人再開工'
 const HOME_SOCIAL_DESCRIPTION =
-  '打開 App 看空間、看價錢、看 3D 實景，直接跟屋主約時間。時租 NT$100–350，免押金、免長約，台北到高雄 7 縣市都有。'
+  '打開 App 看空間、看價錢、看 3D 實景，直接跟屋主約時間。時租 NT$100–350，台北到高雄 7 縣市都有。'
 const ZH_METADATA: Metadata = {
   title: HOME_TITLE,
   description: HOME_DESCRIPTION,

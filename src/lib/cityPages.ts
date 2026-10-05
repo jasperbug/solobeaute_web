@@ -189,19 +189,19 @@ export function buildCityDescription(stats: CityStats): string {
   const pros = `${(keywords.length ? keywords : ['美睫', '美容']).join('、')}職人`
 
   if (count === 0) {
-    return `${city.short}目前還沒有上架的美業空間，新空間陸續上架中。可以先看看 SoloBeauté 其他縣市的美業空間，按小時租、免押金、免長約。`
+    return `${city.short}目前還沒有上架的美業空間，新空間陸續上架中。可以先看看 SoloBeauté 其他縣市的美業空間，按小時租。`
   }
   if (count >= 3) {
     const districts = stats.districts.length >= 3
       ? `分布${stats.districts.slice(0, 3).map((d) => stripDistrictSuffix(d.label)).join('、')}等區`
       : `分布在${stats.districts.map((d) => d.label).join('、')}`
-    return `${city.short}美容工作室時租 ${rateText(stats)}，目前 ${count} 個美業空間，${districts}。${pros}按小時租，免押金、免長約，現場付現。`
+    return `${city.short}美容工作室時租 ${rateText(stats)}，目前 ${count} 個美業空間，${districts}。${pros}按小時租，現場付現。`
   }
   const where = stats.districts.map((d) => d.label).join('、')
   const from = stats.minRate !== null ? `，時租 ${formatNtd(stats.minRate)} 起` : ''
   // 南投 + 南投市 would read 「南投南投市」, so use the full county name there.
   const prefix = stats.districts.some((d) => d.label.startsWith(city.short)) ? city.name : city.short
-  return `${prefix}${where}有 ${count} 個美業空間可以按小時租${from}。${pros}免押金、免長約，現場付現，新空間陸續上架中。`
+  return `${prefix}${where}有 ${count} 個美業空間可以按小時租${from}。${pros}現場付現，新空間陸續上架中。`
 }
 
 // --- on-page copy -----------------------------------------------------------
@@ -284,7 +284,7 @@ export function buildCityIntro(stats: CityStats, allStats: CityStats[], dateLabe
 
   return [
     sentences.join(''),
-    `按小時租、免押金、免長約，在 SoloBeauté App 傳訊息給屋主確認時段，租金現場付給屋主。為了保護屋主，網站只顯示到區，完整位置請在 App 查看。`,
+    `按小時租，在 SoloBeauté App 傳訊息給屋主確認時段，租金現場付給屋主。為了保護屋主，網站只顯示到區，完整位置請在 App 查看。`,
   ]
 }
 
@@ -308,8 +308,8 @@ export function buildCityFaq(stats: CityStats, allStats: CityStats[], dateLabel:
         answer: '可以。下載 SoloBeauté App 就能上架空間、設定時租價格和可預約時段，美業職人會直接傳訊息給你。',
       },
       {
-        question: '怎麼租 SoloBeauté 上的美業空間？需要押金嗎？',
-        answer: '在 SoloBeauté App 打開空間頁，直接傳訊息給屋主確認時段。按小時租、免押金、免長約，租金現場付給屋主。',
+        question: '怎麼租 SoloBeauté 上的美業空間？',
+        answer: '在 SoloBeauté App 打開空間頁，直接傳訊息給屋主確認時段。按小時租，租金現場付給屋主。',
       },
     ]
   }
@@ -341,8 +341,8 @@ export function buildCityFaq(stats: CityStats, allStats: CityStats[], dateLabel:
     },
     { question: `${city.short}有適合美睫、美容、霧眉的空間嗎？`, answer: serviceAnswer },
     {
-      question: `怎麼租${city.short}的美業空間？需要押金嗎？`,
-      answer: '在 SoloBeauté App 打開空間頁，直接傳訊息給屋主確認時段。按小時租、免押金、免長約，租金現場付給屋主。',
+      question: `怎麼租${city.short}的美業空間？`,
+      answer: '在 SoloBeauté App 打開空間頁，直接傳訊息給屋主確認時段。按小時租，租金現場付給屋主。',
     },
   ]
 }
