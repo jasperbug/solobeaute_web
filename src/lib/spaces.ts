@@ -208,7 +208,7 @@ export function buildSpaceDescription(space: PublicSpace): string {
     ? `，${space.ratingAvg.toFixed(1)} 星（${space.ratingCount} 則評價）`
     : ''
   const price = space.hourlyRate ? `，時租 ${formatNtd(space.hourlyRate)}${rating}` : rating
-  return `${locationLabel(space)}的${spaceTypeLabel(space.spaceType)}${price}，適合${servicesPhrase(space)}。按小時租、免押金、免長約，在 SoloBeauté App 直接傳訊息給屋主預約，現場付現。`
+  return `${locationLabel(space)}的${spaceTypeLabel(space.spaceType)}${price}，適合${servicesPhrase(space)}。按小時租，在 SoloBeauté App 直接傳訊息給屋主預約，現場付現。`
 }
 
 /** H1 subtitle: `{city}{district}・{spaceType}・NT${hourlyRate}／小時`. */

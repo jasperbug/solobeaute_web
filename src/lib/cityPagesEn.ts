@@ -177,7 +177,7 @@ export function buildCityIntroEn(stats: CityStats, allStats: CityStats[], dateLa
 
   return [
     sentences.join(' '),
-    'Spaces are rented by the hour with no long-term lease. Message the host in the SoloBeauté app to confirm a time slot, and pay the rent to the host on site. To protect hosts, this website shows only the district; the full location is in the app.',
+    'Spaces are rented by the hour. Message the host in the SoloBeauté app to confirm a time slot, and pay the rent to the host on site. To protect hosts, this website shows only the district; the full location is in the app.',
   ]
 }
 
@@ -196,7 +196,7 @@ export function buildCityFaqEn(stats: CityStats, allStats: CityStats[], dateLabe
   const hours = hoursText(stats)
   const howTo = {
     question: `How do I rent a beauty workspace in ${short}?`,
-    answer: 'Open the space page in the SoloBeauté app and message the host to confirm a time slot. Spaces are rented by the hour with no long-term lease, and the rent is paid to the host on site.',
+    answer: 'Open the space page in the SoloBeauté app and message the host to confirm a time slot. Spaces are rented by the hour, and the rent is paid to the host on site.',
   }
 
   if (count === 0) {

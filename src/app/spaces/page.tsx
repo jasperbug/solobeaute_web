@@ -19,26 +19,26 @@ const PAGE_URL = `${SITE_URL}/spaces`
 const PAGE_TITLE = '全台美業空間時租｜美甲美睫美容工作室出租'
 const OG_TITLE = '全台美業空間時租｜SoloBeauté'
 const FALLBACK_DESCRIPTION =
-  '美甲、美睫、護膚職人按小時租屋主備好的美業空間，台北、新北、桃園、台中、高雄、彰化、南投都有。免押金、免長約，在 SoloBeauté App 直接預約，現場付現。'
+  '美甲、美睫、護膚職人按小時租屋主備好的美業空間，台北、新北、桃園、台中、高雄、彰化、南投都有。在 SoloBeauté App 直接預約，現場付現。'
 
 function buildDescription(spaces: PublicSpace[]): string {
   const groups = groupSpacesByCity(spaces)
   const range = rateRange(spaces)
   if (spaces.length === 0 || !range) return FALLBACK_DESCRIPTION
   const cities = groups.map((group) => shortCityName(group.city)).join('、')
-  return `SoloBeauté 目前有 ${spaces.length} 個美業空間可以按小時租，分布${cities}。時租 ${formatNtd(range.min)}–${range.max}，美甲、美睫、護膚職人免押金、免長約，現場付現。`
+  return `SoloBeauté 目前有 ${spaces.length} 個美業空間可以按小時租，分布${cities}。時租 ${formatNtd(range.min)}–${range.max}，美甲、美睫、護膚職人按小時租，現場付現。`
 }
 
 const PAGE_TITLE_EN = 'Beauty Workspaces for Hourly Rent Across Taiwan | Nail, Lash and Facial Studios'
 const OG_TITLE_EN = 'Beauty workspaces for hourly rent across Taiwan | SoloBeauté'
 const FALLBACK_DESCRIPTION_EN =
-  'Nail, lash and facial professionals can rent host-prepared beauty workspaces by the hour across Taiwan. Rented by the hour with no long-term lease; book in the SoloBeauté app and pay on site.'
+  'Nail, lash and facial professionals can rent host-prepared beauty workspaces by the hour across Taiwan. Rented by the hour; book in the SoloBeauté app and pay on site.'
 
 function buildDescriptionEn(spaces: PublicSpace[]): string {
   const groups = groupSpacesByCity(spaces)
   const range = rateRange(spaces)
   if (spaces.length === 0 || !range) return FALLBACK_DESCRIPTION_EN
-  return `SoloBeauté has ${spaces.length} beauty workspaces for hourly rent in ${cityListEn(groups.map((group) => group.city))}, at ${formatNtd(range.min)}–${range.max} per hour. For nail, lash and facial professionals; no long-term lease, pay on site.`
+  return `SoloBeauté has ${spaces.length} beauty workspaces for hourly rent in ${cityListEn(groups.map((group) => group.city))}, at ${formatNtd(range.min)}–${range.max} per hour. For nail, lash and facial professionals, rented by the hour and paid on site.`
 }
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -133,7 +133,7 @@ export default async function SpacesPage() {
           <h1 className="text-3xl font-semibold leading-tight text-ink md:text-4xl">全台美業空間時租</h1>
           <p className="max-w-3xl text-base leading-8 text-black/65">
             {spaces.length > 0 && range
-              ? `SoloBeauté 目前有 ${spaces.length} 個屋主備好的美業空間，分布 ${groups.length} 個縣市，時租 ${formatNtd(range.min)}–${range.max}。美甲、美睫、護膚、紋繡職人可以按小時租，免押金、免長約，在 App 直接傳訊息給屋主預約，租金現場付現。`
+              ? `SoloBeauté 目前有 ${spaces.length} 個屋主備好的美業空間，分布 ${groups.length} 個縣市，時租 ${formatNtd(range.min)}–${range.max}。美甲、美睫、護膚、紋繡職人可以按小時租，在 App 直接傳訊息給屋主預約，租金現場付現。`
               : '新空間陸續上架中。下載 SoloBeauté App，就能查看最新的美業空間。'}
           </p>
           <p className="text-sm">
@@ -262,7 +262,7 @@ function SpacesPageEn({ spaces }: { spaces: PublicSpace[] }) {
           <h1 className="text-3xl font-semibold leading-tight text-ink md:text-4xl">Beauty workspaces for hourly rent across Taiwan</h1>
           <p className="max-w-3xl text-base leading-8 text-black/65">
             {spaces.length > 0 && range
-              ? `SoloBeauté currently has ${spaces.length} host-prepared beauty workspaces in ${groups.length} cities and counties, at ${formatNtd(range.min)}–${range.max} per hour. Nail, lash, facial and brow professionals can rent them by the hour with no long-term lease: message the host in the app to book, and pay the rent on site.`
+              ? `SoloBeauté currently has ${spaces.length} host-prepared beauty workspaces in ${groups.length} cities and counties, at ${formatNtd(range.min)}–${range.max} per hour. Nail, lash, facial and brow professionals can rent them by the hour: message the host in the app to book, and pay the rent on site.`
               : 'New spaces are being added. Download the SoloBeauté app to see the latest beauty workspaces.'}
           </p>
           <p className="text-sm">

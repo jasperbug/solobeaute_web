@@ -31,12 +31,12 @@ export const metadata: Metadata = {
     template: '%s | SoloBeauté',
   },
   description:
-    '美甲、美睫、美容職人按小時租現成工作空間，時租 NT$100–350，台北、新北、桃園、台中、高雄、彰化、南投都有。免簽約、免押金、免裝潢，現場付現。',
+    '美甲、美睫、美容職人按小時租現成工作空間，時租 NT$100–350，台北、新北、桃園、台中、高雄、彰化、南投都有。現場付現。',
   openGraph: {
     siteName: 'SoloBeauté',
     title: 'SoloBeauté｜美業空間按小時租',
     description:
-      '打開 App 看空間、看價錢、看 3D 實景，直接跟屋主約時間。時租 NT$100–350，免押金、免長約，台北到高雄 7 縣市都有。',
+      '打開 App 看空間、看價錢、看 3D 實景，直接跟屋主約時間。時租 NT$100–350，台北到高雄 7 縣市都有。',
     locale: 'zh_TW',
     type: 'website',
     // Relative, so each route resolves its own og:url against metadataBase.
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'SoloBeauté｜美業空間按小時租',
     description:
-      '打開 App 看空間、看價錢、看 3D 實景，直接跟屋主約時間。時租 NT$100–350，免押金、免長約，台北到高雄 7 縣市都有。',
+      '打開 App 看空間、看價錢、看 3D 實景，直接跟屋主約時間。時租 NT$100–350，台北到高雄 7 縣市都有。',
     images: ['/og-image.png'],
   },
   alternates: {

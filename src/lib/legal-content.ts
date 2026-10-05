@@ -33,7 +33,7 @@ export const legalContent = {
       faqs: [
         {
           q: 'SoloBeauté 是什麼？',
-          a: 'SoloBeauté（Solobeaute）是台灣的美業空間時租 App：美甲、美睫、美容、紋繡等美業職人，可以按小時租用屋主已經備好的工作空間，時租 NT$100–350，免簽約、免押金、免裝潢，目前空間分布在台北、新北、桃園、台中、高雄、彰化、南投；職人也能免費建立自己的品牌頁。',
+          a: 'SoloBeauté（Solobeaute）是台灣的美業空間時租 App：美甲、美睫、美容、紋繡等美業職人，可以按小時租用屋主已經備好的工作空間，時租 NT$100–350，目前空間分布在台北、新北、桃園、台中、高雄、彰化、南投；職人也能建立自己的品牌頁。',
         },
         {
           q: '我可以同時擁有多個身份嗎？',
@@ -259,7 +259,7 @@ export const legalContent = {
       faqs: [
         {
           q: 'What is SoloBeauté?',
-          a: 'SoloBeauté (Solobeaute) is a Taiwan-based app for renting ready-to-use beauty workspaces by the hour. Nail artists, lash artists, estheticians, brow artists and other beauty professionals book spaces that hosts have already set up, from NT$100 to NT$350 per hour, with no contract, no deposit and no renovation. Spaces are currently available in Taipei, New Taipei, Taoyuan, Taichung, Kaohsiung, Changhua and Nantou, and professionals can also create a free brand page.',
+          a: 'SoloBeauté (Solobeaute) is a Taiwan-based app for renting ready-to-use beauty workspaces by the hour. Nail artists, lash artists, estheticians, brow artists and other beauty professionals book spaces that hosts have already set up, from NT$100 to NT$350 per hour. Spaces are currently available in Taipei, New Taipei, Taoyuan, Taichung, Kaohsiung, Changhua and Nantou, and professionals can also create their own brand page.',
         },
         {
           q: 'Can I have multiple roles?',
