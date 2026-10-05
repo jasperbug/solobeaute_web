@@ -6,6 +6,7 @@ import { Breadcrumbs, LinkChips, NUM, Prose, Section, TOPIC_LINKS } from '@/comp
 import { ABOUT_DESCRIPTION_EN, ABOUT_TITLE_EN, AboutEn } from '@/components/en/AboutEn'
 import { JsonLd } from '@/components/spaces/JsonLd'
 import { StoreButtons } from '@/components/ui/StoreButtons'
+import { BRAND_FACT_ZH } from '@/lib/brandFacts'
 import { dataDateLabel } from '@/lib/cityPages'
 import { INSTAGRAM_URL, SITE_URL, THREADS_URL } from '@/lib/constants'
 import { AUTHORS, ORGANIZATION_ID, personId, personSchema } from '@/lib/editorial'
@@ -78,6 +79,7 @@ export default async function AboutPage() {
         alternateName: ['Solobeaute', 'SoloBeaute'],
         url: SITE_URL,
         logo: `${SITE_URL}/images/brand/logo.png`,
+        description: BRAND_FACT_ZH,
         founder: founders.map((author) => ({ '@id': personId(author) })),
         sameAs: [INSTAGRAM_URL, THREADS_URL],
       },
@@ -105,6 +107,7 @@ export default async function AboutPage() {
             <p data-about-lead>
               SoloBeauté 是台灣的美業空間時租 App：美甲、美睫、美容、紋繡等美業職人，可以按小時租用屋主已經備好的工作空間；有閒置美容室或座位的屋主，可以把空著的時段租出去。
             </p>
+            <p data-brand-fact>{BRAND_FACT_ZH}</p>
             <p>SoloBeauté 由一位工程師和一位美容職人共同創辦。一個懂技術，一個懂台灣美業現場，我們做的是一個真的能讓職人開始接案、讓屋主開始出租的工具。</p>
           </Prose>
         </header>

@@ -1,3 +1,4 @@
+import { BRAND_FAQ_ZH } from './brandFacts'
 import { SPACE_CITIES, cityPagePath, normalizeCityName } from './cities'
 import { buildPriceReport } from './priceReport'
 import { formatNtd } from './spaces'
@@ -104,6 +105,7 @@ export function buildFaqGroups(home: FaqItem[], spaces: PublicSpace[] | null): F
       id: 'renting',
       title: '找空間與預約',
       items: [
+        BRAND_FAQ_ZH,
         h(HOME.findSpace),
         {
           q: '預約空間的流程是什麼？',
