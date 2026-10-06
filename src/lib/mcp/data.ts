@@ -3,13 +3,15 @@ import { resolveImageUrl, sortSocialLinks } from '../format'
 import { isPublicSpace, toPublicSpace } from '../spaces'
 import type { PublicSpace, RawSpaceDetailResponse, RawSpaceListResponse, RawSpaceRecord, SocialLinks } from '../types'
 import { CACHE_TTL, cached } from './cache'
+import { partnerKeyConfigured, partnerKeyHeaders } from './partnerKey'
 
 // ---------------------------------------------------------------------------
 // Upstream reads for the MCP server. Only public backend endpoints are used:
 //   GET /spaces, GET /spaces/:id                (spaces; ACTIVE only)
 //   GET /beauticians                            (public beautician list)
 //   GET /beauticians/:slug                      (only for a slug that is in the public list)
-//   GET /public/spaces/:id/availability         (new public endpoint, backend #192)
+//   GET /public/spaces/:id/availability         (new public endpoint, backend #192;
+//                                                 carries X-Partner-Key when configured)
 // Never called: /beauticians/:uuid, /beauticians/:id/services (they skip the
 // web-visibility check) and the old /spaces/:id/availability.
 // Every record is reduced to an explicit whitelist before it leaves here:
@@ -36,7 +38,7 @@ async function getUpstream(path: string): Promise<UpstreamResponse> {
   try {
     response = await fetch(`${API_BASE_URL}${path}`, {
       cache: 'no-store',
-      headers: { accept: 'application/json' },
+      headers: { accept: 'application/json', ...partnerKeyHeaders(path) },
       signal: AbortSignal.timeout(TIMEOUT_MS),
     })
   } catch (error) {
@@ -48,6 +50,16 @@ async function getUpstream(path: string): Promise<UpstreamResponse> {
     json = text ? JSON.parse(text) : null
   } catch {
     json = null
+  }
+  if (response.status === 401) {
+    // Public reads never need auth, so 401 means the partner key was rejected (wrong, rotated or
+    // too short). The backend does not fall back to the anonymous limit — log it so it gets fixed;
+    // callers answer 「暫時無法取得」. Never log the key itself.
+    const code = isRecord(json) ? (str(json.code) ?? str(json.error)) : null
+    console.error(
+      `[mcp] upstream 401 ${code ?? 'UNAUTHORIZED'} on GET ${path.split('?')[0]} ` +
+        `(partner key ${partnerKeyConfigured() ? 'set' : 'not set'}; check SOLOBEAUTE_PUBLIC_API_PARTNER_KEY against backend PUBLIC_API_PARTNER_KEYS)`
+    )
   }
   return { status: response.status, json }
 }
@@ -267,10 +279,12 @@ export async function loadBeauticianDetail(entry: PublicBeautician): Promise<{ b
 
 // --- availability: GET /public/spaces/:id/availability (jasperbug/solobeaute#192) ---
 // Response (200): { success, data: { spaceId, timezone: 'Asia/Taipei', from, to,
-//   minBookingHours, maxAdvanceDays, days: [{ date, dayOfWeek, isOpen, openTime,
+//   minBookingHours, maxAdvanceDays, maxDate, days: [{ date, dayOfWeek, isOpen, openTime,
 //   closeTime, isOverride, bookedSlots: [{startTime,endTime}], blockedSlots: [...] }] } }
+// (maxDate = today + maxAdvanceDays, Taipei; optional — older builds don't send it.)
 // Errors: 404 SPACE_NOT_FOUND (not ACTIVE / unknown), 400 INVALID_DATE_RANGE
-// (YYYY-MM-DD, from ≥ yesterday in Taipei, from ≤ to, ≤ 30 days), 429 (60/min per IP).
+// (YYYY-MM-DD, yesterday ≤ from ≤ to ≤ maxDate in Taipei, ≤ 30 days), 401 INVALID_PARTNER_KEY
+// (X-Partner-Key sent but wrong), 429 (60/min per IP anonymous, 600/min per partner key).
 // Before #192 is deployed the route does not exist (Fastify default 404).
 
 export type AvailabilitySlot = { startTime: string; endTime: string }
@@ -286,7 +300,14 @@ export type AvailabilityDay = {
 }
 
 export type AvailabilityResult =
-  | { kind: 'ok'; minBookingHours: number | null; maxAdvanceDays: number | null; timezone: string; days: AvailabilityDay[] }
+  | {
+      kind: 'ok'
+      minBookingHours: number | null
+      maxAdvanceDays: number | null
+      maxDate: string | null
+      timezone: string
+      days: AvailabilityDay[]
+    }
   | { kind: 'not_open' }
   | { kind: 'not_found' }
   | { kind: 'invalid_range' }
@@ -349,6 +370,7 @@ export async function loadAvailability(spaceId: string, from: string, to: string
     const code = errorCode(json)
     if (status === 404) return code === 'SPACE_NOT_FOUND' ? { kind: 'not_found' } : { kind: 'not_open' }
     if (status === 400 && code === 'INVALID_DATE_RANGE') return { kind: 'invalid_range' }
+    if (status === 401) return { kind: 'unavailable' } // partner key rejected; logged in getUpstream
     if (status === 429) return { kind: 'rate_limited' }
     if (status === 405 || status === 501) return { kind: 'not_open' }
     if (status !== 200 || !isRecord(json) || json.success !== true || !isRecord(json.data)) return { kind: 'unavailable' }
@@ -357,10 +379,12 @@ export async function loadAvailability(spaceId: string, from: string, to: string
     if (!Array.isArray(data.days)) return { kind: 'unavailable' }
     const minHours = num(data.minBookingHours)
     const advance = num(data.maxAdvanceDays)
+    const maxDate = str(data.maxDate)
     return {
       kind: 'ok',
       minBookingHours: minHours !== null && minHours > 0 ? minHours : null,
       maxAdvanceDays: advance !== null && advance > 0 ? advance : null,
+      maxDate: maxDate && DATE_RE.test(maxDate) ? maxDate : null,
       timezone: str(data.timezone) ?? 'Asia/Taipei',
       days: data.days
         .map(toDay)

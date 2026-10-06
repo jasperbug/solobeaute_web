@@ -2,11 +2,16 @@
 // Proxies everything to the real API, except GET /api/v1/public/spaces/:id/availability
 // and a few fake spaces, which follow the response format and error codes of
 // backend PR jasperbug/solobeaute#192. Records every upstream path so the smoke
-// test can assert what the MCP server did (and did not) call.
+// test can assert what the MCP server did (and did not) call, and whether each
+// request carried X-Partner-Key (recorded as none / valid / invalid — never the key).
 //
-//   node scripts/mcp-mock-api.mjs                      # listens on :3480
-//   NEXT_PUBLIC_API_URL=http://127.0.0.1:3480/api/v1 npm run build && npx next start -p 3000
+//   MOCK_PARTNER_KEYS=<test key ≥ 32 chars> node scripts/mcp-mock-api.mjs   # listens on :3480
+//   NEXT_PUBLIC_API_URL=http://127.0.0.1:3480/api/v1 npm run build
+//   [SOLOBEAUTE_PUBLIC_API_PARTNER_KEY=<test key>] MCP_RATE_LIMIT_PER_IP=1000 npx next start -p 3000
 //   MCP_URL=http://localhost:3000/mcp MCP_MOCK_API=http://127.0.0.1:3480 npm run test:mcp
+//
+// Like #192, a request to /api/v1/public/* with an X-Partner-Key that matches none of
+// MOCK_PARTNER_KEYS gets 401 INVALID_PARTNER_KEY. The header is never forwarded upstream.
 
 import http from 'node:http'
 
@@ -22,7 +27,11 @@ const MOCK_SPACES = {
 }
 const MOCK_IDS = new Set(Object.values(MOCK_SPACES))
 
-const requests = []
+// Test-only keys (never a real one). Like the backend, keys shorter than 32 chars are ignored.
+const PARTNER_KEYS = (process.env.MOCK_PARTNER_KEYS ?? '').split(',').map((k) => k.trim()).filter((k) => k.length >= 32)
+
+const requests = [] // 'GET /path?query'
+const partnerLog = [] // { request, partnerKey: 'none' | 'valid' | 'invalid' }
 
 // --- #192 range rules (resolvePublicAvailabilityRange) ---
 const taipeiToday = () => new Date(Date.now() + 8 * 3600_000).toISOString().slice(0, 10)
@@ -33,11 +42,14 @@ function resolveRange(q) {
   const t = q.get('to') || undefined
   if ((f && !validDate(f)) || (t && !validDate(t))) return null
   const today = taipeiToday()
+  const maxDate = addDays(today, 30) // today + MAX_ADVANCE_DAYS
   const from = f ?? today
-  const to = t ?? addDays(from, 29)
+  if (from < addDays(today, -1) || from > maxDate) return null
+  if (t && t > maxDate) return null
+  const to = t ?? (addDays(from, 29) > maxDate ? maxDate : addDays(from, 29))
   const days = Math.round((Date.parse(`${to}T00:00:00Z`) - Date.parse(`${from}T00:00:00Z`)) / 86_400_000) + 1
-  if (from < addDays(today, -1) || to < from || days > 30) return null
-  return { from, to }
+  if (to < from || days > 30) return null
+  return { from, to, maxDate }
 }
 
 // Day patterns, by index from `from` (mod 4). Extra fields must be dropped by the MCP server.
@@ -58,7 +70,7 @@ function availabilityBody(id, range) {
       isOverride: p.blockedSlots.length > 0, bookedSlots: p.bookedSlots.map(slot), blockedSlots: p.blockedSlots.map(slot),
     })
   }
-  return { success: true, data: { spaceId: id, timezone: 'Asia/Taipei', from: range.from, to: range.to, minBookingHours: 2, maxAdvanceDays: 30, days } }
+  return { success: true, data: { spaceId: id, timezone: 'Asia/Taipei', from: range.from, to: range.to, minBookingHours: 2, maxAdvanceDays: 30, maxDate: range.maxDate, days } }
 }
 
 const send = (res, status, body, headers = {}) => {
@@ -70,7 +82,17 @@ const appError = (code, message) => ({ success: false, error: code, code, messag
 http.createServer(async (req, res) => {
   const url = new URL(req.url, 'http://mock')
   if (url.pathname === '/__mock/requests') return send(res, 200, requests)
-  requests.push(`${req.method} ${url.pathname}${url.search}`)
+  if (url.pathname === '/__mock/partner') return send(res, 200, partnerLog)
+  if (url.pathname === '/__mock/reset') {
+    requests.length = 0
+    partnerLog.length = 0
+    return send(res, 200, { ok: true })
+  }
+  const line = `${req.method} ${url.pathname}${url.search}`
+  requests.push(line)
+  const presented = req.headers['x-partner-key']
+  const partnerKey = presented === undefined ? 'none' : PARTNER_KEYS.includes(String(presented).trim()) ? 'valid' : 'invalid'
+  partnerLog.push({ request: line, partnerKey })
 
   const detail = url.pathname.match(/^\/api\/v1\/spaces\/([0-9a-f-]{36})$/)
   if (detail && MOCK_IDS.has(detail[1])) {
@@ -84,10 +106,12 @@ http.createServer(async (req, res) => {
   const avail = url.pathname.match(/^\/api\/v1\/public\/spaces\/([^/]+)\/availability$/)
   if (avail) {
     const id = avail[1]
-    if (id === MOCK_SPACES.preLaunch || !MOCK_IDS.has(id)) {
-      if (id !== MOCK_SPACES.preLaunch) return proxy(req, res) // real spaces: whatever the real backend says
+    if (id === MOCK_SPACES.preLaunch) {
       return send(res, 404, { message: `Route GET:${url.pathname} not found`, error: 'Not Found', statusCode: 404 })
     }
+    // #192 checks the key first: a wrong key is 401, never downgraded to the anonymous limit
+    if (partnerKey === 'invalid') return send(res, 401, appError('INVALID_PARTNER_KEY', 'Invalid partner key'))
+    if (!MOCK_IDS.has(id)) return proxy(req, res) // real spaces: whatever the real backend says
     if (id === MOCK_SPACES.gone) return send(res, 404, appError('SPACE_NOT_FOUND', 'Space not found'))
     if (id === MOCK_SPACES.limited) return send(res, 429, { statusCode: 429, error: 'Too Many Requests', message: 'Rate limit exceeded, retry in 1 minute' })
     const range = resolveRange(url.searchParams)

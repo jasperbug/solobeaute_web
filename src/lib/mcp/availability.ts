@@ -21,8 +21,9 @@ export function availabilityExposure(): AvailabilityExposure {
   return process.env.MCP_AVAILABILITY_EXPOSURE === 'occupied_slots' ? 'occupied_slots' : AVAILABILITY_EXPOSURE_DEFAULT
 }
 
-/** Backend #192 limits: from ≥ yesterday (Taipei), at most 30 days incl. both ends. */
+/** Backend #192 limits: yesterday ≤ from ≤ to ≤ today + 30 (Taipei, = maxDate), at most 30 days incl. both ends. */
 export const BACKEND_MAX_AVAILABILITY_DAYS = 30
+export const BACKEND_MAX_ADVANCE_DAYS = 30
 /** MCP keeps a tighter window (smaller answers, fewer calls against the backend's 60/min per IP). */
 export const MCP_MAX_AVAILABILITY_DAYS = 14
 export const MCP_DEFAULT_AVAILABILITY_DAYS = 7
@@ -58,7 +59,8 @@ function daysInclusive(from: string, to: string): number {
 
 /**
  * Same rules as the backend's resolvePublicAvailabilityRange, with the MCP's
- * own 14-day cap: defaults from = today, to = from + 6; from ≥ yesterday; from ≤ to.
+ * own 14-day cap: defaults from = today, to = from + 6 (clamped to today + 30);
+ * yesterday ≤ from ≤ to ≤ today + 30.
  */
 export function resolveAvailabilityRange(
   input: { from?: string; to?: string },
@@ -66,9 +68,11 @@ export function resolveAvailabilityRange(
 ): { from: string; to: string } | null {
   const today = taipeiNow(now).date
   const from = input.from?.trim() || today
-  const to = input.to?.trim() || addDays(from, MCP_DEFAULT_AVAILABILITY_DAYS - 1)
+  const maxDate = addDays(today, BACKEND_MAX_ADVANCE_DAYS)
+  const defaultTo = isValidDate(from) ? addDays(from, MCP_DEFAULT_AVAILABILITY_DAYS - 1) : from
+  const to = input.to?.trim() || (defaultTo > maxDate ? maxDate : defaultTo)
   if (!isValidDate(from) || !isValidDate(to)) return null
-  if (from < addDays(today, -1) || to < from) return null
+  if (from < addDays(today, -1) || to < from || to > maxDate) return null
   if (daysInclusive(from, to) > Math.min(MCP_MAX_AVAILABILITY_DAYS, BACKEND_MAX_AVAILABILITY_DAYS)) return null
   return { from, to }
 }

@@ -20,6 +20,7 @@ import { rateRange } from '../spaces'
 import type { PublicSpace } from '../types'
 import {
   MCP_DEFAULT_AVAILABILITY_DAYS,
+  BACKEND_MAX_ADVANCE_DAYS,
   MCP_MAX_AVAILABILITY_DAYS,
   availabilityExposure,
   presentDay,
@@ -293,12 +294,12 @@ export function createSoloBeauteMcpServer(): McpServer {
       description: `Bookable free time slots of one public workspace for up to ${MCP_MAX_AVAILABILITY_DAYS} days (Asia/Taipei dates): opening hours minus booked and host-blocked times, keeping only gaps of at least the minimum booking hours. Read-only: it cannot hold or book a slot — beauty professionals book in the SoloBeauté app and the host confirms. If availability lookup is not open yet, the result says so.`,
       inputSchema: z.object({
         spaceId: z.string().max(64).describe('Space id (UUID) from search_spaces.'),
-        from: z.string().max(10).optional().describe('First date, YYYY-MM-DD (default: today in Taiwan; not earlier than yesterday).'),
+        from: z.string().max(10).optional().describe(`First date, YYYY-MM-DD (default: today in Taiwan; not earlier than yesterday, not later than today + ${BACKEND_MAX_ADVANCE_DAYS} days).`),
         to: z
           .string()
           .max(10)
           .optional()
-          .describe(`Last date, YYYY-MM-DD (default: from + ${MCP_DEFAULT_AVAILABILITY_DAYS - 1} days; at most ${MCP_MAX_AVAILABILITY_DAYS} days in total).`),
+          .describe(`Last date, YYYY-MM-DD (default: from + ${MCP_DEFAULT_AVAILABILITY_DAYS - 1} days; at most ${MCP_MAX_AVAILABILITY_DAYS} days in total; not later than today + ${BACKEND_MAX_ADVANCE_DAYS} days).`),
         locale: localeParam,
       }),
       annotations: READ_ONLY,
@@ -336,6 +337,7 @@ export function createSoloBeauteMcpServer(): McpServer {
               to: range.to,
               timezone: availability.timezone,
               minBookingHours,
+              ...(availability.maxDate ? { maxDate: availability.maxDate } : {}),
               slotsShown: exposure,
               slotsNote: messages.freeSlotsNote(minBookingHours ?? 2),
               days: availability.days.map((day) => presentDay(day, minBookingHours, now, exposure)),

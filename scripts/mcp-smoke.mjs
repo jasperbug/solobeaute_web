@@ -9,6 +9,11 @@
 // Optional: MCP_MOCK_API=http://127.0.0.1:3480 — the server was built against
 // scripts/mcp-mock-api.mjs (backend #192 availability format); adds exact
 // free-slot / error-code checks and an audit of every upstream request.
+//   With it, MCP_EXPECT_PARTNER_KEY=none|valid|invalid says how the server was started:
+//   none = no SOLOBEAUTE_PUBLIC_API_PARTNER_KEY, valid = one of the mock's MOCK_PARTNER_KEYS,
+//   invalid = a key the mock does not know (→ 401 → 「暫時無法取得」). MCP_TEST_PARTNER_KEY is
+//   that test key (scanned for in every response) and MCP_SERVER_LOG the server's log file
+//   (checked for the 401 line, and that the key is never logged). Test keys only — never a real one.
 // Works against production too: MCP_URL=https://www.solobeaute.com/mcp
 
 import { Client, StreamableHTTPClientTransport } from '@modelcontextprotocol/client'
@@ -16,6 +21,11 @@ import { Client, StreamableHTTPClientTransport } from '@modelcontextprotocol/cli
 const MCP_URL = process.env.MCP_URL ?? 'http://localhost:3000/mcp'
 const HIDDEN_IDS = (process.env.MCP_HIDDEN_BEAUTICIAN_IDS ?? '').split(',').map((s) => s.trim()).filter(Boolean)
 const MOCK_API = process.env.MCP_MOCK_API ?? ''
+const PARTNER = MOCK_API ? (process.env.MCP_EXPECT_PARTNER_KEY ?? 'none') : ''
+const TEST_KEY = process.env.MCP_TEST_PARTNER_KEY ?? ''
+const SERVER_LOG = process.env.MCP_SERVER_LOG ?? ''
+if (PARTNER && !['none', 'valid', 'invalid'].includes(PARTNER)) throw new Error(`MCP_EXPECT_PARTNER_KEY=${PARTNER}?`)
+if (MOCK_API) await fetch(`${MOCK_API}/__mock/reset`)
 
 // Must match scripts/mcp-mock-api.mjs
 const MOCK_SPACES = {
@@ -130,6 +140,7 @@ async function run(mode) {
     check(`${name}(${JSON.stringify(args)}) carries the ${locale} notice`, sc?.notice === NOTICE[locale])
     check(`${name} result has canonical + UTM share link`, linksOk(sc?.links ?? sc?.space?.links ?? sc?.beautician?.links))
     check(`${name} text content mirrors structuredContent`, res.content?.[0]?.type === 'text' && JSON.parse(res.content[0].text).notice === sc?.notice)
+    if (TEST_KEY) check(`${name} result never contains the partner key`, !JSON.stringify(res).includes(TEST_KEY))
     return { res, sc }
   }
 
@@ -165,12 +176,14 @@ async function run(mode) {
   const avail = await call('get_space_availability', { spaceId })
   check(
     'availability: free slots or 「時段查詢尚未開放」',
-    avail.sc.available === true || (avail.sc.status === 'AVAILABILITY_NOT_OPEN' && avail.sc.message.includes('時段查詢尚未開放')),
+    avail.sc.available === true || (avail.sc.status === 'AVAILABILITY_NOT_OPEN' && avail.sc.message.includes('時段查詢尚未開放')) ||
+      (PARTNER === 'invalid' && avail.sc.status === 'AVAILABILITY_UNAVAILABLE'),
     JSON.stringify(avail.sc.status ?? avail.sc.available)
   )
   check('availability: only free slots, sane', freeSlotsSane(avail.sc))
   const availEn = await call('get_space_availability', { spaceId, locale: 'en' })
-  check('availability en message', availEn.sc.available === true || availEn.sc.message.startsWith('Availability lookup is not open yet'))
+  check('availability en message', availEn.sc.available === true || availEn.sc.message.startsWith('Availability lookup is not open yet') ||
+    (PARTNER === 'invalid' && availEn.sc.status === 'AVAILABILITY_UNAVAILABLE'))
   const today = taipeiNow().date
   const tooLong = await call('get_space_availability', { spaceId, from: today, to: addDays(today, 14) })
   check('availability 15 days → INVALID_RANGE', tooLong.sc.error === 'INVALID_RANGE')
@@ -180,10 +193,26 @@ async function run(mode) {
   check('availability to < from → INVALID_RANGE', reversed.sc.error === 'INVALID_RANGE')
   const badDate = await call('get_space_availability', { spaceId, from: '2027-02-30' })
   check('availability impossible date → INVALID_RANGE', badDate.sc.error === 'INVALID_RANGE')
+  const tooFar = await call('get_space_availability', { spaceId, from: addDays(today, 25), to: addDays(today, 31) })
+  check('availability past today + 30 → INVALID_RANGE', tooFar.sc.error === 'INVALID_RANGE')
   const ghostAvail = await call('get_space_availability', { spaceId: '00000000-0000-4000-8000-000000000000' })
   check('availability for unknown space → SPACE_NOT_FOUND', ghostAvail.sc.error === 'SPACE_NOT_FOUND')
 
-  if (MOCK_API) {
+  if (MOCK_API && PARTNER === 'invalid') {
+    const t1 = addDays(today, 1)
+    const rejected = await call('get_space_availability', { spaceId: MOCK_SPACES.ok, from: t1, to: t1 })
+    check('mock 401 INVALID_PARTNER_KEY → AVAILABILITY_UNAVAILABLE 「暫時無法取得」',
+      rejected.res.isError === true && rejected.sc.status === 'AVAILABILITY_UNAVAILABLE' && rejected.sc.message.includes('暫時無法取得'),
+      JSON.stringify(rejected.sc.status ?? rejected.sc.available))
+    const rejectedEn = await call('get_space_availability', { spaceId: MOCK_SPACES.ok, from: t1, to: t1, locale: 'en' })
+    check('mock 401 → en 「temporarily unavailable」', rejectedEn.sc.status === 'AVAILABILITY_UNAVAILABLE' && /temporarily unavailable/i.test(rejectedEn.sc.message))
+    const rejectedText = JSON.stringify(rejected.sc, (k, v) => (k === 'generatedAt' ? undefined : v)) // a timestamp may contain "401"
+    check('mock 401: no 401 / partner details in the result', !/(^|\D)401(\D|$)|partner/i.test(rejectedText))
+    const mockSpace = await call('get_space', { spaceId: MOCK_SPACES.ok })
+    check('mock 401: other tools unaffected (no key on non-public routes)', mockSpace.sc.space?.title === 'MOCK 測試空間')
+  }
+
+  if (MOCK_API && PARTNER !== 'invalid') {
     const t1 = addDays(today, 1)
     const mock = await call('get_space_availability', { spaceId: MOCK_SPACES.ok, from: t1, to: addDays(t1, 3) })
     const expected = [
@@ -209,6 +238,10 @@ async function run(mode) {
       yesterday.sc.available === true && yesterday.sc.days[0].isPast === true && yesterday.sc.days[0].freeSlots.length === 0 && freeSlotsSane(yesterday.sc))
     const twoWeeks = await call('get_space_availability', { spaceId: MOCK_SPACES.ok, from: today, to: addDays(today, 13) })
     check('mock #192: 14 days accepted by MCP and backend rules', twoWeeks.sc.available === true && twoWeeks.sc.days.length === 14)
+    check('mock #192: maxDate (today + 30) tolerated and passed through', twoWeeks.sc.maxDate === addDays(today, 30), String(twoWeeks.sc.maxDate))
+    const lastDay = await call('get_space_availability', { spaceId: MOCK_SPACES.ok, from: addDays(today, 30) })
+    check('mock #192: from = today + 30 accepted, default to clamped to maxDate',
+      lastDay.sc.available === true && lastDay.sc.from === addDays(today, 30) && lastDay.sc.to === addDays(today, 30) && lastDay.sc.days.length === 1)
     const mockSpace = await call('get_space', { spaceId: MOCK_SPACES.ok })
     check('mock space: address / coordinates dropped', !/MOCK_SECRET|latitude|longitude/.test(mockSpace.res.content[0].text))
     const gone = await call('get_space_availability', { spaceId: MOCK_SPACES.gone, from: t1, to: t1 })
@@ -288,6 +321,33 @@ if (MOCK_API) {
   check('availability only via /public/spaces/:id/availability', log.filter((l) => l.includes('availability')).every((l) => l.includes('/api/v1/public/spaces/')))
   check('no out-of-range availability request reached the backend', !log.some((l) => l.includes('availability') && l.includes(`from=${addDays(taipeiNow().date, -2)}`)))
   for (const id of HIDDEN_IDS) check(`hidden profile ${id.slice(0, 8)}… never sent upstream`, !log.some((l) => l.includes(id)))
+
+  console.log(`\n== partner key (expected: ${PARTNER})`)
+  const partnerLog = await (await fetch(`${MOCK_API}/__mock/partner`)).json()
+  const publicReqs = partnerLog.filter((e) => e.request.includes('/api/v1/public/'))
+  const otherReqs = partnerLog.filter((e) => !e.request.includes('/api/v1/public/'))
+  check('some /public/* requests were made', publicReqs.length > 0, String(publicReqs.length))
+  check(`every /public/* request: X-Partner-Key ${PARTNER === 'none' ? 'not sent' : `sent (${PARTNER})`}`,
+    publicReqs.every((e) => e.partnerKey === PARTNER), JSON.stringify(publicReqs.filter((e) => e.partnerKey !== PARTNER).slice(0, 3)))
+  check('X-Partner-Key never sent to non-public routes (/spaces, /beauticians)', otherReqs.length > 0 && otherReqs.every((e) => e.partnerKey === 'none'))
+  const probe = await fetch(MCP_URL, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json', accept: 'application/json, text/event-stream' },
+    body: JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'tools/list' }),
+  })
+  const probeBody = await probe.text()
+  check('/mcp HTTP response headers and body never carry the key',
+    ![...probe.headers].some(([k, v]) => /partner/i.test(k) || (TEST_KEY && v.includes(TEST_KEY))) && (!TEST_KEY || !probeBody.includes(TEST_KEY)))
+  if (SERVER_LOG) {
+    const { readFileSync } = await import('node:fs')
+    const serverLog = readFileSync(SERVER_LOG, 'utf8')
+    if (PARTNER === 'invalid') {
+      check('server logged the upstream 401', /\[mcp\] upstream 401 INVALID_PARTNER_KEY on GET \/public\/spaces\/[^ ?]+\/availability \(partner key set/.test(serverLog))
+    } else {
+      check('no upstream 401 logged', !serverLog.includes('upstream 401'))
+    }
+    if (TEST_KEY) check('server log never contains the partner key', !serverLog.includes(TEST_KEY))
+  }
 }
 
 console.log(`\n${passes} passed, ${failures} failed`)
