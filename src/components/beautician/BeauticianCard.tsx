@@ -2,7 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useLocale, useTranslations } from 'next-intl'
 
-import { formatCurrency, getBeauticianDiscoveryImage, getDisplayInitials, getServiceAreaLabel, getStartingPrice, resolveImageUrl } from '@/lib/format'
+import { formatCurrency, getBeauticianDiscoveryImage, getDisplayInitials, getServiceAreaLabel, getStartingPrice, isBeauticianVerified, resolveImageUrl } from '@/lib/format'
 import type { BeauticianSummary } from '@/lib/types'
 import { Badge } from '../ui/Badge'
 import { CheckCircleIcon } from '../ui/Icons'
@@ -16,7 +16,7 @@ export function BeauticianCard({ beautician }: BeauticianCardProps) {
   const locale = useLocale()
   const startingPrice = getStartingPrice(beautician)
   const heroImage = getBeauticianDiscoveryImage(beautician)
-  const isAvatarHero = Boolean(beautician.user.avatarUrl)
+  const isAvatarHero = Boolean(beautician.user?.avatarUrl)
   const heroImageClassName = isAvatarHero
     ? 'object-cover object-center scale-[1.08]'
     : 'object-cover object-center'
@@ -58,7 +58,7 @@ export function BeauticianCard({ beautician }: BeauticianCardProps) {
             <div className="space-y-2">
               <div className="flex flex-wrap items-center gap-2">
                 <h2 className="line-clamp-2 text-xl font-semibold text-ink">{beautician.displayName}</h2>
-                {beautician.reviewStatus === 'APPROVED' ? (
+                {isBeauticianVerified(beautician) ? (
                   <Badge tone="verified">
                     <span className="inline-flex items-center gap-1">
                       <CheckCircleIcon className="h-4 w-4" />
