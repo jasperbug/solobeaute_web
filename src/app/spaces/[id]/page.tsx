@@ -11,7 +11,7 @@ import { localizePath } from '@/i18n/config'
 import { cityPagePath, getCityByName } from '@/lib/cities'
 import { DEFAULT_METADATA_IMAGE, SITE_URL } from '@/lib/constants'
 import { cityNameEn, cityShortEn, equipmentEn, locationEn, serviceTagEn, spaceTypeEn } from '@/lib/en'
-import { buildAppDeepLink } from '@/lib/format'
+import { buildAppDeepLink, buildShareUrl } from '@/lib/format'
 import { localeAlternates, localeUrl, ogLocale } from '@/lib/i18nSeo'
 import {
   buildSpaceDescription,
@@ -96,6 +96,33 @@ export async function generateMetadata({ params }: SpacePageProps): Promise<Meta
   }
 }
 
+/**
+ * schema.org ReserveAction for a space. Spaces ARE bookable — by beauty
+ * professionals, inside the SoloBeauté app — so the action points at the
+ * existing app share link (/share/space/{id}: Android App Links open the app,
+ * otherwise the page offers the app). No booking happens on the website.
+ */
+function buildReserveAction(space: PublicSpace, locale: 'zh-TW' | 'en') {
+  const isEn = locale === 'en'
+  return {
+    '@type': 'ReserveAction',
+    name: isEn ? 'Book this space in the SoloBeauté app' : '在 SoloBeauté App 預約這個空間',
+    description: isEn
+      ? 'Beauty professionals book this space in the SoloBeauté app; each booking is confirmed by the host, and rent is paid to the host in cash on site.'
+      : '美業職人在 SoloBeauté App 內預約這個空間，屋主確認後成立，租金到現場以現金付給屋主。',
+    target: {
+      '@type': 'EntryPoint',
+      urlTemplate: buildShareUrl('space', space.id),
+      actionPlatform: [
+        'https://schema.org/IOSPlatform',
+        'https://schema.org/AndroidPlatform',
+        'https://schema.org/MobileWebPlatform',
+        'https://schema.org/DesktopWebPlatform',
+      ],
+    },
+  }
+}
+
 function buildJsonLd(space: PublicSpace, summary: string) {
   const url = canonicalUrl(space)
   const cityPage = getCityByName(space.city)
@@ -159,6 +186,7 @@ function buildJsonLd(space: PublicSpace, summary: string) {
             }
           : {}),
         ...(space.maxCapacity ? { maximumAttendeeCapacity: space.maxCapacity } : {}),
+        potentialAction: buildReserveAction(space, 'zh-TW'),
       },
       ...offers,
       {
@@ -447,6 +475,7 @@ function buildJsonLdEn(space: PublicSpace, summary: string) {
           ? { amenityFeature: space.equipment.map((item) => ({ '@type': 'LocationFeatureSpecification', name: equipmentEn(item), value: true })) }
           : {}),
         ...(space.maxCapacity ? { maximumAttendeeCapacity: space.maxCapacity } : {}),
+        potentialAction: buildReserveAction(space, 'en'),
       },
       ...rates.map((rate) => ({
         '@type': 'Offer',
