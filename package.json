@@ -9,18 +9,22 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test:mcp": "node scripts/mcp-smoke.mjs"
   },
   "dependencies": {
+    "@modelcontextprotocol/server": "2.3.1",
     "dayjs": "^1.11.19",
     "framer-motion": "^12.35.1",
     "next": "^14.2.35",
     "next-intl": "^3.26.5",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "zod": "^4.6.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
+    "@modelcontextprotocol/client": "2.3.1",
     "@next/eslint-plugin-next": "^16.2.3",
     "@types/node": "^25.3.3",
     "@types/react": "^19.2.7",

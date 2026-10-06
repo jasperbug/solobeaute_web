@@ -65,7 +65,8 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  // Pages only: skip Next internals, API routes and files with an extension
-  // (llms.txt, sitemap.xml, robots.txt, /.well-known/assetlinks.json, images).
-  matcher: ['/((?!_next/|api/|.*\\..*).*)'],
+  // Pages only: skip Next internals, API routes, the MCP endpoint (/mcp) and
+  // files with an extension (llms.txt, sitemap.xml, robots.txt,
+  // /.well-known/assetlinks.json, images).
+  matcher: ['/((?!_next/|api/|mcp$|mcp/|.*\\..*).*)'],
 }

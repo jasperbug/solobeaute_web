@@ -1,0 +1,356 @@
+import { API_BASE_URL } from '../constants'
+import { resolveImageUrl, sortSocialLinks } from '../format'
+import { isPublicSpace, toPublicSpace } from '../spaces'
+import type { PublicSpace, RawSpaceDetailResponse, RawSpaceListResponse, RawSpaceRecord, SocialLinks } from '../types'
+import { CACHE_TTL, cached } from './cache'
+
+// ---------------------------------------------------------------------------
+// Upstream reads for the MCP server. Only public backend endpoints are used:
+//   GET /spaces, GET /spaces/:id                (spaces; ACTIVE only)
+//   GET /beauticians                            (public beautician list)
+//   GET /beauticians/:slug                      (only for a slug that is in the public list)
+//   GET /public/spaces/:id/availability         (new public endpoint, backend PR A)
+// Never called: /beauticians/:uuid, /beauticians/:id/services (they skip the
+// web-visibility check) and the old /spaces/:id/availability.
+// Every record is reduced to an explicit whitelist before it leaves here:
+// no userId, user object, phone, email, street address or coordinates.
+// ---------------------------------------------------------------------------
+
+const PAGE_LIMIT = 50
+const MAX_PAGES = 20
+const TIMEOUT_MS = 8_000
+
+export const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+
+export class UpstreamError extends Error {
+  constructor(message: string) {
+    super(message)
+    this.name = 'UpstreamError'
+  }
+}
+
+type UpstreamResponse = { status: number; json: unknown }
+
+async function getUpstream(path: string): Promise<UpstreamResponse> {
+  let response: Response
+  try {
+    response = await fetch(`${API_BASE_URL}${path}`, {
+      cache: 'no-store',
+      headers: { accept: 'application/json' },
+      signal: AbortSignal.timeout(TIMEOUT_MS),
+    })
+  } catch (error) {
+    throw new UpstreamError(`fetch failed: ${(error as Error).message}`)
+  }
+  const text = await response.text()
+  let json: unknown = null
+  try {
+    json = text ? JSON.parse(text) : null
+  } catch {
+    json = null
+  }
+  return { status: response.status, json }
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value)
+}
+
+function str(value: unknown): string | null {
+  return typeof value === 'string' && value.trim() !== '' ? value.trim() : null
+}
+
+function num(value: unknown): number | null {
+  return typeof value === 'number' && Number.isFinite(value) ? value : null
+}
+
+function strList(value: unknown, max = 50): string[] {
+  return Array.isArray(value)
+    ? value.flatMap((item) => (typeof item === 'string' && item.trim() ? [item.trim()] : [])).slice(0, max)
+    : []
+}
+
+export function truncate(text: string | null, max: number): string | null {
+  if (!text) return null
+  const chars = Array.from(text)
+  return chars.length > max ? `${chars.slice(0, max).join('')}…` : text
+}
+
+// --- spaces ----------------------------------------------------------------
+
+export async function loadPublicSpaces(): Promise<PublicSpace[]> {
+  return cached('spaces:list', CACHE_TTL.list, async () => {
+    const records: RawSpaceRecord[] = []
+    let totalPages = 1
+    for (let page = 1; page <= Math.min(totalPages, MAX_PAGES); page += 1) {
+      const { status, json } = await getUpstream(`/spaces?limit=${PAGE_LIMIT}&page=${page}`)
+      if (status !== 200 || !isRecord(json)) throw new UpstreamError(`spaces list status=${status}`)
+      const body = json as RawSpaceListResponse
+      records.push(...(Array.isArray(body.data) ? body.data : []))
+      totalPages = body.pagination?.totalPages ?? 1
+    }
+    const seen = new Set<string>()
+    return records.filter(isPublicSpace).flatMap((raw) => {
+      if (seen.has(raw.id)) return []
+      seen.add(raw.id)
+      return [toPublicSpace(raw)]
+    })
+  })
+}
+
+/** One ACTIVE space, or null. Non-UUID ids never reach the backend. */
+export async function loadPublicSpace(id: string): Promise<PublicSpace | null> {
+  if (!UUID_RE.test(id)) return null
+  const key = id.toLowerCase()
+  return cached(`spaces:detail:${key}`, CACHE_TTL.detail, async () => {
+    const { status, json } = await getUpstream(`/spaces/${key}`)
+    if (status === 404 || status === 400) return null
+    if (status !== 200 || !isRecord(json)) throw new UpstreamError(`space detail status=${status}`)
+    const record = (json as RawSpaceDetailResponse).data
+    return isPublicSpace(record) ? toPublicSpace(record) : null
+  })
+}
+
+// --- beauticians -----------------------------------------------------------
+
+export type PublicBeauticianService = {
+  id: string
+  name: string
+  category: string | null
+  price: number
+  durationMin: number | null
+  description: string | null
+}
+
+export type PublicBeautician = {
+  id: string
+  slug: string | null
+  displayName: string
+  bio: string | null
+  specialties: string[]
+  licenses: string[]
+  licenseVerified: boolean
+  yearsExperience: number | null
+  serviceArea: { city: string; district: string | null } | null
+  ratingAvg: number
+  ratingCount: number
+  services: PublicBeauticianService[]
+  /** Active services the backend counted; the list endpoint only returns the 3 cheapest. */
+  serviceCount: number
+  portfolioUrls: string[]
+  portfolioPreviewUrl: string | null
+  socialLinks: Array<{ key: string; href: string }>
+  updatedAt: string | null
+}
+
+function toPublicService(raw: unknown): PublicBeauticianService | null {
+  if (!isRecord(raw)) return null
+  const id = str(raw.id)
+  const name = str(raw.name)
+  const price = num(raw.price)
+  if (!id || !name || price === null || price < 0) return null
+  if (raw.isActive === false || raw.deletedAt) return null
+  const duration = num(raw.durationMin)
+  return {
+    id,
+    name,
+    category: str(raw.category),
+    price,
+    durationMin: duration !== null && duration > 0 ? duration : null,
+    description: truncate(str(raw.description), 300),
+  }
+}
+
+/** Whitelist mapper for one public beautician record. */
+function toPublicBeautician(raw: unknown): PublicBeautician | null {
+  if (!isRecord(raw)) return null
+  const id = str(raw.id)
+  const displayName = str(raw.displayName)
+  if (!id || !UUID_RE.test(id) || !displayName) return null
+
+  const services = (Array.isArray(raw.services) ? raw.services : [])
+    .map(toPublicService)
+    .filter((service): service is PublicBeauticianService => service !== null)
+    .sort((a, b) => a.price - b.price)
+  const area = isRecord(raw.serviceArea) ? raw.serviceArea : null
+  const city = area ? str(area.city) : null
+  const social = isRecord(raw.socialLinks) ? (raw.socialLinks as SocialLinks) : {}
+  const counted = num(raw.serviceCount)
+  const years = num(raw.yearsExperience)
+
+  return {
+    id: id.toLowerCase(),
+    slug: str(raw.slug),
+    displayName,
+    bio: truncate(str(raw.bio), 800),
+    specialties: strList(raw.specialties, 20),
+    licenses: strList(raw.licenses, 20),
+    licenseVerified: raw.licenseVerified === true,
+    yearsExperience: years !== null && years > 0 ? years : null,
+    serviceArea: city ? { city, district: area ? str(area.district) : null } : null,
+    ratingAvg: num(raw.ratingAvg) ?? 0,
+    ratingCount: num(raw.ratingCount) ?? 0,
+    services,
+    serviceCount: Math.max(counted ?? 0, services.length),
+    portfolioUrls: strList(raw.portfolioUrls, 6)
+      .map((url) => resolveImageUrl(url))
+      .filter((url): url is string => Boolean(url)),
+    portfolioPreviewUrl: resolveImageUrl(str(raw.portfolioPreviewUrl)),
+    socialLinks: sortSocialLinks(social).filter((link) => link.href.startsWith('https://')),
+    updatedAt: str(raw.updatedAt),
+  }
+}
+
+/** The public beautician list (backend applies its public/web-visible filter). */
+export async function loadPublicBeauticians(): Promise<PublicBeautician[]> {
+  return cached('beauticians:list', CACHE_TTL.list, async () => {
+    const items: PublicBeautician[] = []
+    let totalPages = 1
+    for (let page = 1; page <= Math.min(totalPages, MAX_PAGES); page += 1) {
+      const { status, json } = await getUpstream(`/beauticians?limit=${PAGE_LIMIT}&page=${page}`)
+      if (status !== 200 || !isRecord(json)) throw new UpstreamError(`beauticians list status=${status}`)
+      const data = Array.isArray(json.data) ? json.data : []
+      data.forEach((raw) => {
+        const item = toPublicBeautician(raw)
+        if (item) items.push(item)
+      })
+      const pagination = isRecord(json.pagination) ? json.pagination : null
+      totalPages = num(pagination?.totalPages) ?? 1
+    }
+    const seen = new Set<string>()
+    return items.filter((item) => (seen.has(item.id) ? false : (seen.add(item.id), true)))
+  })
+}
+
+/**
+ * Resolve a `ref` (slug, or the profile id shown in the public list) against
+ * the public list ONLY. Anything not in that list — including the UUID of a
+ * hidden profile — is "not found" and is never sent to the backend.
+ */
+export async function findPublicBeautician(ref: string): Promise<PublicBeautician | null> {
+  const needle = ref.trim()
+  if (!needle || needle.length > 100) return null
+  const list = await loadPublicBeauticians()
+  if (UUID_RE.test(needle)) {
+    const lower = needle.toLowerCase()
+    return list.find((item) => item.id === lower) ?? null
+  }
+  return list.find((item) => item.slug !== null && item.slug === needle) ?? null
+}
+
+/**
+ * Full public detail for a beautician that is already in the public list.
+ * Only slug lookups go to the backend (the slug route enforces web
+ * visibility); profiles without a slug keep the list data (3 cheapest
+ * services). Returns `complete: false` when services may be missing.
+ */
+export async function loadBeauticianDetail(entry: PublicBeautician): Promise<{ beautician: PublicBeautician; complete: boolean }> {
+  if (!entry.slug) {
+    return { beautician: entry, complete: entry.services.length >= entry.serviceCount }
+  }
+  const slug = entry.slug
+  try {
+    const detail = await cached(`beauticians:slug:${slug}`, CACHE_TTL.detail, async () => {
+      const { status, json } = await getUpstream(`/beauticians/${encodeURIComponent(slug)}`)
+      if (status === 404) return null
+      if (status !== 200 || !isRecord(json)) throw new UpstreamError(`beautician detail status=${status}`)
+      return toPublicBeautician(json.data)
+    })
+    if (detail && detail.id === entry.id) {
+      return { beautician: { ...detail, serviceCount: Math.max(entry.serviceCount, detail.services.length) }, complete: true }
+    }
+  } catch {
+    // fall back to the list data below
+  }
+  return { beautician: entry, complete: entry.services.length >= entry.serviceCount }
+}
+
+// --- availability (new public endpoint; not live until backend PR A ships) ---
+
+export type AvailabilitySlot = { startTime: string; endTime: string }
+
+export type AvailabilityDay = {
+  date: string
+  isOpen: boolean
+  openTime: string | null
+  closeTime: string | null
+  bookedSlots: AvailabilitySlot[]
+  blockedSlots: AvailabilitySlot[]
+}
+
+export type AvailabilityResult =
+  | { kind: 'ok'; minBookingHours: number | null; timezone: string; days: AvailabilityDay[] }
+  | { kind: 'not_open' }
+  | { kind: 'not_found' }
+  | { kind: 'unavailable' }
+
+const DATE_RE = /^\d{4}-\d{2}-\d{2}$/
+const TIME_RE = /^([01]\d|2[0-4]):[0-5]\d$/
+
+function time(value: unknown): string | null {
+  const text = str(value)
+  if (!text) return null
+  const hhmm = text.length >= 5 ? text.slice(0, 5) : text
+  return TIME_RE.test(hhmm) ? hhmm : null
+}
+
+function slots(value: unknown): AvailabilitySlot[] {
+  if (!Array.isArray(value)) return []
+  return value.flatMap((slot) => {
+    if (!isRecord(slot)) return []
+    const startTime = time(slot.startTime ?? slot.start)
+    const endTime = time(slot.endTime ?? slot.end)
+    return startTime && endTime ? [{ startTime, endTime }] : []
+  }).slice(0, 48)
+}
+
+function toDay(raw: unknown): AvailabilityDay | null {
+  if (!isRecord(raw)) return null
+  const date = str(raw.date)
+  if (!date || !DATE_RE.test(date.slice(0, 10))) return null
+  return {
+    date: date.slice(0, 10),
+    isOpen: raw.isOpen === true || raw.isAvailable === true,
+    openTime: time(raw.openTime),
+    closeTime: time(raw.closeTime),
+    // Only times — reasons, booking ids and beautician info are dropped.
+    bookedSlots: slots(raw.bookedSlots),
+    blockedSlots: slots(raw.blockedSlots),
+  }
+}
+
+function isRouteMissing(json: unknown): boolean {
+  if (!isRecord(json)) return true
+  const code = str(json.code) ?? str(json.error)
+  return code !== 'SPACE_NOT_FOUND'
+}
+
+export async function loadAvailability(spaceId: string, from: string, to: string): Promise<AvailabilityResult> {
+  const id = spaceId.toLowerCase()
+  return cached(`availability:${id}:${from}:${to}`, CACHE_TTL.availability, async (): Promise<AvailabilityResult> => {
+    let upstream: UpstreamResponse
+    try {
+      upstream = await getUpstream(`/public/spaces/${id}/availability?from=${from}&to=${to}`)
+    } catch {
+      return { kind: 'unavailable' }
+    }
+    const { status, json } = upstream
+    if (status === 404) return isRouteMissing(json) ? { kind: 'not_open' } : { kind: 'not_found' }
+    if (status === 405 || status === 501) return { kind: 'not_open' }
+    if (status !== 200) return { kind: 'unavailable' }
+    if (!isRecord(json) || json.success === false) return { kind: 'not_open' }
+
+    const data = isRecord(json.data) ? json.data : Array.isArray(json.data) ? { days: json.data } : null
+    if (!data || !Array.isArray(data.days)) return { kind: 'not_open' }
+    const minHours = num(data.minBookingHours) ?? num(data.minimumHours)
+    return {
+      kind: 'ok',
+      minBookingHours: minHours !== null && minHours > 0 ? minHours : null,
+      timezone: str(data.timezone) ?? 'Asia/Taipei',
+      days: data.days
+        .map(toDay)
+        .filter((day): day is AvailabilityDay => day !== null && day.date >= from && day.date <= to)
+        .slice(0, 14),
+    }
+  })
+}
