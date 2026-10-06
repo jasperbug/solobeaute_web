@@ -30,6 +30,7 @@ type Messages = {
   invalidRange: string
   upstreamError: string
   servicesTruncated: string
+  freeSlotsNote: (minHours: number) => string
 }
 
 export const MESSAGES: Record<McpLocale, Messages> = {
@@ -38,17 +39,21 @@ export const MESSAGES: Record<McpLocale, Messages> = {
     beauticianNotFound: '找不到這位公開的美業職人。只能用 search_beauticians 結果裡的 ref（品牌頁網址代稱）查詢。',
     availabilityNotOpen: '時段查詢尚未開放。可以先看空間頁面，美業職人可在 SoloBeauté App 內查看時段並預約。',
     availabilityUnavailable: '時段資料暫時無法取得，請稍後再試，或到 SoloBeauté App 內查看。',
-    invalidRange: '日期範圍不正確：from 和 to 要是 YYYY-MM-DD，to 不能早於 from，最多查 14 天。',
+    invalidRange: '日期範圍不正確：from 和 to 要是 YYYY-MM-DD（台灣時間），from 不能早於昨天，to 不能早於 from，一次最多查 14 天。',
     upstreamError: 'SoloBeauté 資料暫時無法取得，請稍後再試。',
     servicesTruncated: '這裡只列出部分服務項目，完整項目請看品牌頁。',
+    freeSlotsNote: (minHours) =>
+      `freeSlots 是營業時間扣掉已被預約和屋主封鎖的時段後，至少 ${minHours} 小時的空檔（今天已過的時間不列出）。這只是查詢結果，不會保留時段；實際能否預約以 SoloBeauté App 內為準，並由屋主確認。`,
   },
   en: {
     spaceNotFound: 'No public space with this id. Use search_spaces to get a space id.',
     beauticianNotFound: 'No public beautician brand page found. Use a `ref` returned by search_beauticians.',
     availabilityNotOpen: 'Availability lookup is not open yet. See the space page; beauty professionals can check times and book in the SoloBeauté app.',
     availabilityUnavailable: 'Availability data is temporarily unavailable. Please try again later or check the SoloBeauté app.',
-    invalidRange: 'Invalid date range: from and to must be YYYY-MM-DD, to must not be before from, and the range is at most 14 days.',
+    invalidRange: 'Invalid date range: from and to must be YYYY-MM-DD (Taiwan time), from cannot be earlier than yesterday, to must not be before from, and one request covers at most 14 days.',
     upstreamError: 'SoloBeauté data is temporarily unavailable. Please try again later.',
     servicesTruncated: 'Only some services are listed here; see the brand page for the full list.',
+    freeSlotsNote: (minHours) =>
+      `freeSlots are the gaps of at least ${minHours} hours left after removing booked and host-blocked times from the opening hours (times already past today are left out). This is a lookup only and holds nothing; whether a slot can be booked is decided in the SoloBeauté app, where the host confirms each booking.`,
   },
 }

@@ -1,17 +1,53 @@
 // End-to-end check of the read-only MCP server (/mcp) with the official MCP
 // TypeScript client, over both protocol eras (2025 legacy + 2026-07-28).
 //
-//   npm run build && npx next start -p 3000
+//   npm run build && MCP_RATE_LIMIT_PER_IP=1000 npx next start -p 3000   (the run makes ~120 calls)
 //   MCP_URL=http://localhost:3000/mcp npm run test:mcp
 //
 // Optional: MCP_HIDDEN_BEAUTICIAN_IDS=<uuid>,<uuid> — profile ids that exist
 // but are NOT public; get_beautician must answer "not found" for each.
+// Optional: MCP_MOCK_API=http://127.0.0.1:3480 — the server was built against
+// scripts/mcp-mock-api.mjs (backend #192 availability format); adds exact
+// free-slot / error-code checks and an audit of every upstream request.
 // Works against production too: MCP_URL=https://www.solobeaute.com/mcp
 
 import { Client, StreamableHTTPClientTransport } from '@modelcontextprotocol/client'
 
 const MCP_URL = process.env.MCP_URL ?? 'http://localhost:3000/mcp'
 const HIDDEN_IDS = (process.env.MCP_HIDDEN_BEAUTICIAN_IDS ?? '').split(',').map((s) => s.trim()).filter(Boolean)
+const MOCK_API = process.env.MCP_MOCK_API ?? ''
+
+// Must match scripts/mcp-mock-api.mjs
+const MOCK_SPACES = {
+  ok: 'aaaaaaaa-0000-4000-8000-000000000192',
+  gone: 'aaaaaaaa-0000-4000-8000-000000000404',
+  limited: 'aaaaaaaa-0000-4000-8000-000000000429',
+  badRange: 'aaaaaaaa-0000-4000-8000-000000000400',
+  preLaunch: 'aaaaaaaa-0000-4000-8000-000000000000',
+}
+
+const taipeiNow = () => {
+  const t = new Date(Date.now() + 8 * 3600_000)
+  return { date: t.toISOString().slice(0, 10), minutes: t.getUTCHours() * 60 + t.getUTCMinutes() }
+}
+const addDays = (d, n) => { const x = new Date(`${d}T00:00:00Z`); x.setUTCDate(x.getUTCDate() + n); return x.toISOString().slice(0, 10) }
+const mins = (hhmm) => Number(hhmm.slice(0, 2)) * 60 + Number(hhmm.slice(3, 5))
+
+/** Invariants for any successful availability result. */
+function freeSlotsSane(sc) {
+  if (sc.available !== true) return true
+  const now = taipeiNow()
+  const min = (sc.minBookingHours ?? 2) * 60
+  return sc.days.every((day) =>
+    !('bookedSlots' in day) && !('blockedSlots' in day) &&
+    (day.isOpen || day.freeSlots.length === 0) &&
+    (day.date >= now.date || day.freeSlots.length === 0) &&
+    day.freeSlots.every((slot, i) =>
+      mins(slot.endTime) - mins(slot.startTime) >= min &&
+      mins(slot.startTime) >= mins(day.openTime) && mins(slot.endTime) <= mins(day.closeTime) &&
+      (i === 0 || mins(slot.startTime) > mins(day.freeSlots[i - 1].endTime)) &&
+      (day.date !== now.date || mins(slot.startTime) >= now.minutes)))
+}
 
 const NOTICE = {
   'zh-TW':
@@ -125,19 +161,65 @@ async function run(mode) {
   const junk = await call('get_space', { spaceId: '../admin' })
   check('non-UUID space id → SPACE_NOT_FOUND', junk.sc.error === 'SPACE_NOT_FOUND')
 
-  // availability
+  // availability (real backend: #192 live → free slots; not live → 「時段查詢尚未開放」)
   const avail = await call('get_space_availability', { spaceId })
   check(
-    'availability: public endpoint result or 「時段查詢尚未開放」',
+    'availability: free slots or 「時段查詢尚未開放」',
     avail.sc.available === true || (avail.sc.status === 'AVAILABILITY_NOT_OPEN' && avail.sc.message.includes('時段查詢尚未開放')),
     JSON.stringify(avail.sc.status ?? avail.sc.available)
   )
+  check('availability: only free slots, sane', freeSlotsSane(avail.sc))
   const availEn = await call('get_space_availability', { spaceId, locale: 'en' })
   check('availability en message', availEn.sc.available === true || availEn.sc.message.startsWith('Availability lookup is not open yet'))
-  const tooLong = await call('get_space_availability', { spaceId, from: '2026-11-01', to: '2026-11-20' })
-  check('availability > 14 days → INVALID_RANGE', tooLong.sc.error === 'INVALID_RANGE')
+  const today = taipeiNow().date
+  const tooLong = await call('get_space_availability', { spaceId, from: today, to: addDays(today, 14) })
+  check('availability 15 days → INVALID_RANGE', tooLong.sc.error === 'INVALID_RANGE')
+  const tooOld = await call('get_space_availability', { spaceId, from: addDays(today, -2), to: today })
+  check('availability from 2 days ago → INVALID_RANGE', tooOld.sc.error === 'INVALID_RANGE')
+  const reversed = await call('get_space_availability', { spaceId, from: addDays(today, 3), to: addDays(today, 1) })
+  check('availability to < from → INVALID_RANGE', reversed.sc.error === 'INVALID_RANGE')
+  const badDate = await call('get_space_availability', { spaceId, from: '2027-02-30' })
+  check('availability impossible date → INVALID_RANGE', badDate.sc.error === 'INVALID_RANGE')
   const ghostAvail = await call('get_space_availability', { spaceId: '00000000-0000-4000-8000-000000000000' })
   check('availability for unknown space → SPACE_NOT_FOUND', ghostAvail.sc.error === 'SPACE_NOT_FOUND')
+
+  if (MOCK_API) {
+    const t1 = addDays(today, 1)
+    const mock = await call('get_space_availability', { spaceId: MOCK_SPACES.ok, from: t1, to: addDays(t1, 3) })
+    const expected = [
+      [{ startTime: '10:00', endTime: '13:00' }, { startTime: '15:00', endTime: '20:00' }],
+      [], // only a 1.5 h gap → below minBookingHours
+      [], // closed
+      [{ startTime: '09:00', endTime: '11:00' }, { startTime: '14:00', endTime: '18:00' }, { startTime: '19:00', endTime: '21:00' }],
+    ]
+    check('mock #192: available, free_slots exposure', mock.sc.available === true && mock.sc.slotsShown === 'free_slots' && mock.sc.days.length === 4)
+    check(
+      'mock #192: free slots = opening hours − booked − blocked (≥ 2 h)',
+      JSON.stringify(mock.sc.days.map((d) => d.freeSlots)) === JSON.stringify(expected),
+      JSON.stringify(mock.sc.days.map((d) => d.freeSlots))
+    )
+    check('mock #192: closed day stays closed', mock.sc.days[2].isOpen === false)
+    check('mock #192: no booked / blocked slots, ids, names or reasons leak',
+      freeSlotsSane(mock.sc) && !/bookedSlots|blockedSlots|bk-|MOCK_SECRET/.test(mock.res.content[0].text))
+    check('mock #192: slotsNote present', typeof mock.sc.slotsNote === 'string' && mock.sc.slotsNote.includes('2'))
+    const mockEn = await call('get_space_availability', { spaceId: MOCK_SPACES.ok, from: t1, to: t1, locale: 'en' })
+    check('mock #192: en note', mockEn.sc.slotsNote?.startsWith('freeSlots are the gaps'))
+    const yesterday = await call('get_space_availability', { spaceId: MOCK_SPACES.ok, from: addDays(today, -1), to: today })
+    check('mock #192: from = yesterday accepted, past day has no free slots',
+      yesterday.sc.available === true && yesterday.sc.days[0].isPast === true && yesterday.sc.days[0].freeSlots.length === 0 && freeSlotsSane(yesterday.sc))
+    const twoWeeks = await call('get_space_availability', { spaceId: MOCK_SPACES.ok, from: today, to: addDays(today, 13) })
+    check('mock #192: 14 days accepted by MCP and backend rules', twoWeeks.sc.available === true && twoWeeks.sc.days.length === 14)
+    const mockSpace = await call('get_space', { spaceId: MOCK_SPACES.ok })
+    check('mock space: address / coordinates dropped', !/MOCK_SECRET|latitude|longitude/.test(mockSpace.res.content[0].text))
+    const gone = await call('get_space_availability', { spaceId: MOCK_SPACES.gone, from: t1, to: t1 })
+    check('mock #192: 404 SPACE_NOT_FOUND → SPACE_NOT_FOUND', gone.sc.error === 'SPACE_NOT_FOUND')
+    const limited = await call('get_space_availability', { spaceId: MOCK_SPACES.limited, from: t1, to: t1 })
+    check('mock #192: 429 → AVAILABILITY_UNAVAILABLE', limited.sc.status === 'AVAILABILITY_UNAVAILABLE')
+    const badRange = await call('get_space_availability', { spaceId: MOCK_SPACES.badRange, from: t1, to: t1 })
+    check('mock #192: 400 INVALID_DATE_RANGE → INVALID_RANGE', badRange.sc.error === 'INVALID_RANGE')
+    const pre = await call('get_space_availability', { spaceId: MOCK_SPACES.preLaunch, from: t1, to: t1 })
+    check('mock: route missing (before #192) → 「時段查詢尚未開放」', pre.sc.status === 'AVAILABILITY_NOT_OPEN')
+  }
 
   // beauticians
   const bList = await call('search_beauticians', { limit: 20 })
@@ -194,6 +276,19 @@ const evil = await fetch(MCP_URL, {
 })
 console.log('\n== HTTP')
 check('foreign Origin → 403', evil.status === 403, String(evil.status))
+
+if (MOCK_API) {
+  console.log('\n== upstream audit (mock API request log)')
+  const log = await (await fetch(`${MOCK_API}/__mock/requests`)).json()
+  const uuid = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i
+  check('upstream requests recorded', log.length > 0, String(log.length))
+  check('never GET /beauticians/<uuid>', !log.some((l) => new RegExp(`/beauticians/${uuid.source}`, 'i').test(l)))
+  check('never GET /beauticians/:id/services', !log.some((l) => l.includes('/services')))
+  check('never the old /spaces/:id/availability', !log.some((l) => /\/api\/v1\/spaces\/[^/]+\/availability/.test(l)))
+  check('availability only via /public/spaces/:id/availability', log.filter((l) => l.includes('availability')).every((l) => l.includes('/api/v1/public/spaces/')))
+  check('no out-of-range availability request reached the backend', !log.some((l) => l.includes('availability') && l.includes(`from=${addDays(taipeiNow().date, -2)}`)))
+  for (const id of HIDDEN_IDS) check(`hidden profile ${id.slice(0, 8)}… never sent upstream`, !log.some((l) => l.includes(id)))
+}
 
 console.log(`\n${passes} passed, ${failures} failed`)
 process.exit(failures ? 1 : 0)

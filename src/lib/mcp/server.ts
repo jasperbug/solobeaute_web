@@ -18,6 +18,14 @@ import {
 import { buildPriceReport, type RateSummary } from '../priceReport'
 import { rateRange } from '../spaces'
 import type { PublicSpace } from '../types'
+import {
+  MCP_DEFAULT_AVAILABILITY_DAYS,
+  MCP_MAX_AVAILABILITY_DAYS,
+  availabilityExposure,
+  presentDay,
+  resolveAvailabilityRange,
+  taipeiNow,
+} from './availability'
 import { CACHE_TTL } from './cache'
 import { MESSAGES, type McpLocale, NOTICE, SERVER_INSTRUCTIONS } from './copy'
 import {
@@ -29,7 +37,7 @@ import {
   loadPublicSpace,
   loadPublicSpaces,
 } from './data'
-import { pageLinks, pageUrl, spaceLinks, utmSource } from './links'
+import { type Links, pageLinks, pageUrl, spaceLinks, utmSource } from './links'
 import {
   beauticianDetail,
   beauticianSummary,
@@ -57,7 +65,6 @@ const READ_ONLY: ToolAnnotations = {
 
 const MAX_LIMIT = 20
 const DEFAULT_LIMIT = 10
-const MAX_AVAILABILITY_DAYS = 14
 
 const localeParam = z
   .enum(['zh-TW', 'en'])
@@ -132,28 +139,6 @@ function tagMatches(tags: string[], query: string, translate: (label: string) =>
 function knownCities(spaces: PublicSpace[], locale: McpLocale): string[] {
   const names = new Set(spaces.map((space) => normalizeCityName(space.city)).filter(Boolean))
   return Array.from(names).map((name) => cityLabel(name, locale) ?? name)
-}
-
-function todayInTaipei(): string {
-  return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Taipei', year: 'numeric', month: '2-digit', day: '2-digit' }).format(
-    new Date()
-  )
-}
-
-function addDays(date: string, days: number): string {
-  const d = new Date(`${date}T00:00:00Z`)
-  d.setUTCDate(d.getUTCDate() + days)
-  return d.toISOString().slice(0, 10)
-}
-
-function isValidDate(date: string): boolean {
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return false
-  const d = new Date(`${date}T00:00:00Z`)
-  return !Number.isNaN(d.getTime()) && d.toISOString().slice(0, 10) === date
-}
-
-function dayDiff(from: string, to: string): number {
-  return Math.round((Date.parse(`${to}T00:00:00Z`) - Date.parse(`${from}T00:00:00Z`)) / 86_400_000)
 }
 
 // --- price overview ----------------------------------------------------------
@@ -304,13 +289,16 @@ export function createSoloBeauteMcpServer(): McpServer {
   server.registerTool(
     'get_space_availability',
     {
-      title: 'Get SoloBeauté workspace availability',
-      description:
-        'Opening hours and already-taken time slots of one public workspace for up to 14 days (Asia/Taipei dates). Read-only: it cannot hold or book a slot. If availability lookup is not open yet, the result says so.',
+      title: 'Get SoloBeauté workspace free time slots',
+      description: `Bookable free time slots of one public workspace for up to ${MCP_MAX_AVAILABILITY_DAYS} days (Asia/Taipei dates): opening hours minus booked and host-blocked times, keeping only gaps of at least the minimum booking hours. Read-only: it cannot hold or book a slot — beauty professionals book in the SoloBeauté app and the host confirms. If availability lookup is not open yet, the result says so.`,
       inputSchema: z.object({
         spaceId: z.string().max(64).describe('Space id (UUID) from search_spaces.'),
-        from: z.string().max(10).optional().describe('First date, YYYY-MM-DD (default: today in Taiwan).'),
-        to: z.string().max(10).optional().describe('Last date, YYYY-MM-DD (default: from + 6 days; at most 14 days in total).'),
+        from: z.string().max(10).optional().describe('First date, YYYY-MM-DD (default: today in Taiwan; not earlier than yesterday).'),
+        to: z
+          .string()
+          .max(10)
+          .optional()
+          .describe(`Last date, YYYY-MM-DD (default: from + ${MCP_DEFAULT_AVAILABILITY_DAYS - 1} days; at most ${MCP_MAX_AVAILABILITY_DAYS} days in total).`),
         locale: localeParam,
       }),
       annotations: READ_ONLY,
@@ -318,17 +306,13 @@ export function createSoloBeauteMcpServer(): McpServer {
     async (args, ctx) =>
       guarded(args.locale, source(ctx), async () => {
         const messages = MESSAGES[args.locale]
-        const from = args.from?.trim() || todayInTaipei()
-        const to = args.to?.trim() || addDays(from, 6)
-        if (!isValidDate(from) || !isValidDate(to) || dayDiff(from, to) < 0 || dayDiff(from, to) >= MAX_AVAILABILITY_DAYS) {
-          return result(
-            args.locale,
-            { error: 'INVALID_RANGE', message: messages.invalidRange, links: pageLinks('/spaces', args.locale, source(ctx)) },
-            true
-          )
-        }
-        const spaceId = args.spaceId.trim()
-        const space = await loadPublicSpace(spaceId)
+        const invalidRange = (links: Links) =>
+          result(args.locale, { error: 'INVALID_RANGE', message: messages.invalidRange, links }, true)
+
+        const range = resolveAvailabilityRange({ from: args.from, to: args.to })
+        if (!range) return invalidRange(pageLinks('/spaces', args.locale, source(ctx)))
+
+        const space = await loadPublicSpace(args.spaceId.trim())
         if (!space) {
           return result(
             args.locale,
@@ -338,22 +322,30 @@ export function createSoloBeauteMcpServer(): McpServer {
         }
 
         const links = spaceLinks(space.id, args.locale, source(ctx))
-        const availability = await loadAvailability(space.id, from, to)
+        const availability = await loadAvailability(space.id, range.from, range.to)
         switch (availability.kind) {
-          case 'ok':
+          case 'ok': {
+            const minBookingHours = availability.minBookingHours ?? space.minimumHours
+            const now = taipeiNow()
+            const exposure = availabilityExposure()
             return result(args.locale, {
               available: true,
               spaceId: space.id,
               title: space.title,
-              from,
-              to,
+              from: range.from,
+              to: range.to,
               timezone: availability.timezone,
-              minBookingHours: availability.minBookingHours ?? space.minimumHours,
-              days: availability.days,
+              minBookingHours,
+              slotsShown: exposure,
+              slotsNote: messages.freeSlotsNote(minBookingHours ?? 2),
+              days: availability.days.map((day) => presentDay(day, minBookingHours, now, exposure)),
               links,
             })
+          }
           case 'not_found':
             return result(args.locale, { error: 'SPACE_NOT_FOUND', message: messages.spaceNotFound, links }, true)
+          case 'invalid_range':
+            return invalidRange(links)
           case 'not_open':
             return result(args.locale, {
               available: false,
@@ -364,13 +356,17 @@ export function createSoloBeauteMcpServer(): McpServer {
               links,
             })
           default:
-            return result(args.locale, {
-              available: false,
-              status: 'AVAILABILITY_UNAVAILABLE',
-              message: messages.availabilityUnavailable,
-              spaceId: space.id,
-              links,
-            }, true)
+            return result(
+              args.locale,
+              {
+                available: false,
+                status: 'AVAILABILITY_UNAVAILABLE',
+                message: messages.availabilityUnavailable,
+                spaceId: space.id,
+                links,
+              },
+              true
+            )
         }
       })
   )

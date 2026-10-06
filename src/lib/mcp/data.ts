@@ -9,7 +9,7 @@ import { CACHE_TTL, cached } from './cache'
 //   GET /spaces, GET /spaces/:id                (spaces; ACTIVE only)
 //   GET /beauticians                            (public beautician list)
 //   GET /beauticians/:slug                      (only for a slug that is in the public list)
-//   GET /public/spaces/:id/availability         (new public endpoint, backend PR A)
+//   GET /public/spaces/:id/availability         (new public endpoint, backend #192)
 // Never called: /beauticians/:uuid, /beauticians/:id/services (they skip the
 // web-visibility check) and the old /spaces/:id/availability.
 // Every record is reduced to an explicit whitelist before it leaves here:
@@ -265,12 +265,19 @@ export async function loadBeauticianDetail(entry: PublicBeautician): Promise<{ b
   return { beautician: entry, complete: entry.services.length >= entry.serviceCount }
 }
 
-// --- availability (new public endpoint; not live until backend PR A ships) ---
+// --- availability: GET /public/spaces/:id/availability (jasperbug/solobeaute#192) ---
+// Response (200): { success, data: { spaceId, timezone: 'Asia/Taipei', from, to,
+//   minBookingHours, maxAdvanceDays, days: [{ date, dayOfWeek, isOpen, openTime,
+//   closeTime, isOverride, bookedSlots: [{startTime,endTime}], blockedSlots: [...] }] } }
+// Errors: 404 SPACE_NOT_FOUND (not ACTIVE / unknown), 400 INVALID_DATE_RANGE
+// (YYYY-MM-DD, from ≥ yesterday in Taipei, from ≤ to, ≤ 30 days), 429 (60/min per IP).
+// Before #192 is deployed the route does not exist (Fastify default 404).
 
 export type AvailabilitySlot = { startTime: string; endTime: string }
 
 export type AvailabilityDay = {
   date: string
+  dayOfWeek: number | null
   isOpen: boolean
   openTime: string | null
   closeTime: string | null
@@ -279,13 +286,15 @@ export type AvailabilityDay = {
 }
 
 export type AvailabilityResult =
-  | { kind: 'ok'; minBookingHours: number | null; timezone: string; days: AvailabilityDay[] }
+  | { kind: 'ok'; minBookingHours: number | null; maxAdvanceDays: number | null; timezone: string; days: AvailabilityDay[] }
   | { kind: 'not_open' }
   | { kind: 'not_found' }
+  | { kind: 'invalid_range' }
+  | { kind: 'rate_limited' }
   | { kind: 'unavailable' }
 
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/
-const TIME_RE = /^([01]\d|2[0-4]):[0-5]\d$/
+const TIME_RE = /^([01]\d|2[0-3]):[0-5]\d$|^24:00$/
 
 function time(value: unknown): string | null {
   const text = str(value)
@@ -298,31 +307,33 @@ function slots(value: unknown): AvailabilitySlot[] {
   if (!Array.isArray(value)) return []
   return value.flatMap((slot) => {
     if (!isRecord(slot)) return []
-    const startTime = time(slot.startTime ?? slot.start)
-    const endTime = time(slot.endTime ?? slot.end)
+    // Only the times — any other field (ids, names, reasons) is dropped.
+    const startTime = time(slot.startTime)
+    const endTime = time(slot.endTime)
     return startTime && endTime ? [{ startTime, endTime }] : []
-  }).slice(0, 48)
+  }).slice(0, 96)
 }
 
 function toDay(raw: unknown): AvailabilityDay | null {
   if (!isRecord(raw)) return null
   const date = str(raw.date)
-  if (!date || !DATE_RE.test(date.slice(0, 10))) return null
+  if (!date || !DATE_RE.test(date)) return null
+  const dow = num(raw.dayOfWeek)
+  const isOpen = raw.isOpen === true
   return {
-    date: date.slice(0, 10),
-    isOpen: raw.isOpen === true || raw.isAvailable === true,
-    openTime: time(raw.openTime),
-    closeTime: time(raw.closeTime),
-    // Only times — reasons, booking ids and beautician info are dropped.
+    date,
+    dayOfWeek: dow !== null && dow >= 0 && dow <= 6 ? dow : null,
+    isOpen,
+    openTime: isOpen ? time(raw.openTime) : null,
+    closeTime: isOpen ? time(raw.closeTime) : null,
     bookedSlots: slots(raw.bookedSlots),
     blockedSlots: slots(raw.blockedSlots),
   }
 }
 
-function isRouteMissing(json: unknown): boolean {
-  if (!isRecord(json)) return true
-  const code = str(json.code) ?? str(json.error)
-  return code !== 'SPACE_NOT_FOUND'
+function errorCode(json: unknown): string | null {
+  if (!isRecord(json)) return null
+  return str(json.code) ?? str(json.error)
 }
 
 export async function loadAvailability(spaceId: string, from: string, to: string): Promise<AvailabilityResult> {
@@ -335,22 +346,26 @@ export async function loadAvailability(spaceId: string, from: string, to: string
       return { kind: 'unavailable' }
     }
     const { status, json } = upstream
-    if (status === 404) return isRouteMissing(json) ? { kind: 'not_open' } : { kind: 'not_found' }
+    const code = errorCode(json)
+    if (status === 404) return code === 'SPACE_NOT_FOUND' ? { kind: 'not_found' } : { kind: 'not_open' }
+    if (status === 400 && code === 'INVALID_DATE_RANGE') return { kind: 'invalid_range' }
+    if (status === 429) return { kind: 'rate_limited' }
     if (status === 405 || status === 501) return { kind: 'not_open' }
-    if (status !== 200) return { kind: 'unavailable' }
-    if (!isRecord(json) || json.success === false) return { kind: 'not_open' }
+    if (status !== 200 || !isRecord(json) || json.success !== true || !isRecord(json.data)) return { kind: 'unavailable' }
 
-    const data = isRecord(json.data) ? json.data : Array.isArray(json.data) ? { days: json.data } : null
-    if (!data || !Array.isArray(data.days)) return { kind: 'not_open' }
-    const minHours = num(data.minBookingHours) ?? num(data.minimumHours)
+    const data = json.data
+    if (!Array.isArray(data.days)) return { kind: 'unavailable' }
+    const minHours = num(data.minBookingHours)
+    const advance = num(data.maxAdvanceDays)
     return {
       kind: 'ok',
       minBookingHours: minHours !== null && minHours > 0 ? minHours : null,
+      maxAdvanceDays: advance !== null && advance > 0 ? advance : null,
       timezone: str(data.timezone) ?? 'Asia/Taipei',
       days: data.days
         .map(toDay)
         .filter((day): day is AvailabilityDay => day !== null && day.date >= from && day.date <= to)
-        .slice(0, 14),
+        .slice(0, 31),
     }
   })
 }

@@ -6,8 +6,14 @@
 // so the per-IP limit is deliberately generous.
 
 const WINDOW_MS = 60_000
-export const PER_IP_LIMIT = 120
-export const GLOBAL_LIMIT = 600
+function limitFromEnv(name: string, fallback: number): number {
+  const value = Number(process.env[name])
+  return Number.isInteger(value) && value > 0 ? value : fallback
+}
+
+/** Requests per minute; override with MCP_RATE_LIMIT_PER_IP / MCP_RATE_LIMIT_GLOBAL (server env). */
+export const PER_IP_LIMIT = limitFromEnv('MCP_RATE_LIMIT_PER_IP', 120)
+export const GLOBAL_LIMIT = limitFromEnv('MCP_RATE_LIMIT_GLOBAL', 600)
 const MAX_TRACKED_IPS = 5_000
 
 type Window = { start: number; count: number }
