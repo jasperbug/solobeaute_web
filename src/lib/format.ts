@@ -74,6 +74,18 @@ export function resolveImageUrl(path: string | null | undefined) {
   return `${API_ORIGIN}${path}`
 }
 
+/**
+ * 「已認證／Verified」徽章。新版後端（jasperbug/solobeaute#191）只回 isVerified；
+ * 舊版只回 reviewStatus。兩種都要能正確顯示，才能比 #191 先上線。
+ */
+export function isBeauticianVerified(
+  beautician: Pick<BeauticianSummary, 'isVerified' | 'reviewStatus'>
+): boolean {
+  return typeof beautician.isVerified === 'boolean'
+    ? beautician.isVerified
+    : beautician.reviewStatus === 'APPROVED'
+}
+
 export function getBeauticianDiscoveryImage(
   beautician: Pick<BeauticianSummary, 'user' | 'portfolioPreviewUrl' | 'portfolioUrls' | 'announcementImageUrls'>
 ) {
