@@ -11,7 +11,7 @@ import { CheckCircleIcon } from '@/components/ui/Icons'
 import { fetchBeauticianBySlug } from '@/lib/api'
 import { buildBeauticianJsonLd } from '@/lib/beauticianJsonLd'
 import { CATEGORY_OPTIONS, DEFAULT_METADATA_IMAGE, SITE_URL, SOCIAL_LABELS } from '@/lib/constants'
-import { formatExperience, getBeauticianDiscoveryImage, getDisplayInitials, getServiceAreaLabel, normalizeSocialUrl, resolveImageUrl, sortSocialLinks } from '@/lib/format'
+import { formatExperience, getBeauticianDiscoveryImage, getDisplayInitials, getServiceAreaLabel, isBeauticianVerified, normalizeSocialUrl, resolveImageUrl, sortSocialLinks } from '@/lib/format'
 import type { BeauticianDetail } from '@/lib/types'
 
 const SHORT_DESCRIPTION_CHARS = 40
@@ -168,7 +168,7 @@ export default async function BeauticianBrandPage({ params }: BrandPageProps) {
               <div className="space-y-3">
                 <div className="flex flex-wrap items-center gap-3">
                   <h1 className="text-3xl font-semibold text-ink md:text-4xl">{beautician.displayName}</h1>
-                  {beautician.reviewStatus === 'APPROVED' ? (
+                  {isBeauticianVerified(beautician) ? (
                     <Badge tone="verified">
                       <span className="inline-flex items-center gap-1">
                         <CheckCircleIcon className="h-4 w-4" />
