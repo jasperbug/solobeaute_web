@@ -11,7 +11,7 @@ import { localizePath } from '@/i18n/config'
 import { cityPagePath, getCityByName } from '@/lib/cities'
 import { DEFAULT_METADATA_IMAGE, SITE_URL } from '@/lib/constants'
 import { cityNameEn, cityShortEn, equipmentEn, locationEn, serviceTagEn, spaceTypeEn } from '@/lib/en'
-import { buildAppDeepLink, buildShareUrl } from '@/lib/format'
+import { buildAppDeepLink } from '@/lib/format'
 import { localeAlternates, localeUrl, ogLocale } from '@/lib/i18nSeo'
 import {
   buildSpaceDescription,
@@ -98,9 +98,10 @@ export async function generateMetadata({ params }: SpacePageProps): Promise<Meta
 
 /**
  * schema.org ReserveAction for a space. Spaces ARE bookable — by beauty
- * professionals, inside the SoloBeauté app — so the action points at the
- * existing app share link (/share/space/{id}: Android App Links open the app,
- * otherwise the page offers the app). No booking happens on the website.
+ * professionals, inside the SoloBeauté app — so the action points at this
+ * space page's own canonical URL (zh /spaces/{id}, en /en/spaces/{id}), which
+ * crawlers can fetch (/share/ is disallowed in robots.txt). No booking happens
+ * on the website.
  */
 function buildReserveAction(space: PublicSpace, locale: 'zh-TW' | 'en') {
   const isEn = locale === 'en'
@@ -112,7 +113,7 @@ function buildReserveAction(space: PublicSpace, locale: 'zh-TW' | 'en') {
       : '美業職人在 SoloBeauté App 內預約這個空間，屋主確認後成立，租金到現場以現金付給屋主。',
     target: {
       '@type': 'EntryPoint',
-      urlTemplate: buildShareUrl('space', space.id),
+      urlTemplate: isEn ? localeUrl(`/spaces/${space.id}`, 'en') : canonicalUrl(space),
       actionPlatform: [
         'https://schema.org/IOSPlatform',
         'https://schema.org/AndroidPlatform',
