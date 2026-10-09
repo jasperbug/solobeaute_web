@@ -73,8 +73,8 @@ export function buildBeauticianJsonLd(beautician: BeauticianDetail, options: Bea
       '@type': 'Offer',
       '@id': `${url}#offer-${service.id}`,
       name: service.name,
-      price: service.price,
-      priceCurrency: 'TWD',
+      // Only real prices: 0 would read as "free" (no fee claims), so omit it.
+      ...(service.price > 0 ? { price: service.price, priceCurrency: 'TWD' } : {}),
       url,
       ...(duration ? { description: duration } : {}),
       itemOffered: {
