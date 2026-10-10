@@ -9,8 +9,9 @@ import type { AvailabilityDay, AvailabilitySlot } from './data'
 //   Booked / blocked slots themselves are never sent.
 // 'occupied_slots': also include bookedSlots / blockedSlots (times only).
 //
-// Jasper has not decided yet — change AVAILABILITY_EXPOSURE_DEFAULT, or set the
-// server env MCP_AVAILABILITY_EXPOSURE=occupied_slots, to switch.
+// Decided by Jasper (2026-10-10): free_slots only. Leave MCP_AVAILABILITY_EXPOSURE
+// unset in production. Setting it to occupied_slots would also expose booked /
+// blocked times, so only do that with Jasper's sign-off.
 // ---------------------------------------------------------------------------
 
 export type AvailabilityExposure = 'free_slots' | 'occupied_slots'
