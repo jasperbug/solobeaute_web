@@ -164,6 +164,14 @@ function buildJsonLd(space: PublicSpace, summary: string) {
     '@context': 'https://schema.org',
     '@graph': [
       {
+        '@type': 'WebPage',
+        '@id': `${url}#page`,
+        url,
+        name: buildSpaceTitle(space),
+        inLanguage: 'zh-TW',
+        about: { '@id': placeId },
+      },
+      {
         '@type': 'Place',
         '@id': placeId,
         name: space.title,

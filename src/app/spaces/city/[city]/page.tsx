@@ -174,6 +174,7 @@ export default async function CitySpacesPage({ params }: CityPageProps) {
       {
         '@type': 'FAQPage',
         '@id': `${url}#faq`,
+        inLanguage: 'zh-TW',
         mainEntity: faq.map((item) => ({
           '@type': 'Question',
           name: item.question,
