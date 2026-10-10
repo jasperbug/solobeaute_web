@@ -8,7 +8,8 @@ export type ServiceArea = {
 export type SocialLinks = Partial<Record<'instagram' | 'facebook' | 'threads' | 'website', string>>
 
 export type UserSummary = {
-  id: string
+  /** 後端 #191 起，未登入的公開回應不再包含 user.id；官網不讀這個欄位。 */
+  id?: string
   name: string | null
   avatarUrl: string | null
 }
@@ -49,7 +50,7 @@ export type PublicReview = {
 
 export type BeauticianSummary = {
   id: string
-  userId: string
+  userId?: string
   slug: string | null
   displayName: string
   bio: string | null
@@ -63,15 +64,17 @@ export type BeauticianSummary = {
   yearsExperience: number | null
   ratingAvg: number
   ratingCount: number
-  isPro: boolean
-  proExpiresAt: string | null
+  isPro?: boolean
+  proExpiresAt?: string | null
   createdAt: string
   updatedAt: string
-  user: UserSummary
+  user?: UserSummary
   services: BeauticianService[]
   serviceArea: ServiceArea
   portfolioPreviewUrl: string | null
-  reviewStatus: 'APPROVED' | 'PENDING' | 'CHANGES_REQUESTED'
+  /** @deprecated 後端 jasperbug/solobeaute#191 起只回 isVerified；保留做過渡相容，一律用 isBeauticianVerified() 判斷 */
+  reviewStatus?: 'APPROVED' | 'PENDING' | 'CHANGES_REQUESTED'
+  isVerified?: boolean
   serviceCount?: number
 }
 

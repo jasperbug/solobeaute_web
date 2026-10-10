@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
-import { getTranslations } from 'next-intl/server'
+import { getLocale, getTranslations } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 
 import { BeauticianGallery } from '@/components/beautician/BeauticianGallery'
@@ -9,8 +9,9 @@ import { ServiceCard } from '@/components/beautician/ServiceCard'
 import { Badge } from '@/components/ui/Badge'
 import { CheckCircleIcon } from '@/components/ui/Icons'
 import { fetchBeauticianBySlug } from '@/lib/api'
-import { DEFAULT_METADATA_IMAGE, SITE_URL, SOCIAL_LABELS } from '@/lib/constants'
-import { formatExperience, getBeauticianDiscoveryImage, getDisplayInitials, getServiceAreaLabel, normalizeSocialUrl, resolveImageUrl, sortSocialLinks } from '@/lib/format'
+import { buildBeauticianJsonLd } from '@/lib/beauticianJsonLd'
+import { CATEGORY_OPTIONS, DEFAULT_METADATA_IMAGE, SITE_URL, SOCIAL_LABELS } from '@/lib/constants'
+import { formatExperience, getBeauticianDiscoveryImage, getDisplayInitials, getServiceAreaLabel, isBeauticianVerified, normalizeSocialUrl, resolveImageUrl, sortSocialLinks } from '@/lib/format'
 import type { BeauticianDetail } from '@/lib/types'
 
 const SHORT_DESCRIPTION_CHARS = 40
@@ -117,23 +118,17 @@ export default async function BeauticianBrandPage({ params }: BrandPageProps) {
         .filter((value): value is string => Boolean(value))
     )
   ).slice(0, 8)
-  const canonicalUrl = `${SITE_URL}/beautician/${beautician.slug ?? beautician.id}`
-  // Taiwan address levels: city/county (縣市) is the region, district (區) is
-  // the locality. Omit the locality rather than repeating the city.
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'BeautySalon',
-    name: beautician.displayName,
-    description: beautician.bio ?? beautician.specialties.join('、'),
-    url: canonicalUrl,
-    image: heroImage ?? undefined,
-    address: beautician.serviceArea ? {
-      '@type': 'PostalAddress',
-      addressRegion: beautician.serviceArea.city,
-      addressLocality: beautician.serviceArea.district || undefined,
-      addressCountry: 'TW',
-    } : undefined,
-  }
+  const locale = await getLocale()
+  // ProfilePage + Person with services as TWD Offers; no booking entry point
+  // (consumer booking is not open). See lib/beauticianJsonLd.ts.
+  const jsonLd = buildBeauticianJsonLd(beautician, {
+    locale: locale === 'en' ? 'en' : 'zh-TW',
+    image: heroImage,
+    categoryLabel: (category) => {
+      const option = CATEGORY_OPTIONS.find((item) => item.value === category)
+      return option ? t(`categories.${option.labelKey}`) : null
+    },
+  })
 
   return (
     <main className="bg-[var(--color-bg)] pb-20 pt-32">
@@ -173,7 +168,7 @@ export default async function BeauticianBrandPage({ params }: BrandPageProps) {
               <div className="space-y-3">
                 <div className="flex flex-wrap items-center gap-3">
                   <h1 className="text-3xl font-semibold text-ink md:text-4xl">{beautician.displayName}</h1>
-                  {beautician.reviewStatus === 'APPROVED' ? (
+                  {isBeauticianVerified(beautician) ? (
                     <Badge tone="verified">
                       <span className="inline-flex items-center gap-1">
                         <CheckCircleIcon className="h-4 w-4" />

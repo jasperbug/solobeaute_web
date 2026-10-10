@@ -16,7 +16,7 @@ export function FeaturedCarousel({ items }: FeaturedCarouselProps) {
   return (
     <div className="flex snap-x gap-4 overflow-x-auto pb-3">
       {items.map((item) => {
-        const image = resolveImageUrl(item.portfolioPreviewUrl || item.user.avatarUrl || item.portfolioUrls[0])
+        const image = resolveImageUrl(item.portfolioPreviewUrl || item.user?.avatarUrl || item.portfolioUrls[0])
         const serviceArea = getServiceAreaLabel(item.serviceArea)
         const price = getStartingPrice(item)
 
