@@ -8,7 +8,7 @@ export type McpLocale = 'zh-TW' | 'en'
 
 export const NOTICE: Record<McpLocale, string> = {
   'zh-TW':
-    '資料來自 SoloBeauté 官方網站。美業職人預約空間需在 SoloBeauté App 內完成，並由屋主確認；租金到現場以現金付給屋主。價格以 App 內顯示為準。SoloBeauté 目前尚未開放消費者線上預約美業服務。',
+    '資料來自 SoloBeauté 官方網站。美業職人預約空間需在 SoloBeauté App 內完成，並由屋主確認；租金到現場以現金付給屋主。價格以 App 內顯示為準。SoloBeauté 目前尚未開放消費者預約美業服務。',
   en: 'Data from the official SoloBeauté website. Beauty professionals book spaces in the SoloBeauté app, and each booking is confirmed by the host; rent is paid to the host in cash on site. Prices shown in the app prevail. Consumer booking of beauty services is not open yet on SoloBeauté.',
 }
 

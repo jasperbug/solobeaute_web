@@ -103,7 +103,7 @@ export function AboutEn({ report }: { report: PriceReport | null }) {
           <ul className={`list-disc space-y-2 pl-5 text-base leading-8 text-black/70 ${NUM}`}>
             <li><strong className="text-ink">Beauty professionals:</strong> find spaces in the app, compare prices and equipment, message hosts directly and send booking requests; rent is paid to the host on site. Pros can also set up their own brand page.</li>
             <li><strong className="text-ink">Space hosts:</strong> list idle hours, set your own prices and rules, and decide whether to accept or decline every booking. See the <Link href={en('/hosts')} className="text-brand underline underline-offset-4">host guide</Link>.</li>
-            <li><strong className="text-ink">Clients:</strong> online booking isn&apos;t open yet; for now, clients can view pros&apos; brand pages on the website and contact them through the pros&apos; own channels.</li>
+            <li><strong className="text-ink">Clients:</strong> consumer booking isn&apos;t open yet; for now, clients can view pros&apos; brand pages on the website and contact them through the pros&apos; own channels.</li>
           </ul>
         </Section>
 
