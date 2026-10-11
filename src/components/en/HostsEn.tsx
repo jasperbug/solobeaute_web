@@ -44,7 +44,7 @@ function med(summary: RateSummary): string {
 const FAQ: QA[] = [
   {
     question: 'How do I rent out my space to beauty professionals?',
-    answer: 'Download the SoloBeauté app, sign up as a host, and list your space with photos, available hours and an hourly rate. If photography isn’t your thing, our team can help with photos and setting up the listing; the whole process takes about 30 minutes.',
+    answer: 'Download the SoloBeauté app, sign up as a host, and create your space page in the app yourself, with photos, available hours and an hourly rate.',
   },
   {
     question: 'Can I rent out my space for just some of the hours?',
@@ -115,7 +115,7 @@ export function HostsEn({ report }: { report: PriceReport }) {
         <Section id="steps" title="How listing works">
           <ol className={`list-decimal space-y-3 pl-5 text-base leading-8 text-black/70 ${NUM}`}>
             <li>Download the SoloBeauté app and sign up as a host.</li>
-            <li>Prepare photos of the space (entrance, interior, equipment), the hours you can rent out and your hourly rate. If photography isn&apos;t your thing, the team can help with photos and setting up the listing, which takes about 30 minutes.</li>
+            <li>Prepare photos of the space (entrance, interior, equipment), the hours you can rent out and your hourly rate, then create your space page in the app yourself.</li>
             <li>Fill in the space type, equipment list, the services it suits and doesn&apos;t allow, the minimum booking time, and whether there is a camera in the space.</li>
             <li>Beauty professionals find your space in the app, message you and send a booking request; the booking is confirmed only once you accept it.</li>
             <li>On the day, the pro arrives as agreed and pays you the rent in cash on site.</li>
