@@ -59,7 +59,7 @@ function med(summary: RateSummary): string {
 const FAQ: QA[] = [
   {
     question: '怎麼把空間出租給美業職人？',
-    answer: '下載 SoloBeauté App 註冊成屋主，準備好空間照片、可出租的時段和時租價格就能上架。不太會拍照也沒關係，我們團隊可以協助拍攝和上架，整個過程大約 30 分鐘。',
+    answer: '下載 SoloBeauté App 註冊成屋主，準備好空間照片、可出租的時段和時租價格，就能在 App 內自行建立空間頁並上架。',
   },
   {
     question: '店裡只有部分時段空著，也可以出租嗎？',
@@ -132,7 +132,7 @@ export default async function HostsPage() {
         <Section id="steps" title="上架流程">
           <ol className={`list-decimal space-y-3 pl-5 text-base leading-8 text-black/70 ${NUM}`}>
             <li>下載 SoloBeauté App，註冊成屋主。</li>
-            <li>準備空間照片（入口、室內、設備）、可出租的時段和時租價格；不太會拍照的話，團隊可以協助拍攝和上架，大約 30 分鐘。</li>
+            <li>準備空間照片（入口、室內、設備）、可出租的時段和時租價格，在 App 內自行建立空間頁。</li>
             <li>填寫空間類型、設備清單、適合和不開放的服務、最低租用時數，以及空間內有沒有攝影機。</li>
             <li>美業職人在 App 裡看到你的空間，傳訊息詢問、送出預約；你確認後預約才成立。</li>
             <li>當天職人依約到場使用，租金在現場用現金付給你。</li>
