@@ -10,10 +10,12 @@
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test:mcp": "node scripts/mcp-smoke.mjs"
+    "test:mcp": "node scripts/mcp-smoke.mjs",
+    "test:mcp-usage": "node scripts/mcp-usage-test.mjs"
   },
   "dependencies": {
     "@modelcontextprotocol/server": "2.3.1",
+    "@vercel/functions": "3.9.11",
     "dayjs": "^1.11.19",
     "framer-motion": "^12.35.1",
     "next": "^14.2.35",
