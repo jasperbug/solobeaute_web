@@ -5,6 +5,7 @@ import { getLocale } from 'next-intl/server'
 
 import { JsonLd } from '@/components/spaces/JsonLd'
 import { SpaceCard } from '@/components/spaces/SpaceCard'
+import { TopicLinkRow } from '@/components/spaces/TopicLinkRow'
 import { StoreButtons } from '@/components/ui/StoreButtons'
 import { SPACE_CITIES } from '@/lib/cities'
 import {
@@ -41,6 +42,7 @@ import {
 } from '@/lib/cityPagesEn'
 import { SITE_URL } from '@/lib/constants'
 import { cityNameEn, cityShortEn, districtEn, joinEn, monthYearEn } from '@/lib/en'
+import { districtPagePath, getDistrictPageByName, topicLinks, type TopicLink } from '@/lib/topicPages'
 import { localeAlternates, localeUrl, ogLocale } from '@/lib/i18nSeo'
 import { fetchPublicSpaces, formatNtd } from '@/lib/spaces'
 
@@ -109,7 +111,8 @@ export default async function CitySpacesPage({ params }: CityPageProps) {
     notFound()
   }
   if (((await getLocale()) as AppLocale) === 'en') {
-    return <CitySpacesPageEn stats={loaded.stats} allStats={loaded.allStats} />
+    const linksEn = topicLinks(await fetchPublicSpaces(), 'en', loaded.stats.city.name)
+    return <CitySpacesPageEn stats={loaded.stats} allStats={loaded.allStats} needLinks={linksEn} />
   }
 
   const { stats, allStats } = loaded
@@ -124,6 +127,7 @@ export default async function CitySpacesPage({ params }: CityPageProps) {
   const listHeading = buildCityListHeading(stats)
   const sharedNote = buildSharedSpaceNote(stats)
   const districtSections = buildDistrictSections(stats)
+  const needLinks = topicLinks(await fetchPublicSpaces(), 'zh-TW', city.name)
 
   const facts = [
     { label: '空間數', value: `${stats.count} 個` },
@@ -221,6 +225,7 @@ export default async function CitySpacesPage({ params }: CityPageProps) {
             </dl>
           ) : null}
           <p className="text-xs text-black/45">資料日期：{dateLabel}，依 SoloBeauté 上架中的空間即時計算。</p>
+          <TopicLinkRow title={`依需求找${city.short}的空間`} links={needLinks} />
         </header>
 
         {spaces.length > 0 ? (
@@ -248,7 +253,9 @@ export default async function CitySpacesPage({ params }: CityPageProps) {
                 {districtSections.map((section) => (
                   <div key={section.district} id={section.anchor} className="scroll-mt-28 space-y-4" data-city-district>
                     <div className="space-y-1">
-                      <h3 className="text-xl font-semibold text-ink">{section.heading}</h3>
+                      <h3 className="text-xl font-semibold text-ink">
+                        <DistrictHeading city={city.name} district={section.district} heading={section.heading} locale="zh-TW" />
+                      </h3>
                       <p className="max-w-3xl text-sm leading-7 text-black/65 [font-family:var(--font-body)] lining-nums">{section.summary}</p>
                     </div>
                     <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -342,7 +349,7 @@ export default async function CitySpacesPage({ params }: CityPageProps) {
 const CHIP = 'inline-flex min-h-10 items-center rounded-full border border-black/10 bg-white px-4 text-sm text-ink transition hover:border-brand hover:text-brand [font-family:var(--font-body)] lining-nums'
 const en = (path: string) => localizePath(path, 'en')
 
-function CitySpacesPageEn({ stats, allStats }: { stats: CityStats; allStats: CityStats[] }) {
+function CitySpacesPageEn({ stats, allStats, needLinks }: { stats: CityStats; allStats: CityStats[]; needLinks: TopicLink[] }) {
   const { city, spaces } = stats
   const dateLabel = monthYearEn()
   const short = cityShortEn(city)
@@ -453,6 +460,7 @@ function CitySpacesPageEn({ stats, allStats }: { stats: CityStats; allStats: Cit
             </dl>
           ) : null}
           <p className="text-xs text-black/45">Data as of {dateLabel}, calculated live from the spaces currently listed on SoloBeauté.</p>
+          <TopicLinkRow title={`Browse ${short} by need`} links={needLinks} />
         </header>
 
         {spaces.length > 0 ? (
@@ -476,7 +484,9 @@ function CitySpacesPageEn({ stats, allStats }: { stats: CityStats; allStats: Cit
                 {districtSections.map((section) => (
                   <div key={section.district} id={section.anchor} className="scroll-mt-28 space-y-4" data-city-district>
                     <div className="space-y-1">
-                      <h3 className="text-xl font-semibold text-ink">{section.heading}</h3>
+                      <h3 className="text-xl font-semibold text-ink">
+                        <DistrictHeading city={city.name} district={section.district} heading={section.heading} locale="en" />
+                      </h3>
                       <p className="max-w-3xl text-sm leading-7 text-black/65 [font-family:var(--font-body)] lining-nums">{section.summary}</p>
                     </div>
                     <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -542,5 +552,17 @@ function CitySpacesPageEn({ stats, allStats }: { stats: CityStats; allStats: Cit
         </section>
       </div>
     </main>
+  )
+}
+
+/** District heading; links to /spaces/city/{city}/{district} when that page exists. */
+function DistrictHeading({ city, district, heading, locale }: { city: string; district: string; heading: string; locale: AppLocale }) {
+  const def = getDistrictPageByName(city, district)
+  if (!def) return <>{heading}</>
+  const path = districtPagePath(def)
+  return (
+    <Link href={locale === 'en' ? localizePath(path, 'en') : path} className="hover:text-brand">
+      {heading}
+    </Link>
   )
 }
