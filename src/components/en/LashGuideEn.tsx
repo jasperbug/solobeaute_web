@@ -35,11 +35,11 @@ const UPDATED_LABEL = 'October 3, 2026'
 const en = (path: string) => localizePath(path, 'en')
 
 function h1Text(): string {
-  return `${taipeiYear()} studio rental for lash artists: hourly rent, sublets or renting a bed?`
+  return `${taipeiYear()} lash studio rental for lash artists: hourly rent, sublets or renting a bed?`
 }
 
 export function lashGuideTitleEn(): string {
-  return `${taipeiYear()} Studio Rental Prices for Lash Artists | Hourly Rent vs Sublets vs Bed Rental`
+  return `${taipeiYear()} Lash Studio Rental by the Hour | Prices, Sublets and Bed Rental for Lash Artists`
 }
 
 function range(summary: Pick<RateSummary, 'min' | 'max'>): string {
@@ -204,7 +204,6 @@ export function LashGuideEn({ lashSpaces, row, total }: { lashSpaces: PublicSpac
             rows={[
               ['How it is priced', 'By the hour, only when you have a booking', 'Usually by the month; varies by salon'],
               ['When you use it', 'You choose the slot each time you book', 'Usually a fixed slot or a fixed spot'],
-              ['Contract', 'Rented by the hour, no long-term lease', 'Depends on the salon’s contract; ask first'],
               ['Your equipment', 'Bring your own each time, or use what the space has', 'A fixed spot makes it easier to keep your own kit there'],
               ['Best for', 'A client list that isn’t steady yet, or trying out a location', 'A fully booked week and a need for a fixed spot'],
             ]}
@@ -235,9 +234,12 @@ export function LashGuideEn({ lashSpaces, row, total }: { lashSpaces: PublicSpac
         {lashSpaces.length > 0 ? (
           <section className="space-y-5" aria-labelledby="lash-spaces">
             <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-              <h2 id="lash-spaces" className="section-title">Beauty workspaces suited to lash work</h2>
+              <h2 id="lash-spaces" className="section-title">Lash studios you can rent by the hour</h2>
               <span className={`text-sm text-black/55 ${NUM}`}>{lashSpaces.length} {lashSpaces.length === 1 ? 'space' : 'spaces'}</span>
             </div>
+            <p className={`max-w-3xl text-sm leading-7 text-black/65 ${NUM}`} data-lash-list-note>
+              Of the {lashSpaces.length} spaces hosts mark as suitable for eyelash extensions or lash care, {lashSpaces.filter((s) => s.equipment.includes('美容床')).length} list a beauty bed and {lashSpaces.filter((s) => s.spaceType === 'PRIVATE_ROOM').length} are private rooms. To search by equipment, see <Link href={en('/spaces/beauty-bed')} className="text-brand underline underline-offset-4">beauty bed rental</Link>; if you also do brows, see <Link href={en('/spaces/service/brow')} className="text-brand underline underline-offset-4">brow and PMU studio rental</Link>.
+            </p>
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {lashSpaces.map((space) => <SpaceCard key={space.id} space={space} locale="en" />)}
             </div>

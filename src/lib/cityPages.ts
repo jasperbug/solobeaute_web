@@ -356,6 +356,11 @@ export { cityPagePath, getCityBySlug }
 /** Cities whose space list is split into per-district subsections. */
 const DISTRICT_SECTION_CITIES = ['new-taipei', 'taoyuan']
 
+/** True when the city page renders per-district sections (with #district-… anchors). */
+export function hasDistrictSections(citySlug: string): boolean {
+  return DISTRICT_SECTION_CITIES.includes(citySlug)
+}
+
 export type DistrictSection = {
   district: string
   /** e.g. 新北板橋美業空間時租 */

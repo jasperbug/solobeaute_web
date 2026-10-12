@@ -37,7 +37,7 @@ const UPDATED = '2026-10-03'
 const UPDATED_LABEL = '2026 年 10 月 3 日'
 
 function h1Text(): string {
-  return `${taipeiYear()} 美睫師租工作室：時租、分租、租位怎麼選`
+  return `${taipeiYear()} 美睫工作室時租：美睫師時租、分租、租位怎麼選`
 }
 
 function range(summary: Pick<RateSummary, 'min' | 'max'>): string {
@@ -84,7 +84,7 @@ export async function generateMetadata(): Promise<Metadata> {
   } catch (error) {
     console.error('[lash-guide] metadata fallback:', error)
   }
-  const title = isEn ? lashGuideTitleEn() : `${taipeiYear()} 美睫師租工作室行情｜時租、分租、租位比較`
+  const title = isEn ? lashGuideTitleEn() : `${taipeiYear()} 美睫工作室時租・出租行情｜美睫師時租、分租、租位比較`
   const social = isEn ? `${title} | SoloBeauté` : `${title}｜SoloBeauté`
   return {
     title,
@@ -233,7 +233,6 @@ export default async function LashArtistStudioPage() {
             rows={[
               ['怎麼計價', '按小時，有預約才租', '常見以月計，依各家而定'],
               ['使用時段', '每次預約時選', '常見是固定時段或固定位子'],
-              ['合約', '按小時租，不簽長約', '依各家合約而定，先問清楚'],
               ['器材擺放', '每次自己帶，或用空間的設備', '固定位子比較容易放自己的器材'],
               ['適合誰', '客人還不固定、想先試地點', '每週固定排滿、需要固定位置'],
             ]}
@@ -264,9 +263,12 @@ export default async function LashArtistStudioPage() {
         {lashSpaces.length > 0 ? (
           <section className="space-y-5" aria-labelledby="lash-spaces">
             <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-              <h2 id="lash-spaces" className="section-title">適合美睫的美業空間</h2>
+              <h2 id="lash-spaces" className="section-title">可以按小時租的美睫工作室</h2>
               <span className={`text-sm text-black/55 ${NUM}`}>共 {lashSpaces.length} 間</span>
             </div>
+            <p className={`max-w-3xl text-sm leading-7 text-black/65 ${NUM}`} data-lash-list-note>
+              屋主標示適合嫁接睫毛或睫毛管理的 {lashSpaces.length} 間空間，其中 {lashSpaces.filter((s) => s.equipment.includes('美容床')).length} 間有美容床、{lashSpaces.filter((s) => s.spaceType === 'PRIVATE_ROOM').length} 間是獨立房間。依設備找可以看<Link href="/spaces/beauty-bed" className="text-brand underline underline-offset-4">美容床位時租</Link>，同時接霧眉的美睫師可以看<Link href="/spaces/service/brow" className="text-brand underline underline-offset-4">霧眉・紋繡工作室時租</Link>。
+            </p>
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {lashSpaces.map((space) => <SpaceCard key={space.id} space={space} />)}
             </div>

@@ -467,7 +467,14 @@ export default async function PriceReportPage() {
                 <p className={`text-sm leading-7 text-black/55 ${NUM}`}>
                   {row.key === 'lash' ? (
                     <>美睫通常需要美容床和照明，挑空間時先看設備清單；更多美睫師租工作室的比較，見<Link href="/guides/lash-artist-studio" className="text-brand underline underline-offset-4">美睫師租工作室</Link>。</>
-                  ) : PROFESSION_NOTES[row.key]}
+                  ) : (
+                    <>
+                      {PROFESSION_NOTES[row.key]}
+                      <Link href={`/spaces/service/${row.key}`} className="ml-1 text-brand underline underline-offset-4">
+                        {row.key === 'nail' ? '看可以按小時租的美甲工作室' : '看可以按小時租的霧眉・紋繡工作室'}
+                      </Link>
+                    </>
+                  )}
                 </p>
               </div>
             ))}

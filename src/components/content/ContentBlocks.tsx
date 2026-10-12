@@ -195,6 +195,8 @@ export function LinkChips({ title, id, links }: { title: string; id: string; lin
 export const TOPIC_LINKS: Array<{ href: string; label: string }> = [
   { href: '/spaces/price-report', label: '2026 美業空間時租行情' },
   { href: '/guides/lash-artist-studio', label: '美睫師租工作室' },
+  { href: '/spaces/service/nail', label: '美甲工作室時租' },
+  { href: '/spaces/service/brow', label: '霧眉・紋繡工作室時租' },
   { href: '/guides/hourly-vs-monthly-rent', label: '時租和月租怎麼比' },
   { href: '/hosts', label: '屋主出租閒置時段' },
   { href: '/spaces', label: '全部美業空間' },
@@ -206,6 +208,8 @@ export const TOPIC_LINKS: Array<{ href: string; label: string }> = [
 export const TOPIC_LINKS_EN: Array<{ href: string; label: string }> = [
   { href: '/spaces/price-report', label: '2026 hourly rental prices' },
   { href: '/guides/lash-artist-studio', label: 'Studios for lash artists' },
+  { href: '/spaces/service/nail', label: 'Nail studio rental' },
+  { href: '/spaces/service/brow', label: 'Brow and PMU studio rental' },
   { href: '/guides/hourly-vs-monthly-rent', label: 'Hourly vs monthly rent' },
   { href: '/hosts', label: 'For space hosts' },
   { href: '/spaces', label: 'All beauty workspaces' },

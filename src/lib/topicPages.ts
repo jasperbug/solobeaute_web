@@ -10,9 +10,10 @@
 import type { QA } from '@/components/content/ContentBlocks'
 import { localizePath, type AppLocale } from '@/i18n/config'
 import { cityPagePath, getCityByName, getCityBySlug, type SpaceCity } from '@/lib/cities'
-import { SERVICE_GROUPS, dataDateLabel, median } from '@/lib/cityPages'
+import { SERVICE_GROUPS, dataDateLabel, hasDistrictSections, median } from '@/lib/cityPages'
 import {
   SERVICE_GROUP_EN,
+  serviceTagEn,
   cityNameEn,
   cityShortEn,
   districtEn,
@@ -35,7 +36,8 @@ export function isTopicIndexable(count: number): boolean {
 
 // --- definitions -------------------------------------------------------------
 
-export type TopicKey = 'shared' | 'daily' | 'beauty-bed'
+export type TopicKey = 'shared' | 'daily' | 'beauty-bed' | ServiceKey
+export type ServiceKey = 'nail' | 'brow'
 
 type TopicDef = {
   key: TopicKey
@@ -71,7 +73,34 @@ export const TOPIC_PAGES: TopicDef[] = [
     labelEn: 'Beauty bed',
     match: (s) => s.equipment.includes('美容床'),
   },
+  {
+    key: 'nail',
+    path: '/spaces/service/nail',
+    labelZh: '美甲工作室',
+    labelEn: 'Nail studios',
+    // Same matcher as the price report's 美甲師 row and the city pages (「美甲」).
+    match: (s) => s.recommendedServices.some(serviceGroup('nail').match),
+  },
+  {
+    key: 'brow',
+    path: '/spaces/service/brow',
+    labelZh: '霧眉・紋繡工作室',
+    labelEn: 'Brow and PMU studios',
+    // 「霧眉」 (same matcher as the price report's 霧眉師 row) plus the other
+    // permanent-makeup tags hosts use.
+    match: (s) => s.recommendedServices.some((x) => serviceGroup('brow').match(x) || BROW_EXTRA.includes(x)),
+  },
 ]
+
+const BROW_EXTRA = ['髮際線紋綉', '黑眼圈遮瑕']
+
+function serviceGroup(key: string) {
+  const group = SERVICE_GROUPS.find((g) => g.key === key)
+  if (!group) throw new Error(`unknown service group ${key}`)
+  return group
+}
+
+export const SERVICE_SLUGS: ServiceKey[] = ['nail', 'brow']
 
 export function getTopic(key: TopicKey): TopicDef {
   const topic = TOPIC_PAGES.find((t) => t.key === key)
@@ -79,10 +108,25 @@ export function getTopic(key: TopicKey): TopicDef {
   return topic
 }
 
-export type DistrictPageDef = { citySlug: string; slug: string; district: string }
+export type DistrictPageDef = {
+  citySlug: string
+  slug: string
+  district: string
+  /** Name used in copy: 中壢 / 中山區 (中山 alone is ambiguous). */
+  label: string
+  /**
+   * workspace: 「中壢美業空間時租」.
+   * studio: 「台北中山區美容工作室時租」; the title names the space type only when
+   * every space there has it (e.g. 獨立房間). Never 「共享」 unless the spaces are.
+   */
+  style: 'workspace' | 'studio'
+}
 
 /** District pages that exist. Add a district only when it has ≥ 2 spaces. */
-export const DISTRICT_PAGES: DistrictPageDef[] = [{ citySlug: 'taoyuan', slug: 'zhongli', district: '中壢區' }]
+export const DISTRICT_PAGES: DistrictPageDef[] = [
+  { citySlug: 'taoyuan', slug: 'zhongli', district: '中壢區', label: '中壢', style: 'workspace' },
+  { citySlug: 'taipei', slug: 'zhongshan', district: '中山區', label: '中山區', style: 'studio' },
+]
 
 export function districtPagePath(def: DistrictPageDef): string {
   return `/spaces/city/${def.citySlug}/${def.slug}`
@@ -176,10 +220,6 @@ function minHoursRange(spaces: PublicSpace[]): string | null {
   return min === max ? `${min}` : `${min}–${max}`
 }
 
-function stripDistrictSuffix(district: string): string {
-  return district.length > 2 && district.endsWith('區') ? district.slice(0, -1) : district
-}
-
 function locZh(space: PublicSpace): string {
   return `${space.city ? shortCityName(space.city) : ''}${space.district ?? ''}`
 }
@@ -263,6 +303,9 @@ function relatedLinks(current: string, locale: AppLocale) {
     { href: '/spaces/shared', label: '美業共享空間時租' },
     { href: '/spaces/daily', label: '美容工作室日租・半日租' },
     { href: '/spaces/beauty-bed', label: '美容床位時租' },
+    { href: '/spaces/service/nail', label: '美甲工作室時租' },
+    { href: '/spaces/service/brow', label: '霧眉・紋繡工作室時租' },
+    { href: '/guides/lash-artist-studio', label: '美睫工作室時租' },
     { href: '/spaces', label: '全台美業空間' },
     { href: '/spaces/price-report', label: '美業空間時租行情' },
     { href: '/guides/hourly-vs-monthly-rent', label: '時租和月租怎麼選' },
@@ -271,6 +314,9 @@ function relatedLinks(current: string, locale: AppLocale) {
     { href: '/spaces/shared', label: 'Shared beauty workspaces' },
     { href: '/spaces/daily', label: 'Day and half-day rental' },
     { href: '/spaces/beauty-bed', label: 'Beauty bed rental' },
+    { href: '/spaces/service/nail', label: 'Nail studio rental' },
+    { href: '/spaces/service/brow', label: 'Brow and PMU studio rental' },
+    { href: '/guides/lash-artist-studio', label: 'Lash studio rental' },
     { href: '/spaces', label: 'All beauty workspaces' },
     { href: '/spaces/price-report', label: 'Hourly rate report' },
     { href: '/guides/hourly-vs-monthly-rent', label: 'Hourly vs monthly rent' },
@@ -945,9 +991,266 @@ function buildBeautyBed(all: PublicSpace[], locale: AppLocale): TopicView {
   }
 }
 
+
+// --- P7 nail / P8 brow (service pages) -----------------------------------------
+
+type ServiceCopy = {
+  subs: string[]
+  equipment: string[]
+  reportAnchor: string
+  zh: { title: string; og: string; h1: string; tag: string; noun: string; profession: string; itemList: string; crumb: string }
+  en: { title: string; og: string; h1: string; tag: string; noun: string; profession: string; itemList: string; crumb: string }
+}
+
+const SERVICE_COPY: Record<ServiceKey, ServiceCopy> = {
+  nail: {
+    subs: ['手美甲', '腳美甲'],
+    equipment: ['美甲桌椅', '光療燈', '美甲吸塵器', '桌上型工作燈', '美容燈', '延長線'],
+    reportAnchor: '#nail',
+    zh: { title: '美甲工作室時租｜美甲座位按小時租', og: '美甲工作室時租｜SoloBeauté', h1: '美甲工作室時租', tag: '美甲師・工作室時租', noun: '美甲', profession: '美甲師', itemList: 'SoloBeauté 適合美甲的美業空間', crumb: '美甲工作室' },
+    en: { title: 'Nail Studio Rental by the Hour in Taiwan', og: 'Nail studio rental by the hour | SoloBeauté', h1: 'Nail studio rental by the hour', tag: 'For nail artists', noun: 'nails', profession: 'nail artists', itemList: 'Beauty workspaces on SoloBeauté suitable for nails', crumb: 'Nail studios' },
+  },
+  brow: {
+    subs: ['霧眉（唇）', '霧眉除色', '髮際線紋綉', '黑眼圈遮瑕'],
+    equipment: ['美容床', '美容燈', '消毒櫃', '拋棄式床紙'],
+    reportAnchor: '#brow',
+    zh: { title: '霧眉・紋繡工作室時租｜按小時租美容床位', og: '霧眉・紋繡工作室時租｜SoloBeauté', h1: '霧眉・紋繡工作室時租', tag: '霧眉師・紋繡師', noun: '霧眉或紋繡', profession: '霧眉師', itemList: 'SoloBeauté 適合霧眉、紋繡的美業空間', crumb: '霧眉・紋繡工作室' },
+    en: { title: 'Brow and PMU Studio Rental by the Hour in Taiwan', og: 'Brow and PMU studio rental by the hour | SoloBeauté', h1: 'Brow and PMU studio rental by the hour', tag: 'For brow and PMU artists', noun: 'brow or permanent makeup work', profession: 'brow artists', itemList: 'Beauty workspaces on SoloBeauté suitable for brow and permanent makeup', crumb: 'Brow and PMU studios' },
+  },
+}
+
+const SUB_EN: Record<string, string> = {
+  手美甲: 'Manicure',
+  腳美甲: 'Pedicure',
+  '霧眉（唇）': 'Brow / lip embroidery',
+  霧眉除色: 'Brow tattoo removal',
+  髮際線紋綉: 'Hairline tattoo',
+  黑眼圈遮瑕: 'Dark circle camouflage',
+}
+
+function buildService(key: ServiceKey, all: PublicSpace[], locale: AppLocale): TopicView {
+  const topic = getTopic(key)
+  const copy = SERVICE_COPY[key]
+  const isEn = locale === 'en'
+  const L = linker(locale)
+  const { dateLabel, cta, howTo } = common(locale)
+  const spaces = ordered(all.filter(topic.match))
+  const n = spaces.length
+  const hourly = rateStats(spaces, 'hourlyRate')
+  const types = typeCounts(spaces)
+  const subs = copy.subs.map((label) => ({ label, n: spaces.filter((s) => s.recommendedServices.includes(label)).length })).filter((x) => x.n > 0)
+  const equipment = copy.equipment.map((label) => ({ label, n: countWith(spaces, label) })).filter((e) => e.n > 0).sort((a, b) => b.n - a.n)
+  const groups = groupSpacesByCity(spaces)
+  const privateish = spaces.filter((s) => s.spaceType === 'PRIVATE_ROOM' || s.spaceType === 'CURTAIN_PARTITION').length
+  const reportHref = L(`/spaces/price-report${copy.reportAnchor}`)
+  const cityRows: Cell[][] = groups.map((g) => {
+    const city = getCityByName(g.city)
+    const r = rateStats(g.spaces, 'hourlyRate')
+    const name = isEn ? cityShortEn(g.city) : shortCityName(g.city)
+    return [
+      city ? { text: name, href: L(cityPagePath(city)) } : name,
+      isEn ? `${g.spaces.length}` : `${g.spaces.length} 間`,
+      isEn ? rangeEn(r) : rangeZh(r),
+      r.n >= 2 ? money(r.median) : '—',
+    ]
+  })
+  const typeRows: Cell[][] = types.map((t) => {
+    const r = rateStats(t.spaces, 'hourlyRate')
+    return [isEn ? spaceTypeEn(t.type) : spaceTypeLabel(t.type), isEn ? `${t.spaces.length}` : `${t.spaces.length} 間`, isEn ? rangeEn(r) : rangeZh(r), r.n >= 2 ? money(r.median) : '—']
+  })
+  const top2 = equipment.slice(0, 2)
+
+  if (!isEn) {
+    const c = copy.zh
+    const blocks: TopicBlock[] = []
+    if (n > 0) {
+      if (subs.length) {
+        blocks.push({
+          id: 'services',
+          title: key === 'nail' ? '手美甲、腳美甲各幾間' : '霧眉、除色、髮際線、黑眼圈各幾間',
+          note: '依屋主標示的建議服務；一個空間可以標示多種服務。',
+          table: { caption: `${c.noun}細項`, head: ['服務', '空間數'], rows: subs.map((x) => [x.label, `${x.n} / ${n} 間`]) },
+        })
+      }
+      if (equipment.length) {
+        blocks.push({
+          id: 'equipment',
+          title: key === 'nail' ? '美甲桌椅和相關設備' : '美容床、消毒櫃等設備',
+          note: '依屋主在空間頁列出的設備計算。',
+          table: { caption: `適合${c.noun}的空間設備`, head: ['設備', '有的空間數'], rows: equipment.map((e) => [e.label, `${e.n} / ${n} 間`]) },
+        })
+      }
+      blocks.push({
+        id: 'by-type',
+        title: '獨立房間、拉簾隔間還是開放空間',
+        note: '依需要的隱私程度選擇空間類型；時租中位數只在同類型有 2 個以上空間時顯示。',
+        table: { caption: `適合${c.noun}的空間類型`, head: ['類型', '空間數', '時租', '時租中位數'], rows: typeRows },
+      })
+      blocks.push({
+        id: 'by-city',
+        title: '依縣市的時租',
+        note: '時租中位數只在同縣市有 2 個以上空間時顯示。',
+        table: { caption: `適合${c.noun}的空間：依縣市`, head: ['縣市', '空間數', '時租', '時租中位數'], rows: cityRows },
+        links: [{ href: reportHref, label: `${c.profession}租工作室的行情摘要（時租行情報告）→` }],
+      })
+    }
+    const faq: QA[] = n > 0
+      ? [
+          {
+            question: `${c.h1.replace('時租', '')}時租多少錢？`,
+            answer: `截至 ${dateLabel}，SoloBeauté 上屋主標示適合${c.noun}的 ${n} 個空間，時租 ${rangeZh(hourly)}${hourly.n >= 2 ? `，中位數 ${money(hourly.median)}` : ''}，分布${cityListZh(spaces)}。`,
+          },
+          {
+            question: key === 'nail' ? '手美甲、腳美甲都可以做嗎？' : '霧眉以外，除色、髮際線、黑眼圈也可以做嗎？',
+            answer: `依屋主標示，${n} 個空間中，${subs.map((x) => `${x.n} 個適合${x.label}`).join('、')}。每個空間適合的服務，以空間頁上屋主的標示為準。`,
+          },
+          {
+            question: key === 'nail' ? '租美甲工作室，有美甲桌椅嗎？' : `${c.noun}的空間有獨立房間或拉簾隔間嗎？`,
+            answer: key === 'nail'
+              ? `看屋主列出的設備。${n} 個空間中，${equipment.length ? equipment.map((e) => `${e.n} 個有${e.label}`).join('、') : '目前沒有列出美甲相關設備'}。設備清單沒列的東西，租之前先在 App 傳訊息問屋主。`
+              : `有。${n} 個空間中，${types.map((t) => `${spaceTypeLabel(t.type)} ${t.spaces.length} 個`).join('、')}${equipment.find((e) => e.label === '消毒櫃') ? `；${equipment.find((e) => e.label === '消毒櫃')?.n} 個有消毒櫃` : ''}。`,
+          },
+        ]
+      : []
+    return {
+      locale,
+      path: topic.path,
+      count: n,
+      indexable: isTopicIndexable(n),
+      title: c.title,
+      ogTitle: c.og,
+      description: n > 0
+        ? `${c.h1} ${rangeZh(hourly)}：SoloBeauté 上有 ${n} 個美業空間由屋主標示適合${c.noun}${top2.length ? `，其中 ${top2.map((e) => `${e.n} 個有${e.label}`).join('、')}` : ''}，分布${cityListZh(spaces)}。在 App 預約，現場付現。`
+        : `${c.h1}。新空間陸續上架中，下載 SoloBeauté App 查看最新空間。`,
+      tag: c.tag,
+      h1: c.h1,
+      breadcrumbs: [{ label: '首頁', path: '/' }, { label: '美業空間', path: '/spaces' }, { label: c.crumb }],
+      lead: n > 0
+        ? `截至 ${dateLabel}，SoloBeauté 上有 ${n} 個美業空間由屋主標示適合${c.noun}，時租 ${rangeZh(hourly)}${hourly.n >= 2 ? `，中位數 ${money(hourly.median)}` : ''}，分布${cityListZh(spaces)}。`
+        : `截至 ${dateLabel}，SoloBeauté 上還沒有屋主標示適合${c.noun}的空間，新空間陸續上架中。`,
+      intro: [
+        n > 0
+          ? `${top2.length ? `其中 ${top2.map((e) => `${e.n} 個有${e.label}`).join('、')}；` : ''}獨立房間或拉簾隔間 ${privateish} 個。適合的服務和設備以屋主在空間頁的標示為準，沒列在清單的東西，租之前先跟屋主確認。`
+          : '適合的服務和設備以屋主在空間頁的標示為準。',
+        howTo,
+      ],
+      facts: [
+        { label: `適合${c.noun}`, value: `${n} 間` },
+        { label: '時租', value: rangeZh(hourly) },
+        { label: '時租中位數', value: hourly.n >= 2 ? money(hourly.median) : '—' },
+        key === 'nail'
+          ? { label: '有美甲桌椅', value: `${countWith(spaces, '美甲桌椅')} 間` }
+          : { label: '有消毒櫃', value: `${countWith(spaces, '消毒櫃')} 間` },
+      ],
+      dateNote: `資料日期：${dateLabel}，依 SoloBeauté 上架中的空間即時計算，和時租行情報告用同一份資料。`,
+      noindexNote: noindexNote(n, locale),
+      blocks,
+      lists: n > 0 ? [{ id: 'spaces', title: `適合${c.noun}的空間（${n} 間）`, spaces }] : [],
+      faqTitle: `${c.h1.replace('時租', '')}常見問題`,
+      faq,
+      related: { title: '繼續看', links: relatedLinks(topic.path, locale) },
+      cta,
+      itemListName: c.itemList,
+    }
+  }
+
+  const c = copy.en
+  const blocks: TopicBlock[] = []
+  if (n > 0) {
+    if (subs.length) {
+      blocks.push({
+        id: 'services',
+        title: key === 'nail' ? 'Manicure and pedicure' : 'Brows, removal, hairline and dark-circle work',
+        note: 'Based on the services hosts mark; a space can be marked for several.',
+        table: { caption: 'Services', head: ['Service', 'Spaces'], rows: subs.map((x) => [SUB_EN[x.label] ?? serviceTagEn(x.label), `${x.n} / ${n}`]) },
+      })
+    }
+    if (equipment.length) {
+      blocks.push({
+        id: 'equipment',
+        title: key === 'nail' ? 'Nail tables and related equipment' : 'Beauty beds, sterilizing cabinets and more',
+        note: 'Based on the equipment hosts list on each space page.',
+        table: { caption: 'Equipment', head: ['Equipment', 'Spaces with it'], rows: equipment.map((e) => [equipmentEn(e.label), `${e.n} / ${n}`]) },
+      })
+    }
+    blocks.push({
+      id: 'by-type',
+      title: 'Private room, curtained partition or open space',
+      note: 'Choose by how much privacy you need. The median is shown only when a type has 2 or more spaces.',
+      table: { caption: 'Space types', head: ['Type', 'Spaces', 'Hourly rate', 'Median'], rows: typeRows },
+    })
+    blocks.push({
+      id: 'by-city',
+      title: 'Hourly rates by city',
+      note: 'The median is shown only when a city has 2 or more spaces.',
+      table: { caption: 'By city', head: ['City', 'Spaces', 'Hourly rate', 'Median'], rows: cityRows },
+      links: [{ href: reportHref, label: `Rate summary for ${c.profession} (hourly rate report) →` }],
+    })
+  }
+  const faq: QA[] = n > 0
+    ? [
+        {
+          question: key === 'nail' ? 'How much does a nail studio cost per hour?' : 'How much does a brow or PMU studio cost per hour?',
+          answer: `As of ${dateLabel}, the ${plural(n, 'space')} on SoloBeauté that hosts mark as suitable for ${c.noun} charge ${rangeEn(hourly)} per hour${hourly.n >= 2 ? `, with a median of ${money(hourly.median)}` : ''}, in ${cityListEnOf(spaces)}.`,
+        },
+        {
+          question: key === 'nail' ? 'Can I do both manicures and pedicures?' : 'Besides brows, can I do removal, hairline or dark-circle work?',
+          answer: `Based on what hosts mark, of the ${plural(n, 'space')}, ${joinEn(subs.map((x) => `${x.n} suit ${(SUB_EN[x.label] ?? x.label).toLowerCase()}`))}. Check each space page for the services the host lists.`,
+        },
+        {
+          question: key === 'nail' ? 'Do nail studios come with a nail table?' : 'Are there private rooms or curtained partitions?',
+          answer: key === 'nail'
+            ? `It depends on the equipment the host lists. Of the ${plural(n, 'space')}, ${equipment.length ? joinEn(equipment.map((e) => `${e.n} list ${equipmentEn(e.label).toLowerCase()}`)) : 'none list nail equipment yet'}. For anything not listed, message the host in the app before you book.`
+            : `Yes. Of the ${plural(n, 'space')}, ${joinEn(types.map((t) => plural(t.spaces.length, spaceTypeEn(t.type).toLowerCase())))}${equipment.find((e) => e.label === '消毒櫃') ? `; ${equipment.find((e) => e.label === '消毒櫃')?.n} list a sterilizing cabinet` : ''}.`,
+        },
+      ]
+    : []
+  return {
+    locale,
+    path: topic.path,
+    count: n,
+    indexable: isTopicIndexable(n),
+    title: c.title,
+    ogTitle: c.og,
+    description: n > 0
+      ? `${c.h1} from ${rangeEn(hourly)}: ${plural(n, 'workspace')} on SoloBeauté that hosts mark as suitable for ${c.noun}${top2.length ? `; ${joinEn(top2.map((e) => `${e.n} list ${equipmentEn(e.label).toLowerCase()}`))}` : ''}. In ${cityListEnOf(spaces)}. Book in the app and pay the host in cash on site.`
+      : `${c.h1}. New spaces are being listed; download the SoloBeauté app to see the latest.`,
+    tag: c.tag,
+    h1: c.h1,
+    breadcrumbs: [{ label: 'Home', path: '/' }, { label: 'Beauty workspaces', path: '/spaces' }, { label: c.crumb }],
+    lead: n > 0
+      ? `As of ${dateLabel}, hosts mark ${plural(n, 'beauty workspace')} on SoloBeauté as suitable for ${c.noun}, at ${rangeEn(hourly)} per hour${hourly.n >= 2 ? ` (median ${money(hourly.median)})` : ''}, in ${cityListEnOf(spaces)}.`
+      : `As of ${dateLabel}, no host on SoloBeauté has marked a space as suitable for ${c.noun} yet. New spaces are being listed.`,
+    intro: [
+      n > 0
+        ? `${top2.length ? `${joinEn(top2.map((e) => `${e.n} list ${equipmentEn(e.label).toLowerCase()}`))}; ` : ''}${privateish} are private rooms or curtained partitions. Services and equipment are as marked by the host on each space page; for anything not listed, check with the host before you book.`
+        : 'Services and equipment are as marked by the host on each space page.',
+      howTo,
+    ],
+    facts: [
+      { label: key === 'nail' ? 'Suitable for nails' : 'Suitable for brows / PMU', value: `${n}` },
+      { label: 'Hourly rate', value: rangeEn(hourly) },
+      { label: 'Median', value: hourly.n >= 2 ? money(hourly.median) : '—' },
+      key === 'nail'
+        ? { label: 'With a nail table', value: `${countWith(spaces, '美甲桌椅')}` }
+        : { label: 'With a sterilizing cabinet', value: `${countWith(spaces, '消毒櫃')}` },
+    ],
+    dateNote: `Data as of ${dateLabel}, calculated live from spaces currently listed on SoloBeauté (the same data as the hourly rate report).`,
+    noindexNote: noindexNote(n, locale),
+    blocks,
+    lists: n > 0 ? [{ id: 'spaces', title: `Spaces suitable for ${c.noun} (${n})`, spaces }] : [],
+    faqTitle: `${c.crumb}: FAQ`,
+    faq,
+    related: { title: 'Keep reading', links: relatedLinks(topic.path, locale) },
+    cta,
+    itemListName: c.itemList,
+  }
+}
+
 export function buildTopicView(key: TopicKey, all: PublicSpace[], locale: AppLocale): TopicView {
   if (key === 'shared') return buildShared(all, locale)
   if (key === 'daily') return buildDaily(all, locale)
+  if (key === 'nail' || key === 'brow') return buildService(key, all, locale)
   return buildBeautyBed(all, locale)
 }
 
@@ -964,14 +1267,35 @@ export function buildDistrictView(def: DistrictPageDef, all: PublicSpace[], loca
   const hourly = rateStats(spaces, 'hourlyRate')
   const types = typeCounts(spaces)
   const services = serviceCounts(spaces)
-  const distinctServices = Array.from(new Set(spaces.flatMap((s) => s.recommendedServices)))
   const withDay = spaces.filter(getTopic('daily').match).length
   const cityPath = cityPagePath(city)
   const otherDistricts = Array.from(new Set(all.filter((s) => s.city === city.name && s.district && s.district !== def.district).map((s) => s.district as string)))
     .map((district) => ({ district, spaces: all.filter((s) => s.city === city.name && s.district === district) }))
     .sort((a, b) => b.spaces.length - a.spaces.length || a.district.localeCompare(b.district, 'zh-Hant'))
-  const short = stripDistrictSuffix(def.district)
+  const short = def.label
   const shortEn = districtShortEn(def.district, city.name)
+  const studio = def.style === 'studio'
+  const allPrivate = n > 0 && spaces.every((s) => s.spaceType === 'PRIVATE_ROOM')
+  const noun = studio ? '美容工作室' : '美業空間'
+  const nounEn = studio ? (allPrivate ? 'beauty rooms' : 'beauty studios') : 'beauty workspaces'
+  const NounEn = nounEn.charAt(0).toUpperCase() + nounEn.slice(1)
+  const TitleNounEn = NounEn.replace(/\b\w/g, (c) => c.toUpperCase())
+  const h1Zh = studio ? `${city.short}${def.district}${noun}時租` : `${short}${noun}時租`
+  const titleZh = studio
+    ? `${h1Zh}｜${allPrivate ? '獨立房間' : '美業空間出租'}`
+    : `${short}美業空間時租｜${short}美容工作室出租`
+  // Theme pages that contain at least one space of this district.
+  const related = relatedLinks(path, locale).filter((link) => {
+    const topic = TOPIC_PAGES.find((t) => L(t.path) === link.href)
+    return !topic || spaces.some(topic.match)
+  })
+  const perSpaceServices: Cell[][] = spaces.map((s) => [
+    spaceCell(s, L),
+    isEn ? spaceTypeEn(s.spaceType) : spaceTypeLabel(s.spaceType),
+    s.recommendedServices.length
+      ? (isEn ? s.recommendedServices.map(serviceTagEn).join(', ') : s.recommendedServices.join('、'))
+      : '—',
+  ])
   const about = {
     '@type': 'AdministrativeArea',
     name: isEn ? `${districtEn(def.district, city.name)}, ${cityNameEn(city.name)}` : `${city.name}${def.district}`,
@@ -985,7 +1309,8 @@ export function buildDistrictView(def: DistrictPageDef, all: PublicSpace[], loca
     hasRate(s.fullDayRate) ? formatNtd(s.fullDayRate) : '—',
     hasRate(s.minimumHours) ? (isEn ? `${s.minimumHours} h` : `${s.minimumHours} 小時`) : '—',
   ])
-  const districtAnchor = (district: string) => `${L(cityPath)}#district-${encodeURIComponent(district)}`
+  const districtAnchor = (district: string) =>
+    hasDistrictSections(city.slug) ? `${L(cityPath)}#district-${encodeURIComponent(district)}` : L(cityPath)
 
   if (!isEn) {
     const blocks: TopicBlock[] = []
@@ -994,7 +1319,7 @@ export function buildDistrictView(def: DistrictPageDef, all: PublicSpace[], loca
         id: 'compare',
         title: `${short} ${n} 個空間比較`,
         note: '「—」表示屋主沒有設定這個價格。',
-        table: { caption: `${short}美業空間比較`, head: ['空間', '類型', '時租', '半日', '全日', '最低時數'], rows: spaceRows },
+        table: { caption: `${short}${noun}比較`, head: ['空間', '類型', '時租', '半日', '全日', '最低時數'], rows: spaceRows },
       })
       if (services.length) {
         blocks.push({
@@ -1002,7 +1327,12 @@ export function buildDistrictView(def: DistrictPageDef, all: PublicSpace[], loca
           title: `${short}的空間適合哪些服務`,
           note: '依屋主標示；一個空間可以標示多種服務。',
           table: { caption: `${short}空間適合的服務`, head: ['服務', '空間數'], rows: services.map((s) => [s.group.prose, `${s.n} / ${n} 間`]) },
-          paragraphs: distinctServices.length ? [`屋主標示的服務項目：${distinctServices.join('、')}。`] : undefined,
+        })
+        blocks.push({
+          id: 'per-space',
+          title: `${short}每個空間標示的服務`,
+          note: '依屋主在空間頁標示的建議服務。',
+          table: { caption: `${short}每個空間的服務`, head: ['空間', '類型', '屋主標示的服務'], rows: perSpaceServices },
         })
       }
       if (otherDistricts.length) {
@@ -1025,12 +1355,12 @@ export function buildDistrictView(def: DistrictPageDef, all: PublicSpace[], loca
     const faq: QA[] = n > 0
       ? [
           {
-            question: `${short}美業空間時租多少錢？`,
+            question: `${short}${noun}時租多少錢？`,
             answer: `截至 ${dateLabel}，SoloBeauté 在${city.name}${def.district}有 ${n} 個美業空間，時租 ${rangeZh(hourly)}${hourly.n >= 2 ? `，中位數 ${money(hourly.median)}` : ''}${withDay ? (withDay === n ? `；${n} 個都另有半日或全日價格` : `；其中 ${withDay} 個另有半日或全日價格`) : ''}。`,
           },
           ...(services.length
             ? [{
-                question: `${short}的美業空間適合哪些服務？`,
+                question: `${short}的${noun}適合哪些服務？`,
                 answer: `依屋主標示，${services.map((s) => `${s.n} 個適合${s.group.prose}`).join('、')}。`,
               }]
             : []),
@@ -1047,13 +1377,13 @@ export function buildDistrictView(def: DistrictPageDef, all: PublicSpace[], loca
       path,
       count: n,
       indexable: isTopicIndexable(n),
-      title: `${short}美業空間時租｜${short}美容工作室出租`,
-      ogTitle: `${short}美業空間時租｜SoloBeauté`,
+      title: titleZh,
+      ogTitle: `${h1Zh}｜SoloBeauté`,
       description: n > 0
-        ? `${short}美容工作室時租 ${rangeZh(hourly)}：SoloBeauté 在${city.name}${def.district}有 ${n} 個美業空間（${types.map((t) => `${spaceTypeLabel(t.type)} ${t.spaces.length}`).join('、')}）。美業職人按小時租，在 App 預約，現場付現。`
-        : `${short}美業空間時租。新空間陸續上架中，下載 SoloBeauté App 查看最新空間。`,
+        ? `${studio ? `${city.short}${def.district}` : short}美容工作室時租 ${rangeZh(hourly)}：SoloBeauté 在${city.name}${def.district}有 ${n} 個美業空間（${types.map((t) => `${spaceTypeLabel(t.type)} ${t.spaces.length}`).join('、')}）。美業職人按小時租，在 App 預約，現場付現。`
+        : `${h1Zh}。新空間陸續上架中，下載 SoloBeauté App 查看最新空間。`,
       tag: `${city.name}${def.district}`,
-      h1: `${short}美業空間時租`,
+      h1: h1Zh,
       breadcrumbs: [
         { label: '首頁', path: '/' },
         { label: '美業空間', path: '/spaces' },
@@ -1078,15 +1408,15 @@ export function buildDistrictView(def: DistrictPageDef, all: PublicSpace[], loca
       dateNote: `資料日期：${dateLabel}，依 SoloBeauté 上架中的空間即時計算。`,
       noindexNote: noindexNote(n, locale),
       blocks,
-      lists: n > 0 ? [{ id: 'spaces', title: `${short}的美業空間（${n} 間）`, spaces }] : [],
-      faqTitle: `${short}美業空間常見問題`,
+      lists: n > 0 ? [{ id: 'spaces', title: `${short}的${noun}（${n} 間）`, spaces }] : [],
+      faqTitle: `${short}${noun}常見問題`,
       faq,
       related: {
         title: '繼續看',
-        links: [{ href: L(cityPath), label: `${city.short}美業空間時租` }, ...relatedLinks(path, locale)],
+        links: [{ href: L(cityPath), label: `${city.short}美業空間時租` }, ...related],
       },
       cta,
-      itemListName: `SoloBeauté ${city.name}${def.district}美業空間`,
+      itemListName: `SoloBeauté ${city.name}${def.district}${noun}`,
       about,
     }
   }
@@ -1097,7 +1427,7 @@ export function buildDistrictView(def: DistrictPageDef, all: PublicSpace[], loca
       id: 'compare',
       title: `The ${plural(n, 'space')} in ${shortEn} compared`,
       note: '"—" means the host has not set that rate.',
-      table: { caption: `Beauty workspaces in ${shortEn} compared`, head: ['Space', 'Type', 'Hourly', 'Half day', 'Full day', 'Minimum'], rows: spaceRows },
+      table: { caption: `${NounEn} in ${shortEn} compared`, head: ['Space', 'Type', 'Hourly', 'Half day', 'Full day', 'Minimum'], rows: spaceRows },
     })
     if (services.length) {
       blocks.push({
@@ -1105,6 +1435,12 @@ export function buildDistrictView(def: DistrictPageDef, all: PublicSpace[], loca
         title: `Services the ${shortEn} spaces suit`,
         note: 'Based on what hosts mark; a space can be marked for several services.',
         table: { caption: `Services for ${shortEn} spaces`, head: ['Service', 'Spaces'], rows: services.map((s) => [SERVICE_GROUP_EN[s.group.key]?.prose ?? s.group.prose, `${s.n} / ${n}`]) },
+      })
+      blocks.push({
+        id: 'per-space',
+        title: `Services each ${shortEn} space lists`,
+        note: 'As marked by the host on each space page.',
+        table: { caption: `Services by space in ${shortEn}`, head: ['Space', 'Type', 'Services the host lists'], rows: perSpaceServices },
       })
     }
     if (otherDistricts.length) {
@@ -1126,7 +1462,7 @@ export function buildDistrictView(def: DistrictPageDef, all: PublicSpace[], loca
   const faq: QA[] = n > 0
     ? [
         {
-          question: `How much does a beauty workspace in ${shortEn} cost per hour?`,
+          question: `How much does a ${nounEn.replace(/s$/, '')} in ${shortEn} cost per hour?`,
           answer: `As of ${dateLabel}, SoloBeauté lists ${plural(n, 'beauty workspace')} in ${districtEn(def.district, city.name)}, ${cityNameEn(city.name)}, at ${rangeEn(hourly)} per hour${hourly.n >= 2 ? ` (median ${money(hourly.median)})` : ''}${withDay ? (withDay === n ? `; all ${n} also set a half-day or full-day rate` : `; ${withDay} also set a half-day or full-day rate`) : ''}.`,
         },
         ...(services.length
@@ -1148,13 +1484,13 @@ export function buildDistrictView(def: DistrictPageDef, all: PublicSpace[], loca
     path,
     count: n,
     indexable: isTopicIndexable(n),
-    title: `Beauty Workspaces for Rent by the Hour in ${shortEn}, ${cityShortEn(city)}`,
-    ogTitle: `Beauty workspaces in ${shortEn} by the hour | SoloBeauté`,
+    title: `${TitleNounEn} for Rent by the Hour in ${shortEn}, ${cityShortEn(city)}`,
+    ogTitle: `${NounEn} in ${shortEn} by the hour | SoloBeauté`,
     description: n > 0
       ? `Beauty studios in ${shortEn} from ${rangeEn(hourly)} per hour: SoloBeauté lists ${plural(n, 'workspace')} in ${districtEn(def.district, city.name)}, ${cityNameEn(city.name)} (${joinEn(types.map((t) => plural(t.spaces.length, spaceTypeEn(t.type).toLowerCase())))}). Book in the app and pay the host in cash on site.`
-      : `Beauty workspaces for hourly rent in ${shortEn}. New spaces are being listed; download the SoloBeauté app to see the latest.`,
+      : `${NounEn} for hourly rent in ${shortEn}. New spaces are being listed; download the SoloBeauté app to see the latest.`,
     tag: `${districtEn(def.district, city.name)}, ${cityNameEn(city.name)}`,
-    h1: `Beauty workspaces by the hour in ${shortEn}`,
+    h1: studio ? `${NounEn} by the hour in ${shortEn}, ${cityShortEn(city)}` : `${NounEn} by the hour in ${shortEn}`,
     breadcrumbs: [
       { label: 'Home', path: '/' },
       { label: 'Beauty workspaces', path: '/spaces' },
@@ -1179,12 +1515,12 @@ export function buildDistrictView(def: DistrictPageDef, all: PublicSpace[], loca
     dateNote: `Data as of ${dateLabel}, calculated live from spaces currently listed on SoloBeauté.`,
     noindexNote: noindexNote(n, locale),
     blocks,
-    lists: n > 0 ? [{ id: 'spaces', title: `Beauty workspaces in ${shortEn} (${n})`, spaces }] : [],
-    faqTitle: `Beauty workspaces in ${shortEn}: FAQ`,
+    lists: n > 0 ? [{ id: 'spaces', title: `${NounEn} in ${shortEn} (${n})`, spaces }] : [],
+    faqTitle: `${NounEn} in ${shortEn}: FAQ`,
     faq,
     related: {
       title: 'Keep reading',
-      links: [{ href: L(cityPath), label: `Beauty workspaces in ${cityShortEn(city)}` }, ...relatedLinks(path, locale)],
+      links: [{ href: L(cityPath), label: `Beauty workspaces in ${cityShortEn(city)}` }, ...related],
     },
     cta,
     itemListName: `Beauty workspaces on SoloBeauté in ${districtEn(def.district, city.name)}, ${cityNameEn(city.name)}`,
@@ -1225,7 +1561,7 @@ export function topicLinks(all: PublicSpace[], locale: AppLocale, cityName?: str
     if (!isTopicIndexable(count)) return
     const label = isEn
       ? `${districtShortEn(def.district, city.name)}, ${cityShortEn(city)} · ${count}`
-      : `${city.short}${stripDistrictSuffix(def.district)} · ${count} 間`
+      : `${city.short}${def.label.replace(/區$/, '')} · ${count} 間`
     links.push({ href: L(districtPagePath(def)), label, count })
   })
   return links
