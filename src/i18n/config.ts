@@ -56,6 +56,7 @@ const ENGLISH_ROUTES: RegExp[] = [
   /^\/spaces\/city\/[a-z-]+$/,
   /^\/spaces\/city\/[a-z-]+\/[a-z-]+$/,
   /^\/spaces\/(shared|daily|beauty-bed)$/,
+  /^\/spaces\/service\/(nail|brow)$/,
   /^\/spaces\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i,
   /^\/faq$/,
   /^\/about$/,

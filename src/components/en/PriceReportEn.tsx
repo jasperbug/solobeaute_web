@@ -399,7 +399,9 @@ export function PriceReportEn({ report }: { report: PriceReport }) {
                   {PROFESSION_NOTES[row.key]}
                   {row.key === 'lash' ? (
                     <> For more on renting a studio as a lash artist, see <Link href={en('/guides/lash-artist-studio')} className="text-brand underline underline-offset-4">studios for lash artists</Link>.</>
-                  ) : null}
+                  ) : (
+                    <> See the <Link href={en(`/spaces/service/${row.key}`)} className="text-brand underline underline-offset-4">{row.key === 'nail' ? 'nail studios you can rent by the hour' : 'brow and PMU studios you can rent by the hour'}</Link>.</>
+                  )}
                 </p>
               </div>
             ))}
