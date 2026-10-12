@@ -4,6 +4,7 @@ import { getLocale } from 'next-intl/server'
 
 import { JsonLd } from '@/components/spaces/JsonLd'
 import { SpaceCard } from '@/components/spaces/SpaceCard'
+import { TopicLinkRow } from '@/components/spaces/TopicLinkRow'
 import { StoreButtons } from '@/components/ui/StoreButtons'
 import { localizePath } from '@/i18n/config'
 import { cityPagePath, getCityByName } from '@/lib/cities'
@@ -11,6 +12,7 @@ import { SITE_URL } from '@/lib/constants'
 import { cityListEn, cityNameEn, cityShortEn } from '@/lib/en'
 import { localeAlternates, localeUrl, ogLocale } from '@/lib/i18nSeo'
 import { fetchPublicSpaces, formatNtd, groupSpacesByCity, rateRange, shortCityName } from '@/lib/spaces'
+import { topicLinks } from '@/lib/topicPages'
 import type { PublicSpace } from '@/lib/types'
 
 export const revalidate = 3600
@@ -152,6 +154,7 @@ export default async function SpacesPage() {
               ))}
             </nav>
           ) : null}
+          <TopicLinkRow title="依需求找空間" links={topicLinks(spaces, 'zh-TW')} />
         </header>
 
         {groups.map((group) => {
@@ -281,6 +284,7 @@ function SpacesPageEn({ spaces }: { spaces: PublicSpace[] }) {
               ))}
             </nav>
           ) : null}
+          <TopicLinkRow title="Browse by need" links={topicLinks(spaces, 'en')} />
         </header>
 
         {groups.map((group) => {

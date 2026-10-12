@@ -5,6 +5,7 @@ import { buildAllCityStats, isCityIndexable } from '@/lib/cityPages'
 import { API_BASE_URL, SITE_URL } from '@/lib/constants'
 import { localeUrl, sitemapAlternates } from '@/lib/i18nSeo'
 import { fetchPublicSpaces } from '@/lib/spaces'
+import { DISTRICT_PAGES, TOPIC_PAGES, districtPagePath, isTopicIndexable, spacesInDistrict } from '@/lib/topicPages'
 import type { BeauticianSearchResponse, BeauticianSummary } from '@/lib/types'
 
 /**
@@ -97,6 +98,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   let spacePages: MetadataRoute.Sitemap = []
   let cityPages: MetadataRoute.Sitemap = []
+  let topicPages: MetadataRoute.Sitemap = []
 
   try {
     // fetchPublicSpaces() keeps only status === 'ACTIVE' (and not deleted), the
@@ -115,9 +117,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       .filter(isCityIndexable)
       .flatMap((stats) => localizedEntries(cityPagePath(stats.city), { changeFrequency: 'weekly', priority: 0.85 }))
     console.log(`[sitemap] emitted ${cityPages.length} city entries`)
+    // Theme pages (/spaces/shared …) and district pages: only when indexable
+    // (≥ TOPIC_INDEX_MIN_SPACES matching spaces); below that they are noindex.
+    topicPages = [
+      ...TOPIC_PAGES.filter((topic) => isTopicIndexable(spaces.filter(topic.match).length)).map((topic) => topic.path),
+      ...DISTRICT_PAGES.filter((def) => isTopicIndexable(spacesInDistrict(spaces, def).length)).map(districtPagePath),
+    ].flatMap((path) => localizedEntries(path, { changeFrequency: 'weekly', priority: 0.8 }))
+    console.log(`[sitemap] emitted ${topicPages.length} topic entries`)
   } catch (error) {
     console.error('[sitemap] failed to build dynamic space entries:', error)
   }
 
-  return [...staticPages, ...cityPages, ...spacePages, ...beauticianPages]
+  return [...staticPages, ...cityPages, ...topicPages, ...spacePages, ...beauticianPages]
 }
