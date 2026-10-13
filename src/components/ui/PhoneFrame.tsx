@@ -20,7 +20,8 @@ export function PhoneFrame({
   alt,
   caption,
   priority = false,
-  sizes = '(max-width: 768px) 80vw, 260px',
+  // Rendered at most 260px wide (55vw on mobile, see App.css .hero__slide).
+  sizes = '(max-width: 768px) 55vw, 260px',
   onClick,
   stackClassName,
   frameClassName,
