@@ -1,0 +1,94 @@
+import type { Metadata } from 'next'
+import { Cormorant_Garamond, Noto_Sans_TC } from 'next/font/google'
+import { NextIntlClientProvider } from 'next-intl'
+import { getMessages, setRequestLocale } from 'next-intl/server'
+
+import { DEFAULT_LOCALE, SUPPORTED_LOCALES, type AppLocale, isSupportedLocale } from '@/i18n/config'
+
+import { Footer } from '@/components/layout/Footer'
+import { Header } from '@/components/layout/Header'
+import { SITE_URL } from '@/lib/constants'
+import { SITE_OPEN_GRAPH } from '@/lib/siteMetadata'
+
+import '../globals.css'
+
+const notoSansTc = Noto_Sans_TC({
+  weight: ['300', '400', '500', '600', '700'],
+  preload: false,
+  display: 'swap',
+  variable: '--font-sans-tc',
+})
+
+const cormorantGaramond = Cormorant_Garamond({
+  subsets: ['latin'],
+  weight: ['500', '600'],
+  style: ['normal', 'italic'],
+  display: 'swap',
+  variable: '--font-display-serif',
+})
+
+export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: 'SoloBeauté｜美業空間時租・美容工作室按小時租',
+    template: '%s | SoloBeauté',
+  },
+  description:
+    '美甲、美睫、美容職人按小時租現成工作空間，時租 NT$100–350，台北、新北、桃園、台中、高雄、彰化、南投都有。現場付現。',
+  openGraph: SITE_OPEN_GRAPH,
+  twitter: {
+    card: 'summary_large_image',
+    title: 'SoloBeauté｜美業空間按小時租',
+    description:
+      '打開 App 看空間、看價錢、看 3D 實景，直接跟屋主約時間。時租 NT$100–350，台北到高雄 7 縣市都有。',
+    images: ['/og-image.png'],
+  },
+  alternates: {
+    canonical: './',
+  },
+  icons: {
+    icon: '/images/brand/logo.png',
+  },
+}
+
+export function generateStaticParams() {
+  return SUPPORTED_LOCALES.map((locale) => ({ locale }))
+}
+
+export default async function LocaleLayout({
+  children,
+  params,
+}: Readonly<{
+  children: React.ReactNode
+  params: { locale: string }
+}>) {
+  // The locale comes from the URL segment (set by src/middleware.ts), not from
+  // cookies / headers, so pages can be statically rendered and revalidated.
+  // (params can be missing while Next renders a 404, so fall back instead of
+  // calling notFound() here; src/middleware.ts only ever rewrites to valid
+  // locales.)
+  const locale: AppLocale = isSupportedLocale(params?.locale) ? params.locale : DEFAULT_LOCALE
+  setRequestLocale(locale)
+  const messages = await getMessages()
+  // faq.items holds {placeholder} templates that only server components fill
+  // with live data (src/lib/faqStats.ts); don't ship the raw templates to the
+  // client bundle / RSC payload.
+  const faqMessages = (messages.faq ?? {}) as Record<string, unknown>
+  const { items: _faqItems, ...faqClient } = faqMessages
+  void _faqItems
+  const clientMessages = { ...messages, faq: faqClient }
+
+  return (
+    <html lang={locale} className={`${notoSansTc.variable} ${cormorantGaramond.variable}`}>
+      <body>
+        <NextIntlClientProvider locale={locale} messages={clientMessages as typeof messages}>
+          <div className="app">
+            <Header />
+            {children}
+            <Footer />
+          </div>
+        </NextIntlClientProvider>
+      </body>
+    </html>
+  )
+}

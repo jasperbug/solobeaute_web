@@ -1,36 +1,23 @@
 import type { AbstractIntlMessages } from 'next-intl'
-import { cookies, headers } from 'next/headers'
 import { getRequestConfig } from 'next-intl/server'
 
 import enMessages from './messages/en.json'
 import zhTwMessages from './messages/zh-TW.json'
-import {
-  DEFAULT_LOCALE,
-  LOCALE_COOKIE_NAME,
-  LOCALE_HEADER,
-  isSupportedLocale,
-  resolveLocaleFromHeader,
-} from './config'
+import { DEFAULT_LOCALE, isSupportedLocale } from './config'
 
 const MESSAGES = {
   en: enMessages,
   'zh-TW': zhTwMessages,
 } as const
 
-export default getRequestConfig(async () => {
-  const cookieStore = await cookies()
-  const headerStore = await headers()
-
-  // Set by src/middleware.ts from the URL (/en/... → en, other localized
-  // routes → zh-TW). Routes without an English version have no header and keep
-  // the cookie / Accept-Language behaviour.
-  const urlLocale = headerStore.get(LOCALE_HEADER)
-  const cookieLocale = cookieStore.get(LOCALE_COOKIE_NAME)?.value
-  const locale = isSupportedLocale(urlLocale)
-    ? urlLocale
-    : isSupportedLocale(cookieLocale)
-      ? cookieLocale
-      : resolveLocaleFromHeader(headerStore.get('accept-language')) ?? DEFAULT_LOCALE
+// The locale is the [locale] route segment (src/app/[locale]); src/middleware.ts
+// picks it from the URL (/en/…), or for routes without an English version from
+// the locale cookie / Accept-Language, and rewrites to /{locale}/…. Pages call
+// setRequestLocale(params.locale), so nothing here reads cookies or headers and
+// pages stay statically renderable.
+export default getRequestConfig(async ({ requestLocale }) => {
+  const requested = await requestLocale
+  const locale = isSupportedLocale(requested) ? requested : DEFAULT_LOCALE
 
   return {
     locale,
