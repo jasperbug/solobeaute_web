@@ -369,7 +369,7 @@ export default async function SpacePage({ params }: SpacePageProps & { params: {
                 >
                   {/* AR Quick Look requires an <img> as the link's first child. */}
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/images/brand/logo.png" alt="" width={20} height={20} />
+                  <img src="/images/brand/logo-192.png" alt="" width={20} height={20} />
                   開啟 3D 實景（iOS）
                 </a>
               </section>
@@ -645,7 +645,7 @@ async function SpacePageEn({ space }: { space: PublicSpace }) {
                 >
                   {/* AR Quick Look requires an <img> as the link's first child. */}
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/images/brand/logo.png" alt="" width={20} height={20} />
+                  <img src="/images/brand/logo-192.png" alt="" width={20} height={20} />
                   Open the 3D tour (iOS)
                 </a>
               </section>

@@ -1,6 +1,5 @@
 'use client'
 
-import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { useTranslations } from 'next-intl'
 
@@ -55,24 +54,15 @@ export function HowItWorksSection() {
           </div>
         </Reveal>
 
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={tab}
-            className="hiw__steps"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            transition={{ duration: 0.3 }}
-          >
-            {steps.map((step) => (
-              <div className="hiw__step" key={step.title}>
-                <span className="hiw__num">{step.step}</span>
-                <h3 className="hiw__step-title">{step.title}</h3>
-                <p className="hiw__step-desc">{step.desc}</p>
-              </div>
-            ))}
-          </motion.div>
-        </AnimatePresence>
+        <div key={tab} className="hiw__steps sb-fade-in">
+          {steps.map((step) => (
+            <div className="hiw__step" key={step.title}>
+              <span className="hiw__num">{step.step}</span>
+              <h3 className="hiw__step-title">{step.title}</h3>
+              <p className="hiw__step-desc">{step.desc}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   )

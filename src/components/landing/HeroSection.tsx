@@ -43,27 +43,27 @@ export function HeroSection() {
     <section className="hero">
       <div className="hero__inner container">
         <div className="hero__intro">
-          <Reveal>
+          <Reveal instant>
             <p className="hero__label">{t('hero.kicker')}</p>
           </Reveal>
-          <Reveal delay={0.08}>
+          <Reveal instant delay={0.08}>
             <h1 className="hero__title">
               <span className="hero__title-line">{t('hero.title1')}</span>
               <em className="hero__title-line hero__accent">{t('hero.title2')}</em>
             </h1>
           </Reveal>
-          <Reveal delay={0.16}>
+          <Reveal instant delay={0.16}>
             <p className="hero__promise">
               <span>{t('hero.promiseLine1')}</span>
               <span>{t('hero.promiseLine2')}</span>
             </p>
           </Reveal>
-          <Reveal delay={0.24}>
+          <Reveal instant delay={0.24}>
             <p className="hero__desc">{t('hero.detail')}</p>
           </Reveal>
         </div>
 
-        <Reveal delay={0.32} className="hero__lower">
+        <Reveal instant delay={0.32} className="hero__lower">
           <div className="hero__actions flex flex-wrap gap-4 items-center">
             <StoreButtons buttonClassName="btn-primary" />
             <button
@@ -85,7 +85,7 @@ export function HeroSection() {
           </div>
         </Reveal>
 
-        <Reveal delay={0.4} className="hero__showcase">
+        <Reveal instant delay={0.4} className="hero__showcase">
           <div className="hero__phones hero__phones--desktop">
             {desktopShots.map(({ key, src, alt, caption }, index) => (
               <PhoneFrame

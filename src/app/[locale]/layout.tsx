@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     canonical: './',
   },
   icons: {
-    icon: '/images/brand/logo.png',
+    icon: '/images/brand/logo-192.png',
   },
 }
 

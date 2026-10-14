@@ -28,3 +28,54 @@
     text-wrap: balance;
   }
 }
+
+/* Reveal (src/components/ui/Reveal.tsx) */
+.sb-reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 0.6s cubic-bezier(0.25, 0.1, 0.25, 1),
+    transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+.sb-reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+/* Hero: transform only, never transparent, so it paints (and counts as LCP) at once. */
+.sb-reveal--instant {
+  animation: sb-reveal-slide 0.6s cubic-bezier(0.25, 0.1, 0.25, 1) both;
+}
+@keyframes sb-reveal-slide {
+  from {
+    transform: translateY(16px);
+  }
+  to {
+    transform: none;
+  }
+}
+/* How-it-works tab switch */
+.sb-fade-in {
+  animation: sb-fade-in 0.3s ease both;
+}
+@keyframes sb-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sb-reveal,
+  .sb-reveal.is-visible {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .sb-reveal--instant,
+  .sb-fade-in {
+    animation: none;
+  }
+}
