@@ -9,7 +9,7 @@ import { fetchPublicSpaces } from '@/lib/spaces'
 import { SERVICE_SLUGS, buildTopicView, type ServiceKey } from '@/lib/topicPages'
 
 export const revalidate = 3600
-// Only /spaces/service/nail and /spaces/service/brow exist; anything else is a 404.
+// Only /spaces/service/{nail,brow,lash} exist; anything else is a 404.
 export const dynamicParams = false
 
 export function generateStaticParams() {
