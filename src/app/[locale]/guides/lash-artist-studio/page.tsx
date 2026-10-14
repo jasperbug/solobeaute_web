@@ -270,7 +270,7 @@ export default async function LashArtistStudioPage({ params }: { params: { local
               <span className={`text-sm text-black/55 ${NUM}`}>共 {lashSpaces.length} 間</span>
             </div>
             <p className={`max-w-3xl text-sm leading-7 text-black/65 ${NUM}`} data-lash-list-note>
-              屋主標示適合嫁接睫毛或睫毛管理的 {lashSpaces.length} 間空間，其中 {lashSpaces.filter((s) => s.equipment.includes('美容床')).length} 間有美容床、{lashSpaces.filter((s) => s.spaceType === 'PRIVATE_ROOM').length} 間是獨立房間。依設備找可以看<Link href="/spaces/beauty-bed" className="text-brand underline underline-offset-4">美容床位時租</Link>，同時接霧眉的美睫師可以看<Link href="/spaces/service/brow" className="text-brand underline underline-offset-4">霧眉・紋繡工作室時租</Link>。
+              屋主標示適合嫁接睫毛或睫毛管理的 {lashSpaces.length} 間空間，其中 {lashSpaces.filter((s) => s.equipment.includes('美容床')).length} 間有美容床、{lashSpaces.filter((s) => s.spaceType === 'PRIVATE_ROOM').length} 間是獨立房間。依縣市和空間類型比較時租，可以看<Link href="/spaces/service/lash" className="text-brand underline underline-offset-4">美睫工作室時租</Link>；依設備找可以看<Link href="/spaces/beauty-bed" className="text-brand underline underline-offset-4">美容床位時租</Link>，同時接霧眉的美睫師可以看<Link href="/spaces/service/brow" className="text-brand underline underline-offset-4">霧眉・紋繡工作室時租</Link>。
             </p>
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {lashSpaces.map((space) => <SpaceCard key={space.id} space={space} />)}
