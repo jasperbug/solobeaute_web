@@ -72,6 +72,12 @@ export function hasEnglishVersion(path: string): boolean {
 
 /** `/en/faq` → `{ locale: 'en', path: '/faq' }`; `/faq` → `{ locale: null, path: '/faq' }`. */
 export function stripLocalePrefix(pathname: string): { locale: AppLocale | null; path: string } {
+  // While pages render on the server, usePathname() returns the internal
+  // /zh-TW/… route that src/middleware.ts rewrites to; treat it as unprefixed.
+  const internalZh = `/${DEFAULT_LOCALE}`
+  if (pathname === internalZh || pathname.startsWith(`${internalZh}/`)) {
+    return { locale: null, path: pathname.slice(internalZh.length) || '/' }
+  }
   if (pathname === EN_PREFIX || pathname.startsWith(`${EN_PREFIX}/`)) {
     return { locale: 'en', path: pathname.slice(EN_PREFIX.length) || '/' }
   }
