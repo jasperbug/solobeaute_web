@@ -35,6 +35,27 @@ function positiveNumber(value: number | null | undefined): number | null {
   return typeof value === 'number' && Number.isFinite(value) && value > 0 ? value : null
 }
 
+// A line of the host's own description that mentions transit or a landmark.
+// Quoted as written (emoji and trailing punctuation trimmed); nothing is inferred,
+// so a space whose host did not mention it simply has no note.
+const TRANSIT_RE = /捷運|車站|火車站|高鐵|公車|步行|走路|鄰近|附近/
+const TRANSIT_MAX = 40
+
+export function extractTransitNote(description: string): string | null {
+  for (const rawLine of description.split(/\r?\n/)) {
+    const line = rawLine
+      .replace(/[\p{Extended_Pictographic}\u{FE0F}\u{200D}]/gu, '')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .replace(/[，,。.！!～~、；;]+$/u, '')
+      .trim()
+    if (line && TRANSIT_RE.test(line)) {
+      return line.length > TRANSIT_MAX ? `${line.slice(0, TRANSIT_MAX)}…` : line
+    }
+  }
+  return null
+}
+
 /**
  * Only spaces that are ACTIVE and not soft-deleted are public.
  * GET /spaces/:id only checks `deletedAt` (beautyhub-backend spaces.ts:45),
@@ -81,6 +102,7 @@ export function toPublicSpace(raw: RawSpaceRecord): PublicSpace {
     equipment: stringList(raw.equipment),
     recommendedServices: stringList(raw.recommendedServices),
     prohibitedServices: stringList(raw.prohibitedServices),
+    transitNote: extractTransitNote(description),
     cameraDisclosureStatus: camera,
     coverPhotoUrl: resolveImageUrl(raw.coverPhoto?.url ?? null) ?? photos[0]?.url ?? null,
     photos,

@@ -1271,15 +1271,58 @@ function buildService(key: ServiceKey, all: PublicSpace[], locale: AppLocale): T
 }
 
 export function buildTopicView(key: TopicKey, all: PublicSpace[], locale: AppLocale): TopicView {
-  if (key === 'shared') return buildShared(all, locale)
-  if (key === 'daily') return buildDaily(all, locale)
-  if (key === 'nail' || key === 'brow' || key === 'lash') return buildService(key, all, locale)
-  return buildBeautyBed(all, locale)
+  if (key === 'shared') return withRentalFaq(buildShared(all, locale))
+  if (key === 'daily') return withRentalFaq(buildDaily(all, locale))
+  if (key === 'nail' || key === 'brow' || key === 'lash') return withRentalFaq(buildService(key, all, locale))
+  return withRentalFaq(buildBeautyBed(all, locale))
+}
+
+/**
+ * Two FAQ entries shared by every topic / district page: how renting works and
+ * pays (as things are today: message the host in the app, pay the host in cash
+ * on site), and the minimum booking length computed from the listed spaces.
+ */
+function withRentalFaq(view: TopicView): TopicView {
+  if (view.count === 0) return view
+  const spaces = view.lists.flatMap((list) => list.spaces)
+  const hours = minHoursRange(spaces)
+  const withHours = spaces.filter((s) => hasRate(s.minimumHours)).length
+  const isEn = view.locale === 'en'
+  const extra: QA[] = isEn
+    ? [
+        {
+          question: 'How do I rent one of these spaces, and how do I pay?',
+          answer: 'Download the SoloBeauté app, open the space, check its open time slots and message the host to confirm a time. Rent is paid to the host in cash on site.',
+        },
+        ...(hours
+          ? [{
+              question: 'What is the shortest booking?',
+              answer: `Each host sets a minimum. Of the ${plural(withHours, 'space')} here that list one, the minimum is ${hours} ${hours === '1' ? 'hour' : 'hours'}; the table above shows it for each space.`,
+            }]
+          : []),
+      ]
+    : [
+        {
+          question: '怎麼租？怎麼付款？',
+          answer: '下載 SoloBeauté App，打開空間頁看可用時段，傳訊息跟屋主確認時間。租金現場付現給屋主。',
+        },
+        ...(hours
+          ? [{
+              question: '最短可以租多久？',
+              answer: `最低時數由屋主設定。這頁有填最低時數的 ${withHours} 個空間，最低時數是 ${hours} 小時，每間的時數見上方表格。`,
+            }]
+          : []),
+      ]
+  return { ...view, faq: [...view.faq, ...extra] }
 }
 
 // --- P4 district -------------------------------------------------------------
 
 export function buildDistrictView(def: DistrictPageDef, all: PublicSpace[], locale: AppLocale): TopicView {
+  return withRentalFaq(buildDistrictViewBase(def, all, locale))
+}
+
+function buildDistrictViewBase(def: DistrictPageDef, all: PublicSpace[], locale: AppLocale): TopicView {
   const city = getCityBySlug(def.citySlug) as SpaceCity
   const isEn = locale === 'en'
   const L = linker(locale)
