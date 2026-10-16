@@ -7,7 +7,10 @@ import { SpaceCard } from '@/components/spaces/SpaceCard'
 import { StoreButtons } from '@/components/ui/StoreButtons'
 import { localizePath } from '@/i18n/config'
 import { SITE_URL } from '@/lib/constants'
+import { cityNameEn, districtEn, equipmentEn } from '@/lib/en'
 import { localeAlternates, localeUrl, ogLocale } from '@/lib/i18nSeo'
+import { formatNtd } from '@/lib/spaces'
+import type { PublicSpace } from '@/lib/types'
 import type { Cell, TopicView } from '@/lib/topicPages'
 
 const CHIP =
@@ -57,8 +60,7 @@ function topicJsonLd(view: TopicView) {
       itemListElement: spaces.map((space, index) => ({
         '@type': 'ListItem',
         position: index + 1,
-        url: localeUrl(`/spaces/${space.id}`, view.locale),
-        name: space.title,
+        item: spacePlace(space, view.locale),
       })),
     },
     {
@@ -74,6 +76,88 @@ function topicJsonLd(view: TopicView) {
   ]
   if (view.faq.length) graph.push(faqPageSchema(`${url}#faq`, view.faq, lang))
   return { '@context': 'https://schema.org', '@graph': graph }
+}
+
+// Each listed space as a schema.org Place. Only whitelisted public fields:
+// city / district (never the street address or coordinates), the host's
+// equipment list, and the hourly rate / minimum hours when the host set them.
+function spacePlace(space: PublicSpace, locale: TopicView['locale']) {
+  const props: Record<string, unknown>[] = []
+  if (space.hourlyRate) {
+    props.push({ '@type': 'PropertyValue', name: locale === 'en' ? 'Hourly rate' : '時租', value: space.hourlyRate, unitCode: 'HUR', unitText: 'TWD' })
+  }
+  if (space.minimumHours) {
+    props.push({ '@type': 'PropertyValue', name: locale === 'en' ? 'Minimum booking' : '最低時數', value: space.minimumHours, unitCode: 'HUR' })
+  }
+  return {
+    '@type': 'Place',
+    '@id': `${localeUrl(`/spaces/${space.id}`, locale)}#space`,
+    name: space.title,
+    url: localeUrl(`/spaces/${space.id}`, locale),
+    ...(space.city || space.district
+      ? {
+          address: {
+            '@type': 'PostalAddress',
+            addressCountry: 'TW',
+            ...(space.city ? { addressRegion: locale === 'en' ? cityNameEn(space.city) : space.city } : {}),
+            ...(space.district ? { addressLocality: locale === 'en' ? districtEn(space.district, space.city) : space.district } : {}),
+          },
+        }
+      : {}),
+    ...(space.equipment.length
+      ? {
+          amenityFeature: space.equipment.map((item) => ({
+            '@type': 'LocationFeatureSpecification',
+            name: locale === 'en' ? equipmentEn(item) : item,
+            value: true,
+          })),
+        }
+      : {}),
+    ...(props.length ? { additionalProperty: props } : {}),
+  }
+}
+
+function SpaceDetailsTable({ spaces, locale, title }: { spaces: PublicSpace[]; locale: TopicView['locale']; title: string }) {
+  const isEn = locale === 'en'
+  const href = (id: string) => (isEn ? localizePath(`/spaces/${id}`, 'en') : `/spaces/${id}`)
+  const head = isEn
+    ? ['Space', 'District', 'Transit / landmark (host’s words)', 'Equipment', 'Hourly rate', 'Minimum']
+    : ['空間', '行政區', '交通・地標（屋主描述）', '設備', '時租', '最低時數']
+  return (
+    <div className="overflow-x-auto rounded-2xl border border-black/10 bg-white">
+      <table className={`w-full min-w-[720px] text-left text-sm ${NUM}`}>
+        <caption className="sr-only">{title}</caption>
+        <thead className="bg-black/[0.03] text-xs text-black/60">
+          <tr>{head.map((h) => <th key={h} scope="col" className="px-4 py-3 font-medium">{h}</th>)}</tr>
+        </thead>
+        <tbody className="divide-y divide-black/5 align-top">
+          {spaces.map((space) => {
+            const where = isEn
+              ? (space.district ? districtEn(space.district, space.city) : cityNameEn(space.city)) || '—'
+              : `${space.city ?? ''}${space.district ?? ''}` || '—'
+            return (
+              <tr key={space.id}>
+                <th scope="row" className="px-4 py-3 font-medium text-ink">
+                  <Link href={href(space.id)} lang={isEn ? 'zh-Hant' : undefined} className="text-brand underline-offset-4 hover:underline">{space.title}</Link>
+                </th>
+                <td className="whitespace-nowrap px-4 py-3 text-black/70">{where}</td>
+                <td className="px-4 py-3 text-black/70" lang={isEn && space.transitNote ? 'zh-Hant' : undefined}>{space.transitNote ?? '—'}</td>
+                <td className="px-4 py-3 text-black/70">
+                  {space.equipment.length ? (isEn ? space.equipment.map(equipmentEn).join(', ') : space.equipment.join('、')) : '—'}
+                </td>
+                <td className="whitespace-nowrap px-4 py-3 text-ink">
+                  {space.hourlyRate ? `${formatNtd(space.hourlyRate)}${isEn ? ' / h' : '／小時'}` : '—'}
+                </td>
+                <td className="whitespace-nowrap px-4 py-3 text-black/70">
+                  {space.minimumHours ? (isEn ? `${space.minimumHours} h` : `${space.minimumHours} 小時`) : '—'}
+                </td>
+              </tr>
+            )
+          })}
+        </tbody>
+      </table>
+    </div>
+  )
 }
 
 function CellView({ cell }: { cell: Cell }) {
@@ -158,6 +242,15 @@ export function TopicPage({ view }: { view: TopicView }) {
               {list.spaces.map((space) => (
                 <SpaceCard key={space.id} space={space} locale={view.locale} />
               ))}
+            </div>
+            <div className="space-y-2" id={`${list.id}-details`}>
+              <h3 className="text-base font-semibold text-ink">{isEn ? 'Each space at a glance' : '每間空間的位置、設備和時租'}</h3>
+              <p className="text-xs text-black/55">
+                {isEn
+                  ? 'From what each host lists. The website shows the district only; the transit note is quoted from the host’s description (in Chinese), and “—” means the host has not said.'
+                  : '依屋主在空間頁填寫的資料。網站只顯示到區；交通・地標直接引用屋主的空間描述，「—」代表屋主沒有寫。'}
+              </p>
+              <SpaceDetailsTable spaces={list.spaces} locale={view.locale} title={isEn ? `${list.title}: details` : `${list.title}：位置、設備和時租`} />
             </div>
           </section>
         ))}

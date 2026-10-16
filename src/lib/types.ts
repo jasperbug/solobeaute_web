@@ -189,6 +189,8 @@ export type PublicSpace = {
   equipment: string[]
   recommendedServices: string[]
   prohibitedServices: string[]
+  /** Host-written line about transit / landmarks, quoted verbatim from the description (never inferred). */
+  transitNote: string | null
   cameraDisclosureStatus: CameraDisclosureStatus | null
   coverPhotoUrl: string | null
   photos: PublicSpacePhoto[]
