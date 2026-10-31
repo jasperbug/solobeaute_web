@@ -10,6 +10,7 @@
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc -p tsconfig.json --noEmit",
+    "indexnow:submit": "node scripts/indexnow-submit.mjs",
     "test:mcp": "node scripts/mcp-smoke.mjs",
     "test:mcp-usage": "node scripts/mcp-usage-test.mjs"
   },

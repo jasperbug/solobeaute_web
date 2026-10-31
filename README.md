@@ -69,3 +69,23 @@ NEXT_PUBLIC_SITE_URL=https://www.solobeaute.com
 - Public beautician visibility is controlled by backend/admin, not by frontend-only filtering.
 - `/search` and brand pages are expected to reflect admin visibility changes without stale cached exposure.
 - Share pages keep the existing `/share/*` deep-link semantics for app handoff and OG previews.
+
+## IndexNow
+
+English: After a production deploy (the key file `public/82ec834368e33669fba225834811e3ea.txt` must be live), submit all sitemap URLs to IndexNow (Bing, Yandex, etc.):
+
+```bash
+npm run indexnow:submit -- --dry-run   # list URLs only
+npm run indexnow:submit                # POST to https://api.indexnow.org/indexnow
+```
+
+The script checks that the key file is live before submitting. A `200` or `202` response means accepted.
+
+中文：正式環境部署後（金鑰檔 `public/82ec834368e33669fba225834811e3ea.txt` 要能在線上讀到），把 sitemap 裡的所有網址送給 IndexNow（Bing、Yandex 等）：
+
+```bash
+npm run indexnow:submit -- --dry-run   # 只列出網址
+npm run indexnow:submit                # 送到 https://api.indexnow.org/indexnow
+```
+
+送出前腳本會先確認金鑰檔已經上線。回應 `200` 或 `202` 代表已收到。
