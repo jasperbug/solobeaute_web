@@ -20,7 +20,7 @@ import { LashGuideEn, lashGuideDescriptionEn, lashGuideTitleEn } from '@/compone
 import { JsonLd } from '@/components/spaces/JsonLd'
 import { SpaceCard } from '@/components/spaces/SpaceCard'
 import { StoreButtons } from '@/components/ui/StoreButtons'
-import { dataDateLabel } from '@/lib/cityPages'
+import { dataDateISO, dataDateLabel } from '@/lib/cityPages'
 import { SITE_URL } from '@/lib/constants'
 import { AUTHORS, AUTHOR_REFS, PUBLISHER, personSchema, taipeiYear } from '@/lib/editorial'
 import { buildPriceReport, formatShare, spacesForProfession, type ProfessionRow, type RateSummary } from '@/lib/priceReport'
@@ -34,8 +34,8 @@ const PAGE_PATH = '/guides/lash-artist-studio'
 const PAGE_URL = `${SITE_URL}${PAGE_PATH}`
 const PUBLISHED = '2026-10-03'
 // Editorial update date (copy and sections); the numbers themselves are live.
-const UPDATED = '2026-10-03'
-const UPDATED_LABEL = '2026 年 10 月 3 日'
+const UPDATED = '2026-11-10'
+const UPDATED_LABEL = '2026 年 11 月 10 日'
 
 function h1Text(): string {
   return `${taipeiYear()} 美睫工作室時租：美睫師時租、分租、租位怎麼選`
@@ -210,7 +210,7 @@ export default async function LashArtistStudioPage({ params }: { params: { local
           ) : null}
           <Byline updatedIso={UPDATED} updatedLabel={UPDATED_LABEL} />
           <p className={`text-xs leading-6 text-black/50 ${NUM}`}>
-            數字依 SoloBeauté 上架中的空間每小時重新計算（資料日期：{dateLabel}），「適合美睫」以屋主標示的建議服務為準；樣本數少，僅供參考。全台統計見<Link href="/spaces/price-report" className="text-brand underline underline-offset-4">2026 台灣美業空間時租行情</Link>。
+            數字依 SoloBeauté 上架中的空間每小時重新計算（資料更新：<time dateTime={dataDateISO()}>{dataDateISO()}</time>），「適合美睫」以屋主標示的建議服務為準；樣本數少，僅供參考。全台統計見<Link href="/spaces/price-report" className="text-brand underline underline-offset-4">2026 台灣美業空間時租行情</Link>。
           </p>
         </header>
 

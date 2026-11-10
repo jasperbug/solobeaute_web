@@ -19,7 +19,7 @@ import {
 import { HourlyVsMonthlyEn, hourlyVsMonthlyDescriptionEn, hourlyVsMonthlyTitleEn } from '@/components/en/HourlyVsMonthlyEn'
 import { JsonLd } from '@/components/spaces/JsonLd'
 import { StoreButtons } from '@/components/ui/StoreButtons'
-import { dataDateLabel } from '@/lib/cityPages'
+import { dataDateISO, dataDateLabel } from '@/lib/cityPages'
 import { SITE_URL } from '@/lib/constants'
 import { AUTHORS, AUTHOR_REFS, PUBLISHER, personSchema, taipeiYear } from '@/lib/editorial'
 import { buildPriceReport, formatShare, minimumHoursRow, type PriceReport } from '@/lib/priceReport'
@@ -32,8 +32,8 @@ export const revalidate = 3600
 const PAGE_PATH = '/guides/hourly-vs-monthly-rent'
 const PAGE_URL = `${SITE_URL}${PAGE_PATH}`
 const PUBLISHED = '2026-10-03'
-const UPDATED = '2026-10-03'
-const UPDATED_LABEL = '2026 年 10 月 3 日'
+const UPDATED = '2026-11-10'
+const UPDATED_LABEL = '2026 年 11 月 10 日'
 
 function h1Text(): string {
   return `美容工作室時租還是月租划算？${taipeiYear()} 試算與比較`
@@ -146,6 +146,14 @@ export default async function HourlyVsMonthlyPage({ params }: { params: { locale
                 截至 {dateLabel}，SoloBeauté 上架中的 {report.total} 間美業空間，時租中位數 {formatNtd(median)}（區間 {report.hourly.min !== null ? formatNtd(report.hourly.min) : '—'}–{report.hourly.max?.toLocaleString('en-US') ?? '—'}）。下面用這個中位數做示意試算；月租因為每家條件差很多，本頁不提供月租數字，請用你實際拿到的報價代入。
               </p>
             ) : null}
+            {median !== null && report.fullDay.median !== null && report.fullDayHoursEquivalent !== null ? (
+              <p>
+                以目前時租中位數 {formatNtd(median)}、全日價中位數 {formatNtd(report.fullDay.median)}（約 {report.fullDayHoursEquivalent} 小時時租）做示意。
+              </p>
+            ) : null}
+            <p className={`text-sm font-medium text-ink ${NUM}`} data-ai-summary-date>
+              資料更新：<time dateTime={dataDateISO()}>{dataDateISO()}</time>
+            </p>
           </Prose>
           <Byline updatedIso={UPDATED} updatedLabel={UPDATED_LABEL} />
         </header>

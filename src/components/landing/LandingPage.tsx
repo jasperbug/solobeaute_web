@@ -1,3 +1,5 @@
+import type { CalculatorData } from '@/lib/calculatorRates'
+
 import { AboutSection } from './AboutSection'
 import { CalculatorSection } from './CalculatorSection'
 import { CtaSection } from './CtaSection'
@@ -8,7 +10,15 @@ import { HeroSection } from './HeroSection'
 import { HomeStatsLine, type HomeStats } from './HomeStatsLine'
 import { HowItWorksSection } from './HowItWorksSection'
 
-export function LandingPage({ faqItems, stats = null }: { faqItems: FaqItemData[]; stats?: HomeStats | null }) {
+export function LandingPage({
+  faqItems,
+  stats = null,
+  calculator,
+}: {
+  faqItems: FaqItemData[]
+  stats?: HomeStats | null
+  calculator: CalculatorData
+}) {
   return (
     <main className="landing-page">
       <HeroSection />
@@ -16,7 +26,7 @@ export function LandingPage({ faqItems, stats = null }: { faqItems: FaqItemData[
       <EcosystemSection />
       <FeaturesSection />
       <HowItWorksSection />
-      <CalculatorSection />
+      <CalculatorSection data={calculator} />
       <AboutSection />
       <FaqSection items={faqItems} />
       <CtaSection />

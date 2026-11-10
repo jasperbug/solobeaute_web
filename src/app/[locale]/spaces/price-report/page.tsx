@@ -22,7 +22,7 @@ import {
 } from '@/components/en/PriceReportEn'
 import { JsonLd } from '@/components/spaces/JsonLd'
 import { StoreButtons } from '@/components/ui/StoreButtons'
-import { dataDateLabel } from '@/lib/cityPages'
+import { dataDateISO, dataDateLabel } from '@/lib/cityPages'
 import { localizePath } from '@/i18n/config'
 import { SITE_URL } from '@/lib/constants'
 import {
@@ -31,7 +31,6 @@ import {
   PUBLISHER,
   REPORT_UPDATED_ISO,
   REPORT_UPDATED_LABEL,
-  REPORT_UPDATED_LABEL_EN,
   citationText,
   personSchema,
   taipeiYear,
@@ -79,31 +78,24 @@ function buildReportDescription(report: PriceReport): string {
   return `依 SoloBeauté 上架中的 ${report.total} 間美業空間公開價格計算：時租 ${rangeText(report.hourly)}，中位數 ${medianText(report.hourly)}。附空間類型、${report.cityCount} 個縣市、半日／全日價、最低時數、設備與適合服務的統計。`
 }
 
-function buildLead(report: PriceReport, dateLabel: string): string[] {
-  const first: string[] = []
-  first.push(`截至 ${dateLabel}，SoloBeauté 上架中的美業空間共 ${report.total} 間，分布在 ${report.cityCount} 個縣市。`)
+/**
+ * Quotable summary under the H1 (≤ 3 sentences). Every number is live; the
+ * 「資料更新」stamp is rendered right after it.
+ */
+function buildLead(report: PriceReport): string[] {
+  const sentences: string[] = []
+  sentences.push(`SoloBeauté 上架中的美業空間共 ${report.total} 間，分布在 ${report.cityCount} 個縣市。`)
   if (report.hourly.count > 0) {
-    const quart = report.hourlyQuartiles
-      ? `，中間一半的空間落在 ${formatNtd(report.hourlyQuartiles.q1)}–${report.hourlyQuartiles.q3}`
-      : ''
-    first.push(`時租 ${rangeText(report.hourly)}，中位數 ${medianText(report.hourly)}${quart}。`)
+    const two = minimumHoursRow(report, 2)
+    const types = report.byType.length ? `，${report.byType.map((row) => `${row.label}中位數 ${medianText(row)}`).join('、')}` : ''
+    const minTwo = two ? `；${two.count} 間（${formatShare(two.share)}）最低租 2 小時` : ''
+    sentences.push(`時租中位數 ${medianText(report.hourly)}（區間 ${rangeText(report.hourly)}）${types}${minTwo}。`)
   }
-  if (report.byType.length > 0) {
-    first.push(`依空間類型看，${report.byType.map((row) => `${row.label}中位數 ${medianText(row)}`).join('、')}。`)
-  }
-  const second: string[] = []
-  if (report.fullDay.count > 0) {
-    const hours = report.fullDayHoursEquivalent !== null ? `，大約等於 ${report.fullDayHoursEquivalent} 小時的時租` : ''
-    second.push(`${report.fullDay.count} 間另有全日價，中位數 ${medianText(report.fullDay)}${hours}。`)
-  }
-  if (report.halfDay.count > 0) {
-    second.push(`${report.halfDay.count} 間有半日價，中位數 ${medianText(report.halfDay)}。`)
-  }
-  const topServices = report.services.slice().sort((a, b) => b.count - a.count).slice(0, 3)
-  if (topServices.length > 0) {
-    second.push(`屋主最常標示適合的服務是${topServices.map((row) => `${row.label.replace(/（.*）/, '')}（${row.count} 間）`).join('、')}。`)
-  }
-  return [first.join(''), second.join('')].filter(Boolean)
+  const day: string[] = []
+  if (report.halfDay.count > 0) day.push(`${report.halfDay.count} 間有半日價（中位數 ${medianText(report.halfDay)}）`)
+  if (report.fullDay.count > 0) day.push(`${report.fullDay.count} 間有全日價（中位數 ${medianText(report.fullDay)}）`)
+  if (day.length) sentences.push(`${day.join('，')}。`)
+  return [sentences.join('')]
 }
 
 async function generateMetadataEn(): Promise<Metadata> {
@@ -253,7 +245,7 @@ function enRange(summary: Pick<RateSummary, 'min' | 'max'>): string {
 function englishSummary(report: PriceReport): string[] {
   const two = minimumHoursRow(report, 2)
   const lash = report.professions.find((p) => p.key === 'lash')
-  const first = `SoloBeauté price data, last updated ${REPORT_UPDATED_LABEL_EN}: across ${report.total} beauty workspaces listed on SoloBeauté in ${report.cityCount} cities and counties in Taiwan, hourly rates range ${enRange(report.hourly)}, with a median of ${medianText(report.hourly)} per hour.`
+  const first = `SoloBeauté price data, updated ${dataDateISO()}: across ${report.total} beauty workspaces listed on SoloBeauté in ${report.cityCount} cities and counties in Taiwan, hourly rates range ${enRange(report.hourly)}, with a median of ${medianText(report.hourly)} per hour.`
   const second: string[] = []
   if (report.halfDay.count > 0) second.push(`${report.halfDay.count} spaces also list a half-day rate (median ${medianText(report.halfDay)})`)
   if (report.fullDay.count > 0) second.push(`${report.fullDay.count} list a full-day rate (median ${medianText(report.fullDay)})`)
@@ -275,15 +267,17 @@ export default async function PriceReportPage({ params }: { params: { locale: st
   // /en/spaces/price-report (src/middleware.ts) renders the English version.
   if ((await getLocale()) === 'en') return <PriceReportEn report={report} />
   const dateLabel = dataDateLabel()
+  // Data date (Taipei, day precision): when these numbers were last computed.
+  const dataDate = dataDateISO()
   const h1 = h1Text()
   const description = buildReportDescription(report)
-  const lead = buildLead(report, dateLabel)
+  const lead = buildLead(report)
   // Stable editorial date (lib/editorial.ts), not the render time.
   const dateModified = REPORT_UPDATED_ISO
-  const methodology = `依 SoloBeauté 上架中的 ${report.total} 間空間公開價格計算，資料日期：${dateLabel}。`
+  const methodology = `依 SoloBeauté 上架中的 ${report.total} 間空間公開價格計算，資料更新：${dataDate}。`
   const faq = buildReportFaq(report, dateLabel)
   const english = englishSummary(report)
-  const citation = citationText(REPORT_UPDATED_LABEL)
+  const citation = citationText(dataDate)
   const median = report.hourly.median
 
   const jsonLd = {
@@ -376,11 +370,11 @@ export default async function PriceReportPage({ params }: { params: { locale: st
         <header className="space-y-5">
           <p className="section-tag">美業空間時租行情</p>
           <h1 className="text-3xl font-semibold leading-tight text-ink md:text-4xl">{h1}</h1>
-          <div className={`space-y-3 text-base leading-8 text-black/70 ${NUM}`} data-report-lead>
+          <div className={`space-y-3 text-base leading-8 text-black/70 ${NUM}`} data-report-lead data-ai-summary>
             {lead.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
           </div>
           <p className={`text-sm font-medium text-ink ${NUM}`} data-report-updated>
-            資料更新：<time dateTime={REPORT_UPDATED_ISO}>{REPORT_UPDATED_LABEL}</time>
+            資料更新：<time dateTime={dataDate}>{dataDate}</time>
           </p>
           <Byline />
           <dl className={`grid grid-cols-2 gap-3 md:grid-cols-4 ${NUM}`} data-report-facts>
@@ -533,7 +527,7 @@ export default async function PriceReportPage({ params }: { params: { locale: st
             <li>價格是屋主在 SoloBeauté 上公開標示的掛牌價，不是成交價；實際價格以各空間頁和 App 顯示為準。</li>
             <li>中位數：把價格由低到高排列取中間值；偶數筆時取中間兩筆的平均後四捨五入。「中間一半」是第 25 到第 75 百分位（最近排名法）。</li>
             <li>樣本數少（{report.total} 間），單一空間上下架就可能讓數字明顯變動，特別是只有 1–2 間空間的縣市，請當作參考，不要當作市場全貌。</li>
-            <li>頁面每小時依最新的公開資料重新計算；文字與章節的最後更新日期是 {REPORT_UPDATED_LABEL}。</li>
+            <li>數字每小時依公開資料重算（資料更新：{dataDate}）；文案修訂日是 <time dateTime={REPORT_UPDATED_ISO}>{REPORT_UPDATED_LABEL}</time>。</li>
           </ul>
         </section>
 
@@ -542,7 +536,7 @@ export default async function PriceReportPage({ params }: { params: { locale: st
           <ul className={`list-disc space-y-1 pl-5 text-sm leading-7 text-black/70 ${NUM}`}>
             <li>樣本：SoloBeauté 上架中（公開）的 {report.total} 間美業空間，分布在 {report.cityCount} 個縣市。</li>
             <li>方法：彙整屋主在 SoloBeauté 公開標示的掛牌價，計算區間與中位數；不含草稿或已下架的空間，頁面每小時重新計算。</li>
-            <li>最後更新：<time dateTime={REPORT_UPDATED_ISO}>{REPORT_UPDATED_LABEL}</time>；數字會隨空間上下架變動，引用時請註明你查看的日期。</li>
+            <li>資料更新：<time dateTime={dataDate}>{dataDate}</time>（文案修訂日 {REPORT_UPDATED_LABEL}）；數字會隨空間上下架變動，引用時請註明你查看的日期。</li>
           </ul>
           <p className="text-sm text-black/55">建議引用格式：</p>
           <p className={`rounded-xl bg-surface-warm px-4 py-3 text-sm leading-7 text-ink break-all ${NUM}`} data-report-citation>{citation}</p>
@@ -553,7 +547,7 @@ export default async function PriceReportPage({ params }: { params: { locale: st
           <div className={`space-y-2 text-sm leading-7 text-black/70 ${NUM}`}>
             {english.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
             <p>
-              Suggested citation: SoloBeauté, &ldquo;2026 Taiwan Beauty Workspace Hourly Rental Prices&rdquo;, last updated {REPORT_UPDATED_LABEL_EN}, {PAGE_URL}. Full report in English: <a href={localizePath(PAGE_PATH, 'en')} hrefLang="en" className="text-brand underline underline-offset-4">{priceReportH1En()} (English)</a>.
+              Suggested citation: SoloBeauté, &ldquo;2026 Taiwan Beauty Workspace Hourly Rental Prices&rdquo;, data updated {dataDate}, {PAGE_URL}. Full report in English: <a href={localizePath(PAGE_PATH, 'en')} hrefLang="en" className="text-brand underline underline-offset-4">{priceReportH1En()} (English)</a>.
             </p>
           </div>
         </section>

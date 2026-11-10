@@ -180,7 +180,12 @@ export function TopicPage({ view }: { view: TopicView }) {
         <header className="space-y-4">
           <p className="section-tag">{view.tag}</p>
           <h1 className="text-3xl font-semibold leading-tight text-ink md:text-4xl">{view.h1}</h1>
-          <p className={`max-w-3xl text-base leading-8 text-black/70 ${NUM}`}>{view.lead}</p>
+          <p className={`max-w-3xl text-base leading-8 text-black/70 ${NUM}`} data-ai-summary>
+            {view.lead}{' '}
+            <span className="whitespace-nowrap font-medium text-ink" data-ai-summary-date>
+              {isEn ? 'Updated: ' : '資料更新：'}<time dateTime={view.dataDate}>{view.dataDate}</time>{isEn ? '' : '。'}
+            </span>
+          </p>
           {view.intro.map((paragraph) => (
             <p key={paragraph} className={`max-w-3xl text-sm leading-7 text-black/60 ${NUM}`}>{paragraph}</p>
           ))}

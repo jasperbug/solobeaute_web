@@ -12,13 +12,14 @@ export const PRICE_REPORT_URL = `${SITE_URL}${PRICE_REPORT_PATH}`
 export const PRICE_REPORT_NAME = '2026 台灣美業空間時租行情'
 
 /**
- * Last editorial update of /spaces/price-report (text, sections, checked
- * numbers). Bump this by hand when the copy or the headline numbers change —
- * it is deliberately NOT the render time, so `dateModified` stays stable.
+ * Last EDITORIAL revision of /spaces/price-report (text and sections). Bump this
+ * by hand when the copy changes — it is deliberately NOT the render time, so
+ * `dateModified` stays stable. The numbers themselves are recalculated hourly;
+ * the visible「資料更新」date is dataDateISO() (lib/cityPages.ts), not this.
  */
-export const REPORT_UPDATED_ISO = '2026-10-03'
-export const REPORT_UPDATED_LABEL = '2026 年 10 月 3 日'
-export const REPORT_UPDATED_LABEL_EN = 'October 3, 2026'
+export const REPORT_UPDATED_ISO = '2026-11-10'
+export const REPORT_UPDATED_LABEL = '2026 年 11 月 10 日'
+export const REPORT_UPDATED_LABEL_EN = 'November 10, 2026'
 
 export type Author = {
   slug: string

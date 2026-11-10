@@ -6,7 +6,8 @@ import type { FaqItemData } from '@/components/landing/FaqSection'
 import type { HomeStats } from '@/components/landing/HomeStatsLine'
 import { LandingPage } from '@/components/landing/LandingPage'
 import type { AppLocale } from '@/i18n/config'
-import { dataDateLabel } from '@/lib/cityPages'
+import { buildCalculatorData, type CalculatorData } from '@/lib/calculatorRates'
+import { dataDateISO, dataDateLabel } from '@/lib/cityPages'
 import {
   APP_STORE_URL,
   INSTAGRAM_URL,
@@ -19,7 +20,7 @@ import { BRAND_FACT_EN, BRAND_FACT_ZH } from '@/lib/brandFacts'
 import { cityNameEn, monthYearEn } from '@/lib/en'
 import { fillFaqItems, getFaqFacts, type FaqFacts } from '@/lib/faqStats'
 import { localeAlternates, localeUrl, ogLocale } from '@/lib/i18nSeo'
-import { buildPriceReport } from '@/lib/priceReport'
+import { buildPriceReport, type PriceReport } from '@/lib/priceReport'
 import { fetchPublicSpaces } from '@/lib/spaces'
 
 // Homepage copy follows seo_copy_v1.md §1 (zh-TW only; Chinese-only SEO).
@@ -100,9 +101,23 @@ export async function generateMetadata({ params }: { params: { locale: string } 
 
 const ORGANIZATION_ID = `${SITE_URL}/#organization`
 
-async function getHomeStats(locale: AppLocale): Promise<HomeStats | null> {
+async function liveReport(): Promise<PriceReport | null> {
   try {
-    const report = buildPriceReport(await fetchPublicSpaces())
+    return buildPriceReport(await fetchPublicSpaces())
+  } catch (error) {
+    console.error('[home] price report unavailable:', error)
+    return null
+  }
+}
+
+async function getCalculatorData(report: PriceReport | null): Promise<CalculatorData> {
+  const t = await getTranslations('calculator')
+  return buildCalculatorData(report, dataDateISO(), t.raw('hint') as string)
+}
+
+async function getHomeStats(locale: AppLocale, report: PriceReport | null): Promise<HomeStats | null> {
+  try {
+    if (!report) return null
     if (report.total === 0 || report.hourly.median === null) return null
     return {
       dateLabel: locale === 'en' ? monthYearEn() : dataDateLabel(),
@@ -125,6 +140,7 @@ export default async function HomePage({ params }: { params: { locale: string } 
   // Built from the same messages FaqSection renders, so the JSON-LD always
   // matches the visible (server-rendered) FAQ text exactly.
   // {placeholders} are filled with live space data (count, cities, price range).
+  const report = await liveReport()
   const faqItems = fillFaqItems(tFaq.raw('items') as FaqItemData[], await getFaqFacts(undefined, locale))
 
   const jsonLd = {
@@ -202,7 +218,7 @@ export default async function HomePage({ params }: { params: { locale: string } 
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}
       />
-      <LandingPage faqItems={faqItems} stats={await getHomeStats(locale)} />
+      <LandingPage faqItems={faqItems} stats={await getHomeStats(locale, report)} calculator={await getCalculatorData(report)} />
     </>
   )
 }

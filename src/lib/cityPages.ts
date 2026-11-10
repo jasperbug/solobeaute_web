@@ -129,6 +129,18 @@ export function dataDateLabel(now: Date = new Date()): string {
   return `${year} 年 ${month} 月`
 }
 
+/**
+ * Day-precision data date in Taipei time, e.g. "2026-11-10". Shown as
+ * 「資料更新：{ISO}」/ "Updated: {ISO}" next to the numbers; it is the time the
+ * page was last computed (pages revalidate hourly), not an editorial date.
+ */
+export function dataDateISO(now: Date = new Date()): string {
+  const parts = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Taipei', year: 'numeric', month: '2-digit', day: '2-digit' })
+    .formatToParts(now)
+  const get = (type: string) => parts.find((p) => p.type === type)?.value
+  return `${get('year')}-${get('month')}-${get('day')}`
+}
+
 // --- phrase helpers ---------------------------------------------------------
 
 function joinOr(items: string[]): string {

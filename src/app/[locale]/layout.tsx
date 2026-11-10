@@ -76,7 +76,12 @@ export default async function LocaleLayout({
   const faqMessages = (messages.faq ?? {}) as Record<string, unknown>
   const { items: _faqItems, ...faqClient } = faqMessages
   void _faqItems
-  const clientMessages = { ...messages, faq: faqClient }
+  // Same for calculator.hint: a template the homepage fills on the server
+  // (src/lib/calculatorRates.ts) and passes to CalculatorSection as a prop.
+  const calculatorMessages = (messages.calculator ?? {}) as Record<string, unknown>
+  const { hint: _calculatorHint, ...calculatorClient } = calculatorMessages
+  void _calculatorHint
+  const clientMessages = { ...messages, faq: faqClient, calculator: calculatorClient }
 
   return (
     <html lang={locale} className={`${notoSansTc.variable} ${cormorantGaramond.variable}`}>

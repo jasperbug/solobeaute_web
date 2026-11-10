@@ -18,6 +18,7 @@ import { StoreButtons } from '@/components/ui/StoreButtons'
 import { localizePath } from '@/i18n/config'
 import { SITE_URL } from '@/lib/constants'
 import { AUTHORS, AUTHOR_REFS, PUBLISHER, personSchema, taipeiYear } from '@/lib/editorial'
+import { dataDateISO } from '@/lib/cityPages'
 import { monthYearEn } from '@/lib/en'
 import { localeUrl } from '@/lib/i18nSeo'
 import { formatShare, minimumHoursRow, type PriceReport } from '@/lib/priceReport'
@@ -30,8 +31,8 @@ import { formatNtd } from '@/lib/spaces'
 const PAGE_PATH = '/guides/hourly-vs-monthly-rent'
 const PAGE_URL = localeUrl(PAGE_PATH, 'en')
 const PUBLISHED = '2026-10-03'
-const UPDATED = '2026-10-03'
-const UPDATED_LABEL = 'October 3, 2026'
+const UPDATED = '2026-11-10'
+const UPDATED_LABEL = 'November 10, 2026'
 const en = (path: string) => localizePath(path, 'en')
 const ASSUMPTION = 'assuming a 4-week month and 2 hours per client'
 
@@ -128,6 +129,14 @@ export function HourlyVsMonthlyEn({ report }: { report: PriceReport }) {
                 As of {dateLabel}, the {report.total} beauty workspaces listed on SoloBeauté have a median hourly rate of {formatNtd(median)} (range {report.hourly.min !== null ? formatNtd(report.hourly.min) : '—'}–{report.hourly.max?.toLocaleString('en-US') ?? '—'}). The examples below use that median. Because monthly terms vary so much from place to place, this page gives no monthly-rent figure; plug in the quote you have actually received.
               </p>
             ) : null}
+            {median !== null && report.fullDay.median !== null && report.fullDayHoursEquivalent !== null ? (
+              <p>
+                For illustration: the current median hourly rate is {formatNtd(median)} and the median full-day rate is {formatNtd(report.fullDay.median)} (about {report.fullDayHoursEquivalent} hours at the hourly rate).
+              </p>
+            ) : null}
+            <p className={`text-sm font-medium text-ink ${NUM}`} data-ai-summary-date>
+              Updated: <time dateTime={dataDateISO()}>{dataDateISO()}</time>
+            </p>
           </Prose>
           <BylineEn updatedIso={UPDATED} updatedLabel={UPDATED_LABEL} />
         </header>

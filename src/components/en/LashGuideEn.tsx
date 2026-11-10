@@ -19,6 +19,7 @@ import { StoreButtons } from '@/components/ui/StoreButtons'
 import { localizePath } from '@/i18n/config'
 import { SITE_URL } from '@/lib/constants'
 import { AUTHORS, AUTHOR_REFS, PUBLISHER, personSchema, taipeiYear } from '@/lib/editorial'
+import { dataDateISO } from '@/lib/cityPages'
 import { cityNameEn, cityShortEn, equipmentEn, joinEn, monthYearEn } from '@/lib/en'
 import { localeUrl } from '@/lib/i18nSeo'
 import { formatShare, type ProfessionRow, type RateSummary } from '@/lib/priceReport'
@@ -30,8 +31,8 @@ import type { PublicSpace } from '@/lib/types'
 const PAGE_PATH = '/guides/lash-artist-studio'
 const PAGE_URL = localeUrl(PAGE_PATH, 'en')
 const PUBLISHED = '2026-10-03'
-const UPDATED = '2026-10-03'
-const UPDATED_LABEL = 'October 3, 2026'
+const UPDATED = '2026-11-10'
+const UPDATED_LABEL = 'November 10, 2026'
 const en = (path: string) => localizePath(path, 'en')
 
 function h1Text(): string {
@@ -178,7 +179,7 @@ export function LashGuideEn({ lashSpaces, row, total }: { lashSpaces: PublicSpac
           ) : null}
           <BylineEn updatedIso={UPDATED} updatedLabel={UPDATED_LABEL} />
           <p className={`text-xs leading-6 text-black/50 ${NUM}`}>
-            Figures are recalculated every hour from the spaces listed on SoloBeauté (data as of {dateLabel}); &ldquo;suited to lash work&rdquo; follows the services each host recommends. The sample is small, so treat the numbers as a reference. For figures across Taiwan, see the <Link href={en('/spaces/price-report')} className="text-brand underline underline-offset-4">{taipeiYear()} Taiwan beauty workspace hourly rental prices</Link>.
+            Figures are recalculated every hour from the spaces listed on SoloBeauté (updated <time dateTime={dataDateISO()}>{dataDateISO()}</time>); &ldquo;suited to lash work&rdquo; follows the services each host recommends. The sample is small, so treat the numbers as a reference. For figures across Taiwan, see the <Link href={en('/spaces/price-report')} className="text-brand underline underline-offset-4">{taipeiYear()} Taiwan beauty workspace hourly rental prices</Link>.
           </p>
         </header>
 
