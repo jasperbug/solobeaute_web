@@ -8,36 +8,35 @@ import Link from 'next/link'
 import { HomeIcon, ScissorsIcon, StarIcon, DownloadIcon } from '../ui/Icons'
 import { Reveal } from '../ui/Reveal'
 
+import type { CalculatorData } from '@/lib/calculatorRates'
+
 type SpaceType = 'open' | 'curtain' | 'private'
 
 interface SpaceConfig {
   key: SpaceType
-  hourlyRate: number
   icon: React.ReactNode
 }
 
 // Static config — hoisted to module scope so the icon elements aren't
 // re-instantiated on every render. Icons are decorative (aria-hidden).
 //
-// Rates are the MEDIAN listed hourly rate of the ACTIVE spaces on
-// SoloBeauté, grouped by Space.spaceType (GET /api/v1/spaces, 17 listings,
-// sampled 2026-10-01): OPEN_SPACE n=7 → 170, CURTAIN_PARTITION n=5 → 200,
-// PRIVATE_ROOM n=5 → 200. Overall range NT$100–350, overall median 200.
-// Keep these in sync with the `calculator.hint` copy when re-sampling.
+// The hourly rate for each type is NOT hard-coded: it is the live median
+// listed hourly rate per Space.spaceType, computed on the server from the same
+// buildPriceReport() data as /spaces/price-report (src/lib/calculatorRates.ts)
+// and passed in as `data`, together with the filled `calculator.hint` text.
 const SPACES: SpaceConfig[] = [
-  { key: 'open', hourlyRate: 170, icon: <ScissorsIcon className="h-5 w-5" aria-hidden /> },
-  { key: 'curtain', hourlyRate: 200, icon: <StarIcon className="h-5 w-5" aria-hidden /> },
-  { key: 'private', hourlyRate: 200, icon: <HomeIcon className="h-5 w-5" aria-hidden /> },
+  { key: 'open', icon: <ScissorsIcon className="h-5 w-5" aria-hidden /> },
+  { key: 'curtain', icon: <StarIcon className="h-5 w-5" aria-hidden /> },
+  { key: 'private', icon: <HomeIcon className="h-5 w-5" aria-hidden /> },
 ]
 
-export function CalculatorSection() {
+export function CalculatorSection({ data }: { data: CalculatorData }) {
   const t = useTranslations('calculator')
 
   const [spaceType, setSpaceType] = useState<SpaceType>('open')
   const [hours, setHours] = useState<number>(15)
 
-  const activeSpace = SPACES.find((s) => s.key === spaceType) ?? SPACES[0]
-  const hourlyRate = activeSpace.hourlyRate
+  const hourlyRate = data.rates[spaceType]
 
   // Calculation: Hourly Rate * Hours per week * 4.33 weeks per month
   const monthlyEarnings = Math.round(hourlyRate * hours * 4.33)
@@ -131,7 +130,7 @@ export function CalculatorSection() {
               <DownloadIcon className="h-[18px] w-[18px]" aria-hidden="true" focusable="false" />
               {t('cta')}
             </Link>
-            <p className="calc-hint">{t('hint')}</p>
+            <p className="calc-hint">{data.hint}</p>
           </div>
         </Reveal>
       </div>

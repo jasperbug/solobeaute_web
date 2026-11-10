@@ -206,7 +206,7 @@
     "hoursUnit": "小時 / 每週",
     "resultTitle": "預估每月增加被動收入",
     "cta": "立即下載 App 開始上架",
-    "hint": "*依 SoloBeauté 2026 年 10 月 1 日上架中的 17 個空間實際掛牌價計算（開放空間中位數 NT$170/小時、拉簾隔間 NT$200/小時、獨立房間 NT$200/小時；時租區間 NT$100–350、整體中位數 NT$200）。此為掛牌價 × 你填入的時數之算術結果，非收益保證；實際出租率依地點、設備與市場需求而定。",
+    "hint": "*依 SoloBeauté {dateISO} 上架中的 {total} 個空間實際掛牌價計算（開放空間中位數 {openMedian}/小時、拉簾隔間 {curtainMedian}/小時、獨立房間 {privateMedian}/小時；時租區間 {hourlyRange}、整體中位數 {hourlyMedian}）。此為掛牌價 × 你填入的時數之算術結果，非收益保證；實際出租率依地點、設備與市場需求而定。",
     "rateDetail": "NT${rate}/小時 · {hours} 小時/週",
     "perMonth": "月",
     "types": {

@@ -206,7 +206,7 @@
     "hoursUnit": "hours / week",
     "resultTitle": "Estimated Passive Income / Month",
     "cta": "Download the App to Start Earning",
-    "hint": "*Based on the actual listed rates of the 17 spaces live on SoloBeauté on 1 October 2026 (open space median NT$170/hr, curtained area NT$200/hr, private room NT$200/hr; overall range NT$100–350, overall median NT$200). This is the listed rate multiplied by the hours you enter — not a guarantee of income. Actual occupancy depends on location, equipment and demand.",
+    "hint": "*Based on the actual listed rates of the {total} spaces live on SoloBeauté on {dateISO} (open space median {openMedian}/hr, curtained area {curtainMedian}/hr, private room {privateMedian}/hr; overall range {hourlyRange}, overall median {hourlyMedian}). This is the listed rate multiplied by the hours you enter — not a guarantee of income. Actual occupancy depends on location, equipment and demand.",
     "rateDetail": "NT${rate}/hr · {hours}hr/wk",
     "perMonth": "mo",
     "types": {

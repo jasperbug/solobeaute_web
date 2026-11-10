@@ -21,22 +21,23 @@ export type FaqFacts = {
   typicalRange: string
 }
 
-// Used ONLY when the public API cannot be reached, so the page still renders.
-// Snapshot of 2026-10-03; normal renders always use live data.
+// FALLBACK ONLY: used when the public API cannot be reached, so the page still
+// renders. Snapshot of 2026-11-10 (/spaces/price-report on that day); normal
+// renders always use live data from fetchPublicSpaces().
 const FALLBACK_FACTS: FaqFacts = {
-  spaceCount: '17',
+  spaceCount: '18',
   cityCount: '7',
   cityList: '台北、新北、桃園、台中、高雄、彰化、南投',
   rateRange: 'NT$100–350',
-  typicalRange: 'NT$150–200',
+  typicalRange: 'NT$150–220',
 }
 
 const FALLBACK_FACTS_EN: FaqFacts = {
-  spaceCount: '17',
+  spaceCount: '18',
   cityCount: '7',
   cityList: 'Taipei, New Taipei, Taoyuan, Taichung, Kaohsiung, Changhua and Nantou',
   rateRange: 'NT$100–350',
-  typicalRange: 'NT$150–200',
+  typicalRange: 'NT$150–220',
 }
 
 function range(min: number, max: number, approx = false): string {
@@ -83,7 +84,7 @@ export async function getFaqFacts(spaces?: PublicSpace[] | null, locale: AppLoca
     const list = spaces ?? (await fetchPublicSpaces())
     return computeFaqFacts(list, locale) ?? fallback
   } catch (error) {
-    console.error('[faq] live facts unavailable, using 2026-10 snapshot:', error)
+    console.error('[faq] live facts unavailable, using 2026-11-10 fallback snapshot:', error)
     return fallback
   }
 }

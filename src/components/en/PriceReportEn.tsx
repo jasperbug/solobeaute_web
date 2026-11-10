@@ -29,7 +29,6 @@ import {
   EQUIPMENT_EN,
   PROFESSION_EN,
   REPORT_SERVICE_EN,
-  REPORT_SERVICE_SHORT_EN,
   cityNameEn,
   cityShortEn,
   equipmentEn,
@@ -38,6 +37,7 @@ import {
   monthYearEn,
   spaceTypeLabelEn,
 } from '@/lib/en'
+import { dataDateISO } from '@/lib/cityPages'
 import { localeUrl } from '@/lib/i18nSeo'
 import { formatShare, minimumHoursRow, type PriceReport, type ProfessionRow, type RateSummary } from '@/lib/priceReport'
 import { USAGE_SCENARIOS, monthlyHourlyCost } from '@/lib/rentMath'
@@ -86,31 +86,25 @@ export function buildPriceReportDescriptionEn(report: PriceReport): string {
   return `Calculated from the public prices of ${report.total} beauty workspaces listed on SoloBeauté: ${rangeText(report.hourly)} per hour, median ${medianText(report.hourly)}. With figures by space type, ${report.cityCount} cities and counties, half-day and full-day rates, minimum hours, equipment and suitable services.`
 }
 
-function buildLead(report: PriceReport, dateLabel: string): string[] {
-  const first: string[] = []
-  first.push(`As of ${dateLabel}, ${report.total} beauty workspaces are listed on SoloBeauté, across ${report.cityCount} cities and counties in Taiwan.`)
+/** Quotable summary under the H1 (≤ 3 sentences); every number is live. */
+function buildLead(report: PriceReport, dataDate: string): string[] {
+  const sentences: string[] = []
+  sentences.push(`As of ${dataDate}, SoloBeauté lists ${report.total} beauty workspaces in ${report.cityCount} cities and counties in Taiwan.`)
   if (report.hourly.count > 0) {
-    const quart = report.hourlyQuartiles
-      ? `; the middle half of spaces charge ${formatNtd(report.hourlyQuartiles.q1)}–${report.hourlyQuartiles.q3.toLocaleString('en-US')}`
+    const types = report.byType.length
+      ? `; by type, ${joinEn(report.byType.map((row) => `${spaceTypeLabelEn(row.label).toLowerCase()}s ${medianText(row)}`))}`
       : ''
-    first.push(`Hourly rates run ${rangeText(report.hourly)}, with a median of ${medianText(report.hourly)}${quart}.`)
+    sentences.push(`The median hourly rate is ${medianText(report.hourly)} (range ${rangeText(report.hourly)})${types}.`)
   }
-  if (report.byType.length > 0) {
-    first.push(`By space type, the median is ${joinEn(report.byType.map((row) => `${medianText(row)} for ${spaceTypeLabelEn(row.label).toLowerCase()}s`))}.`)
+  const two = minimumHoursRow(report, 2)
+  const tail: string[] = []
+  if (report.halfDay.count > 0) tail.push(`${report.halfDay.count} also list a half-day rate (median ${medianText(report.halfDay)})`)
+  if (report.fullDay.count > 0) tail.push(`${report.fullDay.count} a full-day rate (median ${medianText(report.fullDay)})`)
+  if (two || tail.length) {
+    const head = two ? `${two.count} of ${report.total} (${formatShare(two.share)}) have a 2-hour minimum` : ''
+    sentences.push(`${[head, joinEn(tail)].filter(Boolean).join('; ')}.`.replace(/^./, (c) => c.toUpperCase()))
   }
-  const second: string[] = []
-  if (report.fullDay.count > 0) {
-    const hours = report.fullDayHoursEquivalent !== null ? `, roughly ${report.fullDayHoursEquivalent} hours at the hourly rate` : ''
-    second.push(`${spaces(report.fullDay.count)} also list a full-day rate (median ${medianText(report.fullDay)}${hours}).`)
-  }
-  if (report.halfDay.count > 0) {
-    second.push(`${spaces(report.halfDay.count)} list a half-day rate (median ${medianText(report.halfDay)}).`)
-  }
-  const topServices = report.services.slice().sort((a, b) => b.count - a.count).slice(0, 3)
-  if (topServices.length > 0) {
-    second.push(`The services hosts most often mark as suitable are ${joinEn(topServices.map((row) => `${REPORT_SERVICE_SHORT_EN[row.label] ?? row.label} (${row.count})`))}.`)
-  }
-  return [first.join(' '), second.join(' ')].filter(Boolean)
+  return [sentences.join(' ')]
 }
 
 function professionSentence(row: ProfessionRow, total: number): string {
@@ -205,12 +199,14 @@ const CHIP = 'inline-flex min-h-10 items-center rounded-full border border-black
 
 export function PriceReportEn({ report }: { report: PriceReport }) {
   const dateLabel = monthYearEn()
+  // Data date (Taipei, day precision): when these numbers were last computed.
+  const dataDate = dataDateISO()
   const h1 = priceReportH1En()
   const description = buildPriceReportDescriptionEn(report)
-  const lead = buildLead(report, dateLabel)
-  const methodology = `Calculated from the public prices of the ${report.total} spaces listed on SoloBeauté; data as of ${dateLabel}.`
+  const lead = buildLead(report, dataDate)
+  const methodology = `Calculated from the public prices of the ${report.total} spaces listed on SoloBeauté; updated ${dataDate}.`
   const faq = buildReportFaq(report, dateLabel)
-  const citation = `SoloBeauté, “${taipeiYear()} ${PRICE_REPORT_NAME_EN}”, last updated ${REPORT_UPDATED_LABEL_EN}, ${PAGE_URL}`
+  const citation = `SoloBeauté, “${taipeiYear()} ${PRICE_REPORT_NAME_EN}”, data updated ${dataDate}, ${PAGE_URL}`
   const median = report.hourly.median
   const equipmentRows = report.equipment
 
@@ -304,11 +300,11 @@ export function PriceReportEn({ report }: { report: PriceReport }) {
         <header className="space-y-5">
           <p className="section-tag">Beauty workspace rental prices</p>
           <h1 className="text-3xl font-semibold leading-tight text-ink md:text-4xl">{h1}</h1>
-          <div className={`space-y-3 text-base leading-8 text-black/70 ${NUM}`} data-report-lead>
+          <div className={`space-y-3 text-base leading-8 text-black/70 ${NUM}`} data-report-lead data-ai-summary>
             {lead.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
           </div>
           <p className={`text-sm font-medium text-ink ${NUM}`} data-report-updated>
-            Last updated: <time dateTime={REPORT_UPDATED_ISO}>{REPORT_UPDATED_LABEL_EN}</time>
+            Updated: <time dateTime={dataDate}>{dataDate}</time>
           </p>
           <BylineEn />
           <dl className={`grid grid-cols-2 gap-3 md:grid-cols-4 ${NUM}`} data-report-facts>
@@ -461,7 +457,7 @@ export function PriceReportEn({ report }: { report: PriceReport }) {
             <li>Prices are the list prices hosts publish on SoloBeauté, not transaction prices; the price on each space page and in the app is the one that applies.</li>
             <li>Median: prices sorted from low to high, taking the middle value; for an even count, the average of the two middle values, rounded. The &ldquo;middle half&rdquo; is the 25th to 75th percentile (nearest-rank method).</li>
             <li>The sample is small ({report.total} spaces), so a single space being listed or unlisted can move the numbers noticeably, especially in cities with only one or two spaces. Treat the figures as a reference, not a picture of the whole market.</li>
-            <li>The page is recalculated every hour from the latest public data; the text and sections were last updated on {REPORT_UPDATED_LABEL_EN}.</li>
+            <li>The numbers are recalculated every hour from public listings (updated {dataDate}); the text was last revised on <time dateTime={REPORT_UPDATED_ISO}>{REPORT_UPDATED_LABEL_EN}</time>.</li>
           </ul>
         </section>
 
@@ -470,7 +466,7 @@ export function PriceReportEn({ report }: { report: PriceReport }) {
           <ul className={`list-disc space-y-1 pl-5 text-sm leading-7 text-black/70 ${NUM}`}>
             <li>Sample: the {report.total} active (public) beauty workspaces listed on SoloBeauté, in {report.cityCount} cities and counties.</li>
             <li>Method: aggregates the list prices hosts publish on SoloBeauté and calculates ranges and medians; drafts and unlisted spaces are excluded, and the page is recalculated every hour.</li>
-            <li>Last updated: <time dateTime={REPORT_UPDATED_ISO}>{REPORT_UPDATED_LABEL_EN}</time>. The numbers change as spaces are listed or unlisted, so please note the date you viewed them when citing.</li>
+            <li>Updated: <time dateTime={dataDate}>{dataDate}</time> (text last revised {REPORT_UPDATED_LABEL_EN}). The numbers change as spaces are listed or unlisted, so please note the date you viewed them when citing.</li>
           </ul>
           <p className="text-sm text-black/55">Suggested citation:</p>
           <p className={`break-all rounded-xl bg-surface-warm px-4 py-3 text-sm leading-7 text-ink ${NUM}`} data-report-citation>{citation}</p>
