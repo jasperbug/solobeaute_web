@@ -56,13 +56,14 @@ const ENGLISH_ROUTES: RegExp[] = [
   /^\/spaces\/city\/[a-z-]+$/,
   /^\/spaces\/city\/[a-z-]+\/[a-z-]+$/,
   /^\/spaces\/(shared|daily|beauty-bed)$/,
-  /^\/spaces\/service\/(nail|brow|lash)$/,
+  /^\/spaces\/service\/(nail|brow|lash|facial|hair|makeup|massage)$/,
   /^\/spaces\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i,
   /^\/faq$/,
   /^\/about$/,
   /^\/hosts$/,
   /^\/guides\/lash-artist-studio$/,
   /^\/guides\/hourly-vs-monthly-rent$/,
+  /^\/guides\/own-studio-vs-hourly-rent$/,
 ]
 
 /** True when `path` (unprefixed, no query/hash) has an English version. */

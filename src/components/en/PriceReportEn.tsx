@@ -423,7 +423,7 @@ export function PriceReportEn({ report }: { report: PriceReport }) {
                 <p>If you book several clients in one day, look at full-day rates as well: the median full-day rate is {medianText(report.fullDay)}, roughly {report.fullDayHoursEquivalent} hours at the hourly rate.</p>
               ) : null}
               <p>
-                For a step-by-step calculation and comparison checklist, see <Link href={en('/guides/hourly-vs-monthly-rent')} className="text-brand underline underline-offset-4">hourly vs monthly rent</Link>.
+                For a step-by-step calculation and comparison checklist, see <Link href={en('/guides/hourly-vs-monthly-rent')} className="text-brand underline underline-offset-4">hourly vs monthly rent</Link>; if you are weighing opening your own studio, see <Link href={en('/guides/own-studio-vs-hourly-rent')} className="text-brand underline underline-offset-4">own studio vs hourly rent</Link>.
               </p>
             </div>
           </ContentSection>
@@ -433,7 +433,11 @@ export function PriceReportEn({ report }: { report: PriceReport }) {
           <DataTable
             caption="Suitable services"
             head={['Service', 'Spaces', 'Share']}
-            rows={report.services.map((row) => [REPORT_SERVICE_EN[row.label] ?? row.label, `${row.count}`, formatShare(row.share)])}
+            rows={report.services.map((row) => [
+              row.href ? <Link key={row.href} href={en(row.href)} className="text-brand underline-offset-4 hover:underline">{REPORT_SERVICE_EN[row.label] ?? row.label}</Link> : (REPORT_SERVICE_EN[row.label] ?? row.label),
+              `${row.count}`,
+              formatShare(row.share),
+            ])}
           />
         </Section>
 
@@ -492,6 +496,11 @@ export function PriceReportEn({ report }: { report: PriceReport }) {
             {[
               { href: '/guides/lash-artist-studio', label: 'Studios for lash artists' },
               { href: '/guides/hourly-vs-monthly-rent', label: 'Hourly vs monthly rent' },
+              { href: '/guides/own-studio-vs-hourly-rent', label: 'Own studio vs hourly rent' },
+              { href: '/spaces/service/facial', label: 'Facial studio rental' },
+              { href: '/spaces/service/hair', label: 'Hair studio rental' },
+              { href: '/spaces/service/makeup', label: 'Makeup and bridal studio rental' },
+              { href: '/spaces/service/massage', label: 'Massage room rental' },
               { href: '/hosts', label: 'For space hosts' },
               { href: '/faq', label: 'FAQ' },
             ].map((link) => (

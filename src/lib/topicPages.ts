@@ -25,6 +25,7 @@ import {
   rateRangeEn,
   spaceTypeEn,
 } from '@/lib/en'
+import { isMassageService } from '@/lib/priceReport'
 import { formatNtd, groupSpacesByCity, shortCityName, spaceTypeLabel } from '@/lib/spaces'
 import type { PublicSpace, SpaceType } from '@/lib/types'
 
@@ -37,7 +38,7 @@ export function isTopicIndexable(count: number): boolean {
 // --- definitions -------------------------------------------------------------
 
 export type TopicKey = 'shared' | 'daily' | 'beauty-bed' | ServiceKey
-export type ServiceKey = 'nail' | 'brow' | 'lash'
+export type ServiceKey = 'nail' | 'brow' | 'lash' | 'facial' | 'hair' | 'makeup' | 'massage'
 
 type TopicDef = {
   key: TopicKey
@@ -98,6 +99,39 @@ export const TOPIC_PAGES: TopicDef[] = [
     // Same matcher as the price report's 美睫師 row, the lash guide and the city pages (「睫毛」).
     match: (s) => s.recommendedServices.some(serviceGroup('lash').match),
   },
+  {
+    key: 'facial',
+    path: '/spaces/service/facial',
+    labelZh: '臉部護膚空間',
+    labelEn: 'Facial studios',
+    // Same matcher as SERVICE_GROUPS facial and the price report's 美容（臉部護膚） row (「護膚」).
+    match: (s) => s.recommendedServices.some(serviceGroup('facial').match),
+  },
+  {
+    key: 'hair',
+    path: '/spaces/service/hair',
+    labelZh: '美髮空間',
+    labelEn: 'Hair studios',
+    // Same matcher as SERVICE_GROUPS hair and the price report's 美髮 row (「美髮」).
+    match: (s) => s.recommendedServices.some(serviceGroup('hair').match),
+  },
+  {
+    key: 'makeup',
+    path: '/spaces/service/makeup',
+    labelZh: '彩妝・新娘秘書工作室',
+    labelEn: 'Makeup and bridal studios',
+    // Same matcher as SERVICE_GROUPS makeup (「彩妝」 or 「新娘秘書」).
+    match: (s) => s.recommendedServices.some(serviceGroup('makeup').match),
+  },
+  {
+    key: 'massage',
+    path: '/spaces/service/massage',
+    labelZh: '按摩空間',
+    labelEn: 'Massage rooms',
+    // Same matcher as the price report's 按摩 row (service name contains 「按摩」:
+    // body, oil, sports, bust). Not in SERVICE_GROUPS, so city-page keyword order is unchanged.
+    match: (s) => s.recommendedServices.some(isMassageService),
+  },
 ]
 
 const BROW_EXTRA = ['髮際線紋綉', '黑眼圈遮瑕']
@@ -108,7 +142,7 @@ function serviceGroup(key: string) {
   return group
 }
 
-export const SERVICE_SLUGS: ServiceKey[] = ['nail', 'brow', 'lash']
+export const SERVICE_SLUGS: ServiceKey[] = ['nail', 'brow', 'lash', 'facial', 'hair', 'makeup', 'massage']
 
 export function getTopic(key: TopicKey): TopicDef {
   const topic = TOPIC_PAGES.find((t) => t.key === key)
@@ -128,12 +162,15 @@ export type DistrictPageDef = {
    * every space there has it (e.g. 獨立房間). Never 「共享」 unless the spaces are.
    */
   style: 'workspace' | 'studio'
+  /** Area named in the second half of the zh title (default: label), e.g. 新北板橋. */
+  titleArea?: string
 }
 
 /** District pages that exist. Add a district only when it has ≥ 2 spaces. */
 export const DISTRICT_PAGES: DistrictPageDef[] = [
   { citySlug: 'taoyuan', slug: 'zhongli', district: '中壢區', label: '中壢', style: 'workspace' },
   { citySlug: 'taipei', slug: 'zhongshan', district: '中山區', label: '中山區', style: 'studio' },
+  { citySlug: 'new-taipei', slug: 'banqiao', district: '板橋區', label: '板橋', style: 'workspace', titleArea: '新北板橋' },
 ]
 
 export function districtPagePath(def: DistrictPageDef): string {
@@ -317,10 +354,15 @@ function relatedLinks(current: string, locale: AppLocale) {
     { href: '/spaces/service/nail', label: '美甲工作室時租' },
     { href: '/spaces/service/brow', label: '霧眉・紋繡工作室時租' },
     { href: '/spaces/service/lash', label: '美睫工作室時租' },
+    { href: '/spaces/service/facial', label: '臉部護膚空間時租' },
+    { href: '/spaces/service/hair', label: '美髮空間時租' },
+    { href: '/spaces/service/makeup', label: '彩妝・新娘秘書工作室時租' },
+    { href: '/spaces/service/massage', label: '按摩空間時租' },
     { href: '/guides/lash-artist-studio', label: '美睫師租工作室指南' },
     { href: '/spaces', label: '全台美業空間' },
     { href: '/spaces/price-report', label: '美業空間時租行情' },
     { href: '/guides/hourly-vs-monthly-rent', label: '時租和月租怎麼選' },
+    { href: '/guides/own-studio-vs-hourly-rent', label: '自己開店還是按小時租' },
   ]
   const en = [
     { href: '/spaces/shared', label: 'Shared beauty workspaces' },
@@ -329,10 +371,15 @@ function relatedLinks(current: string, locale: AppLocale) {
     { href: '/spaces/service/nail', label: 'Nail studio rental' },
     { href: '/spaces/service/brow', label: 'Brow and PMU studio rental' },
     { href: '/spaces/service/lash', label: 'Lash studio rental' },
+    { href: '/spaces/service/facial', label: 'Facial studio rental' },
+    { href: '/spaces/service/hair', label: 'Hair studio rental' },
+    { href: '/spaces/service/makeup', label: 'Makeup and bridal studio rental' },
+    { href: '/spaces/service/massage', label: 'Massage room rental' },
     { href: '/guides/lash-artist-studio', label: 'Lash artist studio guide' },
     { href: '/spaces', label: 'All beauty workspaces' },
     { href: '/spaces/price-report', label: 'Hourly rate report' },
     { href: '/guides/hourly-vs-monthly-rent', label: 'Hourly vs monthly rent' },
+    { href: '/guides/own-studio-vs-hourly-rent', label: 'Own studio vs hourly rent' },
   ]
   const L = linker(locale)
   return (locale === 'en' ? en : zh).filter((l) => l.href !== current).map((l) => ({ ...l, href: L(l.href) }))
@@ -1052,38 +1099,115 @@ function buildBeautyBed(all: PublicSpace[], locale: AppLocale): TopicView {
 }
 
 
-// --- P7 nail / P8 brow (service pages) -----------------------------------------
+// --- service pages: nail / brow / lash / facial / hair / makeup / massage -------
+
+type ServiceLocaleCopy = {
+  title: string
+  /** Title used instead of `title` when the equipment `title` names is listed by no space (see `titleNeeds`). */
+  titleFallback?: string
+  og: string
+  h1: string
+  tag: string
+  noun: string
+  profession: string
+  itemList: string
+  crumb: string
+  /** Keyword the description starts with (defaults to h1). */
+  kw?: string
+  /** First FAQ question (defaults to「{crumb}時租多少錢？」). */
+  faqPrice?: string
+  /** Heading of the sub-service table and its FAQ question. */
+  subsTitle: string
+  subsQ: string
+  equipTitle: string
+  /** Label of the 4th fact (count of `factEquipment`). */
+  factLabel: string
+  /** Link label to the price report; defaults to the profession summary wording. */
+  reportLabel?: string
+}
 
 type ServiceCopy = {
-  subs: string[]
+  /** Sub-service tags counted on the page; a function picks them from the data instead. */
+  subs: string[] | ((service: string) => boolean)
   equipment: string[]
   reportAnchor: string
-  /** `kw`: keyword the description starts with (defaults to h1). `faqPrice`: first FAQ question (defaults to「{crumb}時租多少錢？」). */
-  zh: { title: string; og: string; h1: string; tag: string; noun: string; profession: string; itemList: string; crumb: string; kw?: string; faqPrice?: string }
-  en: { title: string; og: string; h1: string; tag: string; noun: string; profession: string; itemList: string; crumb: string; kw?: string; faqPrice?: string }
+  /** Equipment named in the summary sentence. */
+  keyEquipment: string
+  /** Equipment counted in the 4th fact. */
+  factEquipment: string
+  /** When set, the title only names this equipment if at least one space lists it. */
+  titleNeeds?: string
+  zh: ServiceLocaleCopy
+  en: ServiceLocaleCopy
 }
+
+const BED_EQUIPMENT = ['美容床', '美容燈', '消毒櫃', '拋棄式床紙']
 
 const SERVICE_COPY: Record<ServiceKey, ServiceCopy> = {
   nail: {
     subs: ['手美甲', '腳美甲'],
     equipment: ['美甲桌椅', '光療燈', '美甲吸塵器', '桌上型工作燈', '美容燈', '延長線'],
     reportAnchor: '#nail',
-    zh: { title: '美甲工作室時租｜美甲座位按小時租', og: '美甲工作室時租｜SoloBeauté', h1: '美甲工作室時租', tag: '美甲師・工作室時租', noun: '美甲', profession: '美甲師', itemList: 'SoloBeauté 適合美甲的美業空間', crumb: '美甲工作室' },
-    en: { title: 'Nail Studio Rental by the Hour in Taiwan', og: 'Nail studio rental by the hour | SoloBeauté', h1: 'Nail studio rental by the hour', tag: 'For nail artists', noun: 'nails', profession: 'nail artists', itemList: 'Beauty workspaces on SoloBeauté suitable for nails', crumb: 'Nail studios' },
+    keyEquipment: '美甲桌椅',
+    factEquipment: '美甲桌椅',
+    zh: { title: '美甲工作室時租｜美甲座位按小時租', og: '美甲工作室時租｜SoloBeauté', h1: '美甲工作室時租', tag: '美甲師・工作室時租', noun: '美甲', profession: '美甲師', itemList: 'SoloBeauté 適合美甲的美業空間', crumb: '美甲工作室', subsTitle: '手美甲、腳美甲各幾間', subsQ: '手美甲、腳美甲都可以做嗎？', equipTitle: '美甲桌椅和相關設備', factLabel: '有美甲桌椅' },
+    en: { title: 'Nail Studio Rental by the Hour in Taiwan', og: 'Nail studio rental by the hour | SoloBeauté', h1: 'Nail studio rental by the hour', tag: 'For nail artists', noun: 'nails', profession: 'nail artists', itemList: 'Beauty workspaces on SoloBeauté suitable for nails', crumb: 'Nail studios', faqPrice: 'How much does a nail studio cost per hour?', subsTitle: 'Manicure and pedicure', subsQ: 'Can I do both manicures and pedicures?', equipTitle: 'Nail tables and related equipment', factLabel: 'With a nail table' },
   },
   brow: {
     subs: ['霧眉（唇）', '霧眉除色', '髮際線紋綉', '黑眼圈遮瑕'],
-    equipment: ['美容床', '美容燈', '消毒櫃', '拋棄式床紙'],
+    equipment: BED_EQUIPMENT,
     reportAnchor: '#brow',
-    zh: { title: '霧眉・紋繡工作室時租｜按小時租美容床位', og: '霧眉・紋繡工作室時租｜SoloBeauté', h1: '霧眉・紋繡工作室時租', tag: '霧眉師・紋繡師', noun: '霧眉或紋繡', profession: '霧眉師', itemList: 'SoloBeauté 適合霧眉、紋繡的美業空間', crumb: '霧眉・紋繡工作室' },
-    en: { title: 'Brow and PMU Studio Rental by the Hour in Taiwan', og: 'Brow and PMU studio rental by the hour | SoloBeauté', h1: 'Brow and PMU studio rental by the hour', tag: 'For brow and PMU artists', noun: 'brow or permanent makeup work', profession: 'brow artists', itemList: 'Beauty workspaces on SoloBeauté suitable for brow and permanent makeup', crumb: 'Brow and PMU studios' },
+    keyEquipment: '美容床',
+    factEquipment: '消毒櫃',
+    zh: { title: '霧眉・紋繡工作室時租｜按小時租美容床位', og: '霧眉・紋繡工作室時租｜SoloBeauté', h1: '霧眉・紋繡工作室時租', tag: '霧眉師・紋繡師', noun: '霧眉或紋繡', profession: '霧眉師', itemList: 'SoloBeauté 適合霧眉、紋繡的美業空間', crumb: '霧眉・紋繡工作室', subsTitle: '霧眉、除色、髮際線、黑眼圈各幾間', subsQ: '霧眉以外，除色、髮際線、黑眼圈也可以做嗎？', equipTitle: '美容床、美容燈等設備', factLabel: '有消毒櫃' },
+    en: { title: 'Brow and PMU Studio Rental by the Hour in Taiwan', og: 'Brow and PMU studio rental by the hour | SoloBeauté', h1: 'Brow and PMU studio rental by the hour', tag: 'For brow and PMU artists', noun: 'brow or permanent makeup work', profession: 'brow artists', itemList: 'Beauty workspaces on SoloBeauté suitable for brow and permanent makeup', crumb: 'Brow and PMU studios', faqPrice: 'How much does a brow or PMU studio cost per hour?', subsTitle: 'Brows, removal, hairline and dark-circle work', subsQ: 'Besides brows, can I do removal, hairline or dark-circle work?', equipTitle: 'Beauty beds, lamps and more', factLabel: 'With a sterilizing cabinet' },
   },
   lash: {
     subs: ['嫁接睫毛', '睫毛管理'],
-    equipment: ['美容床', '美容燈', '消毒櫃', '拋棄式床紙'],
+    equipment: BED_EQUIPMENT,
     reportAnchor: '#lash',
-    zh: { title: '美睫空間租借｜美睫工作室時租、嫁接睫毛按小時租', og: '美睫空間租借｜SoloBeauté', h1: '美睫空間租借・美睫工作室時租', tag: '美睫師・工作室時租', noun: '美睫', profession: '美睫師', itemList: 'SoloBeauté 適合美睫的美業空間', crumb: '美睫工作室', kw: '美睫空間租借', faqPrice: '美睫空間租借多少錢？' },
-    en: { title: 'Lash Studio Space Rental by the Hour in Taiwan', og: 'Lash studio space rental | SoloBeauté', h1: 'Lash studio space rental by the hour', tag: 'For lash artists', noun: 'lash work', profession: 'lash artists', itemList: 'Beauty workspaces on SoloBeauté suitable for lash work', crumb: 'Lash studios', kw: 'Lash studio space rental', faqPrice: 'How much does lash studio space rental cost per hour?' },
+    keyEquipment: '美容床',
+    factEquipment: '美容床',
+    zh: { title: '美睫空間租借｜美睫工作室時租、嫁接睫毛按小時租', og: '美睫空間租借｜SoloBeauté', h1: '美睫空間租借・美睫工作室時租', tag: '美睫師・工作室時租', noun: '美睫', profession: '美睫師', itemList: 'SoloBeauté 適合美睫的美業空間', crumb: '美睫工作室', kw: '美睫空間租借', faqPrice: '美睫空間租借多少錢？', subsTitle: '嫁接睫毛、睫毛管理各幾間', subsQ: '嫁接睫毛、睫毛管理都可以做嗎？', equipTitle: '美容床、美容燈等設備', factLabel: '有美容床' },
+    en: { title: 'Lash Studio Space Rental by the Hour in Taiwan', og: 'Lash studio space rental | SoloBeauté', h1: 'Lash studio space rental by the hour', tag: 'For lash artists', noun: 'lash work', profession: 'lash artists', itemList: 'Beauty workspaces on SoloBeauté suitable for lash work', crumb: 'Lash studios', kw: 'Lash studio space rental', faqPrice: 'How much does lash studio space rental cost per hour?', subsTitle: 'Lash extensions and lash lift', subsQ: 'Can I do both lash extensions and lash lifts?', equipTitle: 'Beauty beds, lamps and more', factLabel: 'With a beauty bed' },
+  },
+  facial: {
+    subs: [],
+    equipment: ['美容床', '美容燈', '消毒櫃', '拋棄式床紙', '熱敷箱', '毛巾', '拋棄式毛巾'],
+    reportAnchor: '#services',
+    keyEquipment: '美容床',
+    factEquipment: '美容床',
+    zh: { title: '臉部護膚空間時租｜美容（護膚）工作室按小時租', og: '臉部護膚空間時租｜SoloBeauté', h1: '臉部護膚空間時租', tag: '美容師・臉部護膚', noun: '臉部護膚', profession: '美容師', itemList: 'SoloBeauté 適合臉部護膚的美業空間', crumb: '臉部護膚空間', faqPrice: '臉部護膚空間時租多少錢？', subsTitle: '', subsQ: '', equipTitle: '美容床、美容燈等設備', factLabel: '有美容床', reportLabel: '時租行情報告：各服務的空間數 →' },
+    en: { title: 'Facial Studio Rental by the Hour in Taiwan', og: 'Facial studio rental by the hour | SoloBeauté', h1: 'Facial studio rental by the hour', tag: 'For facial and skin care professionals', noun: 'facials', profession: 'facial professionals', itemList: 'Beauty workspaces on SoloBeauté suitable for facials', crumb: 'Facial studios', faqPrice: 'How much does a facial studio cost per hour?', subsTitle: '', subsQ: '', equipTitle: 'Beauty beds, lamps and more', factLabel: 'With a beauty bed', reportLabel: 'Spaces by service in the hourly rate report →' },
+  },
+  hair: {
+    subs: [],
+    equipment: ['洗頭台', '美髮椅', '鏡台', '吹風機', '淋浴間'],
+    reportAnchor: '#services',
+    keyEquipment: '洗頭台',
+    factEquipment: '洗頭台',
+    titleNeeds: '洗頭台',
+    zh: { title: '美髮空間時租｜有洗頭台的美業空間按小時租', titleFallback: '美髮空間時租｜美髮工作室按小時租', og: '美髮空間時租｜SoloBeauté', h1: '美髮空間時租', tag: '美髮師・設計師', noun: '美髮', profession: '美髮師', itemList: 'SoloBeauté 適合美髮的美業空間', crumb: '美髮空間', faqPrice: '美髮空間時租多少錢？', subsTitle: '', subsQ: '', equipTitle: '洗頭台、美髮椅等設備', factLabel: '有洗頭台', reportLabel: '時租行情報告：各服務的空間數 →' },
+    en: { title: 'Hair Studio Rental by the Hour in Taiwan, Including Spaces with a Shampoo Station', titleFallback: 'Hair Studio Rental by the Hour in Taiwan', og: 'Hair studio rental by the hour | SoloBeauté', h1: 'Hair studio rental by the hour', tag: 'For hair stylists', noun: 'hair', profession: 'hair stylists', itemList: 'Beauty workspaces on SoloBeauté suitable for hair', crumb: 'Hair studios', faqPrice: 'How much does a hair studio cost per hour?', subsTitle: '', subsQ: '', equipTitle: 'Shampoo stations, styling chairs and more', factLabel: 'With a shampoo station', reportLabel: 'Spaces by service in the hourly rate report →' },
+  },
+  makeup: {
+    subs: ['彩妝', '新娘秘書'],
+    equipment: ['鏡台', '美容燈', '桌上型工作燈', '更衣間'],
+    reportAnchor: '#services',
+    keyEquipment: '鏡台',
+    factEquipment: '鏡台',
+    titleNeeds: '鏡台',
+    zh: { title: '彩妝・新娘秘書工作室時租｜按小時租鏡台空間', titleFallback: '彩妝・新娘秘書工作室時租｜彩妝工作室按小時租', og: '彩妝・新娘秘書工作室時租｜SoloBeauté', h1: '彩妝・新娘秘書工作室時租', tag: '彩妝師・新娘秘書', noun: '彩妝或新娘秘書', profession: '彩妝師', itemList: 'SoloBeauté 適合彩妝、新娘秘書的美業空間', crumb: '彩妝・新娘秘書工作室', faqPrice: '彩妝・新娘秘書工作室時租多少錢？', subsTitle: '彩妝、新娘秘書各幾間', subsQ: '彩妝、新娘秘書都可以做嗎？', equipTitle: '鏡台和相關設備', factLabel: '有鏡台', reportLabel: '時租行情報告：各服務的空間數 →' },
+    en: { title: 'Makeup and Bridal Styling Studio Rental by the Hour in Taiwan', og: 'Makeup and bridal studio rental by the hour | SoloBeauté', h1: 'Makeup and bridal styling studio rental by the hour', tag: 'For makeup artists and bridal stylists', noun: 'makeup or bridal styling', profession: 'makeup artists', itemList: 'Beauty workspaces on SoloBeauté suitable for makeup and bridal styling', crumb: 'Makeup and bridal studios', faqPrice: 'How much does a makeup or bridal styling studio cost per hour?', subsTitle: 'Makeup and bridal styling', subsQ: 'Can I do both makeup and bridal styling?', equipTitle: 'Mirror stations and related equipment', factLabel: 'With a mirror station', reportLabel: 'Spaces by service in the hourly rate report →' },
+  },
+  massage: {
+    subs: isMassageService,
+    equipment: ['美容床', '拋棄式床紙', '熱敷箱', '毛巾', '拋棄式毛巾', '淋浴間', '消毒櫃'],
+    reportAnchor: '#services',
+    keyEquipment: '美容床',
+    factEquipment: '美容床',
+    zh: { title: '按摩空間時租｜身體／運動按摩工作室按小時租', og: '按摩空間時租｜SoloBeauté', h1: '按摩空間時租', tag: '按摩・身體保養', noun: '按摩', profession: '按摩師', itemList: 'SoloBeauté 適合按摩的美業空間', crumb: '按摩空間', faqPrice: '按摩空間時租多少錢？', subsTitle: '身體、運動、油壓等按摩各幾間', subsQ: '可以做哪些按摩？', equipTitle: '美容床和相關設備', factLabel: '有美容床', reportLabel: '時租行情報告：各服務的空間數 →' },
+    en: { title: 'Massage Room Rental by the Hour in Taiwan', og: 'Massage room rental by the hour | SoloBeauté', h1: 'Massage room rental by the hour', tag: 'For massage therapists', noun: 'massage', profession: 'massage therapists', itemList: 'Beauty workspaces on SoloBeauté suitable for massage', crumb: 'Massage rooms', faqPrice: 'How much does a massage room cost per hour?', subsTitle: 'Types of massage', subsQ: 'Which kinds of massage are the spaces marked for?', equipTitle: 'Beauty beds and related equipment', factLabel: 'With a beauty bed', reportLabel: 'Spaces by service in the hourly rate report →' },
   },
 }
 
@@ -1096,7 +1220,25 @@ const SUB_EN: Record<string, string> = {
   黑眼圈遮瑕: 'Dark circle camouflage',
   嫁接睫毛: 'Lash extensions',
   睫毛管理: 'Lash lift and care',
+  彩妝: 'Makeup',
+  新娘秘書: 'Bridal styling',
 }
+
+function subEn(label: string): string {
+  return SUB_EN[label] ?? serviceTagEn(label)
+}
+
+/** 「都有」/「有些有」/「目前沒有」 for k of n spaces. */
+function someZh(k: number, n: number): string {
+  return k === 0 ? '目前沒有。' : k === n ? '都有。' : '不是每間都有。'
+}
+
+function someEn(k: number, n: number): string {
+  return k === 0 ? 'Not at the moment.' : k === n ? 'Yes, all of them.' : 'Some do, not all.'
+}
+
+const BRAND_NOTE_ZH = 'SoloBeauté 是美業空間時租服務，不是化妝品或彩妝品牌，與 Solone 等品牌無關，也不販售化妝品。'
+const BRAND_NOTE_EN = 'SoloBeauté is an hourly beauty workspace rental service, not a cosmetics or makeup brand; it is not affiliated with Solone and does not sell cosmetics.'
 
 function buildService(key: ServiceKey, all: PublicSpace[], locale: AppLocale): TopicView {
   const topic = getTopic(key)
@@ -1108,10 +1250,17 @@ function buildService(key: ServiceKey, all: PublicSpace[], locale: AppLocale): T
   const n = spaces.length
   const hourly = rateStats(spaces, 'hourlyRate')
   const types = typeCounts(spaces)
-  const subs = copy.subs.map((label) => ({ label, n: spaces.filter((s) => s.recommendedServices.includes(label)).length })).filter((x) => x.n > 0)
+  const subLabels = typeof copy.subs === 'function'
+    ? Array.from(new Set(spaces.flatMap((s) => s.recommendedServices).filter(copy.subs)))
+    : copy.subs
+  const subs = subLabels
+    .map((label) => ({ label, n: spaces.filter((s) => s.recommendedServices.includes(label)).length }))
+    .filter((x) => x.n > 0)
+    .sort((a, b) => (typeof copy.subs === 'function' ? b.n - a.n || a.label.localeCompare(b.label, 'zh-Hant') : 0))
   const equipment = copy.equipment.map((label) => ({ label, n: countWith(spaces, label) })).filter((e) => e.n > 0).sort((a, b) => b.n - a.n)
   const groups = groupSpacesByCity(spaces)
   const privateish = spaces.filter((s) => s.spaceType === 'PRIVATE_ROOM' || s.spaceType === 'CURTAIN_PARTITION').length
+  const openN = spaces.filter((s) => s.spaceType === 'OPEN_SPACE').length
   const reportHref = L(`/spaces/price-report${copy.reportAnchor}`)
   const cityRows: Cell[][] = groups.map((g) => {
     const city = getCityByName(g.city)
@@ -1129,21 +1278,36 @@ function buildService(key: ServiceKey, all: PublicSpace[], locale: AppLocale): T
     return [isEn ? spaceTypeEn(t.type) : spaceTypeLabel(t.type), isEn ? `${t.spaces.length}` : `${t.spaces.length} 間`, isEn ? rangeEn(r) : rangeZh(r), r.n >= 2 ? money(r.median) : '—']
   })
   const top2 = equipment.slice(0, 2)
-  // Key equipment for the summary: nail table for nails, beauty bed otherwise.
-  const keyEquipment = key === 'nail' ? '美甲桌椅' : '美容床'
+  const keyEquipment = copy.keyEquipment
   const keyEquipmentN = countWith(spaces, keyEquipment)
+  const factN = countWith(spaces, copy.factEquipment)
+  const bedN = countWith(spaces, '美容床')
+  const lampN = countWith(spaces, '美容燈')
+  const shampooN = countWith(spaces, '洗頭台')
+  const chairN = countWith(spaces, '美髮椅')
+  const mirrorN = countWith(spaces, '鏡台')
+  // The title names a piece of equipment only while at least one space lists it.
+  const useFallbackTitle = Boolean(copy.titleNeeds) && countWith(spaces, copy.titleNeeds as string) === 0
   // Hosts write their own equipment list; no public space lists a sink today. Count
   // it instead of assuming, so the nail FAQ stays honest either way.
   const sinkN = spaces.filter((s) => s.equipment.some((e) => e.includes('流理台') || e.includes('水槽'))).length
+  const isNew = key === 'facial' || key === 'hair' || key === 'makeup' || key === 'massage'
 
   if (!isEn) {
     const c = copy.zh
+    const typesZh = types.map((t) => `${spaceTypeLabel(t.type)} ${t.spaces.length} 個`).join('、')
+    const leadDetail: Record<string, string> = {
+      facial: `其中 ${bedN} 個有美容床、${lampN} 個有美容燈，類型為${typesZh}。`,
+      hair: `設備不是每間都一樣：${shampooN} / ${n} 個有洗頭台、${chairN} / ${n} 個有美髮椅；類型為${typesZh}。`,
+      makeup: `其中 ${mirrorN} 個有鏡台，類型為${typesZh}。${BRAND_NOTE_ZH}`,
+      massage: `其中 ${bedN} 個有美容床；類型為${typesZh}${openN === 0 ? '，目前沒有開放空間' : ''}。`,
+    }
     const blocks: TopicBlock[] = []
     if (n > 0) {
       if (subs.length) {
         blocks.push({
           id: 'services',
-          title: key === 'nail' ? '手美甲、腳美甲各幾間' : key === 'lash' ? '嫁接睫毛、睫毛管理各幾間' : '霧眉、除色、髮際線、黑眼圈各幾間',
+          title: c.subsTitle,
           note: '依屋主標示的建議服務；一個空間可以標示多種服務。',
           table: { caption: `${c.noun}細項`, head: ['服務', '空間數'], rows: subs.map((x) => [x.label, `${x.n} / ${n} 間`]) },
         })
@@ -1151,7 +1315,7 @@ function buildService(key: ServiceKey, all: PublicSpace[], locale: AppLocale): T
       if (equipment.length) {
         blocks.push({
           id: 'equipment',
-          title: key === 'nail' ? '美甲桌椅和相關設備' : '美容床、美容燈等設備',
+          title: c.equipTitle,
           note: '依屋主在空間頁列出的設備計算。',
           table: { caption: `適合${c.noun}的空間設備`, head: ['設備', '有的空間數'], rows: equipment.map((e) => [e.label, `${e.n} / ${n} 間`]) },
         })
@@ -1167,7 +1331,46 @@ function buildService(key: ServiceKey, all: PublicSpace[], locale: AppLocale): T
         title: '依縣市的時租',
         note: '時租中位數只在同縣市有 2 個以上空間時顯示。',
         table: { caption: `適合${c.noun}的空間：依縣市`, head: ['縣市', '空間數', '時租', '時租中位數'], rows: cityRows },
-        links: [{ href: reportHref, label: `${c.profession}租工作室的行情摘要（時租行情報告）→` }, ...(key === 'lash' ? [{ href: L('/guides/lash-artist-studio'), label: '美睫師租工作室指南：設備、隱私和時租怎麼看 →' }] : [])],
+        links: [{ href: reportHref, label: c.reportLabel ?? `${c.profession}租工作室的行情摘要（時租行情報告）→` }, ...(key === 'lash' ? [{ href: L('/guides/lash-artist-studio'), label: '美睫師租工作室指南：設備、隱私和時租怎麼看 →' }] : [])],
+      })
+    }
+    const extraFaq: QA[] = []
+    if (key === 'nail') {
+      extraFaq.push({
+        question: '美甲工作室有流理台嗎？',
+        answer: `設備以屋主在空間頁列出的為準。截至 ${dateLabel}，適合美甲的 ${n} 個空間中，${keyEquipmentN} 個列出美甲桌椅；${sinkN > 0 ? `${sinkN} 個在設備清單列出流理台或水槽` : '目前沒有空間在設備清單列出流理台'}。需要流理台的話，租之前先在 App 傳訊息問屋主。`,
+      })
+    } else if (key === 'facial') {
+      extraFaq.push({
+        question: '臉部護膚空間都有美容床、美容燈嗎？',
+        answer: `${someZh(Math.min(bedN, lampN), n)}設備以屋主在空間頁列出的為準。截至 ${dateLabel}，適合臉部護膚的 ${n} 個空間中，${bedN} 個有美容床、${lampN} 個有美容燈。需要特定設備的話，租之前先在 App 傳訊息問屋主。`,
+      })
+    } else if (key === 'hair') {
+      extraFaq.push(
+        {
+          question: '美髮空間有洗頭台嗎？',
+          answer: `${someZh(shampooN, n)}截至 ${dateLabel}，適合美髮的 ${n} 個空間中，${shampooN} 個在設備清單列出洗頭台${n - shampooN > 0 ? `，${n - shampooN} 個沒有列出` : ''}。需要幫客人洗頭的話，先看空間頁的設備，或在 App 傳訊息問屋主。`,
+        },
+        {
+          question: '美髮空間有美髮椅嗎？',
+          answer: `${someZh(chairN, n)}截至 ${dateLabel}，適合美髮的 ${n} 個空間中，${chairN} 個在設備清單列出美髮椅${n - chairN > 0 ? `，${n - chairN} 個沒有列出` : ''}；${mirrorN} 個有鏡台。設備清單沒列的東西，租之前先在 App 傳訊息問屋主。`,
+        },
+      )
+    } else if (key === 'makeup') {
+      extraFaq.push(
+        {
+          question: 'SoloBeauté 是彩妝或化妝品品牌嗎？',
+          answer: `不是。${BRAND_NOTE_ZH}彩妝師、新娘秘書等美業職人可以在 SoloBeauté App 找屋主備好的空間，按小時租用，租金現場付現。`,
+        },
+        {
+          question: '彩妝、新娘秘書工作室都有鏡台嗎？',
+          answer: `${someZh(mirrorN, n)}截至 ${dateLabel}，適合彩妝或新娘秘書的 ${n} 個空間中，${mirrorN} 個在設備清單列出鏡台${lampN > 0 ? `、${lampN} 個有美容燈` : ''}。設備清單沒列的東西，租之前先在 App 傳訊息問屋主。`,
+        },
+      )
+    } else if (key === 'massage') {
+      extraFaq.push({
+        question: '按摩空間有美容床嗎？',
+        answer: `${someZh(bedN, n)}截至 ${dateLabel}，適合按摩的 ${n} 個空間中，${bedN} 個在設備清單列出美容床${countWith(spaces, '淋浴間') > 0 ? `、${countWith(spaces, '淋浴間')} 個有淋浴間` : ''}。設備清單沒列的東西，租之前先在 App 傳訊息問屋主。`,
       })
     }
     const faq: QA[] = n > 0
@@ -1176,22 +1379,19 @@ function buildService(key: ServiceKey, all: PublicSpace[], locale: AppLocale): T
             question: c.faqPrice ?? `${c.crumb}時租多少錢？`,
             answer: `${key === 'lash' ? '美睫空間可以按小時租借。' : ''}截至 ${dateLabel}，SoloBeauté 上屋主標示適合${c.noun}的 ${n} 個空間，時租 ${rangeZh(hourly)}${hourly.n >= 2 ? `，中位數 ${money(hourly.median)}` : ''}，分布${cityListZh(spaces)}。`,
           },
-          {
-            question: key === 'nail' ? '手美甲、腳美甲都可以做嗎？' : key === 'lash' ? '嫁接睫毛、睫毛管理都可以做嗎？' : '霧眉以外，除色、髮際線、黑眼圈也可以做嗎？',
-            answer: `依屋主標示，${n} 個空間中，${subs.map((x) => `${x.n} 個適合${x.label}`).join('、')}。每個空間適合的服務，以空間頁上屋主的標示為準。`,
-          },
+          ...(subs.length
+            ? [{
+                question: c.subsQ,
+                answer: `依屋主標示，${n} 個空間中，${subs.map((x) => `${x.n} 個適合${x.label}`).join('、')}。每個空間適合的服務，以空間頁上屋主的標示為準。`,
+              }]
+            : []),
           {
             question: key === 'nail' ? '租美甲工作室，有美甲桌椅嗎？' : `${c.noun}的空間有獨立房間或拉簾隔間嗎？`,
             answer: key === 'nail'
               ? `看屋主列出的設備。${n} 個空間中，${equipment.length ? equipment.map((e) => `${e.n} 個有${e.label}`).join('、') : '目前沒有列出美甲相關設備'}。設備清單沒列的東西，租之前先在 App 傳訊息問屋主。`
-              : `有。${n} 個空間中，${types.map((t) => `${spaceTypeLabel(t.type)} ${t.spaces.length} 個`).join('、')}${equipment.find((e) => e.label === '消毒櫃') ? `；${equipment.find((e) => e.label === '消毒櫃')?.n} 個有消毒櫃` : ''}。`,
+              : `${privateish > 0 ? '有。' : '目前沒有。'}${n} 個空間中，${typesZh}${isNew && openN === 0 ? '，目前沒有開放空間' : ''}${equipment.find((e) => e.label === '消毒櫃') ? `；${equipment.find((e) => e.label === '消毒櫃')?.n} 個有消毒櫃` : ''}。`,
           },
-          ...(key === 'nail'
-            ? [{
-                question: '美甲工作室有流理台嗎？',
-                answer: `設備以屋主在空間頁列出的為準。截至 ${dateLabel}，適合美甲的 ${n} 個空間中，${keyEquipmentN} 個列出美甲桌椅；${sinkN > 0 ? `${sinkN} 個在設備清單列出流理台或水槽` : '目前沒有空間在設備清單列出流理台'}。需要流理台的話，租之前先在 App 傳訊息問屋主。`,
-              }]
-            : []),
+          ...extraFaq,
         ]
       : []
     return {
@@ -1199,7 +1399,7 @@ function buildService(key: ServiceKey, all: PublicSpace[], locale: AppLocale): T
       path: topic.path,
       count: n,
       indexable: isTopicIndexable(n),
-      title: c.title,
+      title: useFallbackTitle && c.titleFallback ? c.titleFallback : c.title,
       ogTitle: c.og,
       description: n > 0
         ? `${c.kw ?? c.h1} ${rangeZh(hourly)}：SoloBeauté 上有 ${n} 個美業空間由屋主標示適合${c.noun}${top2.length ? `，其中 ${top2.map((e) => `${e.n} 個有${e.label}`).join('、')}` : ''}，分布${cityListZh(spaces)}。${howToBook}`
@@ -1208,7 +1408,7 @@ function buildService(key: ServiceKey, all: PublicSpace[], locale: AppLocale): T
       h1: c.h1,
       breadcrumbs: [{ label: '首頁', path: '/' }, { label: '美業空間', path: '/spaces' }, { label: c.crumb }],
       lead: n > 0
-        ? `SoloBeauté 上可按小時租借、且屋主標示適合${c.noun}的空間有 ${n} 個，時租 ${rangeZh(hourly)}${hourly.n >= 2 ? `，中位數 ${money(hourly.median)}` : ''}，分布${cityListZh(spaces)}。其中 ${keyEquipmentN} 個有${keyEquipment}；${privateish} 個是獨立房間或拉簾隔間。這是適合${c.noun}的空間時租，不是全站的半日／全日中位數。`
+        ? `SoloBeauté 上可按小時租借、且屋主標示適合${c.noun}的空間有 ${n} 個，時租 ${rangeZh(hourly)}${hourly.n >= 2 ? `，中位數 ${money(hourly.median)}` : ''}，分布${cityListZh(spaces)}。${isNew ? leadDetail[key] : `其中 ${keyEquipmentN} 個有${keyEquipment}；${privateish} 個是獨立房間或拉簾隔間。這是適合${c.noun}的空間時租，不是全站的半日／全日中位數。`}`
         : `截至 ${dateLabel}，SoloBeauté 上還沒有屋主標示適合${c.noun}的空間，新空間陸續上架中。`,
       intro: [
         n > 0
@@ -1220,11 +1420,7 @@ function buildService(key: ServiceKey, all: PublicSpace[], locale: AppLocale): T
         { label: `適合${c.noun}`, value: `${n} 間` },
         { label: '時租', value: rangeZh(hourly) },
         { label: '時租中位數', value: hourly.n >= 2 ? money(hourly.median) : '—' },
-        key === 'nail'
-          ? { label: '有美甲桌椅', value: `${countWith(spaces, '美甲桌椅')} 間` }
-          : key === 'lash'
-          ? { label: '有美容床', value: `${countWith(spaces, '美容床')} 間` }
-          : { label: '有消毒櫃', value: `${countWith(spaces, '消毒櫃')} 間` },
+        { label: c.factLabel, value: `${factN} 間` },
       ],
       dateNote,
       dataDate: dateISO,
@@ -1240,20 +1436,27 @@ function buildService(key: ServiceKey, all: PublicSpace[], locale: AppLocale): T
   }
 
   const c = copy.en
+  const typesEn = joinEn(types.map((t) => plural(t.spaces.length, spaceTypeEn(t.type).toLowerCase())))
+  const leadDetailEn: Record<string, string> = {
+    facial: `${bedN} ${bedN === 1 ? 'lists' : 'list'} a beauty bed and ${lampN} a beauty lamp; by type: ${typesEn}.`,
+    hair: `Equipment varies: ${shampooN} of ${n} list a shampoo station and ${chairN} of ${n} a styling chair; by type: ${typesEn}.`,
+    makeup: `${mirrorN} ${mirrorN === 1 ? 'lists' : 'list'} a mirror station; by type: ${typesEn}. ${BRAND_NOTE_EN}`,
+    massage: `${bedN} ${bedN === 1 ? 'lists' : 'list'} a beauty bed; by type: ${typesEn}${openN === 0 ? ', with no open spaces at the moment' : ''}.`,
+  }
   const blocks: TopicBlock[] = []
   if (n > 0) {
     if (subs.length) {
       blocks.push({
         id: 'services',
-        title: key === 'nail' ? 'Manicure and pedicure' : key === 'lash' ? 'Lash extensions and lash lift' : 'Brows, removal, hairline and dark-circle work',
+        title: c.subsTitle,
         note: 'Based on the services hosts mark; a space can be marked for several.',
-        table: { caption: 'Services', head: ['Service', 'Spaces'], rows: subs.map((x) => [SUB_EN[x.label] ?? serviceTagEn(x.label), `${x.n} / ${n}`]) },
+        table: { caption: 'Services', head: ['Service', 'Spaces'], rows: subs.map((x) => [subEn(x.label), `${x.n} / ${n}`]) },
       })
     }
     if (equipment.length) {
       blocks.push({
         id: 'equipment',
-        title: key === 'nail' ? 'Nail tables and related equipment' : 'Beauty beds, lamps and more',
+        title: c.equipTitle,
         note: 'Based on the equipment hosts list on each space page.',
         table: { caption: 'Equipment', head: ['Equipment', 'Spaces with it'], rows: equipment.map((e) => [equipmentEn(e.label), `${e.n} / ${n}`]) },
       })
@@ -1269,31 +1472,68 @@ function buildService(key: ServiceKey, all: PublicSpace[], locale: AppLocale): T
       title: 'Hourly rates by city',
       note: 'The median is shown only when a city has 2 or more spaces.',
       table: { caption: 'By city', head: ['City', 'Spaces', 'Hourly rate', 'Median'], rows: cityRows },
-      links: [{ href: reportHref, label: `Rate summary for ${c.profession} (hourly rate report) →` }, ...(key === 'lash' ? [{ href: L('/guides/lash-artist-studio'), label: 'Lash artist studio guide →' }] : [])],
+      links: [{ href: reportHref, label: c.reportLabel ?? `Rate summary for ${c.profession} (hourly rate report) →` }, ...(key === 'lash' ? [{ href: L('/guides/lash-artist-studio'), label: 'Lash artist studio guide →' }] : [])],
+    })
+  }
+  const extraFaqEn: QA[] = []
+  if (key === 'nail') {
+    extraFaqEn.push({
+      question: 'Do nail studios have a sink?',
+      answer: `Equipment is as listed by the host on each space page. As of ${dateLabel}, of the ${plural(n, 'space')} suitable for nails, ${keyEquipmentN} list a nail table; ${sinkN > 0 ? `${sinkN} list a sink` : 'none currently lists a sink (work sink) in its equipment'}. If you need a sink, message the host in the app before you rent.`,
+    })
+  } else if (key === 'facial') {
+    extraFaqEn.push({
+      question: 'Do all facial studios have a beauty bed and a beauty lamp?',
+      answer: `${someEn(Math.min(bedN, lampN), n)} Equipment is as listed by the host on each space page. As of ${dateLabel}, of the ${plural(n, 'space')} suitable for facials, ${bedN} list a beauty bed and ${lampN} a beauty lamp. If you need specific equipment, message the host in the app before you rent.`,
+    })
+  } else if (key === 'hair') {
+    extraFaqEn.push(
+      {
+        question: 'Do the hair studios have a shampoo station?',
+        answer: `${someEn(shampooN, n)} As of ${dateLabel}, of the ${plural(n, 'space')} suitable for hair, ${shampooN} list a shampoo station${n - shampooN > 0 ? ` and ${n - shampooN} ${n - shampooN === 1 ? 'does' : 'do'} not` : ''}. If you need to wash clients' hair, check the space page or message the host in the app.`,
+      },
+      {
+        question: 'Do the hair studios have a styling chair?',
+        answer: `${someEn(chairN, n)} As of ${dateLabel}, of the ${plural(n, 'space')} suitable for hair, ${chairN} list a styling chair${n - chairN > 0 ? ` and ${n - chairN} ${n - chairN === 1 ? 'does' : 'do'} not` : ''}; ${mirrorN} list a mirror station. For anything not listed, message the host in the app before you rent.`,
+      },
+    )
+  } else if (key === 'makeup') {
+    extraFaqEn.push(
+      {
+        question: 'Is SoloBeauté a makeup or cosmetics brand?',
+        answer: `No. ${BRAND_NOTE_EN} Makeup artists, bridal stylists and other beauty professionals use the SoloBeauté app to find spaces hosts have set up, rent them by the hour and pay the host in cash on site.`,
+      },
+      {
+        question: 'Do all makeup and bridal studios have a mirror station?',
+        answer: `${someEn(mirrorN, n)} As of ${dateLabel}, of the ${plural(n, 'space')} suitable for makeup or bridal styling, ${mirrorN} list a mirror station${lampN > 0 ? ` and ${lampN} a beauty lamp` : ''}. For anything not listed, message the host in the app before you rent.`,
+      },
+    )
+  } else if (key === 'massage') {
+    const showerN = countWith(spaces, '淋浴間')
+    extraFaqEn.push({
+      question: 'Do the massage rooms have a beauty bed?',
+      answer: `${someEn(bedN, n)} As of ${dateLabel}, of the ${plural(n, 'space')} suitable for massage, ${bedN} list a beauty bed${showerN > 0 ? ` and ${showerN} a shower` : ''}. For anything not listed, message the host in the app before you rent.`,
     })
   }
   const faq: QA[] = n > 0
     ? [
         {
-          question: c.faqPrice ?? (key === 'nail' ? 'How much does a nail studio cost per hour?' : 'How much does a brow or PMU studio cost per hour?'),
+          question: c.faqPrice ?? `How much does a ${c.crumb.toLowerCase().replace(/s$/, '')} cost per hour?`,
           answer: `As of ${dateLabel}, the ${plural(n, 'space')} on SoloBeauté that hosts mark as suitable for ${c.noun} charge ${rangeEn(hourly)} per hour${hourly.n >= 2 ? `, with a median of ${money(hourly.median)}` : ''}, in ${cityListEnOf(spaces)}.`,
         },
-        {
-          question: key === 'nail' ? 'Can I do both manicures and pedicures?' : key === 'lash' ? 'Can I do both lash extensions and lash lifts?' : 'Besides brows, can I do removal, hairline or dark-circle work?',
-          answer: `Based on what hosts mark, of the ${plural(n, 'space')}, ${joinEn(subs.map((x) => `${x.n} suit ${(SUB_EN[x.label] ?? x.label).toLowerCase()}`))}. Check each space page for the services the host lists.`,
-        },
+        ...(subs.length
+          ? [{
+              question: c.subsQ,
+              answer: `Based on what hosts mark, of the ${plural(n, 'space')}, ${joinEn(subs.map((x) => `${x.n} suit ${subEn(x.label).toLowerCase()}`))}. Check each space page for the services the host lists.`,
+            }]
+          : []),
         {
           question: key === 'nail' ? 'Do nail studios come with a nail table?' : 'Are there private rooms or curtained partitions?',
           answer: key === 'nail'
             ? `It depends on the equipment the host lists. Of the ${plural(n, 'space')}, ${equipment.length ? joinEn(equipment.map((e) => `${e.n} list ${equipmentEn(e.label).toLowerCase()}`)) : 'none list nail equipment yet'}. For anything not listed, message the host in the app before you book.`
-            : `Yes. Of the ${plural(n, 'space')}, ${joinEn(types.map((t) => plural(t.spaces.length, spaceTypeEn(t.type).toLowerCase())))}${equipment.find((e) => e.label === '消毒櫃') ? `; ${equipment.find((e) => e.label === '消毒櫃')?.n} list a sterilizing cabinet` : ''}.`,
+            : `${privateish > 0 ? 'Yes.' : 'Not at the moment.'} Of the ${plural(n, 'space')}, ${typesEn}${isNew && openN === 0 ? ', and none is an open space' : ''}${equipment.find((e) => e.label === '消毒櫃') ? `; ${equipment.find((e) => e.label === '消毒櫃')?.n} list a sterilizing cabinet` : ''}.`,
         },
-        ...(key === 'nail'
-          ? [{
-              question: 'Do nail studios have a sink?',
-              answer: `Equipment is as listed by the host on each space page. As of ${dateLabel}, of the ${plural(n, 'space')} suitable for nails, ${keyEquipmentN} list a nail table; ${sinkN > 0 ? `${sinkN} list a sink` : 'none currently lists a sink (work sink) in its equipment'}. If you need a sink, message the host in the app before you rent.`,
-            }]
-          : []),
+        ...extraFaqEn,
       ]
     : []
   return {
@@ -1301,7 +1541,7 @@ function buildService(key: ServiceKey, all: PublicSpace[], locale: AppLocale): T
     path: topic.path,
     count: n,
     indexable: isTopicIndexable(n),
-    title: c.title,
+    title: useFallbackTitle && c.titleFallback ? c.titleFallback : c.title,
     ogTitle: c.og,
     description: n > 0
       ? `${c.kw ?? c.h1} from ${rangeEn(hourly)}: ${plural(n, 'workspace')} on SoloBeauté that hosts mark as suitable for ${c.noun}${top2.length ? `; ${joinEn(top2.map((e) => `${e.n} list ${equipmentEn(e.label).toLowerCase()}`))}` : ''}. In ${cityListEnOf(spaces)}. ${howToBook}`
@@ -1310,7 +1550,7 @@ function buildService(key: ServiceKey, all: PublicSpace[], locale: AppLocale): T
     h1: c.h1,
     breadcrumbs: [{ label: 'Home', path: '/' }, { label: 'Beauty workspaces', path: '/spaces' }, { label: c.crumb }],
     lead: n > 0
-      ? `As of ${dateISO}, hosts mark ${plural(n, 'beauty workspace')} on SoloBeauté as suitable for ${c.noun} and rentable by the hour, at ${rangeEn(hourly)} per hour${hourly.n >= 2 ? ` (median ${money(hourly.median)})` : ''}, in ${cityListEnOf(spaces)}. ${keyEquipmentN} ${keyEquipmentN === 1 ? 'has' : 'have'} a ${equipmentEn(keyEquipment).toLowerCase()}; ${privateish} ${privateish === 1 ? 'is a private room or curtained partition' : 'are private rooms or curtained partitions'}. These figures are for spaces hosts mark as suitable for ${c.noun}, not the site-wide half-day or full-day median.`
+      ? `As of ${dateISO}, hosts mark ${plural(n, 'beauty workspace')} on SoloBeauté as suitable for ${c.noun} and rentable by the hour, at ${rangeEn(hourly)} per hour${hourly.n >= 2 ? ` (median ${money(hourly.median)})` : ''}, in ${cityListEnOf(spaces)}. ${isNew ? leadDetailEn[key] : `${keyEquipmentN} ${keyEquipmentN === 1 ? 'has' : 'have'} a ${equipmentEn(keyEquipment).toLowerCase()}; ${privateish} ${privateish === 1 ? 'is a private room or curtained partition' : 'are private rooms or curtained partitions'}. These figures are for spaces hosts mark as suitable for ${c.noun}, not the site-wide half-day or full-day median.`}`
       : `As of ${dateLabel}, no host on SoloBeauté has marked a space as suitable for ${c.noun} yet. New spaces are being listed.`,
     intro: [
       n > 0
@@ -1319,14 +1559,10 @@ function buildService(key: ServiceKey, all: PublicSpace[], locale: AppLocale): T
       howTo,
     ],
     facts: [
-      { label: key === 'nail' ? 'Suitable for nails' : key === 'lash' ? 'Suitable for lash work' : 'Suitable for brows / PMU', value: `${n}` },
+      { label: key === 'nail' ? 'Suitable for nails' : key === 'lash' ? 'Suitable for lash work' : key === 'brow' ? 'Suitable for brows / PMU' : `Suitable for ${c.noun}`, value: `${n}` },
       { label: 'Hourly rate', value: rangeEn(hourly) },
       { label: 'Median', value: hourly.n >= 2 ? money(hourly.median) : '—' },
-      key === 'nail'
-        ? { label: 'With a nail table', value: `${countWith(spaces, '美甲桌椅')}` }
-        : key === 'lash'
-        ? { label: 'With a beauty bed', value: `${countWith(spaces, '美容床')}` }
-        : { label: 'With a sterilizing cabinet', value: `${countWith(spaces, '消毒櫃')}` },
+      { label: c.factLabel, value: `${factN}` },
     ],
     dateNote,
     dataDate: dateISO,
@@ -1344,7 +1580,7 @@ function buildService(key: ServiceKey, all: PublicSpace[], locale: AppLocale): T
 export function buildTopicView(key: TopicKey, all: PublicSpace[], locale: AppLocale): TopicView {
   if (key === 'shared') return withRentalFaq(buildShared(all, locale))
   if (key === 'daily') return withRentalFaq(buildDaily(all, locale))
-  if (key === 'nail' || key === 'brow' || key === 'lash') return withRentalFaq(buildService(key, all, locale))
+  if ((SERVICE_SLUGS as TopicKey[]).includes(key)) return withRentalFaq(buildService(key as ServiceKey, all, locale))
   return withRentalFaq(buildBeautyBed(all, locale))
 }
 
@@ -1423,7 +1659,7 @@ function buildDistrictViewBase(def: DistrictPageDef, all: PublicSpace[], locale:
   const h1Zh = studio ? `${city.short}${def.district}${noun}時租` : `${short}${noun}時租`
   const titleZh = studio
     ? `${h1Zh}｜${allPrivate ? '獨立房間' : '美業空間出租'}`
-    : `${short}${noun}時租｜${short}美容工作室出租`
+    : `${short}${noun}時租｜${def.titleArea ?? short}美容工作室出租`
   // Theme pages that contain at least one space of this district.
   const related = relatedLinks(path, locale).filter((link) => {
     const topic = TOPIC_PAGES.find((t) => L(t.path) === link.href)

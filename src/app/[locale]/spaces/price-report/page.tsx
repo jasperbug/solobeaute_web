@@ -493,7 +493,7 @@ export default async function PriceReportPage({ params }: { params: { locale: st
                 <p>如果一天排滿多位客人，也可以看全日價：全日價中位數 {medianText(report.fullDay)}，大約等於 {report.fullDayHoursEquivalent} 小時的時租。</p>
               ) : null}
               <p>
-                逐步試算和比較清單，見<Link href="/guides/hourly-vs-monthly-rent" className="text-brand underline underline-offset-4">時租和月租怎麼比</Link>。
+                逐步試算和比較清單，見<Link href="/guides/hourly-vs-monthly-rent" className="text-brand underline underline-offset-4">時租和月租怎麼比</Link>；在考慮自己開店的話，見<Link href="/guides/own-studio-vs-hourly-rent" className="text-brand underline underline-offset-4">自己開店還是按小時租</Link>。
               </p>
             </div>
           </ContentSection>
@@ -503,7 +503,11 @@ export default async function PriceReportPage({ params }: { params: { locale: st
           <DataTable
             caption="適合的服務"
             head={['服務', '空間數', '占比']}
-            rows={report.services.map((row) => [row.label, `${row.count} 間`, formatShare(row.share)])}
+            rows={report.services.map((row) => [
+              row.href ? <Link key={row.href} href={row.href} className="text-brand underline-offset-4 hover:underline">{row.label}</Link> : row.label,
+              `${row.count} 間`,
+              formatShare(row.share),
+            ])}
           />
         </Section>
 
@@ -572,6 +576,11 @@ export default async function PriceReportPage({ params }: { params: { locale: st
             {[
               { href: '/guides/lash-artist-studio', label: '美睫師租工作室' },
               { href: '/guides/hourly-vs-monthly-rent', label: '時租和月租怎麼比' },
+              { href: '/guides/own-studio-vs-hourly-rent', label: '自己開店還是按小時租' },
+              { href: '/spaces/service/facial', label: '臉部護膚空間時租' },
+              { href: '/spaces/service/hair', label: '美髮空間時租' },
+              { href: '/spaces/service/makeup', label: '彩妝・新娘秘書工作室時租' },
+              { href: '/spaces/service/massage', label: '按摩空間時租' },
               { href: '/hosts', label: '屋主出租閒置時段' },
               { href: '/faq', label: '常見問題' },
               { href: localizePath(PAGE_PATH, 'en'), label: 'English' },
