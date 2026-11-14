@@ -33,7 +33,8 @@ export type PriceReport = {
   /** Median of fullDayRate / hourlyRate over spaces that have both. */
   fullDayHoursEquivalent: number | null
   minimumHours: ShareRow[]
-  services: ShareRow[]
+  /** `href`: the /spaces/service/{key} page for this service, when one exists. */
+  services: Array<ShareRow & { href?: string }>
   equipment: ShareRow[]
   withRoomScan: number
   lastUpdated: string | null
@@ -137,9 +138,15 @@ const SERVICE_LABELS: Record<string, string> = {
   hair: '美髮',
   makeup: '彩妝、新娘秘書',
 }
-const REPORT_SERVICE_GROUPS: Array<{ label: string; match: (service: string) => boolean }> = [
-  ...SERVICE_GROUPS.map((group) => ({ label: SERVICE_LABELS[group.key] ?? group.keyword, match: group.match })),
-  { label: '按摩（身體、油壓、運動、美胸）', match: (s) => s.includes('按摩') },
+/** 按摩 row: any service tag containing 「按摩」 (body, oil, sports, bust). Also the /spaces/service/massage matcher. */
+export function isMassageService(service: string): boolean {
+  return service.includes('按摩')
+}
+
+// Every SERVICE_GROUPS key and 按摩 has a /spaces/service/{key} page (topicPages.ts SERVICE_SLUGS).
+const REPORT_SERVICE_GROUPS: Array<{ label: string; match: (service: string) => boolean; href?: string }> = [
+  ...SERVICE_GROUPS.map((group) => ({ label: SERVICE_LABELS[group.key] ?? group.keyword, match: group.match, href: `/spaces/service/${group.key}` })),
+  { label: '按摩（身體、油壓、運動、美胸）', match: isMassageService, href: '/spaces/service/massage' },
   { label: '紋繡（髮際線、黑眼圈遮瑕）', match: (s) => s.includes('紋綉') || s.includes('紋繡') || s.includes('遮瑕') },
   { label: '熱蠟除毛', match: (s) => s.includes('除毛') },
   { label: '耳燭、采耳', match: (s) => s.includes('耳燭') || s.includes('采耳') },
@@ -203,7 +210,7 @@ export function buildPriceReport(spaces: PublicSpace[]): PriceReport {
       .map(([hours, count]) => ({ label: `${hours} 小時`, count, share: share(count, total) })),
     services: REPORT_SERVICE_GROUPS.map((group) => {
       const count = spaces.filter((s) => s.recommendedServices.some(group.match)).length
-      return { label: group.label, count, share: share(count, total) }
+      return { label: group.label, count, share: share(count, total), ...(group.href ? { href: group.href } : {}) }
     }).filter((row) => row.count > 0),
     equipment: Array.from(equipmentCounts.entries())
       .map(([label, count]) => ({ label, count, share: share(count, total) }))

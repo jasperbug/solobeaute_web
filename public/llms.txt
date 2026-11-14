@@ -57,6 +57,12 @@ SoloBeauté 和國外的「Solo Beauty」「Solo Beauty Partner」「Soo Beauté
 - [南投美業空間時租](https://www.solobeaute.com/spaces/city/nantou)：南投縣的美業空間列表、時租行情與常見問題
 - [美睫師租工作室](https://www.solobeaute.com/guides/lash-artist-studio)：適合嫁接睫毛、睫毛管理的空間數、時租區間與中位數、縣市分布，以及時租、分租、租位的比較
 - [美容工作室時租還是月租划算](https://www.solobeaute.com/guides/hourly-vs-monthly-rent)：打平時數（月租報價 ÷ 時租）的算法、以時租中位數做的示意試算與比較清單（不含月租行情數字）
+- [自己開店還是按小時租](https://www.solobeaute.com/guides/own-studio-vs-hourly-rent)：自己開美容工作室（合約、押金、裝潢、固定月租）和按小時租屋主備好的空間的質性比較，附以時租中位數做的示意試算（不含店面月租、押金、裝潢費或收益數字）
+- [臉部護膚空間時租](https://www.solobeaute.com/spaces/service/facial)：屋主標示適合臉部護膚的空間數、時租區間與中位數、美容床／美容燈各有幾間、縣市分布
+- [美髮空間時租](https://www.solobeaute.com/spaces/service/hair)：適合美髮的空間數與時租，如實列出有洗頭台、美髮椅的空間各幾間
+- [彩妝・新娘秘書工作室時租](https://www.solobeaute.com/spaces/service/makeup)：適合彩妝或新娘秘書的空間數、時租與有鏡台的空間數（SoloBeauté 不是化妝品或彩妝品牌）
+- [按摩空間時租](https://www.solobeaute.com/spaces/service/massage)：適合身體、油壓、運動等按摩的空間數、時租、空間類型與有美容床的空間數
+- [板橋美業空間時租](https://www.solobeaute.com/spaces/city/new-taipei/banqiao)：新北市板橋區的空間比較（類型、時租、半日／全日價、最低時數、適合的服務）
 - 每個空間都有自己的頁面（https://www.solobeaute.com/spaces/{空間 ID}）：地區（只到縣市與區）、類型、時租／半日／全日價、設備、適合的服務；完整清單見 [sitemap](https://www.solobeaute.com/sitemap.xml)
 
 ## AI 助理工具（MCP）
@@ -89,6 +95,9 @@ Each page below is the English counterpart of the Chinese page at the same path 
 - City pages: [Taipei](https://www.solobeaute.com/en/spaces/city/taipei), [New Taipei](https://www.solobeaute.com/en/spaces/city/new-taipei), [Taoyuan](https://www.solobeaute.com/en/spaces/city/taoyuan), [Taichung](https://www.solobeaute.com/en/spaces/city/taichung), [Kaohsiung](https://www.solobeaute.com/en/spaces/city/kaohsiung), [Changhua](https://www.solobeaute.com/en/spaces/city/changhua), [Nantou](https://www.solobeaute.com/en/spaces/city/nantou): workspace list, hourly rates and FAQ for each city
 - [Studio space for lash artists](https://www.solobeaute.com/en/guides/lash-artist-studio): number of suitable spaces, hourly range and median, cities, and hourly vs shared vs chair rental
 - [Hourly vs monthly studio rent](https://www.solobeaute.com/en/guides/hourly-vs-monthly-rent): the break-even formula (monthly quote ÷ hourly rate), an illustration using the live hourly median, and a checklist
+- [Own studio vs hourly rent](https://www.solobeaute.com/en/guides/own-studio-vs-hourly-rent): a qualitative comparison of opening your own studio (lease, deposit, fit-out, fixed rent) with renting a ready-to-use space by the hour, plus an illustration using the live hourly median (no shop rent, deposit, fit-out or income figures)
+- Service pages: [facial studios](https://www.solobeaute.com/en/spaces/service/facial), [hair studios](https://www.solobeaute.com/en/spaces/service/hair) (with shampoo station and styling chair counts), [makeup and bridal studios](https://www.solobeaute.com/en/spaces/service/makeup), [massage rooms](https://www.solobeaute.com/en/spaces/service/massage): suitable spaces, hourly range and median, equipment counts and cities
+- [Banqiao, New Taipei](https://www.solobeaute.com/en/spaces/city/new-taipei/banqiao): the workspaces in Banqiao District compared
 - [For hosts](https://www.solobeaute.com/en/hosts): how to list idle hours, what hosts decide, and how other hosts price their spaces
 - [FAQ](https://www.solobeaute.com/en/faq): finding a space, booking, payment, cancellation, listing a space and artist pages
 - [About SoloBeauté](https://www.solobeaute.com/en/about): founders Jasper Tsai (engineer) and Meigo Liu (beauty professional), what SoloBeauté does and current numbers
