@@ -30,7 +30,7 @@ const en = (path: string) => localizePath(path, 'en')
 
 export const HOSTS_TITLE_EN = 'Rent Out Your Idle Beauty Room by the Hour | Host Guide and Pricing'
 export const HOSTS_DESCRIPTION_EN =
-  'Have an idle treatment room, lash bed or nail station? List it in the SoloBeauté app and rent it to beauty professionals by the hour. List only the hours you aren’t using, accept or decline every booking, and see how other hosts price their spaces.'
+  'Have an idle treatment room, lash bed or nail station? List it in the SoloBeauté app and rent it to beauty professionals by the hour. List only the hours you aren’t using, accept or decline every rental request, and see how other hosts price their spaces.'
 
 function range(summary: Pick<RateSummary, 'min' | 'max'>): string {
   if (summary.min === null || summary.max === null) return '—'
@@ -48,11 +48,11 @@ const FAQ: QA[] = [
   },
   {
     question: 'Can I rent out my space for just some of the hours?',
-    answer: 'Yes. List only the hours your space would otherwise sit empty and keep running your business the rest of the time. You can accept or decline every booking and set your own house rules.',
+    answer: 'Yes. List only the hours your space would otherwise sit empty and keep running your business the rest of the time. You can accept or decline every rental request and set your own house rules.',
   },
   {
     question: 'What information do I need to list a space?',
-    answer: 'In the app you mainly fill in: photos of the space (ideally the entrance, the interior and the equipment), the address, the space type (open space, curtained partition or private room), an equipment list, the services the space is suited to and those it doesn’t allow, the hourly rate (with optional half-day and full-day rates), the minimum booking time, and whether there is a camera in the space. Space pages on the website show only the city and district.',
+    answer: 'In the app you mainly fill in: photos of the space (ideally the entrance, the interior and the equipment), the address, the space type (open space, curtained partition or private room), an equipment list, the services the space is suited to and those it doesn’t allow, the hourly rate (with optional half-day and full-day rates), the minimum rental time, and whether there is a camera in the space. Space pages on the website show only the city and district.',
   },
   {
     question: 'How do I get paid?',
@@ -105,7 +105,7 @@ export function HostsEn({ report }: { report: PriceReport }) {
           <h1 className="text-3xl font-semibold leading-tight text-ink md:text-4xl">Rent out your idle beauty room to beauty professionals</h1>
           <Prose>
             <p data-hosts-lead>
-              If you have an idle treatment room, lash bed or nail station, you can list it in the SoloBeauté app and rent it by the hour to nail, lash, facial, brow and other beauty professionals. List only the hours that would otherwise sit empty and keep running your business the rest of the time; you decide whether to accept or decline every booking.
+              If you have an idle treatment room, lash bed or nail station, you can list it in the SoloBeauté app and rent it by the hour to nail, lash, facial, brow and other beauty professionals. List only the hours that would otherwise sit empty and keep running your business the rest of the time; you decide whether to accept or decline every rental request.
             </p>
             <p>{pricingLead(report, dateLabel)}</p>
           </Prose>
@@ -116,8 +116,8 @@ export function HostsEn({ report }: { report: PriceReport }) {
           <ol className={`list-decimal space-y-3 pl-5 text-base leading-8 text-black/70 ${NUM}`}>
             <li>Download the SoloBeauté app and sign up as a host.</li>
             <li>Prepare photos of the space (entrance, interior, equipment), the hours you can rent out and your hourly rate, then create your space page in the app yourself.</li>
-            <li>Fill in the space type, equipment list, the services it suits and doesn&apos;t allow, the minimum booking time, and whether there is a camera in the space.</li>
-            <li>Beauty professionals find your space in the app, message you and send a booking request; the booking is confirmed only once you accept it.</li>
+            <li>Fill in the space type, equipment list, the services it suits and doesn&apos;t allow, the minimum rental time, and whether there is a camera in the space.</li>
+            <li>Beauty professionals find your space in the app, message you and send a rental request; the rental is confirmed only once you accept it.</li>
             <li>On the day, the pro arrives as agreed and pays you the rent in cash on site.</li>
           </ol>
         </Section>
@@ -125,10 +125,10 @@ export function HostsEn({ report }: { report: PriceReport }) {
         <Section id="you-decide" title="What you decide as a host">
           <ul className={`list-disc space-y-2 pl-5 text-base leading-8 text-black/70 ${NUM}`}>
             <li>Price: an hourly rate, plus optional half-day and full-day rates.</li>
-            <li>Minimum booking time{two ? ` (currently ${two.count} of ${report.total} spaces, ${formatShare(two.share)}, set 2 hours)` : ''}.</li>
+            <li>Minimum rental time{two ? ` (currently ${two.count} of ${report.total} spaces, ${formatShare(two.share)}, set 2 hours)` : ''}.</li>
             <li>The dates and time slots you rent out.</li>
             <li>The services your space suits and doesn&apos;t allow, and your house rules.</li>
-            <li>Whether to accept or decline each booking.</li>
+            <li>Whether to accept or decline each rental request.</li>
           </ul>
         </Section>
 

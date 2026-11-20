@@ -64,6 +64,10 @@ const ENGLISH_ROUTES: RegExp[] = [
   /^\/guides\/lash-artist-studio$/,
   /^\/guides\/hourly-vs-monthly-rent$/,
   /^\/guides\/own-studio-vs-hourly-rent$/,
+  // /en/login used to 307 to /login, which then rendered in Chinese for any
+  // visitor without an en cookie (Accept-Language fallback). Not indexed
+  // (robots.ts disallows /login and /en/login; not in the sitemap).
+  /^\/login$/,
 ]
 
 /** True when `path` (unprefixed, no query/hash) has an English version. */

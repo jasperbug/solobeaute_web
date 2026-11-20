@@ -31,7 +31,7 @@ const PAGE_PATH = '/hosts'
 const PAGE_URL = `${SITE_URL}${PAGE_PATH}`
 const TITLE = '美容室閒置時段出租｜屋主上架說明與時租行情'
 const DESCRIPTION =
-  '有閒置的美容室、美睫或美甲座位？在 SoloBeauté App 上架，按小時租給美業職人。只上架空著的時段，每筆預約由你決定接受或拒絕，附其他屋主的時租標價分布。'
+  '有閒置的美容室、美睫或美甲座位？在 SoloBeauté App 上架，按小時租給美業職人。只上架空著的時段，每筆租用申請由你決定接受或拒絕，附其他屋主的時租標價分布。'
 
 export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
   setRequestLocale(params.locale)
@@ -65,7 +65,7 @@ const FAQ: QA[] = [
   },
   {
     question: '店裡只有部分時段空著，也可以出租嗎？',
-    answer: '可以。你只要上架閒置的時段，其他時間照常營業。每一筆預約你都可以接受或拒絕，也能設定自己的出租規則。',
+    answer: '可以。你只要上架閒置的時段，其他時間照常營業。每一筆租用申請你都可以接受或拒絕，也能設定自己的出租規則。',
   },
   {
     question: '上架空間要填哪些資料？',
@@ -125,7 +125,7 @@ export default async function HostsPage({ params }: { params: { locale: string }
           <h1 className="text-3xl font-semibold leading-tight text-ink md:text-4xl">出租美容室閒置時段給美業職人</h1>
           <Prose>
             <p data-hosts-lead>
-              有閒置的美容室、美睫床位或美甲座位，可以在 SoloBeauté App 上架，按小時租給美甲、美睫、美容、紋繡等美業職人。你只要上架空著的時段，其他時間照常營業；每一筆預約都由你決定接受或拒絕。
+              有閒置的美容室、美睫床位或美甲座位，可以在 SoloBeauté App 上架，按小時租給美甲、美睫、美容、紋繡等美業職人。你只要上架空著的時段，其他時間照常營業；每一筆租用申請都由你決定接受或拒絕。
             </p>
             <p>{pricingLead(report, dateLabel)}</p>
           </Prose>
@@ -137,7 +137,7 @@ export default async function HostsPage({ params }: { params: { locale: string }
             <li>下載 SoloBeauté App，註冊成屋主。</li>
             <li>準備空間照片（入口、室內、設備）、可出租的時段和時租價格，在 App 內自行建立空間頁。</li>
             <li>填寫空間類型、設備清單、適合和不開放的服務、最低租用時數，以及空間內有沒有攝影機。</li>
-            <li>美業職人在 App 裡看到你的空間，傳訊息詢問、送出預約；你確認後預約才成立。</li>
+            <li>美業職人在 App 裡看到你的空間，傳訊息詢問、送出租用申請；你確認後才成立。</li>
             <li>當天職人依約到場使用，租金在現場用現金付給你。</li>
           </ol>
         </Section>
@@ -148,7 +148,7 @@ export default async function HostsPage({ params }: { params: { locale: string }
             <li>最低租用時數{two ? `（目前 ${report.total} 間中有 ${two.count} 間設 2 小時，占 ${formatShare(two.share)}）` : ''}。</li>
             <li>可以出租的日期和時段。</li>
             <li>適合和不開放的服務，以及出租規則。</li>
-            <li>每一筆預約要接受或拒絕。</li>
+            <li>每一筆租用申請要接受或拒絕。</li>
           </ul>
         </Section>
 

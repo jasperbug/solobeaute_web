@@ -398,8 +398,8 @@ function common(locale: AppLocale) {
       ? 'Beauty professionals message the host in the SoloBeauté app to confirm a time and pay the host in cash on site.'
       : '美業職人在 SoloBeauté App 傳訊息給屋主確認時段，租金現場付現。',
     cta: isEn
-      ? { title: 'Book a space in the SoloBeauté app', text: 'The app shows open time slots, and you message the host directly to arrange a time. Rent is paid to the host in cash on site.' }
-      : { title: '下載 SoloBeauté App 預約空間', text: '在 App 裡可以看可預約時段，直接傳訊息跟屋主約時間，租金現場付給屋主。' },
+      ? { title: 'Rent a space in the SoloBeauté app', text: 'The app shows open time slots; message the host and send a rental request. Rent is paid to the host in cash on site.' }
+      : { title: '下載 SoloBeauté App 租用空間', text: '在 App 裡可以看可租時段，傳訊息給屋主、送出申請，租金現場付現給屋主。' },
     howTo: isEn
       ? 'Hosts set up each space with its equipment and rent it out by the hour. Beauty professionals message the host in the SoloBeauté app to confirm a time and pay the host in cash on site. The website shows the district only; the full location is in the app.'
       : '每個空間都是屋主備好設備、按小時出租。美業職人在 SoloBeauté App 傳訊息給屋主確認時段，租金現場付給屋主。網站只顯示到區，完整位置請在 App 查看。',
@@ -481,7 +481,7 @@ function buildShared(all: PublicSpace[], locale: AppLocale): TopicView {
         id: 'compare-rent',
         title: '時租、分租、租床位的差別',
         paragraphs: [
-          'SoloBeauté 上的共享空間按小時租，依預約的時數計算；分租或租床位通常是跟店家談好固定的床位或時段，多半按月計算。',
+          'SoloBeauté 上的共享空間按小時租，依租用的時數計算；分租或租床位通常是跟店家談好固定的床位或時段，多半按月計算。',
         ],
         links: [
           { href: L('/guides/lash-artist-studio#compare'), label: '時租、分租、租位有什麼不同 →' },
@@ -502,7 +502,7 @@ function buildShared(all: PublicSpace[], locale: AppLocale): TopicView {
           },
           {
             question: '共享空間和分租、租床位有什麼不同？',
-            answer: 'SoloBeauté 上的共享空間按小時租，依預約的時數計算；分租或租床位通常是跟店家談好固定的床位或時段，多半按月計算。詳細比較可以看美睫師租工作室的說明。',
+            answer: 'SoloBeauté 上的共享空間按小時租，依租用的時數計算；分租或租床位通常是跟店家談好固定的床位或時段，多半按月計算。詳細比較可以看美睫師租工作室的說明。',
             links: [{ text: '美睫師租工作室的說明', href: L('/guides/lash-artist-studio#compare') }],
           },
         ]
@@ -592,7 +592,7 @@ function buildShared(all: PublicSpace[], locale: AppLocale): TopicView {
       id: 'compare-rent',
       title: 'Hourly rent, sublets and bed rental',
       paragraphs: [
-        'Shared spaces on SoloBeauté are rented by the hour, based on the hours you book. Sublets and bed rental usually mean agreeing a fixed bed or time slot with a salon, mostly paid monthly.',
+        'Shared spaces on SoloBeauté are rented by the hour, based on the hours you rent. Sublets and bed rental usually mean agreeing a fixed bed or time slot with a salon, mostly paid monthly.',
       ],
       links: [
         { href: L('/guides/lash-artist-studio#compare'), label: 'Hourly rent, sublets and bed rental compared →' },
@@ -613,7 +613,7 @@ function buildShared(all: PublicSpace[], locale: AppLocale): TopicView {
         },
         {
           question: 'How is a shared space different from a sublet or bed rental?',
-          answer: 'Shared spaces on SoloBeauté are rented by the hour, based on the hours you book. Sublets and bed rental usually mean agreeing a fixed bed or time slot with a salon, mostly paid monthly. See the lash studio guide for a full comparison.',
+          answer: 'Shared spaces on SoloBeauté are rented by the hour, based on the hours you rent. Sublets and bed rental usually mean agreeing a fixed bed or time slot with a salon, mostly paid monthly. See the lash studio guide for a full comparison.',
           links: [{ text: 'lash studio guide', href: L('/guides/lash-artist-studio#compare') }],
         },
       ]
@@ -1047,7 +1047,7 @@ function buildBeautyBed(all: PublicSpace[], locale: AppLocale): TopicView {
         },
         {
           question: 'Do I need to bring my own bed sheets and consumables?',
-          answer: `It depends on the equipment the host lists.${companions.length ? ` Of the ${plural(n, 'space')} with a beauty bed, ${joinEn(companions.map((e) => `${e.n} list ${equipmentEn(e.label).toLowerCase()}`))}.` : ''} For anything not on the list, message the host in the app before you book.`,
+          answer: `It depends on the equipment the host lists.${companions.length ? ` Of the ${plural(n, 'space')} with a beauty bed, ${joinEn(companions.map((e) => `${e.n} list ${equipmentEn(e.label).toLowerCase()}`))}.` : ''} For anything not on the list, message the host in the app before you rent.`,
         },
         ...(services.length
           ? [{
@@ -1075,7 +1075,7 @@ function buildBeautyBed(all: PublicSpace[], locale: AppLocale): TopicView {
       : `As of ${dateLabel}, no space on SoloBeauté lists a beauty bed yet. New spaces are being listed.`,
     intro: [
       n > 0
-        ? 'Equipment is as listed by the host on each space page; for sheets, towels or anything not listed, check with the host before you book.'
+        ? 'Equipment is as listed by the host on each space page; for sheets, towels or anything not listed, check with the host before you rent.'
         : 'Equipment is as listed by the host on each space page.',
       howTo,
     ],
@@ -1530,7 +1530,7 @@ function buildService(key: ServiceKey, all: PublicSpace[], locale: AppLocale): T
         {
           question: key === 'nail' ? 'Do nail studios come with a nail table?' : 'Are there private rooms or curtained partitions?',
           answer: key === 'nail'
-            ? `It depends on the equipment the host lists. Of the ${plural(n, 'space')}, ${equipment.length ? joinEn(equipment.map((e) => `${e.n} list ${equipmentEn(e.label).toLowerCase()}`)) : 'none list nail equipment yet'}. For anything not listed, message the host in the app before you book.`
+            ? `It depends on the equipment the host lists. Of the ${plural(n, 'space')}, ${equipment.length ? joinEn(equipment.map((e) => `${e.n} list ${equipmentEn(e.label).toLowerCase()}`)) : 'none list nail equipment yet'}. For anything not listed, message the host in the app before you rent.`
             : `${privateish > 0 ? 'Yes.' : 'Not at the moment.'} Of the ${plural(n, 'space')}, ${typesEn}${isNew && openN === 0 ? ', and none is an open space' : ''}${equipment.find((e) => e.label === '消毒櫃') ? `; ${equipment.find((e) => e.label === '消毒櫃')?.n} list a sterilizing cabinet` : ''}.`,
         },
         ...extraFaqEn,
@@ -1554,7 +1554,7 @@ function buildService(key: ServiceKey, all: PublicSpace[], locale: AppLocale): T
       : `As of ${dateLabel}, no host on SoloBeauté has marked a space as suitable for ${c.noun} yet. New spaces are being listed.`,
     intro: [
       n > 0
-        ? 'Services and equipment are as marked by the host on each space page; for anything not listed, check with the host before you book.'
+        ? 'Services and equipment are as marked by the host on each space page; for anything not listed, check with the host before you rent.'
         : 'Services and equipment are as marked by the host on each space page.',
       howTo,
     ],
@@ -1587,7 +1587,7 @@ export function buildTopicView(key: TopicKey, all: PublicSpace[], locale: AppLoc
 /**
  * Two FAQ entries shared by every topic / district page: how renting works and
  * pays (as things are today: message the host in the app, pay the host in cash
- * on site), and the minimum booking length computed from the listed spaces.
+ * on site), and the minimum rental length computed from the listed spaces.
  */
 function withRentalFaq(view: TopicView): TopicView {
   if (view.count === 0) return view
@@ -1603,7 +1603,7 @@ function withRentalFaq(view: TopicView): TopicView {
         },
         ...(hours
           ? [{
-              question: 'What is the shortest booking?',
+              question: 'What is the shortest rental?',
               answer: `Each host sets a minimum. Of the ${plural(withHours, 'space')} here that list one, the minimum is ${hours} ${hours === '1' ? 'hour' : 'hours'}; the table above shows it for each space.`,
             }]
           : []),

@@ -129,10 +129,10 @@ export default async function AboutPage({ params }: { params: { locale: string }
 
         <Section id="what-we-do" title="我們在做什麼">
           <ul className={`list-disc space-y-2 pl-5 text-base leading-8 text-black/70 ${NUM}`}>
-            <li><strong className="text-ink">美業職人：</strong>在 App 裡找空間、看價格和設備，直接傳訊息給屋主、送出預約；租金現場付給屋主。也可以建立自己的品牌頁。</li>
-            <li><strong className="text-ink">空間屋主：</strong>把閒置的時段上架，自己訂價格和規則，每筆預約自己決定接受或拒絕。詳見<Link href="/hosts" className="text-brand underline underline-offset-4">屋主出租說明</Link>。</li>
-            <li><strong className="text-ink">消費者：</strong>預約還沒開放；目前可以在網站上看職人的品牌頁，再透過職人自己的管道聯繫。</li>
-            <li><strong className="text-ink">AI 助理：</strong>可以透過唯讀 MCP 端點 <code className="break-all">https://www.solobeaute.com/mcp</code> 查公開的空間、可預約空檔和職人品牌頁，不能預約或付款。</li>
+            <li><strong className="text-ink">美業職人：</strong>在 App 裡找空間、看價格和設備，直接傳訊息給屋主、送出租用申請；租金現場付現給屋主。也可以建立自己的品牌頁。</li>
+            <li><strong className="text-ink">空間屋主：</strong>把閒置的時段上架，自己訂價格和規則，每筆租用申請自己決定接受或拒絕。詳見<Link href="/hosts" className="text-brand underline underline-offset-4">屋主出租說明</Link>。</li>
+            <li><strong className="text-ink">消費者：</strong>SoloBeauté 不提供客人向職人下單；客人請透過職人自己的管道聯繫。網站上可以先看職人的品牌頁。</li>
+            <li><strong className="text-ink">AI 助理：</strong>可以透過唯讀 MCP 端點 <code className="break-all">https://www.solobeaute.com/mcp</code> 查公開的空間、可租空檔和職人品牌頁，不能送出申請或付款。</li>
           </ul>
         </Section>
 

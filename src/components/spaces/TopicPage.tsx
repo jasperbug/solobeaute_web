@@ -87,7 +87,7 @@ function spacePlace(space: PublicSpace, locale: TopicView['locale']) {
     props.push({ '@type': 'PropertyValue', name: locale === 'en' ? 'Hourly rate' : '時租', value: space.hourlyRate, unitCode: 'HUR', unitText: 'TWD' })
   }
   if (space.minimumHours) {
-    props.push({ '@type': 'PropertyValue', name: locale === 'en' ? 'Minimum booking' : '最低時數', value: space.minimumHours, unitCode: 'HUR' })
+    props.push({ '@type': 'PropertyValue', name: locale === 'en' ? 'Minimum rental' : '最低時數', value: space.minimumHours, unitCode: 'HUR' })
   }
   return {
     '@type': 'Place',

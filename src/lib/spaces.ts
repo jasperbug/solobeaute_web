@@ -230,7 +230,7 @@ export function buildSpaceDescription(space: PublicSpace): string {
     ? `，${space.ratingAvg.toFixed(1)} 星（${space.ratingCount} 則評價）`
     : ''
   const price = space.hourlyRate ? `，時租 ${formatNtd(space.hourlyRate)}${rating}` : rating
-  return `${locationLabel(space)}的${spaceTypeLabel(space.spaceType)}${price}，適合${servicesPhrase(space)}。按小時租，在 SoloBeauté App 直接傳訊息給屋主預約，現場付現。`
+  return `${locationLabel(space)}的${spaceTypeLabel(space.spaceType)}${price}，適合${servicesPhrase(space)}。按小時租，在 SoloBeauté App 傳訊息給屋主、送出申請，現場付現。`
 }
 
 /** H1 subtitle: `{city}{district}・{spaceType}・NT${hourlyRate}／小時`. */
@@ -289,7 +289,7 @@ export function cameraDisclosureLabel(status: CameraDisclosureStatus | null): st
     case 'NO_CAMERA':
       return '屋主表示空間內沒有攝影機'
     case 'UNDISCLOSED':
-      return '屋主尚未說明攝影機資訊，預約前可以先在 App 詢問'
+      return '屋主尚未說明攝影機資訊，租用前可以先在 App 詢問'
     default:
       return null
   }

@@ -149,7 +149,7 @@ export function buildCityIntroEn(stats: CityStats, allStats: CityStats[], dateLa
     const medianText = stats.minRate !== stats.maxRate && stats.medianRate !== null ? ` (median ${formatNtd(stats.medianRate)})` : ''
     const priceLine = [
       rate ? (stats.minRate === stats.maxRate ? `all charge ${rate} per hour` : `hourly rates run ${rate}${medianText}`) : null,
-      hours ? `minimum bookings are ${hours}` : null,
+      hours ? `minimum rental times are ${hours}` : null,
       stats.withHalfOrFullDay > 0 ? `${stats.withHalfOrFullDay} also offer a half-day or full-day rate` : null,
     ].filter((part): part is string => Boolean(part))
     if (priceLine.length) {
@@ -215,7 +215,7 @@ export function buildCityFaqEn(stats: CityStats, allStats: CityStats[], dateLabe
 
   const priceAnswer = count === 1
     ? `As of ${dateLabel}, there is 1 beauty workspace in ${cityNameEn(city.name)}, at ${rate} per hour${hours ? ` with a ${stats.minHours}-hour minimum` : ''}. The price shown on the space page and in the app is the one that applies.`
-    : `As of ${dateLabel}, the ${count} beauty workspaces on SoloBeauté in ${cityNameEn(city.name)} ${stats.minRate === stats.maxRate ? `all charge ${rate} per hour` : `charge ${rate} per hour, with a median of ${formatNtd(stats.medianRate ?? 0)}`}${hours ? `; minimum bookings are ${hours}` : ''}. The price shown on each space page and in the app is the one that applies.`
+    : `As of ${dateLabel}, the ${count} beauty workspaces on SoloBeauté in ${cityNameEn(city.name)} ${stats.minRate === stats.maxRate ? `all charge ${rate} per hour` : `charge ${rate} per hour, with a median of ${formatNtd(stats.medianRate ?? 0)}`}${hours ? `; minimum rental times are ${hours}` : ''}. The price shown on each space page and in the app is the one that applies.`
 
   const primary = stats.services.filter((s) => PRIMARY_GROUP_KEYS.includes(s.key))
   const present = primary.filter((s) => s.count > 0)
@@ -294,7 +294,7 @@ export function buildCityListHeadingEn(stats: CityStats): string {
 
 export function buildSharedSpaceNoteEn(stats: CityStats): string | null {
   if (stats.city.slug !== 'kaohsiung' || stats.count === 0) return null
-  return `Spaces on SoloBeauté are listed by different hosts and shared by beauty professionals by the hour, booked only when needed. ${cityShortEn(stats.city)} currently has ${stats.count}, in ${districtList(stats, false)}.`
+  return `Spaces on SoloBeauté are listed by different hosts and shared by beauty professionals by the hour, rented only when needed. ${cityShortEn(stats.city)} currently has ${stats.count}, in ${districtList(stats, false)}.`
 }
 
 export function buildCityLeadNoteEn(stats: CityStats, allStats: CityStats[]): string | null {
