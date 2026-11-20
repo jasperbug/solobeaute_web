@@ -127,7 +127,7 @@ export const legalContent = {
       title: 'SoloBeauté 隱私政策',
       intro:
         '以下內容說明 SoloBeauté 如何蒐集、使用、分享與保護你的個人資訊，以及你可以行使的資料權利。',
-      updatedAt: '最後更新日期：2026 年 3 月',
+      updatedAt: '最後更新日期：2026 年 11 月 21 日',
       sections: [
         {
           title: '資訊蒐集',
@@ -178,7 +178,7 @@ export const legalContent = {
       title: 'SoloBeauté 服務條款',
       intro:
         '以下條款說明使用 SoloBeauté 時適用的服務規範、雙方責任與爭議處理方式。',
-      updatedAt: '最後更新日期：2026 年 3 月',
+      updatedAt: '最後更新日期：2026 年 11 月 21 日',
       sections: [
         {
           title: '服務範圍',
@@ -189,7 +189,7 @@ export const legalContent = {
         {
           title: '用戶責任',
           paragraphs: [
-            '使用者須確保註冊資訊之真實性與正確性，並妥善保管帳號密碼。屋主應確保所提供之空間符合安全衛生標準，並據實描述空間設備與狀態。職人應確保具備相關專業證照與技能，並對其提供之服務品質負責。職人與屋主如需取消已成立的空間租用，應在 App 內辦理，並主動通知對方。任何使用者不得利用本服務從事違法或損害他人權益之行為。',
+            '使用者須確保註冊資訊之真實性與正確性，並妥善保管帳號密碼。屋主應確保所提供之空間符合安全衛生標準，並據實描述空間設備與狀態。職人應確保具備相關專業證照與技能，並對其提供之服務品質負責。職人與屋主如需取消已成立的空間租用，應於使用前至少 24 小時在 App 內取消，並主動通知對方。任何使用者不得利用本服務從事違法或損害他人權益之行為。',
           ],
         },
         {
@@ -353,7 +353,7 @@ export const legalContent = {
       title: 'SoloBeauté Privacy Policy',
       intro:
         'The following explains how SoloBeauté collects, uses, shares, and protects your personal information, as well as the rights you can exercise over your data.',
-      updatedAt: 'Last updated: March 2026',
+      updatedAt: 'Last updated: November 21, 2026',
       sections: [
         {
           title: 'Information Collection',
@@ -404,7 +404,7 @@ export const legalContent = {
       title: 'SoloBeauté Terms of Service',
       intro:
         'These terms explain the rules, responsibilities, and dispute process that apply when using SoloBeauté.',
-      updatedAt: 'Last updated: March 2026',
+      updatedAt: 'Last updated: November 21, 2026',
       sections: [
         {
           title: 'Scope of Service',
@@ -415,7 +415,7 @@ export const legalContent = {
         {
           title: 'User Responsibilities',
           paragraphs: [
-            "Users must ensure the accuracy of their registration information and safeguard their account credentials. Hosts must ensure their spaces meet safety and hygiene standards and accurately describe space facilities and conditions. Professionals must hold relevant certifications and skills, and are responsible for the quality of their services. If a professional or a host needs to cancel a confirmed space rental, they should cancel it in the App and proactively notify the other party. Users must not use this service for illegal activities or actions that infringe upon others' rights.",
+            "Users must ensure the accuracy of their registration information and safeguard their account credentials. Hosts must ensure their spaces meet safety and hygiene standards and accurately describe space facilities and conditions. Professionals must hold relevant certifications and skills, and are responsible for the quality of their services. If a professional or a host needs to cancel a confirmed space rental, they should cancel it in the App at least 24 hours before use and proactively notify the other party. Users must not use this service for illegal activities or actions that infringe upon others' rights.",
           ],
         },
         {

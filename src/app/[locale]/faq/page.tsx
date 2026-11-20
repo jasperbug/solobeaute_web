@@ -18,16 +18,16 @@ import type { PublicSpace } from '@/lib/types'
 export const revalidate = 3600
 
 const PAGE_URL = `${SITE_URL}/faq`
-const TITLE = '常見問題｜美業空間時租、預約、付款、上架'
+const TITLE = '常見問題｜美業空間時租、租用、付款、上架'
 const OG_TITLE = 'SoloBeauté 常見問題'
 const DESCRIPTION =
-  '美業空間怎麼按小時租、怎麼預約和付款、可以取消嗎、屋主怎麼上架、職人品牌頁怎麼公開？SoloBeauté 常見問題一次看完。'
+  '美業空間怎麼按小時租、怎麼申請租用和付款、可以取消嗎、屋主怎麼上架、職人品牌頁怎麼公開？SoloBeauté 常見問題一次看完。'
 
 const PAGE_URL_EN = localeUrl('/faq', 'en')
-const TITLE_EN = 'FAQ: Hourly Beauty Workspace Rental, Booking and Payment'
+const TITLE_EN = 'FAQ: Hourly Beauty Workspace Rental, Requests and Payment'
 const OG_TITLE_EN = 'SoloBeauté FAQ'
 const DESCRIPTION_EN =
-  'How do you rent a beauty workspace by the hour, book and pay, cancel, list a space as a host, or publish a brand page? Answers to the most common SoloBeauté questions.'
+  'How do you rent a beauty workspace by the hour, send a request and pay, cancel, list a space as a host, or publish a brand page? Answers to the most common SoloBeauté questions.'
 
 export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
   setRequestLocale(params.locale)
@@ -140,7 +140,7 @@ export default async function FaqPage({ params }: { params: { locale: string } }
           <p className="section-tag">常見問題</p>
           <h1 className="text-3xl font-semibold leading-tight text-ink md:text-4xl">SoloBeauté 常見問題</h1>
           <p className="text-base leading-8 text-black/65">
-            SoloBeauté 是台灣的美業空間時租 App：美甲、美睫、美容、紋繡等美業職人，可以按小時租用屋主已經備好的工作空間。下面整理了找空間、預約、付款、屋主上架和職人品牌頁最常被問到的問題。
+            SoloBeauté 是台灣的美業空間時租 App：美甲、美睫、美容、紋繡等美業職人，可以按小時租用屋主已經備好的工作空間。下面整理了找空間、租用、付款、屋主上架和職人品牌頁最常被問到的問題。
           </p>
           <nav aria-label="問題分類" className="flex flex-wrap gap-2 pt-1">
             {groups.map((group) => (
@@ -241,7 +241,7 @@ async function FaqPageEn() {
           <p className="section-tag">FAQ</p>
           <h1 className="text-3xl font-semibold leading-tight text-ink md:text-4xl">SoloBeauté FAQ</h1>
           <p className="text-base leading-8 text-black/65">
-            SoloBeauté is a Taiwan-based app for renting beauty workspaces by the hour: nail, lash, facial, brow and other beauty professionals can rent workspaces that hosts have already set up. Below are the questions we hear most about finding a space, booking, payment, listing a space as a host, and brand pages for pros.
+            SoloBeauté is a Taiwan-based app for renting beauty workspaces by the hour: nail, lash, facial, brow and other beauty professionals can rent workspaces that hosts have already set up. Below are the questions we hear most about finding a space, renting, payment, listing a space as a host, and brand pages for pros.
           </p>
           <nav aria-label="Question categories" className="flex flex-wrap gap-2 pt-1">
             {groups.map((group) => (

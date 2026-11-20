@@ -255,7 +255,7 @@ export function cameraDisclosureEn(status: CameraDisclosureStatus | null): strin
     case 'NO_CAMERA':
       return 'The host states there is no camera in the space.'
     case 'UNDISCLOSED':
-      return 'The host has not said whether there is a camera; you can ask in the app before booking.'
+      return 'The host has not said whether there is a camera; you can ask in the app before renting.'
     default:
       return null
   }

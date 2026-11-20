@@ -250,7 +250,7 @@ function englishSummary(report: PriceReport): string[] {
   if (report.halfDay.count > 0) second.push(`${report.halfDay.count} spaces also list a half-day rate (median ${medianText(report.halfDay)})`)
   if (report.fullDay.count > 0) second.push(`${report.fullDay.count} list a full-day rate (median ${medianText(report.fullDay)})`)
   const third: string[] = []
-  if (two) third.push(`${two.count} of ${report.total} spaces (${formatShare(two.share)}) require a 2-hour minimum booking`)
+  if (two) third.push(`${two.count} of ${report.total} spaces (${formatShare(two.share)}) require a 2-hour minimum rental`)
   if (lash && lash.count > 0) third.push(`${lash.count} (${formatShare(lash.share)}) are marked by hosts as suitable for eyelash extensions`)
   return [
     first,
@@ -600,7 +600,7 @@ export default async function PriceReportPage({ params }: { params: { locale: st
         <section className="sb-card space-y-4 p-6 md:p-8">
           <h2 className="text-xl font-semibold text-ink">下載 SoloBeauté App 找空間</h2>
           <p className="text-sm leading-7 text-black/65">
-            在 App 裡可以看每個空間的照片、設備、可預約時段，直接傳訊息給屋主。有閒置的美容室或座位，也可以在 App 上架出租，自己訂時租價格。
+            在 App 裡可以看每個空間的照片、設備、可租時段，直接傳訊息給屋主。有閒置的美容室或座位，也可以在 App 上架出租，自己訂時租價格。
           </p>
           <StoreButtons buttonClassName="btn-dark" />
         </section>

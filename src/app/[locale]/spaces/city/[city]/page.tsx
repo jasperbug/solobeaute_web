@@ -338,9 +338,9 @@ export default async function CitySpacesPage({ params }: CityPageProps & { param
         </section>
 
         <section className="sb-card space-y-4 p-6 md:p-8">
-          <h2 className="text-xl font-semibold text-ink">下載 SoloBeauté App 預約{city.short}的空間</h2>
+          <h2 className="text-xl font-semibold text-ink">下載 SoloBeauté App 租用{city.short}的空間</h2>
           <p className="text-sm leading-7 text-black/65">
-            在 App 裡可以看可預約時段、3D 實景（部分空間），直接跟屋主約時間。在{city.short}有閒置的美容室或座位，也可以在 App 上架出租。
+            在 App 裡可以看可租時段、3D 實景（部分空間），直接跟屋主約時間。在{city.short}有閒置的美容室或座位，也可以在 App 上架出租。
           </p>
           <StoreButtons buttonClassName="btn-dark" />
         </section>
@@ -547,7 +547,7 @@ function CitySpacesPageEn({ stats, allStats, needLinks }: { stats: CityStats; al
         </section>
 
         <section className="sb-card space-y-4 p-6 md:p-8">
-          <h2 className="text-xl font-semibold text-ink">Book a space in {short} in the SoloBeauté app</h2>
+          <h2 className="text-xl font-semibold text-ink">Rent a space in {short} in the SoloBeauté app</h2>
           <p className="text-sm leading-7 text-black/65">
             In the app you can see available time slots and, for some spaces, a 3D tour, and arrange a time with the host directly. If you have an idle treatment room or station in {short}, you can also list it for rent in the app.
           </p>

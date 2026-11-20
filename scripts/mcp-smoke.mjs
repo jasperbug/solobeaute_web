@@ -61,8 +61,8 @@ function freeSlotsSane(sc) {
 
 const NOTICE = {
   'zh-TW':
-    '資料來自 SoloBeauté 官方網站。美業職人預約空間需在 SoloBeauté App 內完成，並由屋主確認；租金到現場以現金付給屋主。價格以 App 內顯示為準。SoloBeauté 目前尚未開放消費者預約美業服務。',
-  en: 'Data from the official SoloBeauté website. Beauty professionals book spaces in the SoloBeauté app, and each booking is confirmed by the host; rent is paid to the host in cash on site. Prices shown in the app prevail. Consumer booking of beauty services is not open yet on SoloBeauté.',
+    '資料來自 SoloBeauté 官方網站。SoloBeauté 不提供客人向職人下單；客人請透過職人自己的管道聯繫。美業職人在 App 內向屋主申請租用空間。租用申請由屋主確認；租金到現場以現金付給屋主。價格以 App 內顯示為準。',
+  en: 'Data from the official SoloBeauté website. SoloBeauté does not take client orders for beauty professionals; clients contact pros through the pros\' own channels. Beauty professionals apply to rent spaces from hosts in the SoloBeauté app. The host confirms each rental request; rent is paid to the host in cash on site. Prices shown in the app prevail.',
 }
 
 const EXPECTED_TOOLS = [

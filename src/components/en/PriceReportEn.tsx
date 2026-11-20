@@ -119,7 +119,7 @@ function professionSentence(row: ProfessionRow, total: number): string {
   if (equipment.length) parts.push(joinEn(equipment))
   let text = `${parts.join('; ')}.`
   if (row.cities.length) text += ` They are in ${joinEn(row.cities.map((c) => `${cityShortEn(c.label)} (${c.count})`))}.`
-  if (row.minTwoHours > 0) text += ` ${row.minTwoHours} of them have a 2-hour minimum booking.`
+  if (row.minTwoHours > 0) text += ` ${row.minTwoHours} of them have a 2-hour minimum rental.`
   if (row.halfDay.count > 0 || row.fullDay.count > 0) {
     const day: string[] = []
     if (row.halfDay.count > 0) day.push(`${row.halfDay.count} list a half-day rate (${row.halfDay.count >= 2 ? `median ${medianText(row.halfDay)}` : rangeText(row.halfDay)})`)
@@ -131,7 +131,7 @@ function professionSentence(row: ProfessionRow, total: number): string {
 
 const PROFESSION_NOTES: Record<ProfessionRow['key'], string> = {
   lash: 'Lash work usually needs a beauty bed and good lighting, so check the equipment list first.',
-  nail: 'Fewer spaces suit nail work than lash work or facials; that is simply what is listed right now. Check for a nail table and chair and lighting before you book.',
+  nail: 'Fewer spaces suit nail work than lash work or facials; that is simply what is listed right now. Check for a nail table and chair and lighting before you rent.',
   brow: 'Brow and lip embroidery needs a beauty bed and good lighting. Some spaces are also marked as suitable for brow tattoo removal or hairline micropigmentation; go by what each host marks on the space page.',
 }
 
@@ -159,10 +159,10 @@ function buildReportFaq(report: PriceReport, dateLabel: string): QA[] {
     })
   }
   items.push({
-    question: 'What is the minimum booking time for a beauty workspace?',
+    question: 'What is the minimum rental time for a beauty workspace?',
     answer: two
-      ? `${two.count} of ${report.total} spaces (${formatShare(two.share)}) have a 2-hour minimum booking${others.length ? `; ${joinEn(others.map((row) => `${row.count} have a ${hoursLabelEn(row.label).replace(/ hours?$/, '-hour')} minimum`))}` : ''}. Each space shows its minimum on the space page and in the app.`
-      : `Each host sets a minimum booking time: ${joinEn(report.minimumHours.map((row) => `${hoursLabelEn(row.label)}: ${row.count}`))}.`,
+      ? `${two.count} of ${report.total} spaces (${formatShare(two.share)}) have a 2-hour minimum rental${others.length ? `; ${joinEn(others.map((row) => `${row.count} have a ${hoursLabelEn(row.label).replace(/ hours?$/, '-hour')} minimum`))}` : ''}. Each space shows its minimum on the space page and in the app.`
+      : `Each host sets a minimum rental time: ${joinEn(report.minimumHours.map((row) => `${hoursLabelEn(row.label)}: ${row.count}`))}.`,
   })
   items.push({
     question: 'How much are half-day and full-day rates?',
@@ -367,9 +367,9 @@ export function PriceReportEn({ report }: { report: PriceReport }) {
           ) : null}
         </Section>
 
-        <Section id="min-hours" title="Minimum booking time">
+        <Section id="min-hours" title="Minimum rental time">
           <DataTable
-            caption="Minimum booking time"
+            caption="Minimum rental time"
             head={['Minimum', 'Spaces', 'Share']}
             rows={report.minimumHours.map((row) => [hoursLabelEn(row.label), `${row.count}`, formatShare(row.share)])}
           />
@@ -420,7 +420,7 @@ export function PriceReportEn({ report }: { report: PriceReport }) {
                 This page gives no monthly-rent figure. Divide a monthly quote you have received by {median} to get the break-even hours: if you use fewer hours than that each month, renting by the hour costs less in total; if you use more, compare the monthly lease&apos;s other terms too, such as the deposit, contract length and whether utilities and consumables are extra.
               </p>
               {report.fullDayHoursEquivalent !== null ? (
-                <p>If you book several clients in one day, look at full-day rates as well: the median full-day rate is {medianText(report.fullDay)}, roughly {report.fullDayHoursEquivalent} hours at the hourly rate.</p>
+                <p>If you see several clients in one day, look at full-day rates as well: the median full-day rate is {medianText(report.fullDay)}, roughly {report.fullDayHoursEquivalent} hours at the hourly rate.</p>
               ) : null}
               <p>
                 For a step-by-step calculation and comparison checklist, see <Link href={en('/guides/hourly-vs-monthly-rent')} className="text-brand underline underline-offset-4">hourly vs monthly rent</Link>; if you are weighing opening your own studio, see <Link href={en('/guides/own-studio-vs-hourly-rent')} className="text-brand underline underline-offset-4">own studio vs hourly rent</Link>.

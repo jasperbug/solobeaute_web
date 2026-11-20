@@ -10,7 +10,7 @@ import type { PublicSpace } from './types'
 
 // ---------------------------------------------------------------------------
 // English /en/faq: same groups, same order and same facts as lib/faqPage.ts.
-// No fee / "free" / deposit claims. Consumer booking is not open.
+// No fee / "free" / deposit claims. Clients contact pros through the pros' own channels.
 // ---------------------------------------------------------------------------
 
 const en = (path: string) => localizePath(path, 'en')
@@ -42,7 +42,7 @@ function equipmentLower(label: string): string {
 
 function equipmentAnswer(spaces: PublicSpace[] | null): string {
   const base = 'Each host lists the equipment in their space, and it is shown on the space page and in the app: for example a beauty bed, beauty lamp, nail table and chair, shampoo station, restroom, air conditioning or Wi-Fi.'
-  const tail = 'For anything not on the list (such as consumables or personal tools), message the host before you book.'
+  const tail = 'For anything not on the list (such as consumables or personal tools), message the host before you rent.'
   if (!spaces || spaces.length === 0) return `${base} ${tail}`
   const counts = EQUIPMENT_FOR_FAQ
     .map((label) => ({ label, count: spaces.filter((s) => s.equipment.includes(label)).length }))
@@ -103,13 +103,13 @@ export function buildFaqGroupsEn(home: FaqItem[], spaces: PublicSpace[] | null):
   return [
     {
       id: 'renting',
-      title: 'Finding and booking a space',
+      title: 'Finding and renting a space',
       items: [
         BRAND_FAQ_EN,
         h(HOME.findSpace),
         {
-          q: 'How does booking a space work?',
-          a: 'Find a suitable space in the SoloBeauté app and check the photos, equipment, price and minimum booking time; if you have questions, message the host directly. Pick a date and time slot and send a booking request. The booking is confirmed only once the host accepts it, and the app notifies you. On the day, arrive as agreed and pay the rent to the host in cash on site. Hosts can accept or decline requests, so keep an eye on your app notifications after sending one.',
+          q: 'How does renting a space work?',
+          a: 'Find a suitable space in the SoloBeauté app and check the photos, equipment, price and minimum rental time; if you have questions, message the host directly. Pick a date and time slot and send a rental request. The rental is confirmed only once the host accepts it, and the app notifies you. On the day, arrive as agreed and pay the rent to the host in cash on site. Hosts can accept or decline requests, so keep an eye on your app notifications after sending one.',
         },
         h(HOME.services),
         browEntry(spaces),
@@ -121,8 +121,8 @@ export function buildFaqGroupsEn(home: FaqItem[], spaces: PublicSpace[] | null):
           a: 'To protect hosts’ privacy and safety, space pages on the website show only the city and district, never the street address or the host’s details. The full location is in the SoloBeauté app.',
         },
         {
-          q: 'Can I cancel or reschedule a booking?',
-          a: 'You can cancel. Until a booking is completed, both the pro and the host can cancel it in the app; a completed booking can no longer be cancelled. The app has no reschedule button yet, so to change the time, talk to the host first, then cancel the original booking and book the new slot. Because rent is paid in cash on site, please cancel in the app at least 24 hours before use and proactively notify the other party.',
+          q: 'Can I cancel or reschedule a rental?',
+          a: 'You can cancel. Until a rental is completed, both the pro and the host can cancel it in the app; a completed rental can no longer be cancelled. The app has no reschedule button yet, so to change the time, talk to the host first, then cancel the original request and send a new one for the new slot. Because rent is paid in cash on site, please cancel in the app at least 24 hours before use and proactively notify the other party.',
         },
       ],
     },
@@ -138,7 +138,7 @@ export function buildFaqGroupsEn(home: FaqItem[], spaces: PublicSpace[] | null):
         h(HOME.hostList),
         {
           q: 'What information do I need to list a space?',
-          a: 'In the app you mainly fill in: photos of the space (ideally the entrance, the interior and the equipment), the address, the space type (open space, curtained partition or private room), an equipment list, the services the space is suited to and those it doesn’t allow, the hourly rate (with optional half-day and full-day rates), the minimum booking time, and whether there is a camera in the space. Space pages on the website show only the city and district.',
+          a: 'In the app you mainly fill in: photos of the space (ideally the entrance, the interior and the equipment), the address, the space type (open space, curtained partition or private room), an equipment list, the services the space is suited to and those it doesn’t allow, the hourly rate (with optional half-day and full-day rates), the minimum rental time, and whether there is a camera in the space. Space pages on the website show only the city and district.',
         },
         h(HOME.partialHours),
       ],
@@ -163,11 +163,11 @@ export function buildFaqGroupsEn(home: FaqItem[], spaces: PublicSpace[] | null):
         h(HOME.difference),
         {
           q: 'How is SoloBeauté different from studio rental listing sites and rental groups?',
-          a: 'Typical listing sites and social media groups mostly offer monthly rentals or long-term sublets, and you have to ask about terms and details one message at a time. SoloBeauté focuses on renting beauty workspaces by the hour: every space lists its hourly rate, equipment, the services it suits and doesn’t allow, and its minimum booking time, and you message the host and send a booking request in the app for the host to confirm.',
+          a: 'Typical listing sites and social media groups mostly offer monthly rentals or long-term sublets, and you have to ask about terms and details one message at a time. SoloBeauté focuses on renting beauty workspaces by the hour: every space lists its hourly rate, equipment, the services it suits and doesn’t allow, and its minimum rental time, and you message the host and send a rental request in the app for the host to confirm.',
         },
         {
           q: 'How is SoloBeauté different from subletting or renting a chair?',
-          a: 'Subletting or renting a chair usually means agreeing on a fixed seat, bed or time slot with a salon, mostly by the month, with contract, deposit and available hours depending on the salon. Spaces on SoloBeauté are rented by the hour: each one lists its hourly rate, minimum booking time, equipment and suitable services, you rent only when you have a booking, and you message the host and send a request in the app for the host to confirm. To work out which option costs less, see hourly vs monthly rent; for lash artists, see studios for lash artists.',
+          a: 'Subletting or renting a chair usually means agreeing on a fixed seat, bed or time slot with a salon, mostly by the month, with contract, deposit and available hours depending on the salon. Spaces on SoloBeauté are rented by the hour: each one lists its hourly rate, minimum rental time, equipment and suitable services, you rent only when you need it, and you message the host and send a request in the app for the host to confirm. To work out which option costs less, see hourly vs monthly rent; for lash artists, see studios for lash artists.',
           links: [
             { text: 'hourly vs monthly rent', href: en('/guides/hourly-vs-monthly-rent') },
             { text: 'studios for lash artists', href: en('/guides/lash-artist-studio') },
