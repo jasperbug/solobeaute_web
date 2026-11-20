@@ -68,6 +68,10 @@ const ENGLISH_ROUTES: RegExp[] = [
   // visitor without an en cookie (Accept-Language fallback). Not indexed
   // (robots.ts disallows /login and /en/login; not in the sitemap).
   /^\/login$/,
+  // Legal pages: /en/terms and /en/privacy used to 307 to the unprefixed URL,
+  // which then rendered in Chinese for visitors without an en cookie.
+  /^\/terms$/,
+  /^\/privacy$/,
 ]
 
 /** True when `path` (unprefixed, no query/hash) has an English version. */

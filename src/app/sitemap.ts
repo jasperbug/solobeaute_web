@@ -68,8 +68,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // AI-readable site summary (public/llms.txt). zh only: /en/llms.txt does not exist,
     // and /mcp is a POST-only endpoint, so neither is listed.
     { url: `${SITE_URL}/llms.txt`, changeFrequency: 'weekly', priority: 0.5 },
-    { url: `${SITE_URL}/privacy`, changeFrequency: 'yearly', priority: 0.3 },
-    { url: `${SITE_URL}/terms`, changeFrequency: 'yearly', priority: 0.3 },
+    ...localizedEntries('/privacy', { changeFrequency: 'yearly', priority: 0.3 }),
+    ...localizedEntries('/terms', { changeFrequency: 'yearly', priority: 0.3 }),
     { url: `${SITE_URL}/support`, changeFrequency: 'monthly', priority: 0.4 },
     { url: `${SITE_URL}/delete-account`, changeFrequency: 'yearly', priority: 0.5 },
   ]
