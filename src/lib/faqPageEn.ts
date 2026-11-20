@@ -122,7 +122,7 @@ export function buildFaqGroupsEn(home: FaqItem[], spaces: PublicSpace[] | null):
         },
         {
           q: 'Can I cancel or reschedule a booking?',
-          a: 'You can cancel. Until a booking is completed, both the pro and the host can cancel it in the app; a completed booking can no longer be cancelled. The app has no reschedule button yet, so to change the time, talk to the host first, then cancel the original booking and book the new slot. If plans change at short notice, let the host know as early as you can.',
+          a: 'You can cancel. Until a booking is completed, both the pro and the host can cancel it in the app; a completed booking can no longer be cancelled. The app has no reschedule button yet, so to change the time, talk to the host first, then cancel the original booking and book the new slot. Because rent is paid in cash on site, please cancel in the app at least 24 hours before use and proactively notify the other party.',
         },
       ],
     },

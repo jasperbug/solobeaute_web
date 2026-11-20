@@ -53,7 +53,7 @@ export const legalContent = {
         },
         {
           q: '如何取消預約？',
-          a: '前往「預約管理」找到要取消的預約，點選「取消預約」按鈕。取消政策如下：48 小時前取消可全額退款；24 至 48 小時前取消可退還 50%；24 小時內取消則不予退款。現金交易模式下，取消不涉及退款流程，但仍請提早通知以示尊重。',
+          a: '前往「預約管理」找到要取消的預約，點選「取消預約」按鈕。因為是現場付現，請在使用前至少 24 小時到 App 取消，並主動通知對方。',
         },
         {
           q: '如何更新個人資料？',
@@ -132,37 +132,37 @@ export const legalContent = {
         {
           title: '資訊蒐集',
           paragraphs: [
-            '本平台蒐集之個人資訊包括：註冊資訊（姓名、電話號碼、電子郵件）；社交帳號登入資訊（Apple ID、Google 帳號）；交易紀錄（預約記錄、付款資訊）；裝置資訊（裝置型號、作業系統版本、推播通知 Token）；位置資訊（僅在使用者同意後，用於搜尋附近空間）。我們僅蒐集提供服務所必需之最少資訊，不會要求使用者提供與服務無關之個人資料。',
+            '本服務蒐集之個人資訊包括：註冊資訊（姓名、電話號碼、電子郵件）；社交帳號登入資訊（Apple ID、Google 帳號）；交易紀錄（空間租用申請與成立紀錄、付款資訊）；裝置資訊（裝置型號、作業系統版本、推播通知 Token）；位置資訊（僅在使用者同意後，用於搜尋附近空間）。我們僅蒐集提供服務所必需之最少資訊，不會要求使用者提供與服務無關之個人資料。',
           ],
         },
         {
           title: '資訊使用',
           paragraphs: [
-            '蒐集之資訊將用於以下目的：提供並維護平台服務功能；處理預約與交易相關事宜；發送預約提醒、系統通知及重要公告；改善使用者體驗與平台功能優化；防範詐欺及確保平台安全；遵循法律要求或回應司法機關之合法請求。我們不會將使用者個人資訊用於上述目的以外之用途。',
+            '蒐集之資訊將用於以下目的：提供並維護本服務功能；處理空間租用申請、成立與相關交易事宜；發送空間租用提醒、系統通知及重要公告；改善使用者體驗與本服務功能優化；防範詐欺及確保本服務安全；遵循法律要求或回應司法機關之合法請求。我們不會將使用者個人資訊用於上述目的以外之用途。',
           ],
         },
         {
           title: '資訊分享',
           paragraphs: [
-            '除下列情況外，我們不會向第三方分享使用者之個人資訊：經使用者明確同意；預約成立時，將必要聯絡資訊提供予交易對方（如屋主手機號碼提供予已預約之職人）；配合司法機關之合法調查或法院命令；委託可信賴之第三方服務商處理（如金流服務商 TapPay），該服務商須遵守相同之隱私保護標準；為保護本平台、使用者或公眾之權益與安全。',
+            '除下列情況外，我們不會向第三方分享使用者之個人資訊：經使用者明確同意；空間租用申請經屋主接受而成立時，將必要聯絡資訊提供予交易對方（如屋主手機號碼提供予已成立租用之職人）；配合司法機關之合法調查或法院命令；委託可信賴之第三方服務商處理（如金流服務商 TapPay），該服務商須遵守相同之隱私保護標準；為保護 SoloBeauté、使用者或公眾之權益與安全。',
           ],
         },
         {
           title: '資訊安全',
           paragraphs: [
-            '我們採取以下措施保護使用者資訊：信用卡資訊以 AES-256-GCM 加密儲存，平台人員無法檢視卡號；所有資料傳輸均透過 HTTPS/TLS 加密；存取權限採最小權限原則，僅授權必要人員存取；定期進行安全審查與漏洞掃描；密碼及敏感資訊經雜湊處理後儲存。儘管我們盡力保護資訊安全，但無法百分之百保證網路傳輸之安全性。',
+            '我們採取以下措施保護使用者資訊：信用卡資訊以 AES-256-GCM 加密儲存，SoloBeauté 人員無法檢視卡號；所有資料傳輸均透過 HTTPS/TLS 加密；存取權限採最小權限原則，僅授權必要人員存取；定期進行安全審查與漏洞掃描；密碼及敏感資訊經雜湊處理後儲存。儘管我們盡力保護資訊安全，但無法百分之百保證網路傳輸之安全性。',
           ],
         },
         {
           title: '用戶權利',
           paragraphs: [
-            '使用者就其個人資訊享有以下權利：查閱權 — 可隨時查閱平台所持有之個人資訊；更正權 — 可要求更正不正確或不完整之個人資訊；刪除權 — 可申請刪除帳號及相關個人資訊；限制處理權 — 可要求限制特定目的之資訊處理；資料可攜權 — 可要求匯出個人資料副本。如需行使上述權利，請透過客服信箱聯絡我們。',
+            '使用者就其個人資訊享有以下權利：查閱權 — 可隨時查閱本服務所持有之個人資訊；更正權 — 可要求更正不正確或不完整之個人資訊；刪除權 — 可申請刪除帳號及相關個人資訊；限制處理權 — 可要求限制特定目的之資訊處理；資料可攜權 — 可要求匯出個人資料副本。如需行使上述權利，請透過客服信箱 meigo@solobeaute.com 或幫助中心聯絡我們。',
           ],
         },
         {
           title: '資料保留',
           paragraphs: [
-            '我們將在服務提供期間及合理必要之期限內保留使用者資訊。帳號刪除後，個人資訊將於 30 日內從系統中移除。但依法律規定須保留之交易紀錄（如發票、付款紀錄），將依相關法規要求保留至少 5 年。匿名化之統計資料可能在帳號刪除後繼續保留，用於平台數據分析與服務改善。',
+            '我們將在服務提供期間及合理必要之期限內保留使用者資訊。帳號刪除後，個人資訊將於 30 日內從系統中移除。但依法律規定須保留之交易紀錄（如發票、付款紀錄），將依相關法規要求保留至少 5 年。匿名化之統計資料可能在帳號刪除後繼續保留，用於本服務數據分析與服務改善。',
           ],
         },
         {
@@ -177,49 +177,49 @@ export const legalContent = {
       eyebrow: '服務條款',
       title: 'SoloBeauté 服務條款',
       intro:
-        '以下條款說明使用 SoloBeauté 平台時適用的服務規範、雙方責任與爭議處理方式。',
+        '以下條款說明使用 SoloBeauté 時適用的服務規範、雙方責任與爭議處理方式。',
       updatedAt: '最後更新日期：2026 年 3 月',
       sections: [
         {
           title: '服務範圍',
           paragraphs: [
-            'SoloBeauté 提供美業三方媒合平台服務，連結空間屋主、美業職人及消費者。本平台僅提供資訊媒合與預約管理功能，不直接參與任何美業服務之執行。使用者透過本平台進行之空間租賃、服務預約及相關交易，均由各方當事人自行負責。本平台保留隨時修改、暫停或終止任何服務功能之權利。',
+            'SoloBeauté 提供美業媒合服務：空間屋主可將工作空間依時段出租給美業職人；職人可在 App 內提出空間租用申請，由屋主接受或拒絕；客人可瀏覽職人的品牌頁，並透過職人自己的管道（例如 IG、LINE）聯繫。SoloBeauté 不提供客人向職人預約或購買美業服務的功能，也不直接參與任何美業服務之執行。職人與屋主之間的空間租用，以及客人與職人之間的服務與約定，均由各方當事人自行負責；客人與職人之間的服務約定不屬於 SoloBeauté 的服務範圍。SoloBeauté 保留隨時修改、暫停或終止任何服務功能之權利。',
           ],
         },
         {
           title: '用戶責任',
           paragraphs: [
-            '使用者須確保註冊資訊之真實性與正確性，並妥善保管帳號密碼。屋主應確保所提供之空間符合安全衛生標準，並據實描述空間設備與狀態。職人應確保具備相關專業證照與技能，並對其提供之服務品質負責。消費者應遵守預約時間，若需取消請依照取消政策辦理。任何使用者不得利用本平台從事違法或損害他人權益之行為。',
+            '使用者須確保註冊資訊之真實性與正確性，並妥善保管帳號密碼。屋主應確保所提供之空間符合安全衛生標準，並據實描述空間設備與狀態。職人應確保具備相關專業證照與技能，並對其提供之服務品質負責。職人與屋主如需取消已成立的空間租用，應在 App 內辦理，並主動通知對方。任何使用者不得利用本服務從事違法或損害他人權益之行為。',
           ],
         },
         {
           title: '禁止行為',
           paragraphs: [
-            '使用者不得於平台上從事下列行為：發布不實或誤導性資訊；冒用他人身份或偽造證照；繞過平台私下交易以規避平台規範；對其他使用者進行騷擾、威脅或歧視；上傳含有惡意程式或侵權之內容；任何違反中華民國法律之行為。違反上述規定者，本平台有權立即停權並保留法律追訴權。',
+            '使用者不得於本服務從事下列行為：發布不實或誤導性資訊；冒用他人身份或偽造證照；就空間租用繞過 App 私下成交，以規避本服務相關規範；對其他使用者進行騷擾、威脅或歧視；上傳含有惡意程式或侵權之內容；任何違反中華民國法律之行為。違反上述規定者，SoloBeauté 有權立即停權並保留法律追訴權。',
           ],
         },
         {
-          title: '預約與交易',
+          title: '空間租用與交易',
           paragraphs: [
-            '所有預約均透過本平台系統進行，平台將記錄預約詳情作為交易依據。現金交易模式下，費用由消費者於服務當日直接支付予屋主或職人。線上付款模式下，平台將代為處理信用卡授權與請款流程。預約確認後之取消，依本平台取消政策辦理，逾期取消可能產生手續費用。如遇交易爭議，雙方應先透過平台內建之溝通機制協商解決。',
+            '職人如需租用空間，應在 App 內提出租用申請，由屋主接受或拒絕；SoloBeauté 會記錄已成立的空間租用詳情，作為雙方交易依據。空間租金由職人於當日在現場以現金直接付給屋主（現場付現）。客人如需使用美業服務，應透過職人自己的管道聯繫；服務內容、時間與收費由客人與職人自行約定，不經 SoloBeauté 成立或代收。如遇空間租用爭議，雙方應先透過 App 內建之溝通機制協商解決。',
           ],
         },
         {
           title: '責任限制',
           paragraphs: [
-            '本平台作為媒合工具，不對使用者間之交易糾紛、服務品質或人身安全負直接責任。本平台不保證服務不中斷或無錯誤，亦不對系統故障造成之損失負責。使用者因違反本條款或法律規定所導致之損害，應自行承擔全部責任。本平台之最大賠償責任以使用者支付之平台服務費用為上限。因不可抗力事件（如天災、政府政策變更等）導致之服務中斷，本平台不負賠償責任。',
+            '本服務作為媒合工具，不對使用者間之交易糾紛、服務品質或人身安全負直接責任。本服務不保證服務不中斷或無錯誤，亦不對系統故障造成之損失負責。使用者因違反本條款或法律規定所導致之損害，應自行承擔全部責任。本服務之最大賠償責任以使用者支付予 SoloBeauté 之服務費用為上限。因不可抗力事件（如天災、政府政策變更等）導致之服務中斷，本服務不負賠償責任。',
           ],
         },
         {
           title: '條款更新',
           paragraphs: [
-            '本平台保留隨時修改本服務條款之權利。條款修改後將透過 App 推播通知或公告方式通知使用者。使用者於條款更新後繼續使用本服務，即視為同意修改後之條款內容。如不同意修改後之條款，使用者應立即停止使用本服務並得申請刪除帳號。重大條款變更將提前 30 日通知，並提供使用者充分之檢視期間。',
+            'SoloBeauté 保留隨時修改本服務條款之權利。條款修改後將透過 App 推播通知或公告方式通知使用者。使用者於條款更新後繼續使用本服務，即視為同意修改後之條款內容。如不同意修改後之條款，使用者應立即停止使用本服務並得申請刪除帳號。重大條款變更將提前 30 日通知，並提供使用者充分之檢視期間。',
           ],
         },
         {
           title: '爭議解決',
           paragraphs: [
-            '本服務條款之解釋與適用，以中華民國法律為準據法。因本條款所生之爭議，雙方應先以善意協商方式解決。協商不成時，同意以臺灣臺北地方法院為第一審管轄法院。本平台提供線上申訴機制，使用者可透過幫助中心提交爭議申請。平台將於收到申訴後 7 個工作日內回覆處理結果。',
+            '本服務條款之解釋與適用，以中華民國法律為準據法。因本條款所生之爭議，雙方應先以善意協商方式解決。協商不成時，同意以臺灣臺北地方法院為第一審管轄法院。本服務提供申訴機制，使用者可透過幫助中心提交爭議申請。SoloBeauté 將於收到申訴後 7 個工作日內回覆處理結果。',
           ],
         },
       ],
@@ -279,7 +279,7 @@ export const legalContent = {
         },
         {
           q: 'How do I cancel a booking?',
-          a: 'Go to "Booking Management", find the booking you want to cancel, and tap the "Cancel Booking" button. Cancellation policy: full refund if cancelled 48 hours in advance; 50% refund if cancelled 24-48 hours in advance; no refund for cancellations within 24 hours. In cash payment mode, cancellations do not involve refund processing, but please notify early as a courtesy.',
+          a: 'Go to "Booking Management", find the booking you want to cancel, and tap the "Cancel Booking" button. Because rent is paid in cash on site, please cancel in the app at least 24 hours before use and proactively notify the other party.',
         },
         {
           q: 'How do I update my profile?',
@@ -358,37 +358,37 @@ export const legalContent = {
         {
           title: 'Information Collection',
           paragraphs: [
-            'Personal information collected includes: registration information (name, phone number, email); social login information (Apple ID, Google account); transaction records (booking history, payment information); device information (device model, OS version, push notification token); location information (only with user consent, for searching nearby spaces). We collect only the minimum information necessary to provide our services and do not request personal data unrelated to the service.',
+            'Personal information collected includes: registration information (name, phone number, email); social login information (Apple ID, Google account); transaction records (space-rental applications and confirmed rentals, payment information); device information (device model, OS version, push notification token); location information (only with user consent, for searching nearby spaces). We collect only the minimum information necessary to provide our services and do not request personal data unrelated to the service.',
           ],
         },
         {
           title: 'Information Use',
           paragraphs: [
-            'Collected information is used for the following purposes: providing and maintaining platform services; processing bookings and transactions; sending booking reminders, system notifications, and important announcements; improving user experience and platform optimization; fraud prevention and platform security; complying with legal requirements or responding to lawful requests from judicial authorities. We do not use personal information for purposes beyond those stated above.',
+            'Collected information is used for the following purposes: providing and maintaining this service; processing space-rental applications, confirmed rentals, and related transactions; sending space-rental reminders, system notifications, and important announcements; improving user experience and this service; fraud prevention and service security; complying with legal requirements or responding to lawful requests from judicial authorities. We do not use personal information for purposes beyond those stated above.',
           ],
         },
         {
           title: 'Information Sharing',
           paragraphs: [
-            "We do not share personal information with third parties except in the following circumstances: with explicit user consent; sharing necessary contact information with transaction counterparts when a booking is confirmed (e.g., host's phone number shared with the booked professional); complying with lawful investigations or court orders; engaging trusted third-party service providers (such as payment processor TapPay) who adhere to equivalent privacy standards; protecting the rights and safety of the platform, users, or the public.",
+            "We do not share personal information with third parties except in the following circumstances: with explicit user consent; sharing necessary contact information with the other party when a space-rental application is accepted by the host (e.g., the host's phone number shared with the professional whose rental has been confirmed); complying with lawful investigations or court orders; engaging trusted third-party service providers (such as payment processor TapPay) who adhere to equivalent privacy standards; protecting the rights and safety of SoloBeauté, users, or the public.",
           ],
         },
         {
           title: 'Information Security',
           paragraphs: [
-            'We take the following measures to protect user information: credit card data is encrypted with AES-256-GCM, and platform staff cannot view card numbers; all data transmission is encrypted via HTTPS/TLS; access is governed by the principle of least privilege; regular security audits and vulnerability scans are conducted; passwords and sensitive information are hashed before storage. While we strive to protect information security, we cannot guarantee 100% security of internet transmissions.',
+            'We take the following measures to protect user information: credit card data is encrypted with AES-256-GCM, and SoloBeauté staff cannot view card numbers; all data transmission is encrypted via HTTPS/TLS; access is governed by the principle of least privilege; regular security audits and vulnerability scans are conducted; passwords and sensitive information are hashed before storage. While we strive to protect information security, we cannot guarantee 100% security of internet transmissions.',
           ],
         },
         {
           title: 'User Rights',
           paragraphs: [
-            'Users have the following rights regarding their personal information: Right of access — view personal information held by the platform at any time; Right of correction — request correction of inaccurate or incomplete information; Right of deletion — request account and related data deletion; Right to restrict processing — request limitation of data processing for specific purposes; Right to data portability — request export of personal data. To exercise these rights, please contact us through our support email.',
+            'Users have the following rights regarding their personal information: Right of access — view personal information held by this service at any time; Right of correction — request correction of inaccurate or incomplete information; Right of deletion — request account and related data deletion; Right to restrict processing — request limitation of data processing for specific purposes; Right to data portability — request export of personal data. To exercise these rights, please contact us at meigo@solobeaute.com or through the Help Center.',
           ],
         },
         {
           title: 'Data Retention',
           paragraphs: [
-            'We retain user information for the duration of service provision and a reasonable necessary period thereafter. After account deletion, personal information will be removed from our systems within 30 days. However, transaction records required by law (such as invoices and payment records) will be retained for at least 5 years as required by regulations. Anonymized statistical data may be retained after account deletion for platform analytics and service improvement.',
+            'We retain user information for the duration of service provision and a reasonable necessary period thereafter. After account deletion, personal information will be removed from our systems within 30 days. However, transaction records required by law (such as invoices and payment records) will be retained for at least 5 years as required by regulations. Anonymized statistical data may be retained after account deletion for analytics and service improvement.',
           ],
         },
         {
@@ -403,49 +403,49 @@ export const legalContent = {
       eyebrow: 'Terms of Service',
       title: 'SoloBeauté Terms of Service',
       intro:
-        'These terms explain the rules, responsibilities, and dispute process that apply when using the SoloBeauté platform.',
+        'These terms explain the rules, responsibilities, and dispute process that apply when using SoloBeauté.',
       updatedAt: 'Last updated: March 2026',
       sections: [
         {
           title: 'Scope of Service',
           paragraphs: [
-            'SoloBeauté provides a three-way beauty industry marketplace connecting space hosts, beauty professionals, and consumers. The platform serves only as a matchmaking and booking management tool and does not directly participate in the execution of any beauty services. Space rental, service bookings, and related transactions conducted through the platform are the sole responsibility of the respective parties. We reserve the right to modify, suspend, or terminate any service features at any time.',
+            'SoloBeauté provides a beauty matchmaking service: space hosts may rent workspaces to beauty professionals by time slot; professionals may submit space-rental applications in the App, which the host accepts or declines; visitors may browse a professional’s brand page and contact the professional through the professional’s own channels (such as Instagram or LINE). SoloBeauté does not provide a way for visitors to book or purchase beauty services from professionals, and does not itself perform any beauty services. Space rentals between professionals and hosts, and any services or arrangements between a visitor and a professional, are the responsibility of the parties concerned. Agreements for beauty services between a visitor and a professional are outside the scope of SoloBeauté. SoloBeauté reserves the right to modify, suspend, or terminate any service features at any time.',
           ],
         },
         {
           title: 'User Responsibilities',
           paragraphs: [
-            "Users must ensure the accuracy of their registration information and safeguard their account credentials. Hosts must ensure their spaces meet safety and hygiene standards and accurately describe space facilities and conditions. Professionals must hold relevant certifications and skills, and are responsible for the quality of their services. Consumers must honor appointment times and follow the cancellation policy if changes are needed. Users must not use the platform for illegal activities or actions that infringe upon others' rights.",
+            "Users must ensure the accuracy of their registration information and safeguard their account credentials. Hosts must ensure their spaces meet safety and hygiene standards and accurately describe space facilities and conditions. Professionals must hold relevant certifications and skills, and are responsible for the quality of their services. If a professional or a host needs to cancel a confirmed space rental, they should cancel it in the App and proactively notify the other party. Users must not use this service for illegal activities or actions that infringe upon others' rights.",
           ],
         },
         {
           title: 'Prohibited Conduct',
           paragraphs: [
-            'Users are prohibited from: posting false or misleading information; impersonating others or forging certifications; bypassing the platform for private transactions; harassing, threatening, or discriminating against other users; uploading malicious content or infringing materials; any conduct violating the laws of the Republic of China (Taiwan). Violators may face immediate suspension, and the platform reserves the right to pursue legal action.',
+            'Users are prohibited from: posting false or misleading information; impersonating others or forging certifications; bypassing the App to complete a space rental privately in order to evade the rules of this service; harassing, threatening, or discriminating against other users; uploading malicious content or infringing materials; any conduct violating the laws of the Republic of China (Taiwan). Violators may face immediate suspension, and SoloBeauté reserves the right to pursue legal action.',
           ],
         },
         {
-          title: 'Bookings & Transactions',
+          title: 'Space Rental & Transactions',
           paragraphs: [
-            "All bookings are processed through the platform, which records booking details as transaction records. In cash payment mode, fees are paid directly by consumers to hosts or professionals on the day of service. In online payment mode, the platform processes credit card authorization and payment on behalf of the parties. Cancellations after booking confirmation are subject to the platform's cancellation policy, and late cancellations may incur fees. In case of disputes, parties should first attempt resolution through the platform's built-in communication tools.",
+            "If a professional needs to rent a space, they should submit a rental application in the App, which the host accepts or declines. SoloBeauté records the details of confirmed space rentals as a record of the transaction. Space rental is paid in cash on site by the professional to the host on the day of use. If a visitor wants a beauty service, they should contact the professional through the professional’s own channels; the service, schedule, and payment are arranged between the visitor and the professional, and are not created or collected through SoloBeauté. In the event of a dispute about a space rental, the parties should first attempt resolution through the App’s built-in communication tools.",
           ],
         },
         {
           title: 'Limitation of Liability',
           paragraphs: [
-            "As a matchmaking tool, the platform is not directly liable for transaction disputes, service quality, or personal safety between users. The platform does not guarantee uninterrupted or error-free service, nor is it responsible for losses caused by system failures. Users bear full responsibility for damages resulting from their violation of these terms or applicable laws. The platform's maximum liability is limited to the service fees paid by the user. The platform is not liable for service interruptions caused by force majeure events such as natural disasters or government policy changes.",
+            "As a matchmaking tool, this service is not directly liable for transaction disputes, service quality, or personal safety between users. This service does not guarantee uninterrupted or error-free operation, nor is it responsible for losses caused by system failures. Users bear full responsibility for damages resulting from their violation of these terms or applicable laws. The maximum liability of this service is limited to the service fees paid by the user to SoloBeauté. This service is not liable for service interruptions caused by force majeure events such as natural disasters or government policy changes.",
           ],
         },
         {
           title: 'Terms Updates',
           paragraphs: [
-            'The platform reserves the right to modify these terms at any time. Users will be notified of changes via push notifications or in-app announcements. Continued use of the service after terms updates constitutes acceptance of the revised terms. Users who disagree with updated terms should discontinue use and may request account deletion. Major changes will be notified 30 days in advance with adequate review period.',
+            'SoloBeauté reserves the right to modify these terms at any time. Users will be notified of changes via push notifications or in-app announcements. Continued use of the service after terms updates constitutes acceptance of the revised terms. Users who disagree with updated terms should discontinue use and may request account deletion. Major changes will be notified 30 days in advance with adequate review period.',
           ],
         },
         {
           title: 'Dispute Resolution',
           paragraphs: [
-            'These terms shall be governed by the laws of the Republic of China (Taiwan). Disputes arising from these terms shall first be resolved through good-faith negotiation. If negotiation fails, parties agree to submit to the jurisdiction of the Taipei District Court as the court of first instance. The platform provides an online complaint mechanism through the Help Center. The platform will respond to complaints within 7 business days.',
+            'These terms shall be governed by the laws of the Republic of China (Taiwan). Disputes arising from these terms shall first be resolved through good-faith negotiation. If negotiation fails, parties agree to submit to the jurisdiction of the Taipei District Court as the court of first instance. This service provides a complaint mechanism through the Help Center. SoloBeauté will respond to complaints within 7 business days.',
           ],
         },
       ],
