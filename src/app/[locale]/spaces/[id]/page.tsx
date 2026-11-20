@@ -109,10 +109,10 @@ function buildReserveAction(space: PublicSpace, locale: 'zh-TW' | 'en') {
   const isEn = locale === 'en'
   return {
     '@type': 'ReserveAction',
-    name: isEn ? 'Book this space in the SoloBeauté app' : '在 SoloBeauté App 預約這個空間',
+    name: isEn ? 'Rent this space in the SoloBeauté app' : '在 SoloBeauté App 租用這個空間',
     description: isEn
-      ? 'Beauty professionals book this space in the SoloBeauté app; each booking is confirmed by the host, and rent is paid to the host in cash on site.'
-      : '美業職人在 SoloBeauté App 內預約這個空間，屋主確認後成立，租金到現場以現金付給屋主。',
+      ? 'Beauty professionals apply to rent this space in the SoloBeauté app; each request is confirmed by the host, and rent is paid to the host in cash on site.'
+      : '美業職人在 SoloBeauté App 內向屋主申請租用這個空間，屋主確認後成立，租金到現場以現金付給屋主。',
     target: {
       '@type': 'EntryPoint',
       urlTemplate: isEn ? localeUrl(`/spaces/${space.id}`, 'en') : canonicalUrl(space),
@@ -402,9 +402,9 @@ export default async function SpacePage({ params }: SpacePageProps & { params: {
             </section>
 
             <section className="sb-card space-y-4 p-6">
-              <h2 className="text-lg font-semibold text-ink">在 App 預約這個空間</h2>
+              <h2 className="text-lg font-semibold text-ink">在 App 租用這個空間</h2>
               <p className="text-sm leading-7 text-black/65">
-                下載 SoloBeauté App，查看可預約時段、直接傳訊息給屋主。
+                下載 SoloBeauté App，查看可租時段，傳訊息給屋主、送出申請。
               </p>
               <StoreButtons buttonClassName="btn-dark" />
               <a
@@ -654,7 +654,7 @@ async function SpacePageEn({ space }: { space: PublicSpace }) {
 
           <aside className="space-y-6">
             <section className="sb-card space-y-4 p-6">
-              <h2 className="text-lg font-semibold text-ink">Price and booking</h2>
+              <h2 className="text-lg font-semibold text-ink">Price and rental</h2>
               <dl className="divide-y divide-black/5 text-sm">
                 {priceRows.map((row) => (
                   <div key={row.label} className="flex items-center justify-between py-2">
@@ -678,9 +678,9 @@ async function SpacePageEn({ space }: { space: PublicSpace }) {
             </section>
 
             <section className="sb-card space-y-4 p-6">
-              <h2 className="text-lg font-semibold text-ink">Book this space in the app</h2>
+              <h2 className="text-lg font-semibold text-ink">Rent this space in the app</h2>
               <p className="text-sm leading-7 text-black/65">
-                Download the SoloBeauté app to see available time slots and message the host directly.
+                Download the SoloBeauté app to see available time slots, message the host and send a rental request.
               </p>
               <StoreButtons buttonClassName="btn-dark" />
               <a

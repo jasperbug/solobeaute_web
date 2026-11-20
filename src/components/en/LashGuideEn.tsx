@@ -90,12 +90,12 @@ export function LashGuideEn({ lashSpaces, row, total }: { lashSpaces: PublicSpac
     {
       question: 'How much does it cost a lash artist to rent a studio per hour?',
       answer: row && row.count > 0
-        ? `As of ${dateLabel}, the ${row.count} spaces on SoloBeauté that suit lash work rent for ${range(row.hourly)} per hour, with a median of ${med(row.hourly)}${minTwo ? `; ${minTwo} of them have a 2-hour minimum booking` : ''}. Hosts set their own prices; the price on each space page and in the app is the one that applies.`
+        ? `As of ${dateLabel}, the ${row.count} spaces on SoloBeauté that suit lash work rent for ${range(row.hourly)} per hour, with a median of ${med(row.hourly)}${minTwo ? `; ${minTwo} of them have a 2-hour minimum rental` : ''}. Hosts set their own prices; the price on each space page and in the app is the one that applies.`
         : 'No host has marked a space as suitable for lash work yet; new spaces are being added.',
     },
     {
       question: 'What is the difference between renting a bed, subletting and renting by the hour?',
-      answer: 'Renting a bed or subletting usually means agreeing on a fixed bed, seat or time slot with a salon, mostly by the month, with contract, deposit and available hours depending on the salon. Renting by the hour means you book only when you have a client and pay per hour. Spaces on SoloBeauté list their hourly rate, minimum booking time, equipment and suitable services, and you message the host and send a booking request in the app for the host to confirm.',
+      answer: 'Renting a bed or subletting usually means agreeing on a fixed bed, seat or time slot with a salon, mostly by the month, with contract, deposit and available hours depending on the salon. Renting by the hour means you rent only when you have a client and pay per hour. Spaces on SoloBeauté list their hourly rate, minimum rental time, equipment and suitable services, and you message the host and send a rental request in the app for the host to confirm.',
     },
     {
       question: 'Which cities have studios suited to lash work that can be rented by the hour?',
@@ -203,10 +203,10 @@ export function LashGuideEn({ lashSpaces, row, total }: { lashSpaces: PublicSpac
             caption="Hourly rent vs sublets and bed rental"
             head={['', 'Hourly rent', 'Sublet / bed rental']}
             rows={[
-              ['How it is priced', 'By the hour, only when you have a booking', 'Usually by the month; varies by salon'],
-              ['When you use it', 'You choose the slot each time you book', 'Usually a fixed slot or a fixed spot'],
+              ['How it is priced', 'By the hour, only when you need it', 'Usually by the month; varies by salon'],
+              ['When you use it', 'You choose the slot each time you rent', 'Usually a fixed slot or a fixed spot'],
               ['Your equipment', 'Bring your own each time, or use what the space has', 'A fixed spot makes it easier to keep your own kit there'],
-              ['Best for', 'A client list that isn’t steady yet, or trying out a location', 'A fully booked week and a need for a fixed spot'],
+              ['Best for', 'A client list that isn’t steady yet, or trying out a location', 'A full week of clients and a need for a fixed spot'],
             ]}
           />
           <p className={`text-sm leading-7 text-black/60 ${NUM}`}>
@@ -226,9 +226,9 @@ export function LashGuideEn({ lashSpaces, row, total }: { lashSpaces: PublicSpac
           <ul className={`list-disc space-y-2 pl-5 text-base leading-8 text-black/70 ${NUM}`}>
             <li>Beauty bed and lighting: lash extensions need the client lying down and plenty of light, so check the equipment list for a beauty bed and beauty lamp{row && row.count > 0 ? ` (of the ${row.count} spaces suited to lash work, ${equipmentText(row)})` : ''}.</li>
             <li>Space type: a private room, curtained partition or open space, depending on how much privacy your clients want.</li>
-            <li>Minimum booking time: compare how long a full set takes with the space&apos;s minimum{minTwo ? ` (${minTwo} of the spaces suited to lash work have a 2-hour minimum)` : ''}.</li>
+            <li>Minimum rental time: compare how long a full set takes with the space&apos;s minimum{minTwo ? ` (${minTwo} of the spaces suited to lash work have a 2-hour minimum)` : ''}.</li>
             <li>Cameras: each space page shows the camera status the host has disclosed.</li>
-            <li>Consumables and personal tools: for anything not on the equipment list, message the host before you book.</li>
+            <li>Consumables and personal tools: for anything not on the equipment list, message the host before you rent.</li>
           </ul>
         </Section>
 

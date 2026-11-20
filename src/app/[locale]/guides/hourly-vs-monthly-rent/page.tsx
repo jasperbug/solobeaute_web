@@ -169,7 +169,7 @@ export default async function HourlyVsMonthlyPage({ params }: { params: { locale
               <p>
                 <strong className="text-ink">怎麼用這張表：</strong>拿你實際拿到的月租報價，除以 {median}，得到打平時數，再看自己落在表格哪一列。例如打平時數算出來是 30 小時，而你每週只有 2 位客人（每月約 16 小時），按小時租的總額就比較低。
               </p>
-              {two ? <p>注意最低租用時數：{report.total} 間中有 {two.count} 間（{formatShare(two.share)}）最低租用 2 小時，所以每次預約至少以 2 小時計算。</p> : null}
+              {two ? <p>注意最低租用時數：{report.total} 間中有 {two.count} 間（{formatShare(two.share)}）最低租用 2 小時，所以每次租用至少以 2 小時計算。</p> : null}
               {report.fullDayHoursEquivalent !== null ? (
                 <p>一天排很多位客人時，可以看全日價：全日價中位數 {report.fullDay.median !== null ? formatNtd(report.fullDay.median) : '—'}，大約等於 {report.fullDayHoursEquivalent} 小時的時租。</p>
               ) : null}
@@ -182,10 +182,10 @@ export default async function HourlyVsMonthlyPage({ params }: { params: { locale
             caption="時租與月租比較清單"
             head={['比較項目', '時租', '月租']}
             rows={[
-              ['付款方式', '有預約才付，按使用時數', '每月固定支出，有沒有客人都要付'],
+              ['付款方式', '有租才付，按使用時數', '每月固定支出，有沒有客人都要付'],
               ['合約', '按小時租，不簽長約', '合約期間、提前解約條件要先問'],
               ['其他費用', '空間頁會列出時租、半日、全日價', '押金、水電、冷氣、耗材是否另計，以合約為準'],
-              ['時段', '熱門時段可能被預約走，要提早約', '自己的空間，時段自由'],
+              ['時段', '熱門時段可能被租走，要提早約', '自己的空間，時段自由'],
               ['器材', '每次自己帶，或用空間的設備', '可以固定擺放自己的器材'],
               ['地點', '可以在不同地點接不同客人', '固定一個地點'],
             ]}

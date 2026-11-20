@@ -22,7 +22,7 @@ const PAGE_URL = `${SITE_URL}/spaces`
 const PAGE_TITLE = '全台美業空間時租｜美甲美睫美容工作室出租'
 const OG_TITLE = '全台美業空間時租｜SoloBeauté'
 const FALLBACK_DESCRIPTION =
-  '美甲、美睫、護膚職人按小時租屋主備好的美業空間，台北、新北、桃園、台中、高雄、彰化、南投都有。在 SoloBeauté App 直接預約，現場付現。'
+  '美甲、美睫、護膚職人按小時租屋主備好的美業空間，台北、新北、桃園、台中、高雄、彰化、南投都有。在 SoloBeauté App 申請租用，現場付現。'
 
 function buildDescription(spaces: PublicSpace[]): string {
   const groups = groupSpacesByCity(spaces)
@@ -35,7 +35,7 @@ function buildDescription(spaces: PublicSpace[]): string {
 const PAGE_TITLE_EN = 'Beauty Workspaces for Hourly Rent Across Taiwan | Nail, Lash and Facial Studios'
 const OG_TITLE_EN = 'Beauty workspaces for hourly rent across Taiwan | SoloBeauté'
 const FALLBACK_DESCRIPTION_EN =
-  'Nail, lash and facial professionals can rent host-prepared beauty workspaces by the hour across Taiwan. Rented by the hour; book in the SoloBeauté app and pay on site.'
+  'Nail, lash and facial professionals can rent host-prepared beauty workspaces by the hour across Taiwan. Rented by the hour; send a rental request in the SoloBeauté app and pay in cash on site.'
 
 function buildDescriptionEn(spaces: PublicSpace[]): string {
   const groups = groupSpacesByCity(spaces)
@@ -138,7 +138,7 @@ export default async function SpacesPage({ params }: { params: { locale: string 
           <h1 className="text-3xl font-semibold leading-tight text-ink md:text-4xl">全台美業空間時租</h1>
           <p className="max-w-3xl text-base leading-8 text-black/65">
             {spaces.length > 0 && range
-              ? `SoloBeauté 目前有 ${spaces.length} 個屋主備好的美業空間，分布 ${groups.length} 個縣市，時租 ${formatNtd(range.min)}–${range.max}。美甲、美睫、護膚、紋繡職人可以按小時租，在 App 直接傳訊息給屋主預約，租金現場付現。`
+              ? `SoloBeauté 目前有 ${spaces.length} 個屋主備好的美業空間，分布 ${groups.length} 個縣市，時租 ${formatNtd(range.min)}–${range.max}。美甲、美睫、護膚、紋繡職人可以按小時租，在 App 傳訊息給屋主、送出申請，租金現場付現。`
               : '新空間陸續上架中。下載 SoloBeauté App，就能查看最新的美業空間。'}
           </p>
           <p className="text-sm">
@@ -197,9 +197,9 @@ export default async function SpacesPage({ params }: { params: { locale: string 
         })}
 
         <section className="sb-card space-y-4 p-6 md:p-8">
-          <h2 className="text-xl font-semibold text-ink">下載 SoloBeauté App 預約空間</h2>
+          <h2 className="text-xl font-semibold text-ink">下載 SoloBeauté App 租用空間</h2>
           <p className="text-sm leading-7 text-black/65">
-            在 App 裡可以看可預約時段、3D 實景（部分空間），直接跟屋主約時間。有閒置的美容室或座位，也可以在 App 上架出租。
+            在 App 裡可以看可租時段、3D 實景（部分空間），直接跟屋主約時間。有閒置的美容室或座位，也可以在 App 上架出租。
           </p>
           <StoreButtons buttonClassName="btn-dark" />
         </section>
@@ -268,7 +268,7 @@ function SpacesPageEn({ spaces }: { spaces: PublicSpace[] }) {
           <h1 className="text-3xl font-semibold leading-tight text-ink md:text-4xl">Beauty workspaces for hourly rent across Taiwan</h1>
           <p className="max-w-3xl text-base leading-8 text-black/65">
             {spaces.length > 0 && range
-              ? `SoloBeauté currently has ${spaces.length} host-prepared beauty workspaces in ${groups.length} cities and counties, at ${formatNtd(range.min)}–${range.max} per hour. Nail, lash, facial and brow professionals can rent them by the hour: message the host in the app to book, and pay the rent on site.`
+              ? `SoloBeauté currently has ${spaces.length} host-prepared beauty workspaces in ${groups.length} cities and counties, at ${formatNtd(range.min)}–${range.max} per hour. Nail, lash, facial and brow professionals can rent them by the hour: message the host and send a rental request in the app, and pay the rent in cash on site.`
               : 'New spaces are being added. Download the SoloBeauté app to see the latest beauty workspaces.'}
           </p>
           <p className="text-sm">
@@ -326,7 +326,7 @@ function SpacesPageEn({ spaces }: { spaces: PublicSpace[] }) {
         })}
 
         <section className="sb-card space-y-4 p-6 md:p-8">
-          <h2 className="text-xl font-semibold text-ink">Book a space in the SoloBeauté app</h2>
+          <h2 className="text-xl font-semibold text-ink">Rent a space in the SoloBeauté app</h2>
           <p className="text-sm leading-7 text-black/65">
             In the app you can see available time slots and, for some spaces, a 3D tour, and arrange a time with the host directly. If you have an idle treatment room or station, you can also list it for rent in the app.
           </p>

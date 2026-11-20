@@ -56,7 +56,7 @@ export type ProfessionRow = {
   hourly: RateSummary
   halfDay: RateSummary
   fullDay: RateSummary
-  /** Spaces in this group whose minimum booking is exactly 2 hours. */
+  /** Spaces in this group whose minimum rental is exactly 2 hours. */
   minTwoHours: number
   equipment: Array<{ label: string; count: number }>
   cities: Array<{ label: string; short: string; href: string; count: number }>
@@ -227,7 +227,7 @@ export function formatShare(value: number): string {
   return `${Math.round(value * 100)}%`
 }
 
-/** Count / share of spaces whose minimum booking is exactly `hours`. */
+/** Count / share of spaces whose minimum rental is exactly `hours`. */
 export function minimumHoursRow(report: PriceReport, hours: number): ShareRow | null {
   return report.minimumHours.find((row) => row.label === `${hours} 小時`) ?? null
 }

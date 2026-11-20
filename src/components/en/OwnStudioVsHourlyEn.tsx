@@ -176,7 +176,7 @@ export function OwnStudioVsHourlyEn({ report }: { report: PriceReport }) {
               <p>
                 These figures use hosts&apos; listed prices on SoloBeauté as an illustration. They are not a quote and say nothing about the income or clients you will actually get; what you spend depends on the space and hours you rent, and how often a host&apos;s space is rented depends on the location and demand.
               </p>
-              {two ? <p>Mind the minimum booking time: {two.count} of {report.total} spaces ({formatShare(two.share)}) have a 2-hour minimum.</p> : null}
+              {two ? <p>Mind the minimum rental time: {two.count} of {report.total} spaces ({formatShare(two.share)}) have a 2-hour minimum.</p> : null}
               <p>
                 For the step-by-step calculation and an hourly vs monthly checklist, see <Link href={en('/guides/hourly-vs-monthly-rent')} className="text-brand underline underline-offset-4">hourly vs monthly rent</Link>.
               </p>
@@ -201,7 +201,7 @@ export function OwnStudioVsHourlyEn({ report }: { report: PriceReport }) {
 
         <section className="sb-card space-y-4 p-6 md:p-8">
           <h2 className="text-xl font-semibold text-ink">Browse spaces in the SoloBeauté app</h2>
-          <p className="text-sm leading-7 text-black/65">In the app you can see each space&apos;s hourly, half-day and full-day rates and minimum booking time, message the host directly to confirm a time slot, and pay the host in cash on site.</p>
+          <p className="text-sm leading-7 text-black/65">In the app you can see each space&apos;s hourly, half-day and full-day rates and minimum rental time, message the host directly to confirm a time slot, and pay the host in cash on site.</p>
           <StoreButtons buttonClassName="btn-dark" />
         </section>
       </div>

@@ -156,9 +156,9 @@ export function HourlyVsMonthlyEn({ report }: { report: PriceReport }) {
               <p>
                 <strong className="text-ink">How to use this table:</strong> divide the monthly quote you have received by {median} to get your break-even hours, then see which row you fall into. For example, if your break-even works out at 30 hours and you see only 2 clients a week (about 16 hours a month), renting by the hour costs less in total.
               </p>
-              {two ? <p>Mind the minimum booking time: {two.count} of {report.total} spaces ({formatShare(two.share)}) have a 2-hour minimum, so each booking counts as at least 2 hours.</p> : null}
+              {two ? <p>Mind the minimum rental time: {two.count} of {report.total} spaces ({formatShare(two.share)}) have a 2-hour minimum, so each rental counts as at least 2 hours.</p> : null}
               {report.fullDayHoursEquivalent !== null ? (
-                <p>If you book many clients in one day, look at full-day rates: the median full-day rate is {report.fullDay.median !== null ? formatNtd(report.fullDay.median) : '—'}, roughly {report.fullDayHoursEquivalent} hours at the hourly rate.</p>
+                <p>If you see many clients in one day, look at full-day rates: the median full-day rate is {report.fullDay.median !== null ? formatNtd(report.fullDay.median) : '—'}, roughly {report.fullDayHoursEquivalent} hours at the hourly rate.</p>
               ) : null}
             </div>
           </Section>
@@ -169,10 +169,10 @@ export function HourlyVsMonthlyEn({ report }: { report: PriceReport }) {
             caption="Hourly vs monthly rent checklist"
             head={['What to compare', 'Hourly rent', 'Monthly rent']}
             rows={[
-              ['How you pay', 'Only when you have a booking, by the hours you use', 'A fixed monthly cost, with or without clients'],
+              ['How you pay', 'Only when you rent, by the hours you use', 'A fixed monthly cost, with or without clients'],
               ['Contract', 'Rented by the hour, no long-term lease', 'Ask about the contract length and early-termination terms'],
               ['Other costs', 'The space page lists hourly, half-day and full-day rates', 'Whether the deposit, utilities, air conditioning and consumables are extra depends on the contract'],
-              ['Time slots', 'Popular slots can get booked, so book early', 'Your own space, so you set your hours'],
+              ['Time slots', 'Popular slots can get taken, so plan early', 'Your own space, so you set your hours'],
               ['Equipment', 'Bring your own each time, or use what the space has', 'You can keep your own equipment in place'],
               ['Location', 'You can see different clients in different locations', 'One fixed location'],
             ]}
@@ -196,7 +196,7 @@ export function HourlyVsMonthlyEn({ report }: { report: PriceReport }) {
 
         <section className="sb-card space-y-4 p-6 md:p-8">
           <h2 className="text-xl font-semibold text-ink">Browse spaces in the SoloBeauté app</h2>
-          <p className="text-sm leading-7 text-black/65">In the app you can see each space&apos;s hourly, half-day and full-day rates and minimum booking time, and message the host directly to confirm a time slot.</p>
+          <p className="text-sm leading-7 text-black/65">In the app you can see each space&apos;s hourly, half-day and full-day rates and minimum rental time, and message the host directly to confirm a time slot.</p>
           <StoreButtons buttonClassName="btn-dark" />
         </section>
       </div>

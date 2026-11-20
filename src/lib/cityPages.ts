@@ -317,7 +317,7 @@ export function buildCityFaq(stats: CityStats, allStats: CityStats[], dateLabel:
       },
       {
         question: `我在${city.short}有閒置的美容室，可以出租嗎？`,
-        answer: '可以。下載 SoloBeauté App 就能上架空間、設定時租價格和可預約時段，美業職人會直接傳訊息給你。',
+        answer: '可以。下載 SoloBeauté App 就能上架空間、設定時租價格和可租時段，美業職人會直接傳訊息給你。',
       },
       {
         question: '怎麼租 SoloBeauté 上的美業空間？',
@@ -432,7 +432,7 @@ export function buildCityListHeading(stats: CityStats): string {
 /** Short note under the 高雄 「共享空間」 heading. */
 export function buildSharedSpaceNote(stats: CityStats): string | null {
   if (stats.city.slug !== 'kaohsiung' || stats.count === 0) return null
-  return `SoloBeauté 上的空間由不同屋主上架，美業職人按小時共用、有預約才租。${stats.city.short}目前有 ${stats.count} 個，位於${stats.districts.map((d) => d.label).join('、')}。`
+  return `SoloBeauté 上的空間由不同屋主上架，美業職人按小時共用、有需要才租。${stats.city.short}目前有 ${stats.count} 個，位於${stats.districts.map((d) => d.label).join('、')}。`
 }
 
 /**

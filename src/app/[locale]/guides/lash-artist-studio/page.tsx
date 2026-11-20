@@ -127,7 +127,7 @@ export default async function LashArtistStudioPage({ params }: { params: { local
     },
     {
       question: '美睫師租位、分租和時租差在哪？',
-      answer: '租位、分租常見的做法，是和店家談一個固定的床位、座位或時段，多半以月計，合約、押金和可用時段依各家而定。時租是有預約才租、按小時計價；SoloBeauté 上的空間會列出時租、最低租用時數、設備和適合的服務，在 App 傳訊息給屋主、送出預約，由屋主確認。',
+      answer: '租位、分租常見的做法，是和店家談一個固定的床位、座位或時段，多半以月計，合約、押金和可用時段依各家而定。時租是有需要才租、按小時計價；SoloBeauté 上的空間會列出時租、最低租用時數、設備和適合的服務，在 App 傳訊息給屋主、送出申請，由屋主確認。',
     },
     {
       question: '哪些縣市有適合美睫的工作室可以按小時租？',
@@ -234,8 +234,8 @@ export default async function LashArtistStudioPage({ params }: { params: { local
             caption="時租、分租、租位比較"
             head={['', '時租', '分租／租位']}
             rows={[
-              ['怎麼計價', '按小時，有預約才租', '常見以月計，依各家而定'],
-              ['使用時段', '每次預約時選', '常見是固定時段或固定位子'],
+              ['怎麼計價', '按小時，有需要才租', '常見以月計，依各家而定'],
+              ['使用時段', '每次租用時選', '常見是固定時段或固定位子'],
               ['器材擺放', '每次自己帶，或用空間的設備', '固定位子比較容易放自己的器材'],
               ['適合誰', '客人還不固定、想先試地點', '每週固定排滿、需要固定位置'],
             ]}
@@ -284,7 +284,7 @@ export default async function LashArtistStudioPage({ params }: { params: { local
 
         <section className="sb-card space-y-4 p-6 md:p-8">
           <h2 className="text-xl font-semibold text-ink">下載 SoloBeauté App 找美睫工作室</h2>
-          <p className="text-sm leading-7 text-black/65">在 App 裡可以看每個空間的照片、設備和可預約時段，直接傳訊息給屋主確認。</p>
+          <p className="text-sm leading-7 text-black/65">在 App 裡可以看每個空間的照片、設備和可租時段，直接傳訊息給屋主確認。</p>
           <StoreButtons buttonClassName="btn-dark" />
         </section>
       </div>

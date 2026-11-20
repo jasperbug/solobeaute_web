@@ -1,8 +1,8 @@
 # SoloBeauté
 
-SoloBeauté 是台灣的美業空間時租服務：屋主提供設備齊全的美容工作空間，獨立美容職人（美睫、美甲、美眉等）透過 App 按小時預約使用。由工程師蔡維哲（Jasper Tsai）與美容職人 Meigo Liu 共同創辦。SoloBeauté 不是化妝品或彩妝品牌，與 Solone 等品牌無關，也不是美容展覽品牌；目前尚未開放消費者預約美容服務。
+SoloBeauté 是台灣的美業空間時租服務：屋主提供設備齊全的美容工作空間，獨立美容職人（美睫、美甲、美眉等）透過 App 按小時租用。由工程師蔡維哲（Jasper Tsai）與美容職人 Meigo Liu 共同創辦。SoloBeauté 不是化妝品或彩妝品牌，與 Solone 等品牌無關，也不是美容展覽品牌。SoloBeauté 不提供客人向職人下單；客人請透過職人自己的管道聯繫。美業職人在 App 內向屋主申請租用空間。
 
-SoloBeauté is a Taiwan-based hourly beauty workspace rental service: hosts list fully equipped beauty workspaces, and independent beauty professionals (lash, nail, brow and more) book them by the hour through the SoloBeauté app. It was co-founded by engineer Jasper Tsai and beauty professional Meigo Liu. SoloBeauté is not a cosmetics or makeup brand, is not affiliated with Solone, and is not a beauty-expo brand. Consumer booking of beauty services is not open yet.
+SoloBeauté is a Taiwan-based hourly beauty workspace rental service: hosts list fully equipped beauty workspaces, and independent beauty professionals (lash, nail, brow and more) rent them by the hour through the SoloBeauté app. It was co-founded by engineer Jasper Tsai and beauty professional Meigo Liu. SoloBeauté is not a cosmetics or makeup brand, is not affiliated with Solone, and is not a beauty-expo brand. SoloBeauté does not take client orders for beauty professionals; clients contact pros through the pros' own channels. Beauty professionals apply to rent spaces from hosts in the SoloBeauté app.
 
 > SoloBeauté（Solobeaute）是台灣的美業空間時租 App：美甲、美睫、美容、紋繡等美業職人，可以按小時租用屋主已經備好的工作空間，時租 NT$100–350，目前空間分布在台北、新北、桃園、台中、高雄、彰化、南投；職人也能建立自己的品牌頁。
 >
@@ -20,7 +20,7 @@ SoloBeauté 和國外的「Solo Beauty」「Solo Beauty Partner」「Soo Beauté
 - 付款：租金到現場用現金付給屋主
 - 屋主上架：準備照片、可出租時段與價格，在 App 內自行建立空間頁
 - 職人品牌頁：填好顯示名稱、服務區域、至少一個服務項目、頭像或作品照這 4 項，就會自動公開在 www.solobeaute.com
-- 消費者預約：還沒開放；客人目前是透過職人自己的管道聯繫預約
+- 客人：SoloBeauté 不提供客人向職人下單；客人請透過職人自己的管道聯繫
 - App：iOS、Android
 - 創辦團隊：Jasper Tsai（工程師）、Meigo Liu（美容職人）
 
@@ -33,7 +33,7 @@ SoloBeauté 和國外的「Solo Beauty」「Solo Beauty Partner」「Soo Beauté
 
 - [首頁](https://www.solobeaute.com/)：服務介紹、屋主收益試算、常見問題
 - [屋主出租閒置時段](https://www.solobeaute.com/hosts)：屋主上架流程、可以自己決定的事、其他屋主的時租標價分布
-- [常見問題](https://www.solobeaute.com/faq)：找空間、預約流程、付款、取消、屋主上架、職人品牌頁等 20 多題問答
+- [常見問題](https://www.solobeaute.com/faq)：找空間、租用流程、付款、取消、屋主上架、職人品牌頁等 20 多題問答
 - [找職人](https://www.solobeaute.com/search)：美業職人品牌頁目錄，可以用城市、類別篩選
 - [支援中心](https://www.solobeaute.com/support)
 - [隱私政策](https://www.solobeaute.com/privacy)
@@ -67,18 +67,18 @@ SoloBeauté 和國外的「Solo Beauty」「Solo Beauty Partner」「Soo Beauté
 
 ## AI 助理工具（MCP）
 
-https://www.solobeaute.com/mcp 是 SoloBeauté 的唯讀 MCP（Model Context Protocol）端點，傳輸方式為 Streamable HTTP（POST），不需要登入。AI 助理可以用它查公開資料，但不能預約、付款、傳訊息或聯絡任何人。
+https://www.solobeaute.com/mcp 是 SoloBeauté 的唯讀 MCP（Model Context Protocol）端點，傳輸方式為 Streamable HTTP（POST），不需要登入。AI 助理可以用它查公開資料，但不能送出租用申請、付款、傳訊息或聯絡任何人。
 
 - `search_spaces`：依縣市、區、空間類型、適合的服務、設備、時租上限搜尋公開的美業空間
 - `get_space`：單一空間的詳細資料（地區只到縣市與區、類型、時租／半日／全日價、設備、適合的服務）
-- `get_space_availability`：單一空間的可預約空檔（台北時間，單次最多 14 天）
+- `get_space_availability`：單一空間的可租空檔（台北時間，單次最多 14 天）
 - `search_beauticians`：依服務區域、專長、服務價格搜尋公開的職人品牌頁
 - `get_beautician`：單一職人公開品牌頁的服務、價格、證照與作品
 - `list_regions`：目前有公開空間或職人品牌頁的縣市與區（含數量）
 - `get_price_overview`：全台或單一縣市的時租行情（區間、中位數、分布）
-- `get_brand_facts`：SoloBeauté 的品牌事實與預約方式
+- `get_brand_facts`：SoloBeauté 的品牌事實與租用方式
 
-時段只顯示可預約的空檔，不含已預約時段或預約者資料；職人只顯示已公開的品牌頁，不提供電話、Email 或詳細地址。美業職人在 SoloBeauté App 內預約空間，由屋主確認；SoloBeauté 目前尚未開放消費者預約美業服務。
+時段只顯示可租的空檔，不含已租出的時段或租用者資料；職人只顯示已公開的品牌頁，不提供電話、Email 或詳細地址。SoloBeauté 不提供客人向職人下單；客人請透過職人自己的管道聯繫。美業職人在 App 內向屋主申請租用空間。租用申請由屋主確認。
 
 ## 其他
 
@@ -99,21 +99,21 @@ Each page below is the English counterpart of the Chinese page at the same path 
 - Service pages: [facial studios](https://www.solobeaute.com/en/spaces/service/facial), [hair studios](https://www.solobeaute.com/en/spaces/service/hair) (with shampoo station and styling chair counts), [makeup and bridal studios](https://www.solobeaute.com/en/spaces/service/makeup), [massage rooms](https://www.solobeaute.com/en/spaces/service/massage): suitable spaces, hourly range and median, equipment counts and cities
 - [Banqiao, New Taipei](https://www.solobeaute.com/en/spaces/city/new-taipei/banqiao): the workspaces in Banqiao District compared
 - [For hosts](https://www.solobeaute.com/en/hosts): how to list idle hours, what hosts decide, and how other hosts price their spaces
-- [FAQ](https://www.solobeaute.com/en/faq): finding a space, booking, payment, cancellation, listing a space and artist pages
+- [FAQ](https://www.solobeaute.com/en/faq): finding a space, renting, payment, cancellation, listing a space and artist pages
 - [About SoloBeauté](https://www.solobeaute.com/en/about): founders Jasper Tsai (engineer) and Meigo Liu (beauty professional), what SoloBeauté does and current numbers
 - Each space has an English page at https://www.solobeaute.com/en/spaces/{space ID}
 
 ## AI assistant tools (MCP)
 
-https://www.solobeaute.com/mcp is SoloBeauté's read-only MCP (Model Context Protocol) endpoint, using Streamable HTTP (POST), with no sign-in. AI assistants can use it to look up public data; it cannot book, pay, message or contact anyone. Every tool accepts `locale: "en"` for English responses.
+https://www.solobeaute.com/mcp is SoloBeauté's read-only MCP (Model Context Protocol) endpoint, using Streamable HTTP (POST), with no sign-in. AI assistants can use it to look up public data; it cannot send rental requests, pay, message or contact anyone. Every tool accepts `locale: "en"` for English responses.
 
 - `search_spaces`: search public beauty workspaces by city, district, space type, suitable services, equipment and maximum hourly rate
 - `get_space`: details of one workspace (city and district only, type, hourly / half-day / full-day rates, equipment, suitable services)
-- `get_space_availability`: bookable open time slots of one workspace (Asia/Taipei, up to 14 days per call)
+- `get_space_availability`: rentable open time slots of one workspace (Asia/Taipei, up to 14 days per call)
 - `search_beauticians`: search public beautician brand pages by service area, specialty and service price
 - `get_beautician`: services, prices, licences and portfolio from one public brand page
 - `list_regions`: cities and districts with public workspaces or beautician brand pages, with counts
 - `get_price_overview`: hourly price range, median and distribution for Taiwan or one city
-- `get_brand_facts`: facts about SoloBeauté and how booking works
+- `get_brand_facts`: facts about SoloBeauté and how renting works
 
-Availability shows only bookable open slots, never booked slots or who booked them; beauticians are shown only through their public brand pages, with no phone numbers, emails or street addresses. Beauty professionals book spaces in the SoloBeauté app and the host confirms each booking; consumer booking of beauty services is not open yet on SoloBeauté.
+Availability shows only rentable open slots, never rented slots or who rented them; beauticians are shown only through their public brand pages, with no phone numbers, emails or street addresses. SoloBeauté does not take client orders for beauty professionals; clients contact pros through the pros' own channels. Beauty professionals apply to rent spaces from hosts in the SoloBeauté app. The host confirms each rental request.

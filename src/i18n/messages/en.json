@@ -40,14 +40,14 @@
     "host": {
       "tag": "HOST",
       "title": "Turn idle hours into revenue",
-      "desc": "Package the chairs, rooms, and time slots you already have, then make them bookable for beauty pros who actually need them.",
+      "desc": "Package the chairs, rooms, and time slots you already have, then make them available to rent for beauty pros who actually need them.",
       "cta": "Download the App"
     },
     "consumer": {
       "tag": "CLIENT",
-      "priority": "Coming soon · web only",
+      "priority": "Brand pages · web only",
       "title": "Find the right beauty pro",
-      "desc": "Browse portfolios, services, and brand details, then contact the pro directly through their own channel.",
+      "desc": "Browse portfolios, services, and brand details. Contact each pro through their own channels; the website helps you find the right person.",
       "cta": "Find a Pro"
     }
   },
@@ -69,7 +69,7 @@
       },
       {
         "step": "03",
-        "title": "Receive direct inquiries",
+        "title": "Receive inquiries and rental requests",
         "desc": "Interested pros contact you directly, confirm the fit, and move forward only when the match makes sense."
       },
       {
@@ -92,7 +92,7 @@
       {
         "step": "03",
         "title": "Rent flexibly and start taking clients",
-        "desc": "Book when you have demand and stop when you don't, without carrying a fixed studio cost every month."
+        "desc": "Rent when you have demand and stop when you don't, without carrying a fixed studio cost every month."
       },
       {
         "step": "04",
@@ -103,7 +103,7 @@
   },
   "features": {
     "sectionTag": "FEATURES",
-    "title": "From finding space to managing bookings, keep the workflow clear",
+    "title": "From finding space to scheduling your hours, keep the workflow clear",
     "items": {
       "filter": {
         "tag": "01 · FILTER",
@@ -121,8 +121,8 @@
         "desc": "Confirm towels, equipment, entry rules, or last-minute questions with the host inside the app instead of chasing answers across calls and chats."
       },
       "booking": {
-        "tag": "04 · BOOKING",
-        "title": "Keep bookings clear so your rhythm stays stable",
+        "tag": "04 · SCHEDULE",
+        "title": "Keep your rental hours clear so your rhythm stays stable",
         "desc": "See where you are working, which time slots are confirmed, and what still needs follow-up at a glance so independent work stays manageable."
       }
     }
@@ -152,7 +152,7 @@
       },
       {
         "q": "How is renting a nail station or beauty studio priced?",
-        "a": "Spaces on SoloBeauté are rented by the hour. Each space sets its own hourly rate, which is shown in the app. Book when you have clients, so pros who are just starting out can plan around their own workload."
+        "a": "Spaces on SoloBeauté are rented by the hour. Each space sets its own hourly rate, which is shown in the app. Rent when you have clients, so pros who are just starting out can plan around their own workload."
       },
       {
         "q": "How is rent paid?",
@@ -168,11 +168,11 @@
       },
       {
         "q": "What kinds of beauty services can I use a space for?",
-        "a": "There are spaces suited to nails, lashes, facials, brow and lip embroidery, makeup and more. Equipment varies from space to space; the app lists each space's equipment and the services the host recommends, so check before you book."
+        "a": "There are spaces suited to nails, lashes, facials, brow and lip embroidery, makeup and more. Equipment varies from space to space; the app lists each space's equipment and the services the host recommends, so check before you rent."
       },
       {
-        "q": "How do I find a space and book a time slot?",
-        "a": "Open the SoloBeauté app and filter by area, equipment and price on the map or in the list; some spaces also have a 3D tour. When you find one that fits, message the host to confirm the details, then send a booking request for the host to confirm."
+        "q": "How do I find a space and rent a time slot?",
+        "a": "Open the SoloBeauté app and filter by area, equipment and price on the map or in the list; some spaces also have a 3D tour. When you find one that fits, message the host to confirm the details, then send a rental request for the host to confirm."
       },
       {
         "q": "How do I rent out my space to beauty professionals?",
@@ -180,15 +180,15 @@
       },
       {
         "q": "Can I rent out my space for just some of the hours?",
-        "a": "Yes. List only the hours your space would otherwise sit empty and keep running your business the rest of the time. You can accept or decline every booking and set your own house rules."
+        "a": "Yes. List only the hours your space would otherwise sit empty and keep running your business the rest of the time. You can accept or decline every rental request and set your own house rules."
       },
       {
         "q": "How does a pro's brand page go public?",
         "a": "Fill in four things in the app: a display name, the area you serve, at least one service, and a profile or portfolio photo. Your brand page then goes live on www.solobeaute.com automatically, with no review to wait for."
       },
       {
-        "q": "Can clients book a pro directly on the website?",
-        "a": "Not yet. Consumer booking isn't open. For now, clients can browse a pro's brand page, portfolio and services on the website, then contact the pro through their own channels, such as Instagram or LINE."
+        "q": "How do clients contact a pro?",
+        "a": "Clients can browse a pro's brand page on the website, then contact the pro through their own channels, such as Instagram or LINE."
       },
       {
         "q": "How is SoloBeauté different from a typical shared beauty studio?",
@@ -299,7 +299,7 @@
     "metaDescription": "Search SoloBeauté for beauty pro brand pages, portfolios, and service details, then contact the pro directly.",
     "resultsUnit": "pros",
     "directoryTitle": "Directory page",
-    "directoryBody": "Bookings happen through each pro's own channel. The website helps you find the right person, then takes you to their brand page.",
+    "directoryBody": "Contact each pro through their own channels. The website helps you find the right person.",
     "directoryTagline": "DIRECT CONTACT",
     "allCities": "All cities",
     "districtPlaceholder": "District",
@@ -375,8 +375,8 @@
   },
   "login": {
     "sectionTag": "Login",
-    "title": "Consumer login is coming soon",
-    "description": "The web experience currently focuses on discovery and public brand pages. Booking and payment flows will follow in the next phase.",
+    "title": "Browse spaces and pro brand pages",
+    "description": "The website currently lets you browse spaces and pro brand pages. Pros and hosts renting a space should use the app.",
     "backHome": "Back home"
   }
 }

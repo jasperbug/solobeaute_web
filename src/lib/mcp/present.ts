@@ -130,7 +130,7 @@ export function beauticianDetail(beautician: PublicBeautician, complete: boolean
     socialLinks: beautician.socialLinks,
     updatedAt: beautician.updatedAt,
     booking: isEn(locale)
-      ? 'Consumer booking of beauty services is not open yet on SoloBeauté. See the brand page for this beautician’s own social links.'
-      : 'SoloBeauté 目前尚未開放消費者預約美業服務。可以到品牌頁看這位美業職人自己公開的社群連結。',
+      ? 'SoloBeauté does not take client orders for beauty professionals; clients contact pros through the pros\' own channels. See the brand page for this beautician’s own social links.'
+      : 'SoloBeauté 不提供客人向職人下單；客人請透過職人自己的管道聯繫。可以到品牌頁看這位美業職人自己公開的社群連結。',
   }
 }

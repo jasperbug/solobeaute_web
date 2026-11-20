@@ -226,7 +226,7 @@ export function createSoloBeauteMcpServer(): McpServer {
     {
       title: 'Search SoloBeauté beauty workspaces',
       description:
-        'Search public beauty workspaces in Taiwan that hosts rent to beauty professionals by the hour. Filters by city / district (Chinese or English names), space type, recommended services, equipment and max hourly rate (TWD). Returns prices, equipment, rating and links. Read-only; booking is done by beauty professionals in the SoloBeauté app.',
+        'Search public beauty workspaces in Taiwan that hosts rent to beauty professionals by the hour. Filters by city / district (Chinese or English names), space type, recommended services, equipment and max hourly rate (TWD). Returns prices, equipment, rating and links. Read-only; beauty professionals send rental requests in the SoloBeauté app.',
       inputSchema: z.object({
         city: z.string().max(40).optional().describe('City, e.g. "台北市", "台北" or "Taipei".'),
         district: z.string().max(40).optional().describe('District, e.g. "大安區" or "Da\'an".'),
@@ -291,7 +291,7 @@ export function createSoloBeauteMcpServer(): McpServer {
     'get_space_availability',
     {
       title: 'Get SoloBeauté workspace free time slots',
-      description: `Bookable free time slots of one public workspace for up to ${MCP_MAX_AVAILABILITY_DAYS} days (Asia/Taipei dates): opening hours minus booked and host-blocked times, keeping only gaps of at least the minimum booking hours. Read-only: it cannot hold or book a slot — beauty professionals book in the SoloBeauté app and the host confirms. If availability lookup is not open yet, the result says so.`,
+      description: `Free (rentable) time slots of one public workspace for up to ${MCP_MAX_AVAILABILITY_DAYS} days (Asia/Taipei dates): opening hours minus already-rented and host-blocked times, keeping only gaps of at least the minimum rental hours. Read-only: it cannot hold or rent a slot — beauty professionals send rental requests in the SoloBeauté app and the host confirms. If availability lookup is not open yet, the result says so.`,
       inputSchema: z.object({
         spaceId: z.string().max(64).describe('Space id (UUID) from search_spaces.'),
         from: z.string().max(10).optional().describe(`First date, YYYY-MM-DD (default: today in Taiwan; not earlier than yesterday, not later than today + ${BACKEND_MAX_ADVANCE_DAYS} days).`),
@@ -378,7 +378,7 @@ export function createSoloBeauteMcpServer(): McpServer {
     {
       title: 'Search SoloBeauté beautician brand pages',
       description:
-        'Search public SoloBeauté beautician brand pages by service-area city / district, specialty (e.g. "美睫", "lash", "霧眉") and max service price (TWD). Returns a `ref` for get_beautician. Consumer booking of beauty services is not open yet on SoloBeauté.',
+        'Search public SoloBeauté beautician brand pages by service-area city / district, specialty (e.g. "美睫", "lash", "霧眉") and max service price (TWD). Returns a `ref` for get_beautician. SoloBeauté does not take client orders for beauty professionals; clients contact pros through the pros\' own channels. Beauty professionals apply to rent spaces from hosts in the SoloBeauté app.',
       inputSchema: z.object({
         city: z.string().max(40).optional().describe('Service-area city, e.g. "台北市" or "Taipei".'),
         district: z.string().max(40).optional(),
@@ -420,7 +420,7 @@ export function createSoloBeauteMcpServer(): McpServer {
     {
       title: 'Get a SoloBeauté beautician brand page',
       description:
-        'Public brand page of one beautician by `ref` from search_beauticians: bio, specialties, licenses, service area (city / district), services with prices (TWD) and duration, portfolio images and public social links. No phone, email or address. Consumer booking of beauty services is not open yet on SoloBeauté.',
+        'Public brand page of one beautician by `ref` from search_beauticians: bio, specialties, licenses, service area (city / district), services with prices (TWD) and duration, portfolio images and public social links. No phone, email or address. SoloBeauté does not take client orders for beauty professionals; clients contact pros through the pros\' own channels. Beauty professionals apply to rent spaces from hosts in the SoloBeauté app.',
       inputSchema: z.object({
         ref: z.string().max(100).describe('The `ref` value from search_beauticians (brand-page slug).'),
         locale: localeParam,
@@ -553,17 +553,17 @@ export function createSoloBeauteMcpServer(): McpServer {
           howItWorks: en
             ? [
                 'Hosts list equipped beauty workspaces on SoloBeauté with their rates and equipment.',
-                'Beauty professionals (lash, nail, brow and more) book a space by the hour in the SoloBeauté app; the host confirms each booking.',
+                'Beauty professionals (lash, nail, brow and more) apply to rent a space by the hour in the SoloBeauté app; the host confirms each request.',
                 'Rent is paid to the host in cash on site.',
                 'Beauty professionals can publish a SoloBeauté brand page with their services and portfolio.',
-                'Consumer booking of beauty services is not open yet on SoloBeauté.',
+                'SoloBeauté does not take client orders for beauty professionals; clients contact pros through the pros\' own channels. Beauty professionals apply to rent spaces from hosts in the SoloBeauté app.',
               ]
             : [
                 '屋主在 SoloBeauté 刊登設備齊全的美業工作空間，標示租金和設備。',
-                '美業職人（美睫、美甲、美眉等）在 SoloBeauté App 內按小時預約空間，由屋主確認。',
+                '美業職人（美睫、美甲、美眉等）在 SoloBeauté App 內按小時向屋主申請租用空間，由屋主確認。',
                 '租金到現場以現金付給屋主。',
                 '美業職人可以在 SoloBeauté 建立品牌頁，展示服務項目和作品。',
-                'SoloBeauté 目前尚未開放消費者預約美業服務。',
+                'SoloBeauté 不提供客人向職人下單；客人請透過職人自己的管道聯繫。美業職人在 App 內向屋主申請租用空間。',
               ],
           consumerBookingOpen: false,
           liveCounts: {
