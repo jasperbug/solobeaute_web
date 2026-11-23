@@ -184,8 +184,49 @@ export function buildCityH1(city: SpaceCity): string {
   return `${city.short}美業空間時租`
 }
 
+/**
+ * Taichung title names the live ACTIVE count and hourly range (same CityStats
+ * as the page). The layout appends " | SoloBeauté", so the returned string is
+ * the longest clear candidate that keeps the full title near 32 characters.
+ * Other cities keep the year-plus-keyword title.
+ */
+function taichungTitle(stats: CityStats): string | null {
+  if (stats.city.slug !== 'taichung' || stats.count === 0 || stats.minRate === null || stats.maxRate === null) return null
+  const rate = rateText(stats)
+  const { short } = stats.city
+  const count = stats.count
+  const year = taipeiYear()
+  const candidates = [
+    `${year} ${short}美業空間時租｜${count}間 時租 ${rate}`,
+    `${short}美業空間時租｜${count}間 ${rate}`,
+    `${short}美業時租｜${count}間 ${rate}`,
+    `${short}時租｜${count}間 ${rate}`,
+  ]
+  const fullLength = (title: string) => Array.from(`${title} | SoloBeauté`).length
+  return candidates.find((title) => fullLength(title) <= 32) ?? candidates[candidates.length - 1]
+}
+
+/** Taichung meta description: live count + hourly range, about ≤ 80 characters. */
+function taichungDescription(stats: CityStats): string | null {
+  if (stats.city.slug !== 'taichung' || stats.count === 0 || stats.minRate === null || stats.maxRate === null) return null
+  const { city, count } = stats
+  const rate = rateText(stats)
+  const where = stats.districts.map((d) => d.label).join('、')
+  const located = where ? `，位於${where}` : ''
+  const pros = cityKeywords(stats)
+  const who = pros.length ? `${pros.join('、')}職人按小時租，` : ''
+  const pay = '在 App 傳訊息給屋主，現場付現。'
+  const full = `${city.short}目前 ${count} 間美業空間，時租 ${rate}${located}。${who}${pay}`
+  if (Array.from(full).length <= 80) return full
+  const noPros = `${city.short}目前 ${count} 間美業空間，時租 ${rate}${located}。${pay}`
+  if (Array.from(noPros).length <= 80) return noPros
+  return `${city.short}目前 ${count} 間美業空間，時租 ${rate}。${pay}`
+}
+
 /** <title> without the layout's " | SoloBeauté" suffix. */
 export function buildCityTitle(stats: CityStats): string {
+  const taichung = taichungTitle(stats)
+  if (taichung) return taichung
   const keywords = cityKeywords(stats)
   // Year first so the title matches 「2026＋城市」 searches (monthly_check.md #5–#11).
   return `${taipeiYear()} ${stats.city.short}美業空間時租｜${keywords.length ? keywords.join('') : '美容'}工作室出租`
@@ -196,6 +237,8 @@ export function buildCityOgTitle(city: SpaceCity): string {
 }
 
 export function buildCityDescription(stats: CityStats): string {
+  const taichung = taichungDescription(stats)
+  if (taichung) return taichung
   const { city, count } = stats
   const keywords = cityKeywords(stats)
   const pros = `${(keywords.length ? keywords : ['美睫', '美容']).join('、')}職人`

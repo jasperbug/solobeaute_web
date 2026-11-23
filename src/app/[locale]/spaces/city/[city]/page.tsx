@@ -79,7 +79,10 @@ export async function generateMetadata({ params }: CityPageProps & { params: { l
   const { stats } = loaded
   const title = isEn ? buildCityTitleEn(stats) : buildCityTitle(stats)
   const description = isEn ? buildCityDescriptionEn(stats) : buildCityDescription(stats)
-  const ogTitle = isEn ? buildCityOgTitleEn(stats.city) : buildCityOgTitle(stats.city)
+  // Taichung's document title already carries the live count and hourly range.
+  const ogTitle = stats.city.slug === 'taichung' && stats.count > 0 && stats.minRate !== null && stats.maxRate !== null
+    ? `${title} | SoloBeauté`
+    : (isEn ? buildCityOgTitleEn(stats.city) : buildCityOgTitle(stats.city))
   const path = cityPagePath(stats.city)
   const url = localeUrl(path, isEn ? 'en' : 'zh-TW')
 
