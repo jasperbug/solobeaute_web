@@ -311,6 +311,8 @@ export type TopicView = {
   breadcrumbs: Array<{ label: string; path?: string }>
   /** 2–3 sentence answer shown right under the H1 (data-ai-summary). */
   lead: string
+  /** Sentence above the data summary. Set on the lash page only. */
+  opening?: string
   /** Taipei-time data date (YYYY-MM-DD) stamped after the summary. */
   dataDate: string
   intro: string[]
@@ -1168,8 +1170,8 @@ const SERVICE_COPY: Record<ServiceKey, ServiceCopy> = {
     reportAnchor: '#lash',
     keyEquipment: '美容床',
     factEquipment: '美容床',
-    zh: { title: '美睫空間租借｜美睫工作室時租、嫁接睫毛按小時租', og: '美睫空間租借｜SoloBeauté', h1: '美睫空間租借・美睫工作室時租', tag: '美睫師・工作室時租', noun: '美睫', profession: '美睫師', itemList: 'SoloBeauté 適合美睫的美業空間', crumb: '美睫工作室', kw: '美睫空間租借', faqPrice: '美睫空間租借多少錢？', subsTitle: '嫁接睫毛、睫毛管理各幾間', subsQ: '嫁接睫毛、睫毛管理都可以做嗎？', equipTitle: '美容床、美容燈等設備', factLabel: '有美容床' },
-    en: { title: 'Lash Studio Space Rental by the Hour in Taiwan', og: 'Lash studio space rental | SoloBeauté', h1: 'Lash studio space rental by the hour', tag: 'For lash artists', noun: 'lash work', profession: 'lash artists', itemList: 'Beauty workspaces on SoloBeauté suitable for lash work', crumb: 'Lash studios', kw: 'Lash studio space rental', faqPrice: 'How much does lash studio space rental cost per hour?', subsTitle: 'Lash extensions and lash lift', subsQ: 'Can I do both lash extensions and lash lifts?', equipTitle: 'Beauty beds, lamps and more', factLabel: 'With a beauty bed' },
+    zh: { title: '美睫工作室時租｜給美睫師按小時租空間', og: '美睫工作室時租｜給美睫師按小時租空間 | SoloBeauté', h1: '美睫工作室時租｜給美睫師按小時租空間', tag: '美睫師・工作室時租', noun: '美睫', profession: '美睫師', itemList: 'SoloBeauté 適合美睫的美業空間', crumb: '美睫工作室', faqPrice: '美睫空間租借多少錢？', subsTitle: '嫁接睫毛、睫毛管理各幾間', subsQ: '嫁接睫毛、睫毛管理都可以做嗎？', equipTitle: '美容床、美容燈等設備', factLabel: '有美容床' },
+    en: { title: 'Hourly Lash Studio Rental | For Lash Artists, Not Consumer Appointments', og: 'Hourly lash studio rental for lash artists | SoloBeauté', h1: 'Hourly Lash Studio Rental | For Lash Artists, Not Consumer Appointments', tag: 'For lash artists', noun: 'lash work', profession: 'lash artists', itemList: 'Beauty workspaces on SoloBeauté suitable for lash work', crumb: 'Lash studios', faqPrice: 'How much does lash studio space rental cost per hour?', subsTitle: 'Lash extensions and lash lift', subsQ: 'Can I do both lash extensions and lash lifts?', equipTitle: 'Beauty beds, lamps and more', factLabel: 'With a beauty bed' },
   },
   facial: {
     subs: [],
@@ -1239,6 +1241,39 @@ function someEn(k: number, n: number): string {
 
 const BRAND_NOTE_ZH = 'SoloBeauté 是美業空間時租服務，不是化妝品或彩妝品牌，與 Solone 等品牌無關，也不販售化妝品。'
 const BRAND_NOTE_EN = 'SoloBeauté is an hourly beauty workspace rental service, not a cosmetics or makeup brand; it is not affiliated with Solone and does not sell cosmetics.'
+
+const LASH_OPENING_ZH = '這頁是給美睫師按小時租空間，不是消費者預約接睫毛的店家名單。'
+const LASH_OPENING_EN = 'This page is hourly studio rental for lash artists, not consumer eyelash booking.'
+
+const LASH_FAQ_ZH: QA = {
+  question: '這是預約接睫毛的店家名單嗎？',
+  answer: '不是。這裡列出的是屋主標示適合美睫、可以按小時租給美睫師的空間。要接睫毛請直接找美睫師或店家；要租空間則在 App 傳訊息給屋主，租金現場付現。',
+}
+const LASH_FAQ_EN: QA = {
+  question: 'Is this a list of salons for consumer eyelash booking?',
+  answer: 'No. These are spaces hosts mark as suitable for lash work and rent by the hour to lash artists. For eyelash services, contact a lash artist or salon directly. To rent a space, message the host in the app and pay in cash on site.',
+}
+
+/** Lash meta description: live count / min–max / median, about ≤ 80 Chinese characters. */
+function lashDescriptionZh(n: number, hourly: RateStats): string {
+  const pay = '在 App 傳訊息給屋主，現場付現。'
+  const distinction = '給美睫師按小時租空間，不是消費者預約接睫毛。'
+  if (n === 0 || hourly.min === null || hourly.max === null) return `${distinction}${pay}`
+  const medianPart = hourly.n >= 2 && hourly.median !== null ? `，中位數 ${money(hourly.median)}` : ''
+  const full = `${distinction}目前${n}間，時租 ${rangeZh(hourly)}${medianPart}。${pay}`
+  if (Array.from(full).length <= 80) return full
+  const tight = `給美睫師按小時租，不是預約接睫毛。目前${n}間，時租 ${rangeZh(hourly)}${medianPart}。App 傳訊屋主，現場付現。`
+  if (Array.from(tight).length <= 80) return tight
+  return `給美睫師按小時租，不是預約接睫毛。${n}間，時租 ${rangeZh(hourly)}${medianPart}。App 傳訊屋主，現場付現。`
+}
+
+function lashDescriptionEn(n: number, hourly: RateStats): string {
+  const pay = 'Message the host in the SoloBeauté app and pay in cash on site.'
+  const distinction = 'Hourly studio rental for lash artists, not consumer eyelash booking.'
+  if (n === 0 || hourly.min === null || hourly.max === null) return `${distinction} ${pay}`
+  const medianPart = hourly.n >= 2 && hourly.median !== null ? `, median ${money(hourly.median)}` : ''
+  return `${distinction} ${plural(n, 'space')}, ${rangeEn(hourly)} per hour${medianPart}. ${pay}`
+}
 
 function buildService(key: ServiceKey, all: PublicSpace[], locale: AppLocale): TopicView {
   const topic = getTopic(key)
@@ -1331,7 +1366,15 @@ function buildService(key: ServiceKey, all: PublicSpace[], locale: AppLocale): T
         title: '依縣市的時租',
         note: '時租中位數只在同縣市有 2 個以上空間時顯示。',
         table: { caption: `適合${c.noun}的空間：依縣市`, head: ['縣市', '空間數', '時租', '時租中位數'], rows: cityRows },
-        links: [{ href: reportHref, label: c.reportLabel ?? `${c.profession}租工作室的行情摘要（時租行情報告）→` }, ...(key === 'lash' ? [{ href: L('/guides/lash-artist-studio'), label: '美睫師租工作室指南：設備、隱私和時租怎麼看 →' }] : [])],
+        links: [
+          { href: reportHref, label: c.reportLabel ?? `${c.profession}租工作室的行情摘要（時租行情報告）→` },
+          ...(key === 'lash'
+            ? [
+                { href: L('/guides/lash-artist-studio'), label: '美睫師租工作室指南：設備、隱私和時租怎麼看 →' },
+                { href: L('/spaces'), label: '看全部美業空間 →' },
+              ]
+            : []),
+        ],
       })
     }
     const extraFaq: QA[] = []
@@ -1394,6 +1437,7 @@ function buildService(key: ServiceKey, all: PublicSpace[], locale: AppLocale): T
           ...extraFaq,
         ]
       : []
+    if (key === 'lash') faq.unshift(LASH_FAQ_ZH)
     return {
       locale,
       path: topic.path,
@@ -1401,11 +1445,14 @@ function buildService(key: ServiceKey, all: PublicSpace[], locale: AppLocale): T
       indexable: isTopicIndexable(n),
       title: useFallbackTitle && c.titleFallback ? c.titleFallback : c.title,
       ogTitle: c.og,
-      description: n > 0
-        ? `${c.kw ?? c.h1} ${rangeZh(hourly)}：SoloBeauté 上有 ${n} 個美業空間由屋主標示適合${c.noun}${top2.length ? `，其中 ${top2.map((e) => `${e.n} 個有${e.label}`).join('、')}` : ''}，分布${cityListZh(spaces)}。${howToBook}`
-        : `${c.h1}。新空間陸續上架中，下載 SoloBeauté App 查看最新空間。`,
+      description: key === 'lash'
+        ? lashDescriptionZh(n, hourly)
+        : n > 0
+          ? `${c.kw ?? c.h1} ${rangeZh(hourly)}：SoloBeauté 上有 ${n} 個美業空間由屋主標示適合${c.noun}${top2.length ? `，其中 ${top2.map((e) => `${e.n} 個有${e.label}`).join('、')}` : ''}，分布${cityListZh(spaces)}。${howToBook}`
+          : `${c.h1}。新空間陸續上架中，下載 SoloBeauté App 查看最新空間。`,
       tag: c.tag,
       h1: c.h1,
+      opening: key === 'lash' ? LASH_OPENING_ZH : undefined,
       breadcrumbs: [{ label: '首頁', path: '/' }, { label: '美業空間', path: '/spaces' }, { label: c.crumb }],
       lead: n > 0
         ? `SoloBeauté 上可按小時租借、且屋主標示適合${c.noun}的空間有 ${n} 個，時租 ${rangeZh(hourly)}${hourly.n >= 2 ? `，中位數 ${money(hourly.median)}` : ''}，分布${cityListZh(spaces)}。${isNew ? leadDetail[key] : `其中 ${keyEquipmentN} 個有${keyEquipment}；${privateish} 個是獨立房間或拉簾隔間。這是適合${c.noun}的空間時租，不是全站的半日／全日中位數。`}`
@@ -1472,7 +1519,15 @@ function buildService(key: ServiceKey, all: PublicSpace[], locale: AppLocale): T
       title: 'Hourly rates by city',
       note: 'The median is shown only when a city has 2 or more spaces.',
       table: { caption: 'By city', head: ['City', 'Spaces', 'Hourly rate', 'Median'], rows: cityRows },
-      links: [{ href: reportHref, label: c.reportLabel ?? `Rate summary for ${c.profession} (hourly rate report) →` }, ...(key === 'lash' ? [{ href: L('/guides/lash-artist-studio'), label: 'Lash artist studio guide →' }] : [])],
+      links: [
+        { href: reportHref, label: c.reportLabel ?? `Rate summary for ${c.profession} (hourly rate report) →` },
+        ...(key === 'lash'
+          ? [
+              { href: L('/guides/lash-artist-studio'), label: 'Lash artist studio guide →' },
+              { href: L('/spaces'), label: 'All beauty workspaces →' },
+            ]
+          : []),
+      ],
     })
   }
   const extraFaqEn: QA[] = []
@@ -1536,6 +1591,7 @@ function buildService(key: ServiceKey, all: PublicSpace[], locale: AppLocale): T
         ...extraFaqEn,
       ]
     : []
+  if (key === 'lash') faq.unshift(LASH_FAQ_EN)
   return {
     locale,
     path: topic.path,
@@ -1543,11 +1599,14 @@ function buildService(key: ServiceKey, all: PublicSpace[], locale: AppLocale): T
     indexable: isTopicIndexable(n),
     title: useFallbackTitle && c.titleFallback ? c.titleFallback : c.title,
     ogTitle: c.og,
-    description: n > 0
-      ? `${c.kw ?? c.h1} from ${rangeEn(hourly)}: ${plural(n, 'workspace')} on SoloBeauté that hosts mark as suitable for ${c.noun}${top2.length ? `; ${joinEn(top2.map((e) => `${e.n} list ${equipmentEn(e.label).toLowerCase()}`))}` : ''}. In ${cityListEnOf(spaces)}. ${howToBook}`
-      : `${c.h1}. New spaces are being listed; download the SoloBeauté app to see the latest.`,
+    description: key === 'lash'
+      ? lashDescriptionEn(n, hourly)
+      : n > 0
+        ? `${c.kw ?? c.h1} from ${rangeEn(hourly)}: ${plural(n, 'workspace')} on SoloBeauté that hosts mark as suitable for ${c.noun}${top2.length ? `; ${joinEn(top2.map((e) => `${e.n} list ${equipmentEn(e.label).toLowerCase()}`))}` : ''}. In ${cityListEnOf(spaces)}. ${howToBook}`
+        : `${c.h1}. New spaces are being listed; download the SoloBeauté app to see the latest.`,
     tag: c.tag,
     h1: c.h1,
+    opening: key === 'lash' ? LASH_OPENING_EN : undefined,
     breadcrumbs: [{ label: 'Home', path: '/' }, { label: 'Beauty workspaces', path: '/spaces' }, { label: c.crumb }],
     lead: n > 0
       ? `As of ${dateISO}, hosts mark ${plural(n, 'beauty workspace')} on SoloBeauté as suitable for ${c.noun} and rentable by the hour, at ${rangeEn(hourly)} per hour${hourly.n >= 2 ? ` (median ${money(hourly.median)})` : ''}, in ${cityListEnOf(spaces)}. ${isNew ? leadDetailEn[key] : `${keyEquipmentN} ${keyEquipmentN === 1 ? 'has' : 'have'} a ${equipmentEn(keyEquipment).toLowerCase()}; ${privateish} ${privateish === 1 ? 'is a private room or curtained partition' : 'are private rooms or curtained partitions'}. These figures are for spaces hosts mark as suitable for ${c.noun}, not the site-wide half-day or full-day median.`}`

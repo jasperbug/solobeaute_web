@@ -65,12 +65,26 @@ function prosText(stats: CityStats): string {
 
 // --- metadata ---------------------------------------------------------------
 
+/** Taichung title: live ACTIVE count and hourly range, same CityStats as the page. */
+function taichungTitleEn(stats: CityStats): string | null {
+  if (stats.city.slug !== 'taichung' || stats.count === 0 || stats.minRate === null || stats.maxRate === null) return null
+  return `${taipeiYear()} Hourly Beauty Workspaces in Taichung | ${plural(stats.count, 'space')}, ${rateText(stats)}`
+}
+
+function taichungDescriptionEn(stats: CityStats): string | null {
+  if (stats.city.slug !== 'taichung' || stats.count === 0 || stats.minRate === null || stats.maxRate === null) return null
+  const where = stats.districts.length ? ` (${districtList(stats, false)})` : ''
+  return `${plural(stats.count, 'beauty workspace')} for hourly rent in ${cityShortEn(stats.city)}${where}, ${rateText(stats)} per hour. For ${prosText(stats)}; message the host in the SoloBeauté app and pay in cash on site.`
+}
+
 export function buildCityH1En(city: SpaceCity): string {
   return `Beauty workspaces for hourly rent in ${cityShortEn(city)}`
 }
 
 /** <title> without the layout's " | SoloBeauté" suffix. */
 export function buildCityTitleEn(stats: CityStats): string {
+  const taichung = taichungTitleEn(stats)
+  if (taichung) return taichung
   const keywords = keywordsEn(stats)
   return `${taipeiYear()} ${cityShortEn(stats.city)} Beauty Workspaces by the Hour | ${keywords.length ? joinEn(keywords, 'and') : 'Beauty'} Studios for Rent`
 }
@@ -80,6 +94,8 @@ export function buildCityOgTitleEn(city: SpaceCity): string {
 }
 
 export function buildCityDescriptionEn(stats: CityStats): string {
+  const taichung = taichungDescriptionEn(stats)
+  if (taichung) return taichung
   const { city, count } = stats
   const short = cityShortEn(city)
   if (count === 0) {

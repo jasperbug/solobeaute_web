@@ -180,6 +180,9 @@ export function TopicPage({ view }: { view: TopicView }) {
         <header className="space-y-4">
           <p className="section-tag">{view.tag}</p>
           <h1 className="text-3xl font-semibold leading-tight text-ink md:text-4xl">{view.h1}</h1>
+          {view.opening ? (
+            <p className="max-w-3xl text-base font-medium leading-8 text-ink" data-topic-opening>{view.opening}</p>
+          ) : null}
           <p className={`max-w-3xl text-base leading-8 text-black/70 ${NUM}`} data-ai-summary>
             {view.lead}{' '}
             <span className="whitespace-nowrap font-medium text-ink" data-ai-summary-date>
